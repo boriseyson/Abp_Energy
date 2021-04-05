@@ -7,20 +7,60 @@
     android:orientation="vertical"
     tools:context=".HazardReport.NewHazardActivity">
 
+    <!--        SAVE-->
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="#C1C3C9"
-        android:paddingBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:paddingBottom="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+            <!--        Insert Photo-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imagePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingLeft="25dp"
+                    android:paddingTop="25dp"
+                    android:paddingRight="25dp"
+                    android:paddingBottom="15dp">
+
+                    <ImageView
+                        android:id="@+id/imgView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_baseline_image_24" />
+
+                    <TextView
+                        android:id="@+id/tvAmbilGambar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:text="Sentuh Disini Untuk Mengambil Gambar" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--        Insert Photo-->
             <!--Data Temuan-->
             <TextView
                 android:layout_width="match_parent"
@@ -54,8 +94,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginBottom="5dp"
+                        android:orientation="horizontal"
                         android:weightSum="2">
 
                         <TextView
@@ -66,17 +106,17 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilPerusahaan"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_weight="1.5"
                             android:hint="Perusahaan">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tvPerusaan"
-                                android:maxLines="1"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <!--    Perusahaan-->
@@ -84,10 +124,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
                         android:layout_marginBottom="5dp"
-                        >
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
                         <TextView
                             android:layout_width="0dp"
@@ -97,8 +136,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilTanggal"
-                            android:layout_width="0dp"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.5"
                             android:hint="Tanggal">
@@ -108,9 +147,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clickable="true"
-                                android:maxLines="1"
                                 android:focusable="false"
-                                android:inputType="none" />
+                                android:inputType="none"
+                                android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <!--    Tanggal-->
@@ -118,8 +157,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginBottom="5dp"
+                        android:orientation="horizontal"
                         android:weightSum="2">
 
                         <TextView
@@ -130,8 +169,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilJam"
-                            android:layout_width="0dp"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.5"
                             android:hint="Jam">
@@ -141,17 +180,17 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clickable="true"
-                                android:maxLines="1"
                                 android:focusable="false"
-                                android:inputType="none" />
+                                android:inputType="none"
+                                android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <!--    Jam-->
                     <!--    Lokasi-->
                     <LinearLayout
-                        android:layout_marginBottom="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
@@ -172,19 +211,14 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tvLokasi"
                                 android:layout_width="match_parent"
-                                android:maxLines="1"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <!--    Lokasi-->
                 </LinearLayout>
                 <!--    TEMUAN VIEW-->
             </androidx.cardview.widget.CardView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/colorPrimaryDark" />
 
             <!--    BAHAYA VIEW-->
             <LinearLayout
@@ -266,10 +300,10 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilSumberBahaya"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Pilih Sumber Bahaya"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:text="@string/app_name">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -348,10 +382,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/colorPrimaryDark" />
             <!--        Tindakan Perbaikan-->
             <TextView
                 android:layout_width="match_parent"
@@ -387,8 +417,8 @@
                             android:id="@+id/tvPerbaikan"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:maxLines="1"
-                            android:gravity="top" />
+                            android:gravity="top"
+                            android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
                     <!--    TXT PERBAIKAN-->
                 </LinearLayout>
@@ -477,9 +507,9 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilTGLSelesai"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_weight="1.5"
                             android:hint="Tanggal Selesai">
 
@@ -488,9 +518,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clickable="true"
-                                android:maxLines="1"
                                 android:focusable="false"
-                                android:inputType="none" />
+                                android:inputType="none"
+                                android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <!--Tanggal Selesai-->
@@ -511,12 +541,12 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilJamSelesai"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1.5"
-                            android:maxLines="1"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:hint="Jam Selesai">
+                            android:hint="Jam Selesai"
+                            android:maxLines="1">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tvJamSelesai"
@@ -537,7 +567,7 @@
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="61dp"
                             android:layout_gravity="center"
                             android:layout_weight="0.5"
                             android:gravity="center"
@@ -545,63 +575,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilPenanggungJawab"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_weight="1.5"
                             android:hint="Penanggung Jawab">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tvPenanggungJawab"
                                 android:layout_width="match_parent"
-                                android:maxLines="1"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <!--Penanggung Jawab-->
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/colorPrimaryDark" />
-            <!--        Insert Photo-->
-            <!--        Insert Photo-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/imagePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingLeft="25dp"
-                    android:paddingTop="25dp"
-                    android:paddingRight="25dp"
-                    android:paddingBottom="15dp">
-
-                    <ImageView
-                        android:id="@+id/imgView"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_baseline_image_24" />
-
-                    <TextView
-                        android:id="@+id/tvAmbilGambar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center_horizontal"
-                        android:text="Ambil Gambar" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -609,10 +596,10 @@
         </LinearLayout>
 
     </ScrollView>
-    <!--        SAVE-->
+
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
@@ -621,23 +608,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSimpan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_total"
+            style="@style/TextAppearance.MaterialComponents.Button"
             android:text="Simpan"
+            android:backgroundTint="@color/bgTotal"
             android:textColor="@color/white" />
-
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBatalHazard"
+            style="@style/TextAppearance.MaterialComponents.Button"
             android:layout_width="0dp"
+            android:backgroundTint="@color/bgCancel"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_cancel"
             android:text="Batal"
             android:textColor="@color/white" />
     </LinearLayout>
