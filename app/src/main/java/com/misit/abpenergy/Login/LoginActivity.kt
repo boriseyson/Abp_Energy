@@ -60,6 +60,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
             }
             false
         })
+        tvLpSandi.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -67,7 +68,13 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
             if(isValidatedAll()){
                 loginSubmit(InUsername.text.toString().trim(),InPassword.text.toString().trim())
             }
-
+        }
+        if(v?.id==R.id.tvLpSandi){
+            var intent = Intent(this@LoginActivity,ForgotPasswordActivity::class.java)
+            if(InUsername.text!=null){
+                intent.putExtra(ForgotPasswordActivity.USERNAME,InUsername.text)
+            }
+            startActivity(intent)
         }
     }
     override fun onResume() {
