@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp">
+    <LinearLayout
+        android:background="@drawable/bg_cancel_option"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:background="@color/red_smooth"
+            android:textColor="@color/white"
+            android:id="@+id/tvCancelNoRKB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Nomor RKB"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_margin="5dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/InCancelKabag"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="@string/remarks"
+                android:text=""
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:textAllCaps="false"
+                android:layout_margin="5dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:id="@+id/sendCancel"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_total"/>
+            <Button
+                android:textAllCaps="false"
+                android:background="@drawable/btn_cancel"
+                android:textColor="@color/white"
+                android:layout_margin="5dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/btnCancelForm"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HazardReport.NewHazardActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="#C1C3C9"
+        android:paddingBottom="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--Data Temuan-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/successColor"
+                android:padding="10dp"
+                android:text="1. Data Temuan"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+            <!--Data Temuan-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorPrimaryDark" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp">
+                <!--    TEMUAN VIEW-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <!--    Perusahaan-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Perusahaan" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilPerusahaan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_weight="1.5"
+                            android:hint="Perusahaan">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvPerusaan"
+                                android:maxLines="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--    Perusahaan-->
+                    <!--    Tanggal-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginBottom="5dp"
+                        >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Tanggal" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilTanggal"
+                            android:layout_width="0dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:hint="Tanggal">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvTanggal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:maxLines="1"
+                                android:focusable="false"
+                                android:inputType="none" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--    Tanggal-->
+                    <!--    Jam-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Jam" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilJam"
+                            android:layout_width="0dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:hint="Jam">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvJam"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:maxLines="1"
+                                android:focusable="false"
+                                android:inputType="none" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--    Jam-->
+                    <!--    Lokasi-->
+                    <LinearLayout
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Lokasi" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilLokasi"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:hint="Lokasi">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvLokasi"
+                                android:layout_width="match_parent"
+                                android:maxLines="1"
+                                android:layout_height="match_parent" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--    Lokasi-->
+                </LinearLayout>
+                <!--    TEMUAN VIEW-->
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorPrimaryDark" />
+
+            <!--    BAHAYA VIEW-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!--    Deskripsi Bahaya-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/successColor"
+                    android:padding="10dp"
+                    android:text="2. DESKRIPSI BAHAYA"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+                <!--    Deskripsi Bahaya-->
+
+
+                <!--    Bahaya-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilBahaya"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:gravity="center_horizontal"
+                            android:hint="Deskripsi Bahaya"
+                            android:padding="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvBahaya"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="top" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <!--    Bahaya-->
+
+                <!--    SUMBER BAHAYA-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/colorPrimaryDark"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="SUMBER BAHAYA"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <!--        PILIHAN-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilSumberBahaya"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Pilih Sumber Bahaya"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:text="@string/app_name">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvSumberBahaya"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:inputType="none" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <!--        PILIHAN-->
+
+                <!--    SUMBER BAHAYA-->
+
+            </LinearLayout>
+            <!--Kategori Bahaya-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/successColor"
+                android:padding="10dp"
+                android:text="3. KATEGORI BAHAYA (Tandai Salah Satu)"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+            <!--        Kategori Bahaya-->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tilKatBahaya"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingTop="5dp"
+                        android:text="Please Input Someting"
+                        android:textColor="@color/red_smooth"
+                        android:visibility="gone" />
+                    <!--        PILIHAN KATEGORI-->
+                    <RadioGroup
+                        android:id="@+id/grupKategori"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        android:weightSum="2">
+
+                        <RadioButton
+                            android:id="@+id/plKta"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="KONDISI TIDAK AMAN" />
+
+                        <RadioButton
+                            android:id="@+id/plTta"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="TINDAKAN TIDAK AMAN" />
+                    </RadioGroup>
+                    <!--        PILIHAN KATEGORI-->
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorPrimaryDark" />
+            <!--        Tindakan Perbaikan-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/successColor"
+                android:padding="10dp"
+                android:text="4. TINDAKAN YANG DILAKUKAN UNTUK PERBAIKAN"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!--    TXT PERBAIKAN-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPerbaikan"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:hint="Tindakan Perbaikan"
+                        android:padding="10dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tvPerbaikan"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:maxLines="1"
+                            android:gravity="top" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <!--    TXT PERBAIKAN-->
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--        Tindakan Perbaikan-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="STATUS PERBAIKAN (Pilih Salah Satu)"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <!--        STATUS PERBAIKAN-->
+                    <TextView
+                        android:id="@+id/tilStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingTop="5dp"
+                        android:text="Please Input Someting"
+                        android:textColor="@color/red_smooth"
+                        android:visibility="gone" />
+                    <!--        Pilihan-->
+                    <RadioGroup
+                        android:id="@+id/groupStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        android:weightSum="3">
+
+                        <RadioButton
+                            android:id="@+id/rbSelesai"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="SELSAI" />
+
+                        <RadioButton
+                            android:id="@+id/rbBelumSelesai"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="BELUM SELESAI" />
+
+                        <RadioButton
+                            android:id="@+id/rbBerlanjut"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="BERLANJUT" />
+                    </RadioGroup>
+                    <!--        Pilihan-->
+                    <!--        STATUS PERBAIKAN-->
+                    <!--Tanggal Selesai-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="Tanggal Selesai" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilTGLSelesai"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_weight="1.5"
+                            android:hint="Tanggal Selesai">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvTGLSelesai"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:maxLines="1"
+                                android:focusable="false"
+                                android:inputType="none" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--Tanggal Selesai-->
+                    <!--Jam Selesai-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="Jam Selesai" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilJamSelesai"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:maxLines="1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:hint="Jam Selesai">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvJamSelesai"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:inputType="none" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--Jam Selesai-->
+                    <!--        Penanggung Jawab-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="Penanggung Jawab" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilPenanggungJawab"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_weight="1.5"
+                            android:hint="Penanggung Jawab">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvPenanggungJawab"
+                                android:layout_width="match_parent"
+                                android:maxLines="1"
+                                android:layout_height="match_parent" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--Penanggung Jawab-->
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorPrimaryDark" />
+            <!--        Insert Photo-->
+            <!--        Insert Photo-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imagePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingLeft="25dp"
+                    android:paddingTop="25dp"
+                    android:paddingRight="25dp"
+                    android:paddingBottom="15dp">
+
+                    <ImageView
+                        android:id="@+id/imgView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_baseline_image_24" />
+
+                    <TextView
+                        android:id="@+id/tvAmbilGambar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:text="Ambil Gambar" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!--    BAHAYA VIEW-->
+        </LinearLayout>
+
+    </ScrollView>
+    <!--        SAVE-->
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btnSimpan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_total"
+            android:text="Simpan"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btnBatalHazard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_cancel"
+            android:text="Batal"
+            android:textColor="@color/white" />
+    </LinearLayout>
+    <!--        SAVE-->
+
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/btnFLMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="80dp"
+        app:fab_addButtonColorNormal="@color/colorPrimaryDark"
+        app:fab_addButtonColorPressed="@color/colorPrimary"
+        app:fab_addButtonPlusIconColor="@color/white"
+        app:fab_expandDirection="up"
+        app:fab_labelStyle="@style/LabelStyle"
+        app:fab_labelsPosition="left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnOpenCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimaryDark"
+            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_icon="@drawable/ic_baseline_camera_24"
+            app:fab_title="Ambil Sebuah Gambar" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnOpenGalery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimaryDark"
+            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_icon="@drawable/ic_baseline_image_24"
+            app:fab_title="Pilih Gambar dari galery" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "598125194642",
+    "firebase_url": "https://misit-service.firebaseio.com",
+    "project_id": "misit-service",
+    "storage_bucket": "misit-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598125194642:android:21d686e54b4e1ba7e8654b",
+        "android_client_info": {
+          "package_name": "com.misit.abpenergy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598125194642-qa5m5al8q8r3f9ncm6dmmfo45vu2pra5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.misit.abpenergy",
+            "certificate_hash": "f559702a7ce90759eb7e1edccd5d95647073ffba"
+          }
+        },
+        {
+          "client_id": "598125194642-p00kmjqh2scvttccjc81g9hrg576k5cm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQewlUw36LGRedYMeYcw_xiAQm2O21_f0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "598125194642-p00kmjqh2scvttccjc81g9hrg576k5cm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

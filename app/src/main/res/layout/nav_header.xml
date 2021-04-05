@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@color/formColorWhite"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/abp_logo"
+                    android:padding="12dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/cirle_img"
+                    />
+                <LinearLayout
+                    android:paddingLeft="10dp"
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+                    <TextView
+                        android:paddingTop="10dp"
+                        android:layout_weight="0.3"
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/selamat_datang"
+                        android:textSize="12sp"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/tvUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/pt_alamjaya_bara_pratama"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp" />" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+<View
+    android:background="#333"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"/>
+    </LinearLayout>
+
+</LinearLayout>

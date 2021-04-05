@@ -1,0 +1,315 @@
+<androidx.cardview.widget.CardView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/cvSarpras"
+app:cardElevation="16dp"
+app:cardCornerRadius="4dp"
+android:layout_margin="10dp"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/lnSaranaList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:text="@string/pemohon"/>
+        <TextView
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:id="@+id/tvpemohon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:text="Agus Subandrio"/>
+        <TextView
+            android:background="@drawable/info_sarpras"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/status"
+            android:text="Waiting"
+            android:textSize="8sp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tanggal : 30 May 2020 Jam Keluar : 08:45:00"
+        android:gravity="right"
+        android:padding="8dp"
+        android:textStyle="bold"
+        android:id="@+id/tv_tgl"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:text="NO : "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="1"
+            android:textStyle="bold"
+            android:id="@+id/txtNoAntri"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/txtNoLV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:text="NO LV : "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="LV 009"
+            android:textStyle="bold"
+            android:id="@+id/noLV"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/txtDriver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:text="Driver : "/>
+
+        <TextView
+            android:id="@+id/driver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Agus Suyanto"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:text="Keperluan : "/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="SAMARINDA KE CV.BINTANG LESTARI PENGAMILAN TOHOR / KAPUR INVERO"
+            android:textStyle="bold"
+            android:id="@+id/keperluan"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.google.android.material.button.MaterialButton
+            android:layout_gravity="center"
+            android:id="@+id/lihatDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:text="Lihat detail"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="16sp" />
+        <View
+            android:id="@+id/vDownload"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"/>
+        <com.google.android.material.button.MaterialButton
+            android:layout_gravity="center"
+            android:id="@+id/btnDoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/colorPrimaryDark"
+            android:backgroundTint="@color/white"
+            android:text="Download Document"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAllCaps="false"
+            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:id="@+id/vUser"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+
+    <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/lnAppr"
+        android:padding="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnApprove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:text="Approve"
+                    android:textColor="@color/white"
+                    android:textSize="8sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_margin="5dp"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:backgroundTint="@color/red_smooth"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    android:id="@+id/btnCancel"
+                    android:text="Cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <View
+        android:visibility="visible"
+        android:id="@+id/v_appr"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+
+    <LinearLayout
+        android:id="@+id/lnCancelUser"
+        android:paddingBottom="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_margin="5dp"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/red_smooth"
+                    android:textSize="8sp"
+                    android:id="@+id/CancelUser"
+                    android:text="Cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:id="@+id/lnCancelRemark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:paddingBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel Remark"/>
+        <TextView
+            android:textColor="@color/red_smooth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelRemark"
+            android:text="jahdksa"/>
+    </LinearLayout>
+</LinearLayout>
+</androidx.cardview.widget.CardView>

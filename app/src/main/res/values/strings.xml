@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Abp Energy</string>
+    <string name="pref_key">com.misit.abapenergy</string>
+    <string name="pt_alamjaya_bara_pratama">PT. Alamjaya Bara Pratama</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_ucword">Log In</string>
+    <string name="CopyRights">©2018 - MISIT</string>
+    <string name="SiteLocation">Jembayan</string>
+    <string name="produksi">Monitoring Produksi PT. ABP</string>
+    <string name="ob">OB</string>
+    <string name="hauling">Hauling</string>
+    <string name="crusher">Crushing</string>
+    <string name="barging">Barging</string>
+    <string name="delay">Delay</string>
+    <string name="ach">ACH</string>
+    <string name="monthly">Monthly</string>
+    <string name="daily">Daily</string>
+    <string name="rkb">Rencana Kebutuhan Barang</string>
+    <string name="total">Total</string>
+    <string name="waiting">Waiting</string>
+    <string name="approve">Approve</string>
+    <string name="cancel">Cancel</string>
+    <string name="signout">SignOut</string>
+    <string name="search">Search</string>
+    <string name="more">More</string>
+    <string name="new_rkb">New RKB</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login_v2">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="home">Home</string>
+    <string name="inbox">Inbox</string>
+    <string name="sent">Sent</string>
+    <string name="sarpras">Surat Keluar - Masuk Sarana</string>
+    <string name="stok_barang">Stok Barang</string>
+    <string name="inventory">Inventory</string>
+    <string name="section_format">Hello : %1$d</string>
+    <string name="selamat_datang">Selamat Datang</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="remarks">Remarks</string>
+    <string name="sarana_prasarana"><![CDATA[Sarana dan Prasarana]]></string>
+    <string name="pemohon">Pemohon :</string>
+    <string name="safety_heath_safety_environment"><![CDATA[Safety - Heath , Safety & Environment]]></string>
+    <string name="sarana_prasarana_approve"><![CDATA[Sarana dan Prasarana Approve Kabag]]></string>
+    <string name="inpeksi_hazard"><![CDATA[Inspeksi & Hazard Report]]></string>
+</resources>

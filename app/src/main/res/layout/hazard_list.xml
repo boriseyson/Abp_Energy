@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="15dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="10dp"
+    android:id="@+id/cvHazard"
+    android:orientation="vertical">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!--    TXT Tanggal-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/bgCancel"
+        android:weightSum="2">
+<!--        TV Jam Hazard-->
+        <TextView
+            android:id="@+id/tvJamHazard"
+            android:layout_margin="5dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="16:00:00"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"/>
+<!--        TV Jam Hazard-->
+<!--        TV Tanggal Hazard-->
+        <TextView
+            android:id="@+id/tvTglHazard"
+            android:layout_margin="5dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="01 January 2021"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"/>
+        <!--        TV Tanggal Hazard-->
+    </LinearLayout>
+<!--    TXT Tanggal-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+    <!--    Data Temuan-->
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <!--    Perusahaan-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Perusahaan"/>
+<!--            Tv Perusahaan-->
+            <TextView
+                android:id="@+id/tvPerusahaan"
+                android:padding="5dp"
+                android:textSize="17sp"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PT ABP"/>
+<!--            Tv Perusahaan-->
+        </LinearLayout>
+        <!--    Perusahaan-->
+        <!--    Lokasi-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lokasi"/>
+<!--            Tv Lokasi-->
+            <TextView
+                android:id="@+id/tvLokasi"
+                android:padding="5dp"
+                android:textSize="17sp"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jalan Hauling"/>
+        </LinearLayout>
+<!--        Tv Lokasi-->
+        <!--    Lokasi-->
+    </LinearLayout>
+    <!--    Data Temuan-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimaryDark"/>
+    <!--    Bahaya-->
+    <TextView
+        android:background="@color/bgCancel"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deskripsi Bahaya"/>
+<!--TV Deskripsi-->
+    <TextView
+        android:id="@+id/tvDeskripsi"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Terdapat genangan air dari kolam yang penuh lumpur,
+        air melimpas ke badan jalan hauling"
+        />
+<!--    TV Deskripsi-->
+    <!--    Bahaya-->
+<!--    Status-->
+<!--    OPEN-->
+    <TextView
+        android:id="@+id/tvOpen"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_cancel"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status : Open"
+        />
+<!--    OPEN-->
+<!--    CLOSE-->
+    <TextView
+        android:id="@+id/tvClose"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_success"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status : Close"
+        />
+<!--    CLOSE-->
+<!--    PROGRESS-->
+    <TextView
+        android:id="@+id/tvProgress"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_total"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status : Progress"
+        />
+<!--    PROGRESS-->
+<!--    CONTINUE-->
+    <TextView
+        android:id="@+id/tvContinue"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_waiting"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status : Continue"
+        />
+<!--    CONTINUE-->
+<!--    Status-->
+</LinearLayout>
+</androidx.cardview.widget.CardView>
