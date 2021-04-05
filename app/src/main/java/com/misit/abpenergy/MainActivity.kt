@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
@@ -21,12 +20,11 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Model.KaryawanModel
 import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
-import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
-import es.dmoral.toasty.Toasty
 import io.realm.Realm
 import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*

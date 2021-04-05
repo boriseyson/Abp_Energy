@@ -1,4 +1,4 @@
-package com.misit.abpenergy
+package com.misit.abpenergy.Login
 
 import android.content.Context
 import android.content.Intent
@@ -18,6 +18,8 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.IndexActivity
+import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Rkb.Response.UserResponse
 import com.misit.abpenergy.Utils.PopupUtil
@@ -61,7 +63,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
     }
 
     override fun onClick(v: View?) {
-        if(v?.id==R.id.loginBtn){
+        if(v?.id== R.id.loginBtn){
             if(isValidatedAll()){
                 loginSubmit(InUsername.text.toString().trim(),InPassword.text.toString().trim())
             }
@@ -125,7 +127,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
      }
     fun loginSubmit(userIn:String,passIn:String){
         PopupUtil.showLoading(this@LoginActivity,"Logging In","Please Wait")
-        var intent = Intent(this,IndexActivity::class.java)
+        var intent = Intent(this, IndexActivity::class.java)
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.loginChecklogin(
                 userIn,

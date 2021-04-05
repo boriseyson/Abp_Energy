@@ -24,7 +24,7 @@ import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.HazardReportActivity
 import com.misit.abpenergy.HazardReport.NewHazardActivity
-import com.misit.abpenergy.HazardReport.SumberBahayaActivity
+import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Monitoring_Produksi.ProductionActivity
 import com.misit.abpenergy.Monitoring_Produksi.StockActivity
 import com.misit.abpenergy.Response.GetUserResponse
@@ -237,7 +237,7 @@ class IndexActivity : AppCompatActivity(),
                         "IS_LOGGED_IN",false)
                     PrefsUtil.getInstance().setStringState(
                         PrefsUtil.USER_NAME,null)
-                    val intent = Intent(this,LoginActivity::class.java)
+                    val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
                 }

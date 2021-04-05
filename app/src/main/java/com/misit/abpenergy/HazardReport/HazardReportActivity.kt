@@ -15,9 +15,8 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Adapter.ListHazardReportAdapter
 import com.misit.abpenergy.HazardReport.Response.DataItem
 import com.misit.abpenergy.HazardReport.Response.ListHazard
-import com.misit.abpenergy.LoginActivity
+import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.SarprasActivity
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
