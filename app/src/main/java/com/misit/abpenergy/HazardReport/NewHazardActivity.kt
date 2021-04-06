@@ -30,6 +30,7 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
+import com.misit.abpenergy.Utils.ConfigUtil.resultIntent
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
@@ -113,7 +114,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
         if(v!!.id==R.id.btnOpenCamera){
             openCamera()
-
         }
         if(v!!.id==R.id.btnOpenGalery){
             openGalleryForImage()
@@ -378,9 +378,7 @@ private fun openGalleryForImage() {
             if(sResponse!=null){
                 if(sResponse.success!!){
                     Toasty.success(this@NewHazardActivity,"Hazard Report Telah Dibuat! ").show()
-                    val intent: Intent = Intent()
-                    setResult(Activity.RESULT_OK,intent)
-                    finish()
+                    resultIntent(this@NewHazardActivity)
                     PopupUtil.dismissDialog()
                 }else{
                     Toasty.error(this@NewHazardActivity,"Gagal Membuat Hazard Report! ").show()

@@ -897,15 +897,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:textAllCaps="false"
                     android:id="@+id/logOut"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/log_out"
                     android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
                     android:padding="10dp"
-                    android:text="LogOut" />
+                    android:text="Log Out" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>

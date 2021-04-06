@@ -1,5 +1,6 @@
 package com.misit.abpenergy.Login
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -22,6 +23,7 @@ import com.misit.abpenergy.IndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Rkb.Response.UserResponse
+import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
@@ -42,10 +44,8 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         setContentView(R.layout.activity_login)
 
         PrefsUtil.initInstance(this)
-        val window: Window = this@LoginActivity.window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.statusBarColor = ContextCompat.getColor(this@LoginActivity, R.color.skyBlue)
+        ConfigUtil.changeColor(this)
+
         loginBtn.setOnClickListener(this)
         InPassword.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -61,8 +61,26 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
             false
         })
         tvLpSandi.setOnClickListener(this)
+        btnNewUser.setOnClickListener(this)
     }
 
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+         if(resultCode==Activity.RESULT_OK && requestCode==10){
+             registerUser()
+         }
+         super.onActivityResult(requestCode, resultCode, data)
+     }
+     private fun registerUser(){
+         var intent = Intent(this@LoginActivity,RegisterActivity::class.java)
+         startActivityForResult(intent,11)
+     }
+     private fun forgotPasswd(){
+         var intent = Intent(this@LoginActivity,ForgotPasswordActivity::class.java)
+         if(InUsername.text!=null){
+             intent.putExtra(ForgotPasswordActivity.USERNAME,InUsername.text)
+         }
+         startActivityForResult(intent,10)
+     }
     override fun onClick(v: View?) {
         if(v?.id== R.id.loginBtn){
             if(isValidatedAll()){
@@ -70,11 +88,10 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
             }
         }
         if(v?.id==R.id.tvLpSandi){
-            var intent = Intent(this@LoginActivity,ForgotPasswordActivity::class.java)
-            if(InUsername.text!=null){
-                intent.putExtra(ForgotPasswordActivity.USERNAME,InUsername.text)
-            }
-            startActivity(intent)
+            forgotPasswd()
+        }
+        if(v?.id==R.id.btnNewUser){
+            registerUser()
         }
     }
     override fun onResume() {

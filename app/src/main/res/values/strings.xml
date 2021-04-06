@@ -4,7 +4,7 @@
     <string name="pt_alamjaya_bara_pratama">PT. Alamjaya Bara Pratama</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
-    <string name="password">Password</string>
+    <string name="password">Kata Sandi</string>
     <string name="login_ucword">Log In</string>
     <string name="CopyRights">©2018 - MISIT</string>
     <string name="SiteLocation">Jembayan</string>
@@ -67,4 +67,9 @@
     <string name="safety_heath_safety_environment"><![CDATA[Safety - Heath , Safety & Environment]]></string>
     <string name="sarana_prasarana_approve"><![CDATA[Sarana dan Prasarana Approve Kabag]]></string>
     <string name="inpeksi_hazard"><![CDATA[Inspeksi & Hazard Report]]></string>
+    <string name="nomor_induk_karyawan">Nomor Induk Karyawan</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="departemen">Departemen</string>
+    <string name="devisi">Devisi</string>
+    <string name="email_address">Email Address</string>
 </resources>

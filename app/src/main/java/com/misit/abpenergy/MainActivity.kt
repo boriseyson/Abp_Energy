@@ -24,6 +24,7 @@ import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Model.KaryawanModel
 import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
+import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import io.realm.Realm
 import io.realm.Sort
@@ -42,10 +43,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val window: Window = this@MainActivity.window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.skyBlue)
+        ConfigUtil.changeColor(this)
+
         Realm.init(this)
         versionApp()
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)

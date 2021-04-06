@@ -19,8 +19,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login.RegisterActivity"></activity>
-        <activity android:name=".Login.ForgotPasswordActivity" />
+        <activity android:name=".Login.SectionActivity"></activity>
+        <activity
+            android:name=".Login.RegisterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar" />
+        <activity
+            android:name=".Login.ForgotPasswordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar" />
 
         <uses-library
             android:name="org.apache.http.legacy"
