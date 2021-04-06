@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class SectionResponse(
 
 	@field:SerializedName("section")
-	var section: List<SectionItem?>? = null
+	var section: List<SectionItem>? = null
 )
 
 data class SectionItem(
@@ -24,6 +24,9 @@ data class SectionItem(
 
 	@field:SerializedName("timelog")
 	var timelog: String? = null,
+
+	@field:SerializedName("dept")
+	var dept: String? = null,
 
 	@field:SerializedName("inc")
 	var inc: Int? = null

@@ -70,10 +70,12 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
          }
          super.onActivityResult(requestCode, resultCode, data)
      }
+
      private fun registerUser(){
          var intent = Intent(this@LoginActivity,RegisterActivity::class.java)
          startActivityForResult(intent,11)
      }
+
      private fun forgotPasswd(){
          var intent = Intent(this@LoginActivity,ForgotPasswordActivity::class.java)
          if(InUsername.text!=null){
@@ -81,6 +83,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
          }
          startActivityForResult(intent,10)
      }
+
     override fun onClick(v: View?) {
         if(v?.id== R.id.loginBtn){
             if(isValidatedAll()){
@@ -94,6 +97,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
             registerUser()
         }
     }
+
     override fun onResume() {
         if(cekKoneksi(this)){
             getToken()
@@ -106,6 +110,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
 
         super.onResume()
     }
+
     fun versionApp(){
         Use@ try {
             val pInfo: PackageInfo = this.getPackageManager().getPackageInfo(packageName, 0)
@@ -121,6 +126,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
 
         return networkInfo != null && networkInfo.isConnected
     }
+
     private fun getToken() {
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getToken("csrf_token")

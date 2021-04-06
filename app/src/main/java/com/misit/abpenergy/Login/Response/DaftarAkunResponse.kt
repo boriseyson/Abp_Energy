@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Login.Responseimport com.google.gson.annotations.SerializedNamedata class DaftarAkunResponse (    @field:SerializedName("dataUser")    var success: Boolean = false)

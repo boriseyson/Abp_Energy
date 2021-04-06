@@ -4,6 +4,7 @@ import com.misit.abpenergy.HazardReport.Response.DataItem
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.HazardReport.Response.ListHazard
 import com.misit.abpenergy.HazardReport.Response.SumberBahayaResponse
+import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
 import com.misit.abpenergy.Login.Response.SectionItem
 import com.misit.abpenergy.Login.Response.SectionResponse
@@ -95,6 +96,7 @@ interface ApiEndPoint{
     fun getSarprasUser(@Query("nik") nik:String?,
                        @Query("page") page:Int)
             : Call<UserSarprasResponse>?
+
     @GET("/sarpras/android/get/sarana")
     fun getAllSarana()
             : Call<ListSaranaResponse>?
@@ -185,8 +187,22 @@ interface ApiEndPoint{
     @GET("/android/api/user/check/data")
     fun getDataForNewUser(@Query("nik") nik:String)
             : Call<DataUserResponse>?
+
     @GET("/android/api/check/section/dept")
     fun checkSection(@Query("idDept") idDept:String)
             : Call<SectionResponse>?
+
+    @FormUrlEncoded
+    @POST("/android/api/daftar/akun/baru")
+    fun daftarkanAkun(@Field("nik") nik:String,
+                      @Field("username") username:String,
+                      @Field("password") password:String,
+                      @Field("nama") nama:String,
+                      @Field("email") email:String,
+                      @Field("departemen") departemen:String,
+                      @Field("devisi") devisi:String,
+                      @Field("_token") csrf_token:String
+    )
+            : Call<DaftarAkunResponse>?
 
 }
