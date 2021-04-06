@@ -5,6 +5,8 @@ import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.HazardReport.Response.ListHazard
 import com.misit.abpenergy.HazardReport.Response.SumberBahayaResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
+import com.misit.abpenergy.Login.Response.SectionItem
+import com.misit.abpenergy.Login.Response.SectionResponse
 import com.misit.abpenergy.Monitoring_Produksi.Response.ProduksiResponse
 import com.misit.abpenergy.Monitoring_Produksi.Response.StockResponse
 import com.misit.abpenergy.Response.AbpResponse
@@ -183,5 +185,8 @@ interface ApiEndPoint{
     @GET("/android/api/user/check/data")
     fun getDataForNewUser(@Query("nik") nik:String)
             : Call<DataUserResponse>?
+    @GET("/android/api/check/section/dept")
+    fun checkSection(@Query("idDept") idDept:String)
+            : Call<SectionResponse>?
 
 }
