@@ -194,14 +194,14 @@ interface ApiEndPoint{
 
     @FormUrlEncoded
     @POST("/android/api/daftar/akun/baru")
-    fun daftarkanAkun(@Field("nik") nik:String,
-                      @Field("username") username:String,
-                      @Field("password") password:String,
-                      @Field("nama") nama:String,
-                      @Field("email") email:String,
-                      @Field("departemen") departemen:String,
-                      @Field("devisi") devisi:String,
-                      @Field("_token") csrf_token:String
+    fun daftarkanAkun(@Field("nik") nik:String?,
+                      @Field("username") username:String?,
+                      @Field("password") password:String?,
+                      @Field("nama") nama:String?,
+                      @Field("email") email:String?,
+                      @Field("departemen") departemen:String?,
+                      @Field("devisi") devisi:String?,
+                      @Field("_token") csrf_token:String?
     )
             : Call<DaftarAkunResponse>?
 
