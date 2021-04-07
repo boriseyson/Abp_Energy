@@ -152,7 +152,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2 DESKRIPSI BAHAYA"
+                    android:text="2.  DESKRIPSI BAHAYA"
                     android:background="@color/successColor"
                     android:textColor="@color/white"
                     android:textStyle="bold"

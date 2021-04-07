@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HazardReport.DetailHazardActivity">
+
     <ScrollView
+        android:id="@+id/hazardScrl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="#C1C3C9"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,6 +28,7 @@
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -31,136 +38,147 @@
                     android:paddingTop="5dp"
                     android:paddingRight="5dp"
                     android:paddingBottom="5dp">
+
                     <ImageView
-                        android:layout_margin="10dp"
                         android:id="@+id/imgView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scaleType="fitCenter"
+                        android:layout_margin="10dp"
                         android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/ic_insert_photo_black_24dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!--        Insert Photo-->
             <!--Data Temuan-->
             <TextView
-                android:background="@color/successColor"
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/successColor"
+                android:padding="10dp"
                 android:text="1. Data Temuan"
-                android:padding="10dp"/>
+                android:textColor="@color/white"
+                android:textStyle="bold" />
             <!--Data Temuan-->
             <androidx.cardview.widget.CardView
-                android:visibility="visible"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="10dp"
-                >
+                app:cardElevation="10dp">
                 <!--    TEMUAN VIEW-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="10dp"
-                    >
+                    android:padding="10dp">
                     <!--    Perusahaan-->
                     <LinearLayout
-                        android:paddingBottom="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingBottom="10dp"
                         android:weightSum="2">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:text="Perusahaan"/>
+                            android:text="Perusahaan" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.05"
-                            android:text=":"/>
+                            android:text=":" />
+
                         <TextView
+                            android:id="@+id/tvPerusahaanD"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.45"
-                            android:id="@+id/tvPerusahaanD"/>
+                            android:layout_weight="1.45" />
                     </LinearLayout>
                     <!--    Perusahaan-->
                     <!--    Tanggal-->
                     <LinearLayout
-                        android:paddingBottom="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingBottom="10dp"
                         android:weightSum="2">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:text="Tanggal"/>
+                            android:text="Tanggal" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.05"
-                            android:text=":"/>
+                            android:text=":" />
+
                         <TextView
+                            android:id="@+id/tvTanggalD"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.45"
-                            android:id="@+id/tvTanggalD"/>
+                            android:layout_weight="1.45" />
                     </LinearLayout>
                     <!--    Tanggal-->
                     <!--    Jam-->
                     <LinearLayout
-                        android:paddingBottom="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingBottom="10dp"
                         android:weightSum="2">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:text="Jam"/>
+                            android:text="Jam" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.05"
-                            android:text=":"/>
+                            android:text=":" />
+
                         <TextView
+                            android:id="@+id/tvJamD"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.45"
-                            android:id="@+id/tvJamD"/>
+                            android:layout_weight="1.45" />
                     </LinearLayout>
                     <!--    Jam-->
                     <!--    Lokasi-->
                     <LinearLayout
-                        android:paddingBottom="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingBottom="10dp"
                         android:weightSum="2">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:text="Lokasi"/>
+                            android:text="Lokasi" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.05"
-                            android:text=":"/>
+                            android:text=":" />
+
                         <TextView
+                            android:id="@+id/tvLokasiD"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.45"
-                            android:id="@+id/tvLokasiD"/>
+                            android:layout_weight="1.45" />
                     </LinearLayout>
                     <!--    Lokasi-->
                 </LinearLayout>
@@ -169,69 +187,72 @@
 
             <!--    BAHAYA VIEW-->
             <LinearLayout
-                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
                 <!--    Deskripsi Bahaya-->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2 DESKRIPSI BAHAYA"
                     android:background="@color/successColor"
+                    android:padding="10dp"
+                    android:text="2. DESKRIPSI BAHAYA"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:padding="10dp"/>
+                    android:textStyle="bold" />
                 <!--    Deskripsi Bahaya-->
                 <!--    Bahaya-->
                 <androidx.cardview.widget.CardView
-                    android:visibility="visible"
-                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="10dp"
-                    >
+                    app:cardElevation="10dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <TextView
+                            android:id="@+id/tvBahayaD"
                             android:layout_width="match_parent"
-                            android:padding="10dp"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tvBahayaD"/>
-                    </LinearLayout></androidx.cardview.widget.CardView>
+                            android:padding="10dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
                 <!--    Bahaya-->
                 <!--    SUMBER BAHAYA-->
                 <TextView
-                    android:background="@color/colorPrimaryDark"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SUMBER BAHAYA"/>
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="10dp"
+                    android:text="SUMBER BAHAYA"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
                 <!--        PILIHAN-->
                 <androidx.cardview.widget.CardView
-                    android:visibility="visible"
-                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="10dp"
-                    >
+                    app:cardElevation="10dp">
+
                     <LinearLayout
-                        android:padding="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
                         <TextView
-                            android:gravity="center_horizontal"
+                            android:id="@+id/tvSumberBahayaD"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tvSumberBahayaD"/>
+                            android:gravity="center_horizontal" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <!--        PILIHAN-->
@@ -239,66 +260,65 @@
             </LinearLayout>
             <!--Kategori Bahaya-->
             <TextView
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="3. KATEGORI BAHAYA"
-                android:textStyle="bold"
                 android:background="@color/successColor"
-                android:textColor="@color/white"/>
+                android:padding="10dp"
+                android:text="3. KATEGORI BAHAYA"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
             <!--        Kategori Bahaya-->
             <androidx.cardview.widget.CardView
-                android:visibility="visible"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="10dp"
-                >
+                app:cardElevation="10dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="10dp"
-                    >
+                    android:padding="10dp">
                     <!--        PILIHAN KATEGORI-->
                     <TextView
                         android:id="@+id/tvKatBahayaD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text=""/>
+                        android:text="" />
                     <!--        PILIHAN KATEGORI-->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-           <!--        Tindakan Perbaikan-->
+            <!--        Tindakan Perbaikan-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textStyle="bold"
                 android:background="@color/successColor"
+                android:padding="10dp"
+                android:text="4. TINDAKAN YANG DILAKUKAN UNTUK PERBAIKAN"
                 android:textColor="@color/white"
-                android:text="4. TINDAKAN YANG DILAKUKAN UNTUK PERBAIKAN"/>
+                android:textStyle="bold" />
+
             <androidx.cardview.widget.CardView
-                android:visibility="visible"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
-                >
+                app:cardElevation="10dp">
+
                 <LinearLayout
-                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="10dp">
                     <!--    TXT PERBAIKAN-->
                     <TextView
+                        android:id="@+id/tvPerbaikanD"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Tindakan Perbaikan :"
-                        android:id="@+id/tvPerbaikanD"/>
+                        android:layout_height="wrap_content" />
                     <!--    TXT PERBAIKAN-->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -307,126 +327,152 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                android:padding="10dp"
                 android:gravity="center_horizontal"
+                android:padding="10dp"
                 android:text="STATUS PERBAIKAN"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
-                android:visibility="visible"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
-                >
+                app:cardElevation="10dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:padding="10dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="10dp">
                     <!--        STATUS PERBAIKAN-->
                     <!--        Pilihan-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="2"
-                    android:padding="10dp">
-                    <TextView
-                        android:layout_weight="0.7"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Status Perbaikan"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.05"
-                        android:text=":"/>
-                    <TextView
-                        android:layout_weight="1.25"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Status Perbaikan"
-                        android:id="@+id/tvStatusPerbaikanD"/>
-                </LinearLayout>
+                        android:padding="10dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:text="Status Perbaikan" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/tvStatusPerbaikanD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.25" />
+                    </LinearLayout>
                     <!--        Pilihan-->
                     <!--        STATUS PERBAIKAN-->
                     <!--Tanggal Selesai-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="2"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:weightSum="2">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
-                            android:text="Tanggal Selesai"/>
+                            android:text="Tanggal Selesai" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.05"
-                            android:text=":"/>
+                            android:text=":" />
+
                         <TextView
                             android:id="@+id/tvTGLSelesaiD"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.25"
-                            android:text="Tanggal Selesai"/>
+                            android:layout_weight="1.25" />
                     </LinearLayout>
                     <!--Tanggal Selesai-->
                     <!--Jam Selesai-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="2"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:weightSum="2">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
-                            android:text="Jam Selesai"/>
+                            android:text="Jam Selesai" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.05"
-                            android:text=":"/>
+                            android:text=":" />
+
                         <TextView
+                            android:id="@+id/tvJamSelesaiD"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.25"
-                            android:id="@+id/tvJamSelesaiD"
-                            android:text="Jam Selesai"/>
+                            android:layout_weight="1.25" />
                     </LinearLayout>
                     <!--Jam Selesai-->
                     <!--        Penanggung Jawab-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="2"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:weightSum="2">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
-                            android:text="Penanggung Jawab"/>
+                            android:text="Penanggung Jawab" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.05"
-                            android:text=":"/>
+                            android:text=":" />
+
                         <TextView
+                            android:id="@+id/tvPenanggungJawabD"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.25"
-                            android:id="@+id/tvPenanggungJawabD"
-                            android:text="Penanggung Jawab"/>
+                            android:layout_weight="1.25" />
                     </LinearLayout>
                     <!--Penanggung Jawab-->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            <!--            AKSI-->
             <!--    BAHAYA VIEW-->
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/floatingNewHazard"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/successColor"
+        app:borderWidth="0dp"
+        android:textStyle="normal"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:text="Update Status Hazard"
+        android:drawableTint="@color/white"
+        android:drawableLeft="@drawable/ic_outline_fact_check_24"
+        app:layout_constraintBottom_toBottomOf="@id/hazardScrl"
+        app:layout_constraintEnd_toEndOf="@id/hazardScrl" />
+</androidx.constraintlayout.widget.ConstraintLayout>
