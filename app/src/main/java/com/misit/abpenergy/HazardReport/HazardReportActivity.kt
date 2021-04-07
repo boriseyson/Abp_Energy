@@ -148,7 +148,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                     swipeRefreshLayout.isRefreshing=false
 
             }
-
         })
     }
     companion object{
