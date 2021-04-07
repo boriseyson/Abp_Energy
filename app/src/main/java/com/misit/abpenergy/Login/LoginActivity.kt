@@ -9,11 +9,8 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
@@ -67,6 +64,12 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
          if(resultCode==Activity.RESULT_OK && requestCode==10){
              registerUser()
+         }
+         if(resultCode==Activity.RESULT_OK && requestCode==11){
+             if(data!=null){
+                 var user = data.getStringExtra("RegUser")
+                 InUsername.setText(user)
+             }
          }
          super.onActivityResult(requestCode, resultCode, data)
      }

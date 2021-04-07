@@ -3,12 +3,10 @@ package com.misit.abpenergy.HazardReport
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
@@ -35,6 +33,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     private var visibleItem : Int=0
     private var total : Int=0
     private var pastVisibleItem : Int=0
+    private var loading : Boolean=false
+    var curentPosition: Int=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,13 +64,12 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         swipeRefreshLayout = findViewById(R.id.pullRefreshHazard)
         swipeRefreshLayout.setOnRefreshListener(object :SwipeRefreshLayout.OnRefreshListener{
             override fun onRefresh() {
-                rvSarpras.adapter = adapter
+                rvHazardList.adapter = adapter
                 page=1
                 hazardList?.clear()
                 load(page.toString())
 //                swipeRefreshLayout.isRefreshing=false
                 //PopupUtil.dismissDialog()
-
             }
         })
         floatingNewHazard.setOnClickListener {
@@ -96,12 +95,14 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         onBackPressed()
         return super.onSupportNavigateUp()
     }
-    fun load(page:String){
+    fun load(hal:String){
+        swipeRefreshLayout.isRefreshing=true
         PopupUtil.showProgress(this@HazardReportActivity,"Loading...","Membuat Hazard Report!")
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
-        val call = apiEndPoint.getListHazard(USERNAME,page)
+        val call = apiEndPoint.getListHazard(USERNAME,hal)
         call?.enqueue(object : Callback<ListHazard> {
             override fun onFailure(call: Call<ListHazard>, t: Throwable) {
+                swipeRefreshLayout.isRefreshing=false
                 Toasty.error(this@HazardReportActivity,"Error : $t", Toasty.LENGTH_SHORT).show()
                 PopupUtil.dismissDialog()
             }
@@ -110,11 +111,42 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 var listHazard = response.body()
                 if(listHazard!=null){
                     if (listHazard.data!=null){
+                        loading=true
                         hazardList!!.addAll(listHazard.data!!)
                         adapter?.notifyDataSetChanged()
+                    }else{
+                        curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+
                     }
                 }
-                PopupUtil.dismissDialog()
+                rvHazardList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+
+                        if (dy > 0) {
+                            visibleItem = recyclerView.layoutManager!!.childCount
+                            total = recyclerView.layoutManager!!.itemCount
+                            pastVisibleItem =
+                                (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                            if (loading) {
+                                if ((visibleItem + pastVisibleItem) >= total) {
+                                    loading = false
+                                    page++
+                                    load(hal)
+                                }
+                            }
+                        }
+                    }
+                    override fun onScrollStateChanged(
+                        recyclerView: RecyclerView,
+                        newState: Int
+                    ) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                    }
+                })
+
+                    PopupUtil.dismissDialog()
+                    swipeRefreshLayout.isRefreshing=false
+
             }
 
         })
