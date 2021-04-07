@@ -458,21 +458,31 @@
             <!--    BAHAYA VIEW-->
         </LinearLayout>
     </ScrollView>
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/floatingNewHazard"
-        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/btnFLMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/successColor"
-        app:borderWidth="0dp"
-        android:textStyle="normal"
-        android:textColor="@color/white"
-        android:textAllCaps="false"
-        android:text="Update Status Hazard"
-        android:drawableTint="@color/white"
-        android:drawableLeft="@drawable/ic_outline_fact_check_24"
-        app:layout_constraintBottom_toBottomOf="@id/hazardScrl"
-        app:layout_constraintEnd_toEndOf="@id/hazardScrl" />
+        app:fab_addButtonColorNormal="@color/successColor"
+        app:fab_addButtonColorPressed="@color/successColor"
+        app:fab_addButtonPlusIconColor="@color/white"
+        app:fab_expandDirection="up"
+        app:fab_addButtonSize="mini"
+        app:fab_labelStyle="@style/LabelStyle"
+        app:fab_labelsPosition="left"
+        app:layout_constraintBottom_toBottomOf="@+id/hazardScrl"
+        app:layout_constraintEnd_toEndOf="@+id/hazardScrl">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingNewHazard"
+            app:fab_size="mini"
+            app:fabSize="mini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/successColor"
+            app:fab_colorPressed="@color/successColor"
+            app:fab_icon="@drawable/ic_outline_fact_check_24"
+            app:fab_title="Update Status" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </androidx.constraintlayout.widget.ConstraintLayout>
