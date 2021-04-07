@@ -38,7 +38,7 @@
 
 
     <style name="LabelStyle">
-        <item name="android:background">@drawable/bg_label</item>
+        <item name="android:background">@drawable/bg_green_floating_label</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
 </resources>
