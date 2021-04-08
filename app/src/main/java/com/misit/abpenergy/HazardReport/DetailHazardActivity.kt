@@ -1,5 +1,6 @@
 package com.misit.abpenergy.HazardReport
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,7 +29,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailHazardActivity : AppCompatActivity() {
+class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
 
     private var uid:String?=null
 
@@ -47,6 +48,26 @@ class DetailHazardActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         uid = intent.getStringExtra(UID)
         loadDetail(uid.toString())
+        floatUpdateDenganGambar.setOnClickListener(this)
+        floatUpdateStatus.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        if(v?.id==R.id.floatUpdateDenganGambar){
+            var intent = Intent(this@DetailHazardActivity,UpdateHazardActivity::class.java)
+            intent.putExtra(UpdateHazardActivity.UID,uid)
+            startActivityForResult(intent,13)
+        }
+        if(v?.id==R.id.floatUpdateStatus){
+            var intent = Intent(this@DetailHazardActivity,UpdateHazardActivity::class.java)
+            intent.putExtra(UpdateHazardActivity.UID,uid)
+            startActivityForResult(intent,14)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -105,4 +126,5 @@ class DetailHazardActivity : AppCompatActivity() {
     companion object{
         var UID = "UID"
     }
+
 }

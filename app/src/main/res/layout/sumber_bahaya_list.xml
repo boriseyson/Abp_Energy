@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
-    <Button
-        android:background="@color/white"
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:backgroundTint="@color/white"
         android:padding="10dp"
         android:textColor="#000000"
-        android:textStyle="bold"
         android:gravity="center"
         android:id="@+id/rbSumberBahaya"
         android:layout_width="match_parent"

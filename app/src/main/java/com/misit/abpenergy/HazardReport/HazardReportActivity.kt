@@ -97,7 +97,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     }
     fun load(hal:String){
         swipeRefreshLayout.isRefreshing=true
-        PopupUtil.showProgress(this@HazardReportActivity,"Loading...","Membuat Hazard Report!")
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getListHazard(USERNAME,hal)
         call?.enqueue(object : Callback<ListHazard> {
@@ -111,12 +110,14 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 var listHazard = response.body()
                 if(listHazard!=null){
                     if (listHazard.data!=null){
+                        PopupUtil.showProgress(this@HazardReportActivity,"Loading...","Membuat Hazard Report!")
                         loading=true
                         hazardList!!.addAll(listHazard.data!!)
                         adapter?.notifyDataSetChanged()
                     }else{
                         curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-
+                        hazardList!!.addAll(listHazard.data!!)
+                        adapter?.notifyDataSetChanged()
                     }
                 }
                 rvHazardList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -131,7 +132,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                                 if ((visibleItem + pastVisibleItem) >= total) {
                                     loading = false
                                     page++
-                                    load(hal)
+                                    load(page.toString())
                                 }
                             }
                         }
@@ -143,7 +144,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         super.onScrollStateChanged(recyclerView, newState)
                     }
                 })
-
                     PopupUtil.dismissDialog()
                     swipeRefreshLayout.isRefreshing=false
 
