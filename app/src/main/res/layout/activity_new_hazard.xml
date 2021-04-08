@@ -642,6 +642,7 @@
         app:fab_addButtonColorPressed="@color/colorPrimary"
         app:fab_addButtonPlusIconColor="@color/white"
         app:fab_expandDirection="up"
+        app:fab_addButtonSize="mini"
         app:fab_labelStyle="@style/LabelStyle"
         app:fab_labelsPosition="left"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -649,6 +650,7 @@
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnOpenCamera"
+            app:fab_size="mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/colorPrimaryDark"
@@ -657,6 +659,7 @@
             app:fab_title="Ambil Sebuah Gambar" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
+            app:fab_size="mini"
             android:id="@+id/btnOpenGalery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

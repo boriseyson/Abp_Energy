@@ -142,6 +142,7 @@ class IndexActivity : AppCompatActivity(),
         btnHazard.setOnClickListener(this)
         btnNewHazard.setOnClickListener(this)
         btnNewSarana.setOnClickListener(this)
+        content_frame.setOnClickListener(this)
     }
 
 //Get Token
@@ -373,7 +374,9 @@ class IndexActivity : AppCompatActivity(),
         if(v!!.id==R.id.btnNewHazard){
             newHazardReport()
         }
-
+        if(v?.id==R.id.content_frame){
+            btnFLMenuIndex.collapse()
+        }
 
     }
 //onClick

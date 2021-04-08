@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -30,7 +31,7 @@ class PhotoHazardActivity : AppCompatActivity(),View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_hazard)
         PrefsUtil.initInstance(this)
-
+        btnDonePick.isEnabled=false
         val window: Window = this.window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -41,25 +42,34 @@ class PhotoHazardActivity : AppCompatActivity(),View.OnClickListener {
             }
 
             override fun onEvent(p0: CameraKitEvent?) {
+
             }
 
             override fun onImage(p0: CameraKitImage?) {
-                btnDonePick.isEnabled=false
+                btnDonePick.isClickable=false
+                Log.d("CatpureImage","proses")
                 try {
+                    Log.d("CatpureImage","proses1")
+
                     var bitmap1 = p0!!.bitmap
+                    Log.d("CatpureImage","proses2")
                     bitmap = Bitmap.createScaledBitmap(bitmap1!!,cameraKit.width,cameraKit.height,false)
+                    Log.d("CatpureImage","proses3")
                     bs = ByteArrayOutputStream()
+                    Log.d("CatpureImage","proses4")
                     bitmap!!.compress(Bitmap.CompressFormat.JPEG,50,bs)
-                    if(bs!=null){
-                        btnDonePick.isEnabled=true
-                    }else{
-                        btnDonePick.isEnabled=false
-                    }
+                    Log.d("CatpureImage","proses5")
                     if(bitmap!=null){
+                        btnDonePick.isClickable=true
                         btnDonePick.isEnabled=true
+                        btnReCapture.visibility=View.VISIBLE
+                        Log.d("CatpureImage","proses8")
                     }else{
                         btnDonePick.isEnabled=false
+                        btnDonePick.isClickable=false
+                        Log.d("CatpureImage","proses9")
                     }
+                    Log.d("CatpureImage","proses10")
                     cameraKit.stop()
                 }catch (e:IOException){
                     Toasty.error(this@PhotoHazardActivity,e.printStackTrace().toString(),Toasty.LENGTH_LONG).show()
@@ -107,7 +117,6 @@ class PhotoHazardActivity : AppCompatActivity(),View.OnClickListener {
         if (v!!.id==R.id.btnCapture){
             cameraKit.captureImage()
                 btnDonePick.visibility=View.VISIBLE
-                btnReCapture.visibility=View.VISIBLE
                 btnCapture.visibility=View.GONE
                 btnFacing.visibility=View.GONE
 

@@ -3,6 +3,7 @@ package com.misit.abpenergy.HazardReport
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
@@ -78,6 +79,10 @@ class DetailHazardActivity : AppCompatActivity() {
                     if(itemHazard.tglSelesai!=null){
                         tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)
                     }else{
+                        tvStatusPerbaikan.visibility=View.GONE
+                        cvStatusPerbaikan.visibility=View.GONE
+                        imgStatus.visibility=View.GONE
+
                         tvTGLSelesaiD.text = ""
                     }
                     if(itemHazard.jamSelesai!=null){
