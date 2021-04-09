@@ -1,5 +1,6 @@
 package com.misit.abpenergy.HazardReport
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -51,23 +52,26 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
     override fun onClick(v: View?) {
         if(v?.id==R.id.floatUpdateDenganGambar){
             var intent = Intent(this@DetailHazardActivity,UpdateHazardActivity::class.java)
-            intent.putExtra(UpdateHazardActivity.UID,uid)
+            intent.putExtra("UID",uid)
             intent.putExtra("FORM_UPLOAD",true)
             startActivityForResult(intent,13)
         }
         if(v?.id==R.id.floatUpdateStatus){
             var intent = Intent(this@DetailHazardActivity,UpdateHazardActivity::class.java)
-            intent.putExtra(UpdateHazardActivity.UID,uid)
+            intent.putExtra("UID",uid)
             intent.putExtra("FORM_UPLOAD",false)
             startActivityForResult(intent,14)
         }
         if(v?.id==R.id.cvImageDetail){
 
         }
+        btnFLMenu.collapse()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+        if(resultCode==Activity.RESULT_OK){
+            loadDetail(uid!!)
+        }
         super.onActivityResult(requestCode, resultCode, data)
     }
     override fun onSupportNavigateUp(): Boolean {
@@ -99,12 +103,13 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                     tvPerbaikanD.text = itemHazard.tindakan
                     tvStatusPerbaikanD.text = itemHazard.statusPerbaikan
                     if(itemHazard.tglSelesai!=null){
+                        btnFLMenu.visibility=View.GONE
                         tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)
                     }else{
                         tvStatusPerbaikan.visibility=View.GONE
                         cvStatusPerbaikan.visibility=View.GONE
                         imgStatus.visibility=View.GONE
-
+                        btnFLMenu.visibility=View.VISIBLE
                         tvTGLSelesaiD.text = ""
                     }
                     if(itemHazard.jamSelesai!=null){

@@ -459,8 +459,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        app:fab_addButtonColorNormal="@color/successColor"
-        app:fab_addButtonColorPressed="@color/successColor"
+        app:fab_addButtonColorNormal="@color/red_smooth"
+        app:fab_addButtonColorPressed="@color/red_smooth"
         app:fab_addButtonPlusIconColor="@color/white"
         app:fab_expandDirection="up"
         app:fab_addButtonSize="mini"
@@ -473,8 +473,8 @@
             app:fab_size="mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/successColor"
-            app:fab_colorPressed="@color/successColor"
+            app:fab_colorNormal="@color/red_smooth"
+            app:fab_colorPressed="@color/red_smooth"
             app:fab_icon="@drawable/ic_outline_fact_check_24"
             app:fab_title="Update Status" />
         <com.getbase.floatingactionbutton.FloatingActionButton
@@ -482,8 +482,8 @@
             app:fab_size="mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/successColor"
-            app:fab_colorPressed="@color/successColor"
+            app:fab_colorNormal="@color/red_smooth"
+            app:fab_colorPressed="@color/red_smooth"
             app:fab_icon="@drawable/ic_outline_fact_check_24"
             app:fab_title="Update Status Dengan Gambar" />
     </com.getbase.floatingactionbutton.FloatingActionsMenu>

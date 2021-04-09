@@ -116,6 +116,7 @@
                                 android:id="@+id/tvPerusaan"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:imeOptions="actionNext"
                                 android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -210,6 +211,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tvLokasi"
+                                android:imeOptions="actionNext"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:maxLines="1" />
@@ -262,6 +264,8 @@
                             android:padding="10dp">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
                                 android:id="@+id/tvBahaya"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -417,6 +421,7 @@
                             android:id="@+id/tvPerbaikan"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:imeOptions="actionNext"
                             android:gravity="top"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -519,6 +524,7 @@
                                 android:layout_height="match_parent"
                                 android:clickable="true"
                                 android:focusable="false"
+                                android:imeOptions="actionNext"
                                 android:inputType="none"
                                 android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -580,9 +586,9 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1.5"
                             android:hint="Penanggung Jawab">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tvPenanggungJawab"
+                                android:imeOptions="actionNext"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:maxLines="1" />

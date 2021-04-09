@@ -39,6 +39,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -304,31 +305,31 @@ private fun openGalleryForImage() {
 
     PopupUtil.showProgress(this@NewHazardActivity,"Loading...","Membuat Hazard Report!")
 
-    var tvPerusaan = RequestBody.create(MultipartBody.FORM, tvPerusaan.text.toString())
-    var tvTanggal = RequestBody.create(MultipartBody.FORM, tvTanggal.text.toString())
-    var tvJam = RequestBody.create(MultipartBody.FORM, tvJam.text.toString())
-    var tvLokasi = RequestBody.create(MultipartBody.FORM, tvLokasi.text.toString())
-    var tvBahaya = RequestBody.create(MultipartBody.FORM, tvBahaya.text.toString())
-    var tvSumberBahaya = RequestBody.create(MultipartBody.FORM, tvSumberBahaya.text.toString())
-    var tvPerbaikan = RequestBody.create(MultipartBody.FORM, tvPerbaikan.text.toString())
-    var tvPenanggungJawab = RequestBody.create(MultipartBody.FORM, tvPenanggungJawab.text.toString())
+    var tvPerusaan = tvPerusaan.text.toString().toRequestBody(MultipartBody.FORM)
+    var tvTanggal = tvTanggal.text.toString().toRequestBody(MultipartBody.FORM)
+    var tvJam = tvJam.text.toString().toRequestBody(MultipartBody.FORM)
+    var tvLokasi = tvLokasi.text.toString().toRequestBody(MultipartBody.FORM)
+    var tvBahaya = tvBahaya.text.toString().toRequestBody(MultipartBody.FORM)
+    var tvSumberBahaya = tvSumberBahaya.text.toString().toRequestBody(MultipartBody.FORM)
+    var tvPerbaikan = tvPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
+    var tvPenanggungJawab = tvPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
 
         if(plKta.isChecked){
-            plKondisi = RequestBody.create(MultipartBody.FORM, plKta.text.toString())
+            plKondisi = plKta.text.toString().toRequestBody(MultipartBody.FORM)
         }else if(plTta.isChecked){
-            plKondisi = RequestBody.create(MultipartBody.FORM, plTta.text.toString())
+            plKondisi = plTta.text.toString().toRequestBody(MultipartBody.FORM)
         }
         if(rbSelesai.isChecked){
-            rbStatus= RequestBody.create(MultipartBody.FORM, rbSelesai.text.toString())
+            rbStatus= rbSelesai.text.toString().toRequestBody(MultipartBody.FORM)
         }else if(rbBelumSelesai.isChecked){
-            rbStatus= RequestBody.create(MultipartBody.FORM, rbBelumSelesai.text.toString())
+            rbStatus= rbBelumSelesai.text.toString().toRequestBody(MultipartBody.FORM)
         }else if(rbBerlanjut.isChecked){
-            rbStatus= RequestBody.create(MultipartBody.FORM, rbBerlanjut.text.toString())
+            rbStatus= rbBerlanjut.text.toString().toRequestBody(MultipartBody.FORM)
         }
-    var tvTGLselesai = RequestBody.create(MultipartBody.FORM, tvTGLSelesai.text.toString())
-    var tvJAMselesai = RequestBody.create(MultipartBody.FORM, tvJamSelesai.text.toString())
-    var username = RequestBody.create(MultipartBody.FORM, USERNAME)
-    var _token:RequestBody = RequestBody.create(MultipartBody.FORM, csrf_token!!)
+    var tvTGLselesai = tvTGLSelesai.text.toString().toRequestBody(MultipartBody.FORM)
+    var tvJAMselesai = tvJamSelesai.text.toString().toRequestBody(MultipartBody.FORM)
+    var username = USERNAME.toRequestBody(MultipartBody.FORM)
+    var _token:RequestBody = csrf_token!!.toRequestBody(MultipartBody.FORM)
 
 
 
@@ -380,6 +381,7 @@ private fun openGalleryForImage() {
                     Toasty.success(this@NewHazardActivity,"Hazard Report Telah Dibuat! ").show()
                     resultIntent(this@NewHazardActivity)
                     PopupUtil.dismissDialog()
+                    finish()
                 }else{
                     Toasty.error(this@NewHazardActivity,"Gagal Membuat Hazard Report! ").show()
                     PopupUtil.dismissDialog()
