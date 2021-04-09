@@ -20,7 +20,7 @@
             android:orientation="vertical">
             <!--        Insert Photo-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/imagePicker"
+                android:id="@+id/cvImageDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:adjustViewBounds="true"
-                        android:scaleType="fitCenter"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_insert_photo_black_24dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

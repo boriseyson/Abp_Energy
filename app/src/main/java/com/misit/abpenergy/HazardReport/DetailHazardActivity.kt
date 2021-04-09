@@ -3,25 +3,20 @@ package com.misit.abpenergy.HazardReport
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.DataItem
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.SarprasActivity
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_detail_hazard.*
-import kotlinx.android.synthetic.main.activity_sarpras.*
-import kotlinx.android.synthetic.main.detail_hazard.*
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -50,18 +45,24 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         loadDetail(uid.toString())
         floatUpdateDenganGambar.setOnClickListener(this)
         floatUpdateStatus.setOnClickListener(this)
+        cvImageDetail.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         if(v?.id==R.id.floatUpdateDenganGambar){
             var intent = Intent(this@DetailHazardActivity,UpdateHazardActivity::class.java)
             intent.putExtra(UpdateHazardActivity.UID,uid)
+            intent.putExtra("FORM_UPLOAD",true)
             startActivityForResult(intent,13)
         }
         if(v?.id==R.id.floatUpdateStatus){
             var intent = Intent(this@DetailHazardActivity,UpdateHazardActivity::class.java)
             intent.putExtra(UpdateHazardActivity.UID,uid)
+            intent.putExtra("FORM_UPLOAD",false)
             startActivityForResult(intent,14)
+        }
+        if(v?.id==R.id.cvImageDetail){
+
         }
     }
 
