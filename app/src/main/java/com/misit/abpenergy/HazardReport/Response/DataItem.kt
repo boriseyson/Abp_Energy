@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class DataItem(
 
+	@field:SerializedName("update_bukti")
+	var updateBukti: String? = null,
+
 	@field:SerializedName("status_perbaikan")
 	var statusPerbaikan: String? = null,
 

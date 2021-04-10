@@ -14,36 +14,37 @@
     android:layout_height="match_parent">
 <!--    TXT Tanggal-->
     <LinearLayout
+        android:id="@+id/lnHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/bgCancel"
+        android:orientation="horizontal"
         android:weightSum="2">
-<!--        TV Jam Hazard-->
+        <!--        TV Jam Hazard-->
         <TextView
             android:id="@+id/tvJamHazard"
-            android:layout_margin="5dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="16:00:00"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
             android:padding="10dp"
+            android:text="16:00:00"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"/>
-<!--        TV Jam Hazard-->
-<!--        TV Tanggal Hazard-->
+            android:textStyle="bold" />
+        <!--        TV Jam Hazard-->
+        <!--        TV Tanggal Hazard-->
         <TextView
             android:id="@+id/tvTglHazard"
-            android:layout_margin="5dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="01 January 2021"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
             android:padding="10dp"
+            android:text="01 January 2021"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"/>
+            android:textStyle="bold" />
         <!--        TV Tanggal Hazard-->
     </LinearLayout>
 <!--    TXT Tanggal-->
@@ -112,14 +113,15 @@
         android:background="@color/colorPrimaryDark"/>
     <!--    Bahaya-->
     <TextView
-        android:background="@color/bgCancel"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:gravity="center_horizontal"
+        android:id="@+id/tvDeskripsiBahaya"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Deskripsi Bahaya"/>
+        android:background="@color/bgCancel"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="Deskripsi Bahaya"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 <!--TV Deskripsi-->
     <TextView
         android:id="@+id/tvDeskripsi"
@@ -154,7 +156,6 @@
 <!--    CLOSE-->
     <TextView
         android:id="@+id/tvClose"
-        android:visibility="gone"
         android:textColor="@color/white"
         android:background="@drawable/btn_success"
         android:textStyle="bold"
@@ -170,7 +171,6 @@
 <!--    PROGRESS-->
     <TextView
         android:id="@+id/tvProgress"
-        android:visibility="gone"
         android:textColor="@color/white"
         android:background="@drawable/btn_total"
         android:textStyle="bold"
@@ -186,7 +186,6 @@
 <!--    CONTINUE-->
     <TextView
         android:id="@+id/tvContinue"
-        android:visibility="gone"
         android:textColor="@color/white"
         android:background="@drawable/btn_waiting"
         android:textStyle="bold"

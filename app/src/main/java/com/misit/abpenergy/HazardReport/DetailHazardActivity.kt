@@ -122,6 +122,16 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                         .load("https://abpjobsite.com/bukti_hazard/"+itemHazard?.bukti)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(imgView)
+                    if(itemHazard.updateBukti!=null){
+                        Glide.with(this@DetailHazardActivity)
+                            .load("https://abpjobsite.com/bukti_hazard/update/"+itemHazard?.updateBukti)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(imgStatus)
+                        imgStatus.visibility=View.VISIBLE
+                    }else{
+                        imgStatus.visibility=View.GONE
+                    }
+
                 }
                 PopupUtil.dismissDialog()
             }

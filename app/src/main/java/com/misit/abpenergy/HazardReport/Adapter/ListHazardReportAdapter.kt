@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -48,21 +49,29 @@ class ListHazardReportAdapter (private val context: Context?,
         holder.tvDeskripsi.text = hazardList.deskripsi
 
         if(hazardList.statusPerbaikan=="BELUM SELESAI"){
+            holder.lnHeader.setBackgroundResource(R.color.bgCancel)
+            holder.tvDeskripsiBahaya.setBackgroundResource(R.color.bgCancel)
             holder.tvOpen.visibility=View.VISIBLE
             holder.tvClose.visibility=View.GONE
             holder.tvProgress.visibility=View.GONE
             holder.tvContinue.visibility=View.GONE
         }else if(hazardList.statusPerbaikan=="SELESAI"){
+            holder.lnHeader.setBackgroundResource(R.color.bgApprove)
+            holder.tvDeskripsiBahaya.setBackgroundResource(R.color.bgApprove)
             holder.tvOpen.visibility=View.GONE
             holder.tvClose.visibility=View.VISIBLE
             holder.tvProgress.visibility=View.GONE
             holder.tvContinue.visibility=View.GONE
         }else if(hazardList.statusPerbaikan=="DIKERJAKAN"){
+            holder.lnHeader.setBackgroundResource(R.color.bgWaiting)
+            holder.tvDeskripsiBahaya.setBackgroundResource(R.color.bgWaiting)
             holder.tvOpen.visibility=View.GONE
             holder.tvClose.visibility=View.GONE
             holder.tvProgress.visibility=View.VISIBLE
             holder.tvContinue.visibility=View.GONE
         }else if(hazardList.statusPerbaikan=="BERLANJUT"){
+            holder.lnHeader.setBackgroundResource(R.color.bgTotal)
+            holder.tvDeskripsiBahaya.setBackgroundResource(R.color.bgTotal)
             holder.tvOpen.visibility=View.GONE
             holder.tvClose.visibility=View.GONE
             holder.tvProgress.visibility=View.GONE
@@ -83,6 +92,8 @@ class ListHazardReportAdapter (private val context: Context?,
         var tvClose = itemView.findViewById<View>(R.id.tvClose) as TextView
         var tvProgress = itemView.findViewById<View>(R.id.tvProgress) as TextView
         var tvContinue = itemView.findViewById<View>(R.id.tvContinue) as TextView
+        var lnHeader = itemView.findViewById<View>(R.id.lnHeader) as LinearLayout
+        var tvDeskripsiBahaya = itemView.findViewById<View>(R.id.tvDeskripsiBahaya) as TextView
 
     }
     interface OnItemClickListener{
