@@ -166,6 +166,7 @@ interface ApiEndPoint{
         @Part("deskripsi") deskripsi:RequestBody?,
         @Part("status_perbaikan") status_perbaikan:RequestBody?,
         @Part("lokasi") lokasi:RequestBody?,
+        @Part("lokasi_detail") lokasi_detail:RequestBody?,
         @Part("tindakan") tindakan:RequestBody?,
         @Part("penanggung_jawab") penanggung_jawab:RequestBody?,
         @Part("sumber_bahaya") sumber_bahaya:RequestBody?,
@@ -174,6 +175,27 @@ interface ApiEndPoint{
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
                          ) : Call<HazardReportResponse>?
+    @Multipart
+    @POST("/android/api/hse/hazard/reportPost/selesai")
+    fun postHazardReportSelesai(
+        @Part fileToUpload: MultipartBody.Part?,
+        @Part fileToUploadSelesai: MultipartBody.Part?,
+        @Part("perusahaan") perusahaan: RequestBody?,
+        @Part("tgl_hazard") tgl_hazard:RequestBody?,
+        @Part("jam_hazard") jam_hazard:RequestBody?,
+        @Part("kat_bahaya") kat_bahaya:RequestBody?,
+        @Part("deskripsi") deskripsi:RequestBody?,
+        @Part("status_perbaikan") status_perbaikan:RequestBody?,
+        @Part("lokasi") lokasi:RequestBody?,
+        @Part("lokasi_detail") lokasi_detail:RequestBody?,
+        @Part("tindakan") tindakan:RequestBody?,
+        @Part("penanggung_jawab") penanggung_jawab:RequestBody?,
+        @Part("sumber_bahaya") sumber_bahaya:RequestBody?,
+        @Part("tgl_selesai") tgl_selesai:RequestBody?,
+        @Part("jam_selesai") jam_selesai:RequestBody?,
+        @Part("user_input") user_input:RequestBody?,
+        @Part("_token") _token:RequestBody?
+    ) : Call<HazardReportResponse>?
 
     @GET("/android/api/hse/list/hazard/report")
     fun getListHazard(@Query("username") username:String,

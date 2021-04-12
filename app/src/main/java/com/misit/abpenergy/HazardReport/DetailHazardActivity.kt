@@ -106,8 +106,6 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                         btnFLMenu.visibility=View.GONE
                         tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)
                     }else{
-                        tvStatusPerbaikan.visibility=View.GONE
-                        cvStatusPerbaikan.visibility=View.GONE
                         imgStatus.visibility=View.GONE
                         btnFLMenu.visibility=View.VISIBLE
                         tvTGLSelesaiD.text = ""
@@ -128,7 +126,11 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(imgStatus)
                         imgStatus.visibility=View.VISIBLE
+                        tvStatusPerbaikan.visibility=View.VISIBLE
+                        cvStatusPerbaikan.visibility=View.VISIBLE
                     }else{
+                        cvStatusPerbaikan.visibility=View.GONE
+                        tvStatusPerbaikan.visibility=View.GONE
                         imgStatus.visibility=View.GONE
                     }
 

@@ -217,11 +217,39 @@
                                 android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <TextView
+                            android:gravity="center_vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:text="Detail Lokasi" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilLokasiDet"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="1.5"
+                            android:hint="Detail Lokasi">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvLokasiDet"
+                                android:gravity="top"
+                                android:imeOptions="actionNext"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
                     <!--    Lokasi-->
                 </LinearLayout>
                 <!--    TEMUAN VIEW-->
             </androidx.cardview.widget.CardView>
-
             <!--    BAHAYA VIEW-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -476,7 +504,6 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:checked="true"
                             android:text="SELSAI" />
 
                         <RadioButton
@@ -484,6 +511,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:checked="true"
                             android:text="BELUM SELESAI" />
 
                         <RadioButton
@@ -497,9 +525,11 @@
                     <!--        STATUS PERBAIKAN-->
                     <!--Tanggal Selesai-->
                     <LinearLayout
+                        android:id="@+id/lnTglSelesai"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:orientation="horizontal"
                         android:weightSum="2">
 
                         <TextView
@@ -532,6 +562,7 @@
                     <!--Tanggal Selesai-->
                     <!--Jam Selesai-->
                     <LinearLayout
+                        android:id="@+id/lnJamSelesai"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
@@ -577,7 +608,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="0.5"
                             android:gravity="center"
-                            android:text="Penanggung Jawab" />
+                            android:text="Nama Penanggung Jawab" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilPenanggungJawab"
@@ -597,7 +628,50 @@
                     <!--Penanggung Jawab-->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
+            <!--        Insert Photo-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imagePickerBuktiSelesai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingLeft="25dp"
+                    android:paddingTop="25dp"
+                    android:paddingRight="25dp"
+                    android:paddingBottom="15dp">
+                    <ImageView
+                        android:id="@+id/imgBuktiSelesai"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_baseline_image_24" />
+                    <TextView
+                        android:id="@+id/tvBuktiSelesai"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:text="Sentuh Disini Untuk Mengambil Gambar" />
+                    <TextView
+                        style="@style/Widget.MaterialComponents.TextView"
+                        android:textStyle="bold"
+                        android:paddingTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="center_horizontal"
+                        android:text="Bukti Hazard Report Selesai"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--        Insert Photo-->
             <!--    BAHAYA VIEW-->
         </LinearLayout>
 
@@ -613,7 +687,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSimpan"
             android:layout_width="0dp"

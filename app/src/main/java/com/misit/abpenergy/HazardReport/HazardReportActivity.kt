@@ -159,4 +159,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         intent.putExtra(DetailHazardActivity.UID,uid.toString())
         startActivity(intent)
     }
+
+    override fun onUpdateClick(uid: String?) {
+        Toasty.info(this@HazardReportActivity,uid!!).show()
+    }
 }

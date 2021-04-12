@@ -138,66 +138,35 @@
 <!--    TV Deskripsi-->
     <!--    Bahaya-->
 <!--    Status-->
-<!--    OPEN-->
+    <!--    OPEN-->
     <TextView
-        android:id="@+id/tvOpen"
+        android:id="@+id/tvStatus"
         android:textColor="@color/white"
-        android:background="@drawable/btn_cancel"
+        android:background="@color/bgCancel"
         android:textStyle="bold"
         android:padding="10dp"
         android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Status : Open"
         />
-<!--    OPEN-->
-<!--    CLOSE-->
-    <TextView
-        android:id="@+id/tvClose"
+    <!--    OPEN-->
+    <!--    OPEN-->
+    <com.google.android.material.button.MaterialButton
+        style="@style/TextAppearance.MaterialComponents.Button"
+        android:id="@+id/btnUpdateStatus"
         android:textColor="@color/white"
-        android:background="@drawable/btn_success"
+        android:backgroundTint="@color/colorPrimary"
         android:textStyle="bold"
-        android:padding="10dp"
         android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Status : Close"
+        android:text="Validasi"
         />
-<!--    CLOSE-->
-<!--    PROGRESS-->
-    <TextView
-        android:id="@+id/tvProgress"
-        android:textColor="@color/white"
-        android:background="@drawable/btn_total"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status : Progress"
-        />
-<!--    PROGRESS-->
-<!--    CONTINUE-->
-    <TextView
-        android:id="@+id/tvContinue"
-        android:textColor="@color/white"
-        android:background="@drawable/btn_waiting"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status : Continue"
-        />
-<!--    CONTINUE-->
+    <!--    OPEN-->
 <!--    Status-->
 </LinearLayout>
 </androidx.cardview.widget.CardView>
