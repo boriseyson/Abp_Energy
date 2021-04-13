@@ -54,7 +54,11 @@ import java.util.*
 
 class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var bahayaDipilih:String? = null
+    private var lokasiDipilih:String? = null
+    private var riskDipilih:String? = null
     private var bahayaID:String? = null
+    private var lokasiID:String? = null
+    private var riskID:String? = null
     private var csrf_token:String?=null
     private var plKondisi:RequestBody?=null
     var rbStatus:RequestBody?=null
@@ -106,6 +110,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         lnJamSelesai.visibility=View.GONE
         lnTglSelesai.visibility=View.GONE
         imagePickerBuktiSelesai.visibility=View.GONE
+        tvLokasi.setOnClickListener(this)
+        inRisk.setOnClickListener(this)
     }
     //    VIEW LISTENER
     override fun onClick(v: View?) {
@@ -148,23 +154,39 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(v?.id==R.id.imagePickerBuktiSelesai){
             showDialogOption(433,422)
         }
+        if(v?.id==R.id.tvLokasi){
+            var intent = Intent(this@NewHazardActivity,LokasiActivity::class.java)
+            intent.putExtra("lokasiDipilih",lokasiDipilih)
+            startActivityForResult(intent,123)
+        }
+        if(v?.id==R.id.inRisk){
+            var intent = Intent(this@NewHazardActivity,RiskActivity::class.java)
+            intent.putExtra("riskDipilih",riskDipilih)
+            startActivityForResult(intent,456)
+        }
     }
     //    VIEW LISTENER
+//    onCreateOptionsMenu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_submit,menu)
         return super.onCreateOptionsMenu(menu)
     }
+//    onCreateOptionsMenu
+//    onSupportNavigateUp
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
     }
+//    onSupportNavigateUp
+//    onOptionsItemSelected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==R.id.btnSubmit){
             simpanHazard()
         }
         return super.onOptionsItemSelected(item)
     }
-
+//    onOptionsItemSelected
+//    verifyStoragePermissions
     private fun verifyStoragePermissions(context: Context,activity: Activity) {
         val permission = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -195,19 +217,15 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //            finish()
         }
     }
-
-
-
+//    verifyStoragePermissions
     //OPEN GALERY
-private fun openGalleryForImage(codeRequest: Int) {
+    private fun openGalleryForImage(codeRequest: Int) {
     btnFLMenu.collapse()
     val intent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
     intent.type = "image/*"
     startActivityForResult(intent, codeRequest)
 }
-//OPEN GALERY
-
-
+    //OPEN GALERY
 //    ATIVITY RESULT
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -215,6 +233,14 @@ private fun openGalleryForImage(codeRequest: Int) {
             bahayaDipilih = data!!.getStringExtra("bahayaDipilih")
             bahayaID = data.getStringExtra("bahayaId")
             tvSumberBahaya.setText(bahayaDipilih)
+        }else if(resultCode== Activity.RESULT_OK && requestCode==123){
+            lokasiDipilih = data!!.getStringExtra("lokasiDipilih")
+            lokasiID = data.getStringExtra("lokasiID")
+            tvLokasi.setText(lokasiDipilih)
+        }else if(resultCode== Activity.RESULT_OK && requestCode==456){
+            riskDipilih = data!!.getStringExtra("riskDipilih")
+            riskID = data.getStringExtra("riskID")
+            inRisk.setText(riskDipilih)
         }else if(resultCode==Activity.RESULT_OK && requestCode==222) {
             try {
 //                data.clipData
@@ -290,7 +316,6 @@ private fun openGalleryForImage(codeRequest: Int) {
         super.onActivityResult(requestCode, resultCode, data)
     }
     //ACTIVITY RESULT
-
     //    DIALOG TANGGAL
     fun showDialogTgl(inTgl: TextInputEditText){
         val now = Calendar.getInstance()
@@ -356,23 +381,30 @@ private fun openGalleryForImage(codeRequest: Int) {
             if(!isValidate1()){
                 return
             }
-        }else{
+        }
+        else{
             if (!isValidate()) {
                 return
             }
         }
+
     PopupUtil.showProgress(this@NewHazardActivity,"Loading...","Membuat Hazard Report!")
 
     var tvPerusaan = tvPerusaan.text.toString().toRequestBody(MultipartBody.FORM)
     var tvTanggal = tvTanggal.text.toString().toRequestBody(MultipartBody.FORM)
     var tvJam = tvJam.text.toString().toRequestBody(MultipartBody.FORM)
-    var tvLokasi = tvLokasi.text.toString().toRequestBody(MultipartBody.FORM)
+    var lokasi = lokasiID.toString().toRequestBody(MultipartBody.FORM)
     var tvLokasiDet = tvLokasiDet.text.toString().toRequestBody(MultipartBody.FORM)
     var tvBahaya = tvBahaya.text.toString().toRequestBody(MultipartBody.FORM)
     var tvSumberBahaya = tvSumberBahaya.text.toString().toRequestBody(MultipartBody.FORM)
+    var riskID = riskID.toString().toRequestBody(MultipartBody.FORM)
     var tvPerbaikan = tvPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
     var tvPenanggungJawab = tvPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
-
+//        Toasty.info(this@NewHazardActivity,lokasiDipilih.toString()).show()
+//    var z=false
+//        if(!z){
+//            return
+//        }
         if(plKta.isChecked){
             plKondisi = plKta.text.toString().toRequestBody(MultipartBody.FORM)
         }else if(plTta.isChecked){
@@ -389,8 +421,6 @@ private fun openGalleryForImage(codeRequest: Int) {
     var tvJAMselesai = tvJamSelesai.text.toString().toRequestBody(MultipartBody.FORM)
     var username = USERNAME.toRequestBody(MultipartBody.FORM)
     var _token:RequestBody = csrf_token!!.toRequestBody(MultipartBody.FORM)
-
-
 
     var waktu = Date()
     val cal = Calendar.getInstance()
@@ -455,11 +485,12 @@ private fun openGalleryForImage(codeRequest: Int) {
                 tvTanggal,
                 tvJam,
                 tvBahaya,
-                tvLokasi,
+                lokasi,
                 tvLokasiDet,
                 tvPerbaikan,
                 tvPenanggungJawab,
                 tvSumberBahaya,
+                riskID,
                 tvTGLselesai,
                 tvJAMselesai,
                 username,
@@ -472,23 +503,22 @@ private fun openGalleryForImage(codeRequest: Int) {
                 tvTanggal,
                 tvJam,
                 tvBahaya,
-                tvLokasi,
+                lokasi,
                 tvLokasiDet,
                 tvPerbaikan,
                 tvPenanggungJawab,
                 tvSumberBahaya,
+                riskID,
                 tvTGLselesai,
                 tvJAMselesai,
                 username,
                 _token,"Bukti_Selesai"
             )
         }
-
-
     }
     //    Simpan Hazard
 //    Save Hazard
-    fun hazardPost(bukti:MultipartBody.Part,
+    private fun hazardPost(bukti:MultipartBody.Part,
                    fileToUploadSelesai:MultipartBody.Part?,
                    tvPerusaan:RequestBody,
                    tvTanggal:RequestBody,
@@ -499,24 +529,24 @@ private fun openGalleryForImage(codeRequest: Int) {
                    tvPerbaikan:RequestBody,
                    tvPenanggungJawab:RequestBody,
                    tvSumberBahaya:RequestBody,
+                   inRisk:RequestBody,
                    tvTGLselesai:RequestBody,
                    tvJAMselesai:RequestBody,
                    username:RequestBody,
                    _token:RequestBody,tipe:String){
-
     //    API POST
     val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
      var call:Call<HazardReportResponse>?=null
         if(tipe=="Bukti_Progress"){
             call = apiEndPoint.postHazardReport(
                 bukti,tvPerusaan,tvTanggal,tvJam,plKondisi!!,tvBahaya,rbStatus!!,
-                tvLokasi,tvLokasiDet,tvPerbaikan,tvPenanggungJawab,tvSumberBahaya,
+                tvLokasi,tvLokasiDet,tvPerbaikan,tvPenanggungJawab,tvSumberBahaya,inRisk,
                 tvTGLselesai,tvJAMselesai,username,_token
             )
         }else if(tipe=="Bukti_Selesai"){
              call = apiEndPoint.postHazardReportSelesai(
                 bukti,fileToUploadSelesai,tvPerusaan,tvTanggal,tvJam,plKondisi!!,tvBahaya,rbStatus!!,
-                tvLokasi,tvLokasiDet,tvPerbaikan,tvPenanggungJawab,tvSumberBahaya,
+                tvLokasi,tvLokasiDet,tvPerbaikan,tvPenanggungJawab,tvSumberBahaya,inRisk,
                 tvTGLselesai,tvJAMselesai,username,_token
             )
         }
@@ -606,6 +636,11 @@ private fun getToken() {
         tvSumberBahaya.requestFocus()
         return false
     }
+    if(inRisk.text!!.isEmpty()){
+        tilRisk.error="Please Input Someting"
+        inRisk.requestFocus()
+        return false
+    }
     if(tvPerbaikan.text!!.isEmpty()){
         tilPerbaikan.error="Please Input Someting"
         tvPerbaikan.requestFocus()
@@ -675,6 +710,11 @@ private fun getToken() {
             tvSumberBahaya.requestFocus()
             return false
         }
+        if(inRisk.text!!.isEmpty()){
+            tilRisk.error="Please Input Someting"
+            inRisk.requestFocus()
+            return false
+        }
         if(tvPerbaikan.text!!.isEmpty()){
             tilPerbaikan.error="Please Input Someting"
             tvPerbaikan.requestFocus()
@@ -729,6 +769,7 @@ private fun getToken() {
         tilLokasiDet.error=null
         tilBahaya.error=null
         tilSumberBahaya.error=null
+        tilRisk.error=null
         tilPerbaikan.error=null
         tilKatBahaya.visibility=View.GONE
         tilStatus.visibility=View.GONE

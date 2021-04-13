@@ -214,6 +214,9 @@
                                 android:imeOptions="actionNext"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:inputType="none"
                                 android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -225,7 +228,7 @@
                         android:orientation="horizontal"
                         android:weightSum="2">
                         <TextView
-                            android:gravity="center_vertical"
+                            android:gravity="center|left"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.5"
@@ -335,8 +338,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Pilih Sumber Bahaya"
-                            android:text="@string/app_name">
+                            android:hint="Pilih Sumber Bahaya">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tvSumberBahaya"
@@ -371,11 +373,14 @@
                 android:visibility="visible"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="10dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tilKatBahaya"
@@ -412,6 +417,23 @@
                     </RadioGroup>
                     <!--        PILIHAN KATEGORI-->
                 </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_margin="15dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tilRisk"
+                        android:hint="Risk">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:id="@+id/inRisk"
+                            android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:focusable="false"
+                            android:inputType="none"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!--        Tindakan Perbaikan-->

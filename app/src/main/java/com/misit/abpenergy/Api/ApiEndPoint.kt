@@ -1,9 +1,7 @@
 package com.misit.abpenergy.Api
 
+import com.misit.abpenergy.HazardReport.Response.*
 import com.misit.abpenergy.HazardReport.Response.DataItem
-import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
-import com.misit.abpenergy.HazardReport.Response.ListHazard
-import com.misit.abpenergy.HazardReport.Response.SumberBahayaResponse
 import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
 import com.misit.abpenergy.Login.Response.SectionItem
@@ -28,7 +26,7 @@ interface ApiEndPoint{
     fun getToken(@Query("csrf_token") tokenId:String): Call<CsrfTokenResponse>?
 
     @FormUrlEncoded
-    @POST("api/android/login/validate")
+    @POST("/android/api/login/validate")
     fun loginChecklogin(@Field("username") username:String?,
                         @Field("password") password:String?,
                         @Field("_token") csrf_token:String?,
@@ -170,6 +168,7 @@ interface ApiEndPoint{
         @Part("tindakan") tindakan:RequestBody?,
         @Part("penanggung_jawab") penanggung_jawab:RequestBody?,
         @Part("sumber_bahaya") sumber_bahaya:RequestBody?,
+        @Part("risk") risk:RequestBody?,
         @Part("tgl_selesai") tgl_selesai:RequestBody?,
         @Part("jam_selesai") jam_selesai:RequestBody?,
         @Part("user_input") user_input:RequestBody?,
@@ -191,6 +190,7 @@ interface ApiEndPoint{
         @Part("tindakan") tindakan:RequestBody?,
         @Part("penanggung_jawab") penanggung_jawab:RequestBody?,
         @Part("sumber_bahaya") sumber_bahaya:RequestBody?,
+        @Part("risk") risk:RequestBody?,
         @Part("tgl_selesai") tgl_selesai:RequestBody?,
         @Part("jam_selesai") jam_selesai:RequestBody?,
         @Part("user_input") user_input:RequestBody?,
@@ -200,6 +200,9 @@ interface ApiEndPoint{
     @GET("/android/api/hse/list/hazard/report")
     fun getListHazard(@Query("username") username:String,
                       @Query("page") page:String)
+            : Call<ListHazard>?
+    @GET("/android/api/hse/list/hazard/report/all")
+    fun getListHazardAll(@Query("page") page:String)
             : Call<ListHazard>?
 
     @GET("/android/api/hse/item/hazard/report")
@@ -247,4 +250,12 @@ interface ApiEndPoint{
         @Part("keterangan") keterangan:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
+
+    @GET("/android/api/lokasi/get")
+    fun getLokasiList()
+            : Call<LokasiResponse>?
+
+    @GET("/android/api/risk/get")
+    fun getRiskList()
+            : Call<RiskResponse>?
 }

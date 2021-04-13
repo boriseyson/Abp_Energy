@@ -2,6 +2,7 @@ package com.misit.abpenergy.HazardReport
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -28,7 +29,9 @@ import retrofit2.Response
 class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
 
     private var uid:String?=null
-
+    private var bukti:String?=null
+    private var updateBukti:String?=null
+    private var adminHazard:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_hazard)
@@ -39,16 +42,24 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
-
-
         actionBar?.setDisplayHomeAsUpEnabled(true)
         uid = intent.getStringExtra(UID)
+        adminHazard = intent.getStringExtra("ALLHazard")
+
         loadDetail(uid.toString())
         floatUpdateDenganGambar.setOnClickListener(this)
         floatUpdateStatus.setOnClickListener(this)
         cvImageDetail.setOnClickListener(this)
+        cvStatusPerbaikan.setOnClickListener(this)
     }
-
+    override fun onResume() {
+        if(adminHazard!=null){
+            btnFLMenu.visibility= View.GONE
+        }else{
+            btnFLMenu.visibility= View.VISIBLE
+        }
+        super.onResume()
+    }
     override fun onClick(v: View?) {
         if(v?.id==R.id.floatUpdateDenganGambar){
             var intent = Intent(this@DetailHazardActivity,UpdateHazardActivity::class.java)
@@ -63,7 +74,16 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
             startActivityForResult(intent,14)
         }
         if(v?.id==R.id.cvImageDetail){
-
+            var intent = Intent(this@DetailHazardActivity,ImageHazardActivity::class.java)
+            intent.putExtra("ImageHazard",bukti)
+            intent.putExtra("Direktori","https://abpjobsite.com/bukti_hazard/")
+            startActivity(intent)
+        }
+        if(v?.id==R.id.cvStatusPerbaikan){
+            var intent = Intent(this@DetailHazardActivity,ImageHazardActivity::class.java)
+            intent.putExtra("ImageHazard",updateBukti)
+            intent.putExtra("Direktori","https://abpjobsite.com/bukti_hazard/update/")
+            startActivity(intent)
         }
         btnFLMenu.collapse()
     }
@@ -96,30 +116,42 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                     tvPerusahaanD.text = itemHazard.perusahaan
                     tvTanggalD.text = LocalDate.parse(itemHazard.tglHazard).toString(fmt)
                     tvJamD.text = itemHazard.jamHazard
-                    tvLokasiD.text = itemHazard.lokasi
+                    tvLokasiD.text = itemHazard.lokasiHazard
+                    tvLokasiDetails.text= itemHazard.lokasiDetail
                     tvBahayaD.text = itemHazard.deskripsi
                     tvSumberBahayaD.text = itemHazard.sumberBahaya
                     tvKatBahayaD.text = itemHazard.katBahaya
                     tvPerbaikanD.text = itemHazard.tindakan
                     tvStatusPerbaikanD.text = itemHazard.statusPerbaikan
+                    tvDibuat.text = itemHazard.namaLengkap
+                    if(itemHazard.risk!=null){
+                        tvRisk.text = itemHazard.risk
+                        tvRisk.setBackgroundColor(Color.parseColor(itemHazard.bgColor))
+                        cvRisk.setBackgroundColor(Color.parseColor(itemHazard.bgColor))
+                        tvRisk.setTextColor(Color.parseColor(itemHazard.txtColor))
+                        cvRisk.visibility= View.VISIBLE
+                    }else{
+                        cvRisk.visibility= View.GONE
+                    }
                     if(itemHazard.tglSelesai!=null){
                         btnFLMenu.visibility=View.GONE
                         tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)
                     }else{
                         imgStatus.visibility=View.GONE
                         btnFLMenu.visibility=View.VISIBLE
-                        tvTGLSelesaiD.text = ""
+                        tvTGLSelesaiD.text = "-"
                     }
                     if(itemHazard.jamSelesai!=null){
                     tvJamSelesaiD.text = itemHazard.jamSelesai
                     }else{
-                        tvJamSelesaiD.text = ""
+                        tvJamSelesaiD.text = "-"
                     }
                     tvPenanggungJawabD.text = itemHazard.penanggungJawab
                     Glide.with(this@DetailHazardActivity)
                         .load("https://abpjobsite.com/bukti_hazard/"+itemHazard?.bukti)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(imgView)
+                    bukti = itemHazard?.bukti
                     if(itemHazard.updateBukti!=null){
                         Glide.with(this@DetailHazardActivity)
                             .load("https://abpjobsite.com/bukti_hazard/update/"+itemHazard?.updateBukti)
@@ -128,6 +160,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                         imgStatus.visibility=View.VISIBLE
                         tvStatusPerbaikan.visibility=View.VISIBLE
                         cvStatusPerbaikan.visibility=View.VISIBLE
+                        updateBukti = itemHazard?.updateBukti
                     }else{
                         cvStatusPerbaikan.visibility=View.GONE
                         tvStatusPerbaikan.visibility=View.GONE

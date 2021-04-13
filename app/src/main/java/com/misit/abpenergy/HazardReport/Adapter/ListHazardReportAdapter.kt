@@ -42,9 +42,11 @@ class ListHazardReportAdapter (private val context: Context?,
         holder.tvJamHazard.text = hazardList.jamHazard
         holder.tvTglHazard.text = LocalDate.parse(hazardList.tglHazard).toString(fmt)
         holder.tvPerusahaan.text = hazardList.perusahaan
-        holder.tvLokasi.text = hazardList.lokasi
+        holder.tvLokasi.text = hazardList.lokasiHazard
         holder.tvDeskripsi.text = hazardList.deskripsi
         holder.tvStatus.text = hazardList.statusPerbaikan
+        holder.tvUSER.text = hazardList.namaLengkap
+        holder.tvPJ.text = hazardList.penanggungJawab
 
         if(hazardList.statusPerbaikan=="BELUM SELESAI"){
             holder.lnHeader.setBackgroundResource(R.color.bgCancel)
@@ -81,7 +83,8 @@ class ListHazardReportAdapter (private val context: Context?,
         var lnHeader = itemView.findViewById<View>(R.id.lnHeader) as LinearLayout
         var tvDeskripsiBahaya = itemView.findViewById<View>(R.id.tvDeskripsiBahaya) as TextView
         var btnUpdateStatus = itemView.findViewById<View>(R.id.btnUpdateStatus) as Button
-
+        var tvUSER = itemView.findViewById<View>(R.id.tvUSER) as TextView
+        var tvPJ = itemView.findViewById<View>(R.id.tvPJ) as TextView
     }
     interface OnItemClickListener{
         fun onItemClick(uid:String?)

@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitXY"
                         android:src="@drawable/ic_insert_photo_black_24dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -164,6 +164,29 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.45" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="Detail Lokasi" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+                        <TextView
+                            android:id="@+id/tvLokasiDetails"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.45" />
+                    </LinearLayout>
                     <!--    Lokasi-->
                 </LinearLayout>
                 <!--    TEMUAN VIEW-->
@@ -267,6 +290,30 @@
                         android:gravity="center_horizontal"
                         android:text="" />
                     <!--        PILIHAN KATEGORI-->
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvRisk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <!--                    RISK-->
+                    <TextView
+                        android:id="@+id/tvRisk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="" />
+                    <!--                    RISK-->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!--        Tindakan Perbaikan-->
@@ -411,6 +458,29 @@
                             android:text=":" />
                         <TextView
                             android:id="@+id/tvPenanggungJawabD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.25" />
+                    </LinearLayout>
+                    <!--Penanggung Jawab-->
+                    <!--        Penanggung Jawab-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:text="Dibuat" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+                        <TextView
+                            android:id="@+id/tvDibuat"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.25" />

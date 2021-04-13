@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -40,9 +41,11 @@ class SumberBahayaAdapter (private val context: Context?,
         if(sumberDipilih==sumberList.bahaya){
             holder.rbSumberBahaya.setTextColor(Color.parseColor("#FFFFFF"))
             holder.rbSumberBahaya.setBackgroundColor(Color.parseColor("#4F8E50"))
+            holder.lnPilih.setBackgroundColor(Color.parseColor("#4F8E50"))
         }else{
             holder.rbSumberBahaya.setTextColor(Color.parseColor("#4F8E50"))
             holder.rbSumberBahaya.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            holder.lnPilih.setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
         holder.rbSumberBahaya.setOnClickListener{
             onItemClickListener?.onItemClick(sumberList.idBahaya.toString(),sumberList.bahaya)
@@ -50,6 +53,7 @@ class SumberBahayaAdapter (private val context: Context?,
     }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var rbSumberBahaya = itemView.findViewById<View>(R.id.rbSumberBahaya) as Button
+        var lnPilih = itemView.findViewById<View>(R.id.lnPilih) as LinearLayout
     }
     interface OnItemClickListener{
         fun onItemClick(idBahaya:String?,bahaya:String?)

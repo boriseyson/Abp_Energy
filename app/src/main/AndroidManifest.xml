@@ -19,7 +19,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HazardReport.LokasiActivity"></activity>
+        <activity android:name=".HazardReport.ALLHazardReportActivity"></activity>
+        <activity android:name=".HazardReport.RiskActivity" />
+        <activity
+            android:name=".HazardReport.ImageHazardActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar" />
+        <activity android:name=".HazardReport.LokasiActivity" />
         <activity
             android:name=".HazardReport.UpdateHazardActivity"
             android:launchMode="singleTask"

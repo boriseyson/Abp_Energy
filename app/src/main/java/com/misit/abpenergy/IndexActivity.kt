@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.HazardReport.ALLHazardReportActivity
 import com.misit.abpenergy.HazardReport.HazardReportActivity
 import com.misit.abpenergy.HazardReport.NewHazardActivity
 import com.misit.abpenergy.Login.LoginActivity
@@ -143,6 +144,7 @@ class IndexActivity : AppCompatActivity(),
         btnNewHazard.setOnClickListener(this)
         btnNewSarana.setOnClickListener(this)
         content_frame.setOnClickListener(this)
+        btnHazardALL.setOnClickListener(this)
     }
 
 //Get Token
@@ -377,6 +379,10 @@ class IndexActivity : AppCompatActivity(),
         if(v?.id==R.id.content_frame){
             btnFLMenuIndex.collapse()
         }
+        if(v?.id==R.id.btnHazardALL){
+            var intent = Intent(this@IndexActivity, ALLHazardReportActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 //onClick
@@ -391,7 +397,6 @@ class IndexActivity : AppCompatActivity(),
 
 //    HazardRepord
     fun hazardReport() {
-
         var intent = Intent(this@IndexActivity,HazardReportActivity::class.java)
         startActivity(intent)
     }
