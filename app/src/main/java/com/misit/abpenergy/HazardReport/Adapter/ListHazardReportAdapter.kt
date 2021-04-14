@@ -38,7 +38,6 @@ class ListHazardReportAdapter (private val context: Context?,
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         var hazardList =hazardList[position]
         val fmt: DateTimeFormatter = DateTimeFormat.forPattern("d MMMM, yyyy")
-
         holder.tvJamHazard.text = hazardList.jamHazard
         holder.tvTglHazard.text = LocalDate.parse(hazardList.tglHazard).toString(fmt)
         holder.tvPerusahaan.text = hazardList.perusahaan
@@ -65,6 +64,13 @@ class ListHazardReportAdapter (private val context: Context?,
             holder.tvDeskripsiBahaya.setBackgroundResource(R.color.bgTotal)
             holder.tvStatus.setBackgroundResource(R.color.bgTotal)
         }
+        if(hazardList.uservalid!=null){
+            holder.tvVerfikasi.text = "Di Setujui"
+            holder.tvVerfikasi.setBackgroundResource(R.color.bgApprove)
+        }else{
+            holder.tvVerfikasi.setBackgroundResource(R.color.bgCancel)
+            holder.tvVerfikasi.text = "Belum Disetujui"
+        }
         holder.cvHazard.setOnClickListener{
             onItemClickListener?.onItemClick(hazardList.uid.toString())
         }
@@ -85,6 +91,7 @@ class ListHazardReportAdapter (private val context: Context?,
         var btnUpdateStatus = itemView.findViewById<View>(R.id.btnUpdateStatus) as Button
         var tvUSER = itemView.findViewById<View>(R.id.tvUSER) as TextView
         var tvPJ = itemView.findViewById<View>(R.id.tvPJ) as TextView
+        var tvVerfikasi = itemView.findViewById<View>(R.id.tvVerfikasi) as TextView
     }
     interface OnItemClickListener{
         fun onItemClick(uid:String?)

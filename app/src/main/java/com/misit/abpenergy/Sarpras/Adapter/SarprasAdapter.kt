@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
@@ -79,9 +80,11 @@ RecyclerView.Adapter<SarprasAdapter.MyViewHolder>(){
         if(sarprasList.noPol!=null){
             holder.txtNoLV.text="Jenis Kendaraan :"
             holder.txtDriver.text="Merk Kendaraan :"
-            holder.noLV.text = "${sarprasList.noLv} ( ${sarprasList.noPol} )"
+            holder.noLV.text = "${sarprasList.noLv!!.capitalize()} ( ${sarprasList.noPol} )"
+            holder.driver.text = sarprasList.driver
         }else{
             holder.txtDriver.text="Driver :"
+            getPenumpang(sarprasList.driver!!,holder)
             holder.txtNoLV.text="NO LV : "
             holder.noLV.text = "${sarprasList.noLv}"
         }
@@ -94,7 +97,7 @@ RecyclerView.Adapter<SarprasAdapter.MyViewHolder>(){
 //        Toasty.info(context!!,foundRule.toString(),Toasty.LENGTH_SHORT).show()
 
 //        holder.driver.text = sarprasList.driver
-        getPenumpang(sarprasList.driver!!,holder)
+
         if(foundRule!!){
             checkStatus(holder,sarprasList)
         }else{
@@ -107,17 +110,20 @@ RecyclerView.Adapter<SarprasAdapter.MyViewHolder>(){
         var tglOut = date.toString(fmt);
         holder.tv_tgl.text = "${tglOut} ${sarprasList.jamOut}"
         if(onItemClickListener != null){
-            holder.btnDoc?.setOnClickListener{onItemClickListener?.onItemClick(sarprasList.noidOut)}
+            holder.btnDoc?.setOnClickListener{
+                onItemClickListener?.onItemClick(sarprasList.noidOut)
+            }
             holder.lihatDetail?.setOnClickListener{
                 onItemClickListener?.onDetailClick(sarprasList.noidOut)
+            }
+            holder.btnQRCode.setOnClickListener{
+                onItemClickListener?.onQRCodeClick(sarprasList.noidOut)
             }
         }
         holder.txtNoAntri.text = sarprasList.nomor
     }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         var v_appr = itemView.findViewById<View>(R.id.v_appr) as View
-
         var lnAppr = itemView.findViewById<View>(R.id.lnAppr) as LinearLayout
         var tvpemohon = itemView.findViewById<View>(R.id.tvpemohon) as TextView
         var status = itemView.findViewById<View>(R.id.status) as TextView
@@ -136,10 +142,12 @@ RecyclerView.Adapter<SarprasAdapter.MyViewHolder>(){
         var cancelRemark = itemView.findViewById<View>(R.id.cancelRemark) as TextView
         var lnCancelRemark= itemView.findViewById<View>(R.id.lnCancelRemark) as LinearLayout
         var txtNoAntri = itemView.findViewById<View>(R.id.txtNoAntri) as TextView
+        var btnQRCode = itemView.findViewById<View>(R.id.btnQRCode) as Button
     }
     interface OnItemClickListener{
         fun onItemClick(noIdOut:String?)
         fun onDetailClick(noIdOut:String?)
+        fun onQRCodeClick(noIdOut:String?)
     }
     fun setListener (listener: OnItemClickListener){
         onItemClickListener = listener

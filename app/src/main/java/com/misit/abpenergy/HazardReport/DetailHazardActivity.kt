@@ -166,6 +166,13 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                         tvStatusPerbaikan.visibility=View.GONE
                         imgStatus.visibility=View.GONE
                     }
+                    if(itemHazard.keteranganUpdate!=null){
+                        lnKetPerbaikan.visibility = View.VISIBLE
+                        tvKetPerbaikan.text = itemHazard.keteranganUpdate
+                    }else{
+                        lnKetPerbaikan.visibility = View.GONE
+                        tvKetPerbaikan.text = ""
+                    }
 
                 }
                 PopupUtil.dismissDialog()

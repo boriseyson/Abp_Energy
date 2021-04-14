@@ -4,7 +4,6 @@ import com.misit.abpenergy.HazardReport.Response.*
 import com.misit.abpenergy.HazardReport.Response.DataItem
 import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
-import com.misit.abpenergy.Login.Response.SectionItem
 import com.misit.abpenergy.Login.Response.SectionResponse
 import com.misit.abpenergy.Monitoring_Produksi.Response.ProduksiResponse
 import com.misit.abpenergy.Monitoring_Produksi.Response.StockResponse
@@ -93,6 +92,9 @@ interface ApiEndPoint{
     @GET("api/android/sarpras/user")
     fun getSarprasUser(@Query("nik") nik:String?,
                        @Query("page") page:Int)
+            : Call<UserSarprasResponse>?
+    @GET("api/android/sarpras/all")
+    fun getSarprasAll(@Query("page") page:Int)
             : Call<UserSarprasResponse>?
 
     @GET("/sarpras/android/get/sarana")

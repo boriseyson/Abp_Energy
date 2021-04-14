@@ -38,10 +38,10 @@
                     <ImageView
                         android:id="@+id/imgView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="250dp"
                         android:layout_margin="10dp"
                         android:adjustViewBounds="true"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_insert_photo_black_24dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -486,6 +486,30 @@
                             android:layout_weight="1.25" />
                     </LinearLayout>
                     <!--Penanggung Jawab-->
+                    <!--        Penanggung Jawab-->
+                    <LinearLayout
+                        android:id="@+id/lnKetPerbaikan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:text="Keterangan Update" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+                        <TextView
+                            android:id="@+id/tvKetPerbaikan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.25" />
+                    </LinearLayout>
+                    <!--Penanggung Jawab-->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!--            AKSI-->
@@ -514,9 +538,10 @@
                 android:layout_margin="10dp"
                 android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="250dp"
+                android:adjustViewBounds="true"
                 android:src="@drawable/ic_baseline_image_24"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:id="@+id/imgStatus"
                 />
             </androidx.cardview.widget.CardView>

@@ -61,8 +61,8 @@ data class DataItem(
 	@field:SerializedName("uid")
 	var uid: String? = null,
 
-	@field:SerializedName("tgl_varid")
-	var tglvarid: String? = null,
+	@field:SerializedName("tgl_valid")
+	var tglvalid: String? = null,
 
 	@field:SerializedName("bgColor")
 	var bgColor: String? = null,
@@ -88,8 +88,8 @@ data class DataItem(
 	@field:SerializedName("idRisk")
 	var idRisk: String? = null,
 
-	@field:SerializedName("idvaridation")
-	var idvaridation: Int? = null,
+	@field:SerializedName("idvalidation")
+	var idvalidation: Int? = null,
 
 	@field:SerializedName("desc_risk")
 	var descRisk: String? = null,
@@ -97,8 +97,8 @@ data class DataItem(
 	@field:SerializedName("jam_selesai")
 	var jamSelesai: String? = null,
 
-	@field:SerializedName("jam_varid")
-	var jamvarid: String? = null,
+	@field:SerializedName("jam_valid")
+	var jamvalid: String? = null,
 
 	@field:SerializedName("tgl_input")
 	var tglInput: String? = null,
@@ -124,8 +124,8 @@ data class DataItem(
 	@field:SerializedName("deskripsi")
 	var deskripsi: String? = null,
 
-	@field:SerializedName("user_varid")
-	var uservarid: String? = null,
+	@field:SerializedName("user_valid")
+	var uservalid: String? = null,
 
 	@field:SerializedName("time_input")
 	var timeInput: String? = null,

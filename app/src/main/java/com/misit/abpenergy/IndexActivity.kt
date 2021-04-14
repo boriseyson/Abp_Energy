@@ -25,11 +25,14 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.ALLHazardReportActivity
 import com.misit.abpenergy.HazardReport.HazardReportActivity
 import com.misit.abpenergy.HazardReport.NewHazardActivity
+import com.misit.abpenergy.Inspeksi.AllInspeksiActivity
+import com.misit.abpenergy.Inspeksi.InspeksiActivity
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Monitoring_Produksi.ProductionActivity
 import com.misit.abpenergy.Monitoring_Produksi.StockActivity
 import com.misit.abpenergy.Response.GetUserResponse
 import com.misit.abpenergy.Rkb.RkbActivity
+import com.misit.abpenergy.Sarpras.AllSarprasActivity
 import com.misit.abpenergy.Sarpras.KabagApprSarprasActivity
 import com.misit.abpenergy.Sarpras.NewSarprasActivity
 import com.misit.abpenergy.Sarpras.SarprasActivity
@@ -145,6 +148,8 @@ class IndexActivity : AppCompatActivity(),
         btnNewSarana.setOnClickListener(this)
         content_frame.setOnClickListener(this)
         btnHazardALL.setOnClickListener(this)
+        btnSarprasAll.setOnClickListener(this)
+        btnInspection.setOnClickListener(this)
     }
 
 //Get Token
@@ -174,13 +179,42 @@ class IndexActivity : AppCompatActivity(),
                         }else{
                             btnSarprasApproveKabag.visibility=View.GONE
                         }
+                        var security = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            Arrays.stream(userRule).anyMatch{ t -> t== "security"}
+                        } else {
+                            userRule?.contains("security")
+                        }
+                        if(security!!){
+                            btnSarprasAll.visibility=View.VISIBLE
+                        }else{
+                            btnSarprasAll.visibility=View.GONE
+                        }
+                        var allHazard = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            Arrays.stream(userRule).anyMatch{ t -> t== "allHazard"}
+                        } else {
+                            userRule?.contains("allHazard")
+                        }
+                        if(allHazard!!){
+                            btnHazardALL.visibility=View.VISIBLE
+                        }else{
+                            btnHazardALL.visibility=View.GONE
+                        }
+                        var allInspeksi = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            Arrays.stream(userRule).anyMatch{ t -> t== "allInspeksi"}
+                        } else {
+                            userRule?.contains("allInspeksi")
+                        }
+                        if(allInspeksi!!){
+                            btnInspectionALL.visibility=View.VISIBLE
+                        }else{
+                            btnInspectionALL.visibility=View.GONE
+                        }
                     }
                 }
             }
         })
     }
 //    Get Token
-
     //Menu Item
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -190,7 +224,6 @@ class IndexActivity : AppCompatActivity(),
         return true
     }
 //Menu Item
-
 //    On Resume
     override fun onResume() {
         tipe =  intent.getStringExtra(TIPE)
@@ -204,7 +237,6 @@ class IndexActivity : AppCompatActivity(),
         super.onResume()
     }
 //On Resume
-
 //    Sarpras Notif
     private fun sarprasNotif(){
         var intent = Intent(this@IndexActivity,
@@ -213,7 +245,6 @@ class IndexActivity : AppCompatActivity(),
         startActivity(intent)
     }
 //    Sarpras Notif
-
 //    NotifRkb
     private fun rkbNotif(tabindex:String?){
         var intent = Intent(this@IndexActivity,RkbActivity::class.java)
@@ -226,7 +257,6 @@ class IndexActivity : AppCompatActivity(),
         startActivity(intent)
     }
 //    NotifRkb
-
 //    LogOut
     private fun logOut() {
         AlertDialog.Builder(this)
@@ -254,7 +284,6 @@ class IndexActivity : AppCompatActivity(),
             .show()
     }
 //LogOut
-
 //    Companion
     companion object{
         var USERNAME = "username"
@@ -268,7 +297,6 @@ class IndexActivity : AppCompatActivity(),
         var RULE = "RULE"
     }
 //    Companion
-
 //Click View
     override fun onClick(v: View?) {
         btnFLMenuIndex.collapse()
@@ -322,7 +350,6 @@ class IndexActivity : AppCompatActivity(),
             intent.putExtra(RkbActivity.Tab_INDEX,tbindex)
             startActivity(intent)
         }
-
         if(v?.id==R.id.btnSarpras){
            var intent = Intent(this@IndexActivity,
                 SarprasActivity::class.java)
@@ -336,7 +363,6 @@ class IndexActivity : AppCompatActivity(),
             var intent = Intent(this@IndexActivity,KabagApprSarprasActivity::class.java)
             startActivity(intent)
         }
-
         if(v?.id==R.id.btnOB){
             var intent = Intent(this@IndexActivity,ProductionActivity::class.java)
             intent.putExtra(ProductionActivity.MONITORING,"OB")
@@ -383,7 +409,18 @@ class IndexActivity : AppCompatActivity(),
             var intent = Intent(this@IndexActivity, ALLHazardReportActivity::class.java)
             startActivity(intent)
         }
-
+        if(v?.id==R.id.btnSarprasAll){
+            var intent = Intent(this@IndexActivity, AllSarprasActivity::class.java)
+            startActivity(intent)
+        }
+        if(v?.id==R.id.btnInspection){
+            var intent = Intent(this@IndexActivity, InspeksiActivity::class.java)
+            startActivity(intent)
+        }
+        if(v?.id==R.id.btnInspectionALL){
+            var intent = Intent(this@IndexActivity, AllInspeksiActivity::class.java)
+            startActivity(intent)
+        }
     }
 //onClick
 //    onActivityResult
@@ -394,7 +431,6 @@ class IndexActivity : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
     }
 //    onActivityResult
-
 //    HazardRepord
     fun hazardReport() {
         var intent = Intent(this@IndexActivity,HazardReportActivity::class.java)

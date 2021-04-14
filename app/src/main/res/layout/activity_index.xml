@@ -50,23 +50,44 @@
                         android:text="Sarana Prasana"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="#000000" />
-
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:paddingBottom="10dp">
-
+                            <LinearLayout
+                                android:id="@+id/btnSarprasAll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    app:cardCornerRadius="6dp"
+                                    app:cardElevation="10dp">
+                                    <ImageView
+                                        android:layout_width="100dp"
+                                        android:layout_height="60dp"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="10dp"
+                                        android:background="@drawable/sarana_ic" />
+                                </androidx.cardview.widget.CardView>
+                                <TextView
+                                    android:layout_width="110dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:paddingBottom="5dp"
+                                    android:text="Lihat Semua Izin Keluar Sarana"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
                             <LinearLayout
                                 android:id="@+id/btnSarpras"
                                 android:layout_width="wrap_content"
@@ -96,7 +117,6 @@
                                     android:text="@string/sarana_prasarana"
                                     android:textAlignment="center" />
                             </LinearLayout>
-
                             <LinearLayout
                                 android:id="@+id/btnSarprasApproveKabag"
                                 android:layout_width="wrap_content"
@@ -127,7 +147,6 @@
                                     android:text="@string/sarana_prasarana_approve"
                                     android:textAlignment="center" />
                             </LinearLayout>
-
                             <LinearLayout
                                 android:id="@+id/btnNewSarpras"
                                 android:layout_width="wrap_content"
@@ -160,7 +179,6 @@
                         </LinearLayout>
                     </HorizontalScrollView>
                     <!--Sarana Prasarana-->
-
                     <!--Rencana Kebutuhan Barang-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -364,7 +382,6 @@
                         </LinearLayout>
                     </LinearLayout>
                     <!--Rencana Kebutuhan Barang-->
-
                     <!--Monitoring Produksi-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -635,7 +652,6 @@
                         </LinearLayout>
                     </LinearLayout>
                     <!--Monitoring Produksi-->
-
                     <!--Inventory System-->
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -710,8 +726,6 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
                     <!--Inventory System-->
-
-
                     <!--Inspeksi & Hazard Report-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -803,7 +817,6 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
-
                                             <ImageView
                                                 android:layout_width="50dp"
                                                 android:layout_height="50dp"
@@ -902,15 +915,12 @@
                         </LinearLayout>
                     </LinearLayout>
                     <!--Inspeksi & Hazard Report-->
-
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                     </LinearLayout>
                 </LinearLayout>
-
             </ScrollView>
 
             <com.getbase.floatingactionbutton.FloatingActionsMenu

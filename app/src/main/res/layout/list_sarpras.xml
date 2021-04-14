@@ -197,6 +197,22 @@ android:layout_height="wrap_content">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <com.google.android.material.button.MaterialButton
+                android:layout_gravity="center"
+                android:id="@+id/btnQRCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/warningColor"
+                android:backgroundTint="@color/warningColor"
+                android:text="QRCode"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
     <View

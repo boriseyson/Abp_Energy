@@ -136,69 +136,70 @@
         <!--    TV Deskripsi-->
         <!--    Bahaya-->
         <!--    Status-->
-        <!--    OPEN-->
         <TextView
             android:id="@+id/tvOpen"
             android:textColor="@color/white"
-            android:background="@drawable/btn_cancel"
+            android:background="@color/bgCancel"
             android:textStyle="bold"
             android:padding="10dp"
             android:layout_marginBottom="20dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Status : Open"
             />
-        <!--    OPEN-->
-        <!--    CLOSE-->
-        <TextView
-            android:id="@+id/tvClose"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_success"
-            android:textStyle="bold"
-            android:padding="10dp"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status : Close"
-            />
-        <!--    CLOSE-->
-        <!--    PROGRESS-->
-        <TextView
-            android:id="@+id/tvProgress"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_total"
-            android:textStyle="bold"
-            android:padding="10dp"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status : Progress"
-            />
-        <!--    PROGRESS-->
-        <!--    CONTINUE-->
-        <TextView
-            android:id="@+id/tvContinue"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_waiting"
-            android:textStyle="bold"
-            android:padding="10dp"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status : Continue"
-            />
-        <!--    CONTINUE-->
         <!--    Status-->
+
+        <!--    USER-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="Dibuat"/>
+                <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="#000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/tvUSER"
+                    android:textStyle="bold"
+                    android:text="Boris Reyson"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="Penanggung Jawab"/>
+                <TextView
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:id="@+id/tvPJ"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="Boris Reyson"/>
+            </LinearLayout>
+        </LinearLayout>
+        <!--    USER-->
     </LinearLayout>
 </androidx.cardview.widget.CardView>

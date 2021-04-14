@@ -35,7 +35,6 @@ class DetailSarprasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_sarpras)
-
         val window: Window = this.window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -84,7 +83,17 @@ class DetailSarprasActivity : AppCompatActivity() {
                 if(detailSarpras!=null){
                     title = "Pemohon : ${detailSarpras.userPemohon}"
                     tvNoLV.text = detailSarpras.noLv
-                    namaDriver(detailSarpras.driver!!)
+                    if(detailSarpras.noPol==null){
+                        lvTV.text="No LV"
+                        driverTX.text="Driver"
+                        tvNoLV.text = detailSarpras.noLv!!.capitalize()
+                        namaDriver(detailSarpras.driver!!)
+                    }else{
+                        tvNoLV.text = detailSarpras.noLv
+                        tvDriver.text = detailSarpras.driver
+                        lvTV.text="Jenis Kendaraan"
+                        driverTX.text="Merk Kendaraan"
+                    }
                     tvKeperluan.text = detailSarpras.keperluan
                     tvTanggalKeluar.text = detailSarpras.tglOut
                     tvJamKeluar.text = detailSarpras.jamOut

@@ -19,7 +19,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HazardReport.ALLHazardReportActivity"></activity>
+        <activity android:name=".Inspeksi.AllInspeksiActivity"></activity>
+        <activity
+            android:name=".QRCodeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Sarpras.AllSarprasActivity" />
+        <activity android:name=".HazardReport.ALLHazardReportActivity" />
         <activity android:name=".HazardReport.RiskActivity" />
         <activity
             android:name=".HazardReport.ImageHazardActivity"

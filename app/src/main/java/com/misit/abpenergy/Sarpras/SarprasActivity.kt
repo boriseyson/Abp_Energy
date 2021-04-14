@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.QRCodeActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Sarpras.Adapter.SarprasAdapter
 import com.misit.abpenergy.Sarpras.SarprasResponse.DataItem
@@ -32,8 +33,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SarprasActivity : AppCompatActivity(), SarprasAdapter.OnItemClickListener {
-
-
     private var adapter: SarprasAdapter? = null
     private var noidOut:String?=null
     private var username:String?=null
@@ -233,6 +232,11 @@ class SarprasActivity : AppCompatActivity(), SarprasAdapter.OnItemClickListener 
         intent.putExtra(DetailSarprasActivity.noidOut,noIdOut)
         startActivity(intent)
     }
+    override fun onQRCodeClick(noIdOut: String?) {
+        val intent = Intent(this@SarprasActivity,QRCodeActivity::class.java)
+        intent.putExtra("noIdOut",noIdOut)
+        startActivity(intent)
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
@@ -257,9 +261,6 @@ class SarprasActivity : AppCompatActivity(), SarprasAdapter.OnItemClickListener 
                 Toasty.info(this@SarprasActivity,"PERMISSION_Ignore",Toasty.LENGTH_SHORT).show()
             }
         }
-    }
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

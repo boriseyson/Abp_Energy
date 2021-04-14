@@ -83,10 +83,12 @@ class ApproveSarprasAdapter(
         }
         if(sarprasList.noPol!=null){
             holder.txtNoLV.text="Jenis Kendaraan :"
+            holder.driver.text = sarprasList.driver
             holder.txtDriver.text="Merk Kendaraan :"
-            holder.noLV.text = "${sarprasList.noLv} ( ${sarprasList.noPol} )"
+            holder.noLV.text = "${sarprasList.noLv!!.capitalize()} ( ${sarprasList.noPol} )"
         }else{
             holder.txtDriver.text="Driver :"
+            getPenumpang(sarprasList.driver!!,holder)
             holder.txtNoLV.text="NO LV : "
             holder.noLV.text = "${sarprasList.noLv}"
         }
@@ -96,7 +98,7 @@ class ApproveSarprasAdapter(
         } else {
             userRule?.contains("approve sarpras")
         }
-        getPenumpang(sarprasList.driver!!,holder)
+
 //        holder.driver.text =sarprasList.driver!!
         if(foundRule!!){
             checkStatus(holder,sarprasList)
