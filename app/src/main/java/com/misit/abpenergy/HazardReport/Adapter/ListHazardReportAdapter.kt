@@ -65,11 +65,11 @@ class ListHazardReportAdapter (private val context: Context?,
             holder.tvStatus.setBackgroundResource(R.color.bgTotal)
         }
         if(hazardList.uservalid!=null){
-            holder.tvVerfikasi.text = "Di Setujui"
+            holder.tvVerfikasi.text = "Di Setujui Oleh Safety"
             holder.tvVerfikasi.setBackgroundResource(R.color.bgApprove)
         }else{
             holder.tvVerfikasi.setBackgroundResource(R.color.bgCancel)
-            holder.tvVerfikasi.text = "Belum Disetujui"
+            holder.tvVerfikasi.text = "Belum Disetujui Oleh Safety"
         }
         holder.cvHazard.setOnClickListener{
             onItemClickListener?.onItemClick(hazardList.uid.toString())

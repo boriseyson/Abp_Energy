@@ -544,6 +544,43 @@
                     </RadioGroup>
                     <!--        Pilihan-->
                     <!--        STATUS PERBAIKAN-->
+                    <!--Tanggal Tenggat-->
+                    <LinearLayout
+                        android:id="@+id/lnTglTenggat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="Tanggal Tenggat" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilTGLTenggat"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:hint="Batas Tanggal Perbaikan">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tvTGLTenggat"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:imeOptions="actionNext"
+                                android:inputType="none"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--Tanggal Tenggat-->
                     <!--Tanggal Selesai-->
                     <LinearLayout
                         android:id="@+id/lnTglSelesai"
