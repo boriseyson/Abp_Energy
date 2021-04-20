@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.misit.abpenergy.HazardReport.Response.DataItem
+import com.misit.abpenergy.HazardReport.Response.HazardItem
 import com.misit.abpenergy.R
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -17,7 +17,7 @@ import org.joda.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 
 class ListHazardReportAdapter (private val context: Context?,
-                               private val hazardList:MutableList<DataItem>):
+                               private val hazardList:MutableList<HazardItem>):
     RecyclerView.Adapter<ListHazardReportAdapter.MyViewHolder>(){
 
     private var onItemClickListener: OnItemClickListener? = null
@@ -45,7 +45,7 @@ class ListHazardReportAdapter (private val context: Context?,
         holder.tvDeskripsi.text = hazardList.deskripsi
         holder.tvStatus.text = hazardList.statusPerbaikan
         holder.tvUSER.text = hazardList.namaLengkap
-        holder.tvPJ.text = hazardList.penanggungJawab
+        holder.tvPJ.text = hazardList.namaPJ
 
         if(hazardList.statusPerbaikan=="BELUM SELESAI"){
             holder.lnHeader.setBackgroundResource(R.color.bgCancel)

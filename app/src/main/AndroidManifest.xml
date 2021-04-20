@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Inspeksi.AllInspeksiActivity"></activity>
+        <activity android:name=".HazardReport.KeparahanActivity"></activity>
+        <activity android:name=".HazardReport.KemungkinanActivity" />
+        <activity android:name=".Inspeksi.AllInspeksiActivity" />
         <activity
             android:name=".QRCodeActivity"
             android:launchMode="singleTask"

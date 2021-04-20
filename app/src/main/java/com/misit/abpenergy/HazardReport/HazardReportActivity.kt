@@ -11,7 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Adapter.ListHazardReportAdapter
-import com.misit.abpenergy.HazardReport.Response.DataItem
+import com.misit.abpenergy.HazardReport.Response.HazardItem
 import com.misit.abpenergy.HazardReport.Response.ListHazard
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
@@ -27,7 +27,7 @@ import retrofit2.Response
 class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItemClickListener {
 
     private var adapter: ListHazardReportAdapter? = null
-    private var hazardList:MutableList<DataItem>?=null
+    private var hazardList:MutableList<HazardItem>?=null
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var page : Int=1
     private var visibleItem : Int=0

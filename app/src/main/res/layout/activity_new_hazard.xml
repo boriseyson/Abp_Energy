@@ -25,7 +25,7 @@
             android:orientation="vertical">
             <!--        Insert Photo-->
             <androidx.cardview.widget.CardView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/imagePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             <!--        Insert Photo-->
             <!--Data Temuan-->
             <TextView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/successColor"
@@ -65,17 +65,15 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
             <!--Data Temuan-->
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="@color/colorPrimaryDark" />
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="10dp">
                 <!--    TEMUAN VIEW-->
@@ -107,7 +105,7 @@
                             android:hint="Perusahaan">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvPerusaan"
+                                android:id="@+id/inPerusaan"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:imeOptions="actionNext"
@@ -138,7 +136,7 @@
                             android:hint="Tanggal">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvTanggal"
+                                android:id="@+id/inTanggal"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clickable="true"
@@ -171,7 +169,7 @@
                             android:hint="Jam">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvJam"
+                                android:id="@+id/inJam"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clickable="true"
@@ -204,7 +202,7 @@
                             android:hint="Lokasi">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvLokasi"
+                                android:id="@+id/inLokasi"
                                 android:imeOptions="actionNext"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -236,7 +234,7 @@
                             android:layout_weight="1.5"
                             android:hint="Detail Lokasi">
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvLokasiDet"
+                                android:id="@+id/inLokasiDet"
                                 android:gravity="top"
                                 android:imeOptions="actionNext"
                                 android:layout_width="match_parent"
@@ -291,7 +289,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:imeOptions="actionNext"
                                 android:maxLines="1"
-                                android:id="@+id/tvBahaya"
+                                android:id="@+id/inBahaya"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="top" />
@@ -350,7 +348,7 @@
                             android:hint="Kemungkinan Resiko">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvKemungkinan"
+                                android:id="@+id/inKemungkinan"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:clickable="true"
@@ -392,7 +390,7 @@
                             android:hint="Keparahan Resiko">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvKeparahan"
+                                android:id="@+id/inKeparahan"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:clickable="true"
@@ -416,7 +414,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
             <!--        Kategori Bahaya-->
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -485,7 +482,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
             <!--        Tindakan Perbaikan-->
             <TextView
                 android:layout_width="match_parent"
@@ -495,7 +491,6 @@
                 android:text="4. TINDAKAN YANG DILAKUKAN UNTUK PERBAIKAN"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -518,7 +513,7 @@
                         android:padding="10dp">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tvPerbaikan"
+                            android:id="@+id/inPerbaikan"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:imeOptions="actionNext"
@@ -538,7 +533,6 @@
                 android:text="STATUS PERBAIKAN (Pilih Salah Satu)"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -621,7 +615,7 @@
                             android:hint="Tanggal Selesai">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvTGLSelesai"
+                                android:id="@+id/inTGLSelesai"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clickable="true"
@@ -658,7 +652,7 @@
                             android:maxLines="1">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/tvJamSelesai"
+                                android:id="@+id/inJamSelesai"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clickable="true"
@@ -672,105 +666,6 @@
                     <!--Penanggung Jawab-->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/strokeSmoke"
-                    android:id="@+id/viewOverlay"/>
-                <androidx.cardview.widget.CardView
-                    android:layout_margin="10dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    android:layout_below="@id/viewOverlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:padding="10dp"
-                            android:background="@color/colorPrimaryDark"
-                            android:textColor="@color/white"
-                            android:gravity="center"
-                            android:text="Nama Penanggung Jawab"
-                            />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="61dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="0.5"
-                                android:gravity="center"
-                                android:text="Nama" />
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/tilPenanggungJawab"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1.5"
-                                android:hint="Nama Penanggung Jawab">
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/tvPenanggungJawab"
-                                    android:imeOptions="actionNext"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:maxLines="1" />
-                            </com.google.android.material.textfield.TextInputLayout>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="61dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="0.5"
-                                android:gravity="center"
-                                android:text="NIK / NRP" />
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/tilNikPJ"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1.5"
-                                android:hint="NIK / NRP Penanggung Jawab">
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/tvNikPJ"
-                                    android:imeOptions="actionNext"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:maxLines="1" />
-                            </com.google.android.material.textfield.TextInputLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <ImageView
-                    android:layout_alignBottom="@+id/viewOverlay"
-                    android:background="@drawable/cirle_img"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/ic_baseline_person_24"/>
-            </RelativeLayout>
             <!--        Insert Photo-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/imagePickerBuktiSelesai"
@@ -822,7 +717,7 @@
                         android:layout_margin="10dp"
                         android:hint="Keterangan Penanggung Jawab">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tvKeteranganPJ"
+                            android:id="@+id/inKeteranganPJ"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="top"
@@ -833,6 +728,94 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!--        Insert Photo-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                android:layout_margin="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/pjFOTO"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:src="@drawable/ic_baseline_person_24"/>
+                <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:padding="10dp"
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:text="Nama Penanggung Jawab"
+                            />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="61dp"
+                                android:layout_weight="0.5"
+                                android:gravity="center"
+                                android:text="Nama" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilPenanggungJawab"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.5"
+                                android:hint="Nama Penanggung Jawab">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/inPenanggungJawab"
+                                    android:imeOptions="actionNext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:maxLines="1" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="61dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.5"
+                                android:gravity="center"
+                                android:text="NIK / NRP" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilNikPJ"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.5"
+                                android:hint="NIK / NRP Penanggung Jawab">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/inNikPJ"
+                                    android:imeOptions="actionNext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:maxLines="1" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+            </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
             <!--    BAHAYA VIEW-->
         </LinearLayout>
 
@@ -842,7 +825,7 @@
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:backgroundTint="#00112233"
         android:orientation="horizontal"
         android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -870,7 +853,6 @@
             android:textColor="@color/white" />
     </LinearLayout>
     <!--        SAVE-->
-
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/btnFLMenu"

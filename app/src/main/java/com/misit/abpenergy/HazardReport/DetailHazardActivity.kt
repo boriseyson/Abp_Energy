@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
-import com.misit.abpenergy.HazardReport.Response.DataItem
+import com.misit.abpenergy.HazardReport.Response.HazardItem
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
@@ -102,13 +102,13 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         PopupUtil.showProgress(this@DetailHazardActivity,"Loading...","Membuat Hazard Report!")
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getItemHazard(uid)
-        call?.enqueue(object : Callback<DataItem> {
-            override fun onFailure(call: Call<DataItem>, t: Throwable) {
+        call?.enqueue(object : Callback<HazardItem> {
+            override fun onFailure(call: Call<HazardItem>, t: Throwable) {
                 Toasty.error(this@DetailHazardActivity,"Error : $t", Toasty.LENGTH_SHORT).show()
                 PopupUtil.dismissDialog()
             }
 
-            override fun onResponse(call: Call<DataItem>, response: Response<DataItem>) {
+            override fun onResponse(call: Call<HazardItem>, response: Response<HazardItem>) {
                 var itemHazard = response.body()
                 val fmt: DateTimeFormatter = DateTimeFormat.forPattern("d MMMM, yyyy")
 
@@ -119,16 +119,16 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                     tvLokasiD.text = itemHazard.lokasiHazard
                     tvLokasiDetails.text= itemHazard.lokasiDetail
                     tvBahayaD.text = itemHazard.deskripsi
-                    tvSumberBahayaD.text = itemHazard.sumberBahaya
+                    tvSumberBahayaD.text = itemHazard.kemungkinan
                     tvKatBahayaD.text = itemHazard.katBahaya
                     tvPerbaikanD.text = itemHazard.tindakan
                     tvStatusPerbaikanD.text = itemHazard.statusPerbaikan
                     tvDibuat.text = itemHazard.namaLengkap
-                    if(itemHazard.risk!=null){
-                        tvRisk.text = itemHazard.risk
-                        tvRisk.setBackgroundColor(Color.parseColor(itemHazard.bgColor))
-                        cvRisk.setBackgroundColor(Color.parseColor(itemHazard.bgColor))
-                        tvRisk.setTextColor(Color.parseColor(itemHazard.txtColor))
+                    if(itemHazard.keparahan!=null){
+                        tvRisk.text = itemHazard.keparahan
+//                        tvRisk.setBackgroundColor(Color.parseColor(itemHazard.bgColor))
+//                        cvRisk.setBackgroundColor(Color.parseColor(itemHazard.bgColor))
+//                        tvRisk.setTextColor(Color.parseColor(itemHazard.txtColor))
                         cvRisk.visibility= View.VISIBLE
                     }else{
                         cvRisk.visibility= View.GONE
@@ -146,7 +146,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                     }else{
                         tvJamSelesaiD.text = "-"
                     }
-                    tvPenanggungJawabD.text = itemHazard.penanggungJawab
+                    tvPenanggungJawabD.text = itemHazard.namaPJ
                     Glide.with(this@DetailHazardActivity)
                         .load("https://abpjobsite.com/bukti_hazard/"+itemHazard?.bukti)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)

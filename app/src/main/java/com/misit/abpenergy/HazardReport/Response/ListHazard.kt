@@ -14,7 +14,7 @@ data class ListHazard(
 	var total: Int? = null,
 
 	@field:SerializedName("data")
-	var data: List<DataItem>? = null,
+	var data: List<HazardItem>? = null,
 
 	@field:SerializedName("last_page")
 	var lastPage: Int? = null,
@@ -35,10 +35,19 @@ data class ListHazard(
 	var currentPage: Int? = null
 )
 
-data class DataItem(
+data class HazardItem(
+
+	@field:SerializedName("kemungkinan")
+	var kemungkinan: String? = null,
+
+	@field:SerializedName("flag")
+	var flag: Int? = null,
 
 	@field:SerializedName("update_bukti")
 	var updateBukti: String? = null,
+
+	@field:SerializedName("nilai")
+	var nilai: Int? = null,
 
 	@field:SerializedName("status_perbaikan")
 	var statusPerbaikan: String? = null,
@@ -49,11 +58,11 @@ data class DataItem(
 	@field:SerializedName("perusahaan")
 	var perusahaan: String? = null,
 
-	@field:SerializedName("penanggung_jawab")
-	var penanggungJawab: String? = null,
-
 	@field:SerializedName("tgl_selesai")
 	var tglSelesai: String? = null,
+
+	@field:SerializedName("namaPengendalian")
+	var namaPengendalian: String? = null,
 
 	@field:SerializedName("lokasi_detail")
 	var lokasiDetail: String? = null,
@@ -64,19 +73,19 @@ data class DataItem(
 	@field:SerializedName("tgl_valid")
 	var tglvalid: String? = null,
 
-	@field:SerializedName("bgColor")
-	var bgColor: String? = null,
+	@field:SerializedName("idKeparahan")
+	var idKeparahan: Int? = null,
 
 	@field:SerializedName("user_input")
 	var userInput: String? = null,
 
+	@field:SerializedName("idPengendalian")
+	var idPengendalian: Int? = null,
+
 	@field:SerializedName("tindakan")
 	var tindakan: String? = null,
 
-	@field:SerializedName("txtColor")
-	var txtColor: String? = null,
-
-	@field:SerializedName("kat_bahaya")
+	@field:SerializedName("katBahaya")
 	var katBahaya: String? = null,
 
 	@field:SerializedName("keterangan_update")
@@ -85,20 +94,23 @@ data class DataItem(
 	@field:SerializedName("lokasiHazard")
 	var lokasiHazard: String? = null,
 
-	@field:SerializedName("idRisk")
-	var idRisk: String? = null,
+	@field:SerializedName("fotoPJ")
+	var fotoPJ: String? = null,
 
 	@field:SerializedName("idvalidation")
 	var idvalidation: Int? = null,
 
-	@field:SerializedName("desc_risk")
-	var descRisk: String? = null,
-
 	@field:SerializedName("jam_selesai")
 	var jamSelesai: String? = null,
 
-	@field:SerializedName("jam_valid")
-	var jamvalid: String? = null,
+	@field:SerializedName("idKemungkinan")
+	var idKemungkinan: Int? = null,
+
+	@field:SerializedName("jam_varid")
+	var jamvarid: String? = null,
+
+	@field:SerializedName("idHirarki")
+	var idHirarki: Int? = null,
 
 	@field:SerializedName("tgl_input")
 	var tglInput: String? = null,
@@ -106,20 +118,17 @@ data class DataItem(
 	@field:SerializedName("jam_hazard")
 	var jamHazard: String? = null,
 
+	@field:SerializedName("nikPJ")
+	var nikPJ: String? = null,
+
 	@field:SerializedName("lokasi")
 	var lokasi: String? = null,
 
 	@field:SerializedName("bukti")
 	var bukti: String? = null,
 
-	@field:SerializedName("sumber_bahaya")
-	var sumberBahaya: String? = null,
-
 	@field:SerializedName("idHazard")
 	var idHazard: Int? = null,
-
-	@field:SerializedName("risk")
-	var risk: String? = null,
 
 	@field:SerializedName("deskripsi")
 	var deskripsi: String? = null,
@@ -133,6 +142,12 @@ data class DataItem(
 	@field:SerializedName("tgl_hazard")
 	var tglHazard: String? = null,
 
+	@field:SerializedName("keparahan")
+	var keparahan: String? = null,
+
 	@field:SerializedName("status")
-	var status: Int? = null
+	var status: Int? = null,
+
+	@field:SerializedName("namaPJ")
+	var namaPJ: String? = null
 )

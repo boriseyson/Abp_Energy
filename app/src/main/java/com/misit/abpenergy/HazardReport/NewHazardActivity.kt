@@ -32,6 +32,7 @@ import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Sarpras.SarprasResponse.UserSarprasResponse
+import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.ConfigUtil.resultIntent
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
@@ -55,20 +56,25 @@ import java.util.*
 class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var bahayaDipilih:String? = null
     private var lokasiDipilih:String? = null
-    private var riskDipilih:String? = null
-    private var bahayaID:String? = null
+    private var hirarkiDipilih:String? = null
+    private var kemungkinanDipilih:String? = null
+    private var keparahanDipilih:String? = null
     private var lokasiID:String? = null
-    private var idPengendalian:String? = null
+    private var hirarkiID:String? = null
+    private var kemungkinanID:String? = null
+    private var keparahanID:String? = null
     private var csrf_token:String?=null
     private var plKondisi:RequestBody?=null
     var rbStatus:RequestBody?=null
     private var bitmap:Bitmap?=null
     private var bitmapBuktiSelesai:Bitmap?=null
+    private var bitmapPJ:Bitmap?=null
     private var fileUpload:Uri?=null
     private var fileUploadSelesai:Uri?=null
+    private var fileUploadPJ:Uri?=null
     private var imgIn:Int=0
     private var imgSelesai:Int=0
-
+    private var imgPJ:Int=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_hazard)
@@ -83,15 +89,17 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         bitmap=null
         imgSelesai=0
         bitmapBuktiSelesai=null
+        fileUploadPJ=null
+        imgPJ = 0
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 //        tvSumberBahaya.setOnClickListener(this)
-        tvTanggal.setOnClickListener(this)
-        tvJam.setOnClickListener(this)
-        tvTGLSelesai.setOnClickListener(this)
+        inTanggal.setOnClickListener(this)
+        inJam.setOnClickListener(this)
+        inTGLSelesai.setOnClickListener(this)
         imagePicker.setOnClickListener(this)
         btnSimpan.setOnClickListener(this)
-        tvJamSelesai.setOnClickListener(this)
+        inJamSelesai.setOnClickListener(this)
         btnBatalHazard.setOnClickListener(this)
 //        btnOpenCamera.setOnClickListener(this)
 //        btnOpenGalery.setOnClickListener(this)
@@ -106,66 +114,79 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 imagePickerBuktiSelesai.visibility=View.GONE
             }
         }
-        imagePickerBuktiSelesai.setOnClickListener(this)
+        imgBuktiSelesai.setOnClickListener(this)
         lnJamSelesai.visibility=View.GONE
         lnTglSelesai.visibility=View.GONE
         imagePickerBuktiSelesai.visibility=View.GONE
-        tvLokasi.setOnClickListener(this)
-        tvKemungkinan.setOnClickListener(this)
-        tvKeparahan.setOnClickListener(this)
+        inLokasi.setOnClickListener(this)
+        inKemungkinan.setOnClickListener(this)
+        inKeparahan.setOnClickListener(this)
         inPengendalian.setOnClickListener(this)
-        tvKeteranganPJ.setOnClickListener(this)
+        btnGambarHazard.setOnClickListener(this)
+        btnFotoPJ.setOnClickListener(this)
+        btnPerbaikan.setOnClickListener(this)
+        pjFOTO.setOnClickListener(this)
     }
     //    VIEW LISTENER
     override fun onClick(v: View?) {
-        if(v!!.id==R.id.tvSumberBahaya){
-            var intent = Intent(this@NewHazardActivity,SumberBahayaActivity::class.java)
-            intent.putExtra("bahayaDipilih",bahayaDipilih)
-            startActivityForResult(intent,111)
+        if(v!!.id==R.id.inTanggal){
+            showDialogTgl(inTanggal)
         }
-        if(v!!.id==R.id.tvTanggal){
-            showDialogTgl(tvTanggal)
+        if (v!!.id==R.id.inJam){
+            showDialogTime(inJam)
         }
-        if (v!!.id==R.id.tvJam){
-            showDialogTime(tvJam)
+        if(v!!.id==R.id.inTGLSelesai){
+            showDialogTgl(inTGLSelesai)
         }
-        if(v!!.id==R.id.tvTGLSelesai){
-            showDialogTgl(tvTGLSelesai)
+        if(v!!.id==R.id.inJamSelesai){
+            showDialogTime(inJamSelesai)
         }
         if(v!!.id==R.id.imagePicker){
             showDialogOption(333,222)
         }
         if(v!!.id==R.id.btnSimpan){
-//            simpanHazard()
-        }
-        if(v!!.id==R.id.tvJamSelesai){
-            showDialogTime(tvJamSelesai)
+            simpanHazard()
         }
         if(v!!.id==R.id.btnBatalHazard){
             finish()
         }
-//        if(v!!.id==R.id.btnOpenCamera){
-//            bitmap=null
-//            imgIn=0
-//            openCamera(333)
-//        }
-//        if(v!!.id==R.id.btnOpenGalery){
-//            bitmap=null
-//            imgIn=0
-//            openGalleryForImage(222)
-//        }
-        if(v?.id==R.id.imagePickerBuktiSelesai){
+        if(v!!.id==R.id.btnGambarHazard){
+            bitmap=null
+            imgIn=0
+            showDialogOption(333,222)
+        }
+        if(v!!.id==R.id.btnFotoPJ){
+            bitmapPJ=null
+            imgPJ=0
+            showDialogOption(533,522)
+        }
+        if(v!!.id==R.id.pjFOTO){
+            bitmapPJ=null
+            imgPJ=0
+            showDialogOption(533,522)
+        }
+        if(v?.id==R.id.imgBuktiSelesai){
             showDialogOption(433,422)
         }
-        if(v?.id==R.id.tvLokasi){
+        if(v?.id==R.id.inLokasi){
             var intent = Intent(this@NewHazardActivity,LokasiActivity::class.java)
             intent.putExtra("lokasiDipilih",lokasiDipilih)
             startActivityForResult(intent,123)
         }
         if(v?.id==R.id.inPengendalian){
-            var intent = Intent(this@NewHazardActivity,RiskActivity::class.java)
-            intent.putExtra("riskDipilih",riskDipilih)
+            var intent = Intent(this@NewHazardActivity,SumberBahayaActivity::class.java)
+            intent.putExtra("hirarkiDipilh",hirarkiDipilih)
             startActivityForResult(intent,456)
+        }
+        if(v?.id==R.id.inKemungkinan){
+            var intent = Intent(this@NewHazardActivity,KemungkinanActivity::class.java)
+            intent.putExtra("kemungkinanDipilih",kemungkinanDipilih)
+            startActivityForResult(intent,457)
+        }
+        if(v?.id==R.id.inKeparahan){
+            var intent = Intent(this@NewHazardActivity,KeparahanActivity::class.java)
+            intent.putExtra("keparahanDipilih",keparahanDipilih)
+            startActivityForResult(intent,458)
         }
     }
     //    VIEW LISTENER
@@ -184,7 +205,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //    onOptionsItemSelected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==R.id.btnSubmit){
-//            simpanHazard()
+            simpanHazard()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -232,38 +253,36 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //    ATIVITY RESULT
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        if(resultCode== Activity.RESULT_OK && requestCode==111){
-            bahayaDipilih = data!!.getStringExtra("bahayaDipilih")
-            bahayaID = data.getStringExtra("bahayaId")
-//            tvSumberBahaya.setText(bahayaDipilih)
+        if(resultCode== Activity.RESULT_OK && requestCode==457){
+            kemungkinanDipilih = data!!.getStringExtra("kemungkinanDipilih")
+            kemungkinanID = data.getStringExtra("kemungkinanID")
+            inKemungkinan.setText(kemungkinanDipilih)
         }else if(resultCode== Activity.RESULT_OK && requestCode==123){
             lokasiDipilih = data!!.getStringExtra("lokasiDipilih")
             lokasiID = data.getStringExtra("lokasiID")
-            tvLokasi.setText(lokasiDipilih)
+            inLokasi.setText(lokasiDipilih)
         }else if(resultCode== Activity.RESULT_OK && requestCode==456){
-            riskDipilih = data!!.getStringExtra("riskDipilih")
-//            riskID = data.getStringExtra("riskID")
-//            inRisk.setText(riskDipilih)
+            hirarkiDipilih = data!!.getStringExtra("hirarkiDipilih")
+            hirarkiID = data.getStringExtra("hirarkiID")
+            inPengendalian.setText(hirarkiDipilih)
+        }else if(resultCode== Activity.RESULT_OK && requestCode==458){
+            keparahanDipilih = data!!.getStringExtra("keparahanDipilih")
+            Toasty.info(this@NewHazardActivity,keparahanDipilih.toString()).show()
+            keparahanID = data.getStringExtra("keparahanID")
+            inKeparahan.setText(keparahanDipilih)
         }else if(resultCode==Activity.RESULT_OK && requestCode==222) {
             try {
-//                data.clipData
                 fileUpload = data!!.data
                 try {
                    bitmap = BitmapFactory.decodeStream(
                            contentResolver.openInputStream(fileUpload!!))
-//                    bitmap = BitmapFactory.decodeStream(stream)
-//                    bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(fileUpload!!.path))
                     imgView.setImageBitmap(bitmap);
-//                    imgView.setImageURI(fileUpload)
                     imgIn = 1
-//                    tvAmbilGambar.visibility=View.VISIBLE
                 } catch (e: IOException) {
                     imgIn = 0
-//                    tvAmbilGambar.visibility=View.GONE
                 }
             } catch (e: IOException) {
                 imgIn = 0
-//                tvAmbilGambar.visibility=View.GONE
             }
         }else if(resultCode==Activity.RESULT_OK && requestCode==333){
             try {
@@ -272,25 +291,19 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                     dataFoto.getByteArrayExtra("gambarDiFoto"), 0, dataFoto
                         .getByteArrayExtra("gambarDiFoto").size
                 )
-//                fileUpload =  createImage(bitmap)
                 imgView.setImageBitmap(bitmap);
                 imgIn = 1
             } catch (e: IOException) {
-//                tvAmbilGambar.visibility=View.GONE
                 imgIn = 0
                 e.printStackTrace();
             }
         }else if(resultCode==Activity.RESULT_OK && requestCode==422) {
             try {
-//                data.clipData
                 fileUploadSelesai = data!!.data
                 try {
                     bitmapBuktiSelesai = BitmapFactory.decodeStream(
                         contentResolver.openInputStream(fileUploadSelesai!!))
-//                    bitmap = BitmapFactory.decodeStream(stream)
-//                    bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(fileUpload!!.path))
                     imgBuktiSelesai.setImageBitmap(bitmapBuktiSelesai);
-//                    imgView.setImageURI(fileUpload)
                     imgSelesai = 1
                 } catch (e: IOException) {
                     imgSelesai = 0
@@ -305,11 +318,38 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                     dataSelesai.getByteArrayExtra("gambarDiFoto"), 0, dataSelesai
                         .getByteArrayExtra("gambarDiFoto").size
                 )
-//                fileUpload =  createImage(bitmap)
                 imgBuktiSelesai.setImageBitmap(bitmapBuktiSelesai);
                 imgSelesai = 1
             } catch (e: IOException) {
                 imgSelesai = 0
+                e.printStackTrace();
+            }
+        }else if(resultCode==Activity.RESULT_OK && requestCode==522) {
+            try {
+//                data.clipData
+                fileUploadPJ = data!!.data
+                try {
+                    bitmapPJ = BitmapFactory.decodeStream(
+                        contentResolver.openInputStream(fileUploadPJ!!))
+                    pjFOTO.setImageBitmap(bitmapPJ);
+                    imgPJ = 1
+                } catch (e: IOException) {
+                    imgPJ = 0
+                }
+            } catch (e: IOException) {
+                imgPJ = 0
+            }
+        }else if(resultCode==Activity.RESULT_OK && requestCode==533){
+            try {
+                var dataPJ = data!!
+                bitmapPJ = BitmapFactory.decodeByteArray(
+                    dataPJ.getByteArrayExtra("gambarDiFoto"), 0, dataPJ
+                        .getByteArrayExtra("gambarDiFoto").size
+                )
+                pjFOTO.setImageBitmap(bitmapPJ);
+                imgPJ = 1
+            } catch (e: IOException) {
+                imgPJ = 0
                 e.printStackTrace();
             }
         }else if(resultCode==Activity.RESULT_CANCELED){
@@ -379,179 +419,179 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         startActivityForResult(intent,codeRequest)
     }
 //       Simpan Hazard
-//    fun simpanHazard(){
-//        if(rbSelesai.isChecked) {
-//            if(!isValidate1()){
-//                return
-//            }
+    fun simpanHazard(){
+        if(rbSelesai.isChecked) {
+            if(!isValidate1()){
+                return
+            }
+        }
+        else{
+            if (!isValidate()) {
+                return
+            }
+        }
+
+    PopupUtil.showProgress(this@NewHazardActivity,"Loading...","Membuat Hazard Report!")
+
+    var inPerusahan = inPerusaan.text.toString().toRequestBody(MultipartBody.FORM)
+    var inTanggal = inTanggal.text.toString().toRequestBody(MultipartBody.FORM)
+    var inJam = inJam.text.toString().toRequestBody(MultipartBody.FORM)
+    var lokasi = lokasiID.toString().toRequestBody(MultipartBody.FORM)
+    var inLokasiDet = inLokasiDet.text.toString().toRequestBody(MultipartBody.FORM)
+    var inBahaya = inBahaya.text.toString().toRequestBody(MultipartBody.FORM)
+    var kemungkinanID = kemungkinanID.toString().toRequestBody(MultipartBody.FORM)
+    var keparahanID = keparahanID.toString().toRequestBody(MultipartBody.FORM)
+    var hirarkiID = hirarkiID.toString().toRequestBody(MultipartBody.FORM)
+    var inPerbaikan = inPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
+    var inPenanggungJawab = inPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
+    var inNikPJ = inNikPJ.text.toString().toRequestBody(MultipartBody.FORM)
+//        Toasty.info(this@NewHazardActivity,lokasiDipilih.toString()).show()
+//    var z=false
+//        if(!z){
+//            return
 //        }
-//        else{
-//            if (!isValidate()) {
-//                return
-//            }
-//        }
-//
-//    PopupUtil.showProgress(this@NewHazardActivity,"Loading...","Membuat Hazard Report!")
-//
-//    var tvPerusaan = tvPerusaan.text.toString().toRequestBody(MultipartBody.FORM)
-//    var tvTanggal = tvTanggal.text.toString().toRequestBody(MultipartBody.FORM)
-//    var tvJam = tvJam.text.toString().toRequestBody(MultipartBody.FORM)
-//    var lokasi = lokasiID.toString().toRequestBody(MultipartBody.FORM)
-//    var tvLokasiDet = tvLokasiDet.text.toString().toRequestBody(MultipartBody.FORM)
-//    var tvBahaya = tvBahaya.text.toString().toRequestBody(MultipartBody.FORM)
-//    var inPengendalian = inPengendalian.text.toString().toRequestBody(MultipartBody.FORM)
-//    var riskID = riskID.toString().toRequestBody(MultipartBody.FORM)
-//    var tvPerbaikan = tvPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
-//    var tvPenanggungJawab = tvPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
-////        Toasty.info(this@NewHazardActivity,lokasiDipilih.toString()).show()
-////    var z=false
-////        if(!z){
-////            return
-////        }
-//        if(plKta.isChecked){
-//            plKondisi = plKta.text.toString().toRequestBody(MultipartBody.FORM)
-//        }else if(plTta.isChecked){
-//            plKondisi = plTta.text.toString().toRequestBody(MultipartBody.FORM)
-//        }
-//        if(rbSelesai.isChecked){
-//            rbStatus= rbSelesai.text.toString().toRequestBody(MultipartBody.FORM)
-//        }else if(rbBelumSelesai.isChecked){
-//            rbStatus= rbBelumSelesai.text.toString().toRequestBody(MultipartBody.FORM)
-//        }else if(rbBerlanjut.isChecked){
-//            rbStatus= rbBerlanjut.text.toString().toRequestBody(MultipartBody.FORM)
-//        }
-//    var tvTGLselesai = tvTGLSelesai.text.toString().toRequestBody(MultipartBody.FORM)
-//    var tvJAMselesai = tvJamSelesai.text.toString().toRequestBody(MultipartBody.FORM)
-//    var username = USERNAME.toRequestBody(MultipartBody.FORM)
-//    var _token:RequestBody = csrf_token!!.toRequestBody(MultipartBody.FORM)
-//
-//    var waktu = Date()
-//    val cal = Calendar.getInstance()
-//    cal.time = waktu
-//    var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
-//    val wrapper = ContextWrapper(applicationContext)
-////    var filenya = File(fileUpload!!.path, jam)
-//        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-//        file = File(file, "${jam}.jpg")
-////    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
-//        try {
-//            // Get the file output stream
-//            val stream: OutputStream = FileOutputStream(file)
-//            //var uri = Uri.parse(file.absolutePath)
-//            // Compress bitmap
-//            bitmap!!.compress(Bitmap.CompressFormat.JPEG, 20, stream)
-//            // Flush the stream
-//            stream.flush()
-//            // Close stream
-//            stream.close()
-//        } catch (e: IOException){ // Catch the exception
-//            e.printStackTrace()
-//        }
-//
-//        var fileUri = file.asRequestBody("image/*".toMediaTypeOrNull())
-//        var bukti = MultipartBody.Part.createFormData("fileToUpload",file.name,fileUri)
-//        var fileUriSelsai:RequestBody?=null
-//        var buktiSelesai :MultipartBody.Part?=null
-//        var fileSelesai = wrapper.getDir("images", Context.MODE_PRIVATE)
-//        if(bitmapBuktiSelesai!=null) {
-////        Bukti Selesai
-//            fileSelesai = File(fileSelesai, "${jam}.jpg")
-////    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
-//            try {
-//                // Get the file output stream
-//                val stream: OutputStream = FileOutputStream(fileSelesai)
-//                //var uri = Uri.parse(file.absolutePath)
-//                // Compress bitmap
-//                bitmapBuktiSelesai!!.compress(Bitmap.CompressFormat.JPEG, 20, stream)
-//                // Flush the stream
-//                stream.flush()
-//                // Close stream
-//                stream.close()
-//            } catch (e: IOException) { // Catch the exception
-//                e.printStackTrace()
-//            }
-//
-//            fileUriSelsai = fileSelesai.asRequestBody("image/*".toMediaTypeOrNull())
-//
-//            buktiSelesai = MultipartBody.Part.createFormData(
-//                "fileToUploadSelesai",
-//                fileSelesai.name,
-//                fileUriSelsai!!
-//            )
-////        Bukti Selesai
-//        }
-//        if(imgSelesai==0){
-//            hazardPost(
-//                bukti,
-//                buktiSelesai,
-//                tvPerusaan,
-//                tvTanggal,
-//                tvJam,
-//                tvBahaya,
-//                lokasi,
-//                tvLokasiDet,
-//                tvPerbaikan,
-//                tvPenanggungJawab,
-//                tvKemungkinan,
-//                tvKeparahan,
-//                idPengendalian,
-//                tvTGLselesai,
-//                tvJAMselesai,
-//                username,
-//                _token,"Bukti_Progress")
-//        }else if(imgSelesai==1){
-//            hazardPost(
-//                bukti,
-//                buktiSelesai,
-//                tvPerusaan,
-//                tvTanggal,
-//                tvJam,
-//                tvBahaya,
-//                lokasi,
-//                tvLokasiDet,
-//                tvPerbaikan,
-//                tvPenanggungJawab,
-//                tvSumberBahaya,
-//                idPengendalian,
-//                tvTGLselesai,
-//                tvJAMselesai,
-//                username,
-//                _token,"Bukti_Selesai"
-//            )
-//        }
-//    }
-    //    Simpan Hazard
+        if(plKta.isChecked){
+            plKondisi = plKta.text.toString().toRequestBody(MultipartBody.FORM)
+        }else if(plTta.isChecked){
+            plKondisi = plTta.text.toString().toRequestBody(MultipartBody.FORM)
+        }
+        if(rbSelesai.isChecked){
+            rbStatus= rbSelesai.text.toString().toRequestBody(MultipartBody.FORM)
+        }else if(rbBelumSelesai.isChecked){
+            rbStatus= rbBelumSelesai.text.toString().toRequestBody(MultipartBody.FORM)
+        }else if(rbBerlanjut.isChecked){
+            rbStatus= rbBerlanjut.text.toString().toRequestBody(MultipartBody.FORM)
+        }
+    var inTGLSelesai = inTGLSelesai.text.toString().toRequestBody(MultipartBody.FORM)
+    var inJamSelesai = inJamSelesai.text.toString().toRequestBody(MultipartBody.FORM)
+    var inKeteranganPJ = inKeteranganPJ.text.toString().toRequestBody(MultipartBody.FORM)
+    var username = USERNAME.toRequestBody(MultipartBody.FORM)
+    var _token:RequestBody = csrf_token!!.toRequestBody(MultipartBody.FORM)
+
+    var waktu = Date()
+    val cal = Calendar.getInstance()
+    cal.time = waktu
+    var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
+    val wrapper = ContextWrapper(applicationContext)
+        //    var filenya = File(fileUpload!!.path, jam)
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+        file = File(file, "${jam}.jpg")
+        ConfigUtil.streamFoto(bitmap!!,file)
+        var fileUri = file.asRequestBody("image/*".toMediaTypeOrNull())
+        var bukti = MultipartBody.Part.createFormData("fileToUpload",file.name,fileUri)
+        //        FOTO PENANGGUNG JAWAB
+        var filePJ = wrapper.getDir("images", Context.MODE_PRIVATE)
+        filePJ = File(filePJ, "${jam}.jpg")
+        //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
+        ConfigUtil.streamFoto(bitmapPJ!!,filePJ)
+        var fileUriPJ = file.asRequestBody("image/*".toMediaTypeOrNull())
+        var fotoPJ = MultipartBody.Part.createFormData("fileToUploadPJ",filePJ.name,fileUriPJ)
+
+        var fileUriSelsai:RequestBody?=null
+        var buktiSelesai :MultipartBody.Part?=null
+        var fileSelesai = wrapper.getDir("images", Context.MODE_PRIVATE)
+        if(bitmapBuktiSelesai!=null) {
+//        Bukti Selesai
+            fileSelesai = File(fileSelesai, "${jam}.jpg")
+            ConfigUtil.streamFoto(bitmapBuktiSelesai!!,fileSelesai)
+            fileUriSelsai = fileSelesai.asRequestBody("image/*".toMediaTypeOrNull())
+            buktiSelesai = MultipartBody.Part.createFormData(
+                "fileToUploadSelesai",
+                fileSelesai.name,
+                fileUriSelsai!!
+            )
+//        Bukti Selesai
+        }
+        if(imgSelesai==0){
+            hazardPost(
+                bukti,
+                fotoPJ,
+                buktiSelesai,
+                inPerusahan,
+                inTanggal,
+                inJam,
+                inBahaya,
+                lokasi,
+                inLokasiDet,
+                kemungkinanID,
+                keparahanID,
+                plKondisi!!,
+                hirarkiID,
+                inPerbaikan,
+                inPenanggungJawab,
+                inNikPJ,
+                rbStatus!!,
+                inTGLSelesai,
+                inJamSelesai,
+                inKeteranganPJ,
+                username,
+                _token,"Bukti_Progress")
+        }else if(imgSelesai==1){
+            hazardPost(
+                bukti,
+                fotoPJ,
+                buktiSelesai,
+                inPerusahan,
+                inTanggal,
+                inJam,
+                inBahaya,
+                lokasi,
+                inLokasiDet,
+                kemungkinanID,
+                keparahanID,
+                plKondisi!!,
+                hirarkiID,
+                inPerbaikan,
+                inPenanggungJawab,
+                inNikPJ,
+                rbStatus!!,
+                inTGLSelesai,
+                inJamSelesai,
+                inKeteranganPJ,
+                username,
+                _token,"Bukti_Selesai"
+            )
+        }
+    }
+//        Simpan Hazard
 //    Save Hazard
-    private fun hazardPost(bukti:MultipartBody.Part,
-                   fileToUploadSelesai:MultipartBody.Part?,
-                   tvPerusaan:RequestBody,
-                   tvTanggal:RequestBody,
-                   tvJam:RequestBody,
-                   tvBahaya:RequestBody,
-                   tvLokasi:RequestBody,
-                   tvLokasiDet:RequestBody,
-                   tvPerbaikan:RequestBody,
-                   tvPenanggungJawab:RequestBody,
-                   tvSumberBahaya:RequestBody,
-                   inRisk:RequestBody,
-                   tvTGLselesai:RequestBody,
-                   tvJAMselesai:RequestBody,
-                   username:RequestBody,
-                   _token:RequestBody,tipe:String){
+    private fun hazardPost(
+                   fileBukti:MultipartBody.Part,
+                   filePJ:MultipartBody.Part?,
+                   fileSelesai:MultipartBody.Part?,
+                   perusahaan:RequestBody,
+                   tanggal:RequestBody,
+                   jam:RequestBody,
+                   bahaya:RequestBody,
+                   lokasi:RequestBody,
+                   lokasiDet:RequestBody,
+                   kemungkinan:RequestBody,
+                   keparahan:RequestBody,
+                   perbaikan:RequestBody,
+                   kondisi:RequestBody,
+                   hirarki:RequestBody,
+                   namaPJ:RequestBody,
+                   nikPJ:RequestBody,
+                   status:RequestBody,
+                   tglSelesai:RequestBody,
+                   jamSelesai:RequestBody,
+                   keteranganPJ:RequestBody,
+                   user:RequestBody,
+                   token:RequestBody,tipe:String){
     //    API POST
     val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
      var call:Call<HazardReportResponse>?=null
         if(tipe=="Bukti_Progress"){
             call = apiEndPoint.postHazardReport(
-                bukti,tvPerusaan,tvTanggal,tvJam,plKondisi!!,tvBahaya,rbStatus!!,
-                tvLokasi,tvLokasiDet,tvPerbaikan,tvPenanggungJawab,tvSumberBahaya,inRisk,
-                tvTGLselesai,tvJAMselesai,username,_token
+                fileBukti,filePJ,perusahaan,tanggal,jam,bahaya,lokasi,
+                lokasiDet,kemungkinan,keparahan,perbaikan,kondisi,hirarki,
+                namaPJ,nikPJ,status,user,token
             )
         }else if(tipe=="Bukti_Selesai"){
              call = apiEndPoint.postHazardReportSelesai(
-                bukti,fileToUploadSelesai,tvPerusaan,tvTanggal,tvJam,plKondisi!!,tvBahaya,rbStatus!!,
-                tvLokasi,tvLokasiDet,tvPerbaikan,tvPenanggungJawab,tvSumberBahaya,inRisk,
-                tvTGLselesai,tvJAMselesai,username,_token
+                 fileBukti,filePJ,fileSelesai,perusahaan,tanggal,jam,bahaya,lokasi,
+                 lokasiDet,kemungkinan,keparahan,perbaikan,kondisi,hirarki,
+                 namaPJ,nikPJ,status,tglSelesai,jamSelesai,keteranganPJ,user,token
             )
         }
     call?.enqueue(object : Callback<HazardReportResponse> {
@@ -604,55 +644,60 @@ private fun getToken() {
     fun isValidate():Boolean{
     clearError()
 
-    if(tvPerusaan.text!!.isEmpty()){
+    if(inPerusaan.text!!.isEmpty()){
         tilPerusahaan.error="Please Input Someting"
-        tvPerusaan.requestFocus()
+        inPerusaan.requestFocus()
         return false
     }
-    if(tvTanggal.text!!.isEmpty()){
+    if(inTanggal.text!!.isEmpty()){
         tilTanggal.error="Please Input Someting"
-        tvTanggal.requestFocus()
+        inTanggal.requestFocus()
         return false
     }
-    if(tvJam.text!!.isEmpty()){
+    if(inJam.text!!.isEmpty()){
         tilJam.error="Please Input Someting"
-        tvJam.requestFocus()
+        inJam.requestFocus()
         return false
     }
-    if(tvLokasi.text!!.isEmpty()){
+    if(inLokasi.text!!.isEmpty()){
         tilLokasi.error="Please Input Someting"
-        tvLokasi.requestFocus()
+        inLokasi.requestFocus()
         return false
     }
-    if(tvLokasiDet.text!!.isEmpty()){
+    if(inLokasiDet.text!!.isEmpty()){
         tilLokasiDet.error="Please Input Someting"
-        tvLokasiDet.requestFocus()
+        inLokasiDet.requestFocus()
         return false
     }
 
-    if(tvBahaya.text!!.isEmpty()){
+    if(inBahaya.text!!.isEmpty()){
         tilBahaya.error="Please Input Someting"
-        tvBahaya.requestFocus()
+        inBahaya.requestFocus()
         return false
     }
-//    if(tvSumberBahaya.text!!.isEmpty()){
-//        tilSumberBahaya.error="Please Input Someting"
-//        tvSumberBahaya.requestFocus()
-//        return false
-//    }
-//    if(inRisk.text!!.isEmpty()){
-//        tilRisk.error="Please Input Someting"
-//        inRisk.requestFocus()
-//        return false
-//    }
-    if(tvPerbaikan.text!!.isEmpty()){
+    if(inKemungkinan.text!!.isEmpty()){
+        tilKemungkinan.error="Please Input Someting"
+        inKemungkinan.requestFocus()
+        return false
+    }
+    if(inKeparahan.text!!.isEmpty()){
+        tilKeparahan.error="Please Input Someting"
+        inKeparahan.requestFocus()
+        return false
+    }
+    if(inPengendalian.text!!.isEmpty()){
+        tilPengendalian.error="Please Input Someting"
+        inPengendalian.requestFocus()
+        return false
+    }
+    if(inPerbaikan.text!!.isEmpty()){
         tilPerbaikan.error="Please Input Someting"
-        tvPerbaikan.requestFocus()
+        inPerbaikan.requestFocus()
         return false
     }
-    if(tvPenanggungJawab.text!!.isEmpty()){
+    if(inPenanggungJawab.text!!.isEmpty()){
         tilPenanggungJawab.error="Please Input Someting"
-        tvPenanggungJawab.requestFocus()
+        inPenanggungJawab.requestFocus()
         return false
     }
     if (grupKategori.getCheckedRadioButtonId() == -1)
@@ -678,65 +723,75 @@ private fun getToken() {
     fun isValidate1():Boolean{
         clearError()
 
-        if(tvPerusaan.text!!.isEmpty()){
+        if(inPerusaan.text!!.isEmpty()){
             tilPerusahaan.error="Please Input Someting"
-            tvPerusaan.requestFocus()
+            inPerusaan.requestFocus()
             return false
         }
-        if(tvTanggal.text!!.isEmpty()){
+        if(inTanggal.text!!.isEmpty()){
             tilTanggal.error="Please Input Someting"
-            tvTanggal.requestFocus()
+            inTanggal.requestFocus()
             return false
         }
-        if(tvJam.text!!.isEmpty()){
+        if(inJam.text!!.isEmpty()){
             tilJam.error="Please Input Someting"
-            tvJam.requestFocus()
+            inJam.requestFocus()
             return false
         }
-        if(tvLokasi.text!!.isEmpty()){
+        if(inLokasi.text!!.isEmpty()){
             tilLokasi.error="Please Input Someting"
-            tvLokasi.requestFocus()
+            inLokasi.requestFocus()
             return false
         }
-        if(tvLokasiDet.text!!.isEmpty()){
+        if(inLokasiDet.text!!.isEmpty()){
             tilLokasiDet.error="Please Input Someting"
-            tvLokasiDet.requestFocus()
+            inLokasiDet.requestFocus()
             return false
         }
 
-        if(tvBahaya.text!!.isEmpty()){
+        if(inBahaya.text!!.isEmpty()){
             tilBahaya.error="Please Input Someting"
-            tvBahaya.requestFocus()
+            inBahaya.requestFocus()
             return false
         }
-//        if(tvSumberBahaya.text!!.isEmpty()){
-//            tilSumberBahaya.error="Please Input Someting"
-//            tvSumberBahaya.requestFocus()
-//            return false
-//        }
-//        if(inRisk.text!!.isEmpty()){
-//            tilRisk.error="Please Input Someting"
-//            inRisk.requestFocus()
-//            return false
-//        }
-        if(tvPerbaikan.text!!.isEmpty()){
+        if(inKemungkinan.text!!.isEmpty()){
+            tilKemungkinan.error="Please Input Someting"
+            inKemungkinan.requestFocus()
+            return false
+        }
+        if(inKeparahan.text!!.isEmpty()){
+            tilKeparahan.error="Please Input Someting"
+            inKeparahan.requestFocus()
+            return false
+        }
+        if(inPengendalian.text!!.isEmpty()){
+            tilPengendalian.error="Please Input Someting"
+            inPengendalian.requestFocus()
+            return false
+        }
+        if(inPerbaikan.text!!.isEmpty()){
             tilPerbaikan.error="Please Input Someting"
-            tvPerbaikan.requestFocus()
+            inPerbaikan.requestFocus()
             return false
         }
-        if(tvPenanggungJawab.text!!.isEmpty()){
+        if(inPenanggungJawab.text!!.isEmpty()){
             tilPenanggungJawab.error="Please Input Someting"
-            tvPenanggungJawab.requestFocus()
+            inPenanggungJawab.requestFocus()
             return false
         }
-        if(tvTGLSelesai.text!!.isEmpty()){
+        if(inNikPJ.text!!.isEmpty()){
+            tilNikPJ.error="Please Input Someting"
+            inNikPJ.requestFocus()
+            return false
+        }
+        if(inTGLSelesai.text!!.isEmpty()){
             tilTGLSelesai.error="Please Input Someting"
-            tvTGLSelesai.requestFocus()
+            inTGLSelesai.requestFocus()
             return false
         }
-        if(tvJamSelesai.text!!.isEmpty()){
+        if(inJamSelesai.text!!.isEmpty()){
             tilJamSelesai.error="Please Input Someting"
-            tvJamSelesai.requestFocus()
+            inJamSelesai.requestFocus()
             return false
         }
         if (grupKategori.getCheckedRadioButtonId() == -1)
@@ -772,8 +827,9 @@ private fun getToken() {
         tilLokasi.error=null
         tilLokasiDet.error=null
         tilBahaya.error=null
-//        tilSumberBahaya.error=null
-//        tilRisk.error=null
+        tilKemungkinan.error=null
+        tilKeparahan.error=null
+        tilPengendalian.error=null
         tilPerbaikan.error=null
         tilKatBahaya.visibility=View.GONE
         tilStatus.visibility=View.GONE

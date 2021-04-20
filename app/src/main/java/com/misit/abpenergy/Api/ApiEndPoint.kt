@@ -1,7 +1,6 @@
 package com.misit.abpenergy.Api
 
 import com.misit.abpenergy.HazardReport.Response.*
-import com.misit.abpenergy.HazardReport.Response.DataItem
 import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
 import com.misit.abpenergy.Login.Response.SectionResponse
@@ -151,28 +150,35 @@ interface ApiEndPoint{
                   @Query("lDate") lDate:String)
             : Call<StockResponse>?
 
-    @GET("/android/api/hse/sumber/bahaya")
-    fun getBahayaList()
-            : Call<SumberBahayaResponse>?
+    @GET("/hse/admin/hiraiki/pengendalian")
+    fun getHirarkiPengendalian()
+            : Call<HirarkiResponse>?
+    @GET("/hse/admin/resiko/kemungkinan")
+    fun resikoKemungkinan()
+            : Call<KemungkinanResponse>?
+    @GET("/hse/admin/resiko/keparahan")
+    fun resikoKeparahan()
+            : Call<KeparahanResponse>?
 
     @Multipart
     @POST("/android/api/hse/hazard/reportPost")
     fun postHazardReport(
         @Part fileToUpload: MultipartBody.Part?,
+        @Part fileToUploadPJ: MultipartBody.Part?,
         @Part("perusahaan") perusahaan: RequestBody?,
         @Part("tgl_hazard") tgl_hazard:RequestBody?,
         @Part("jam_hazard") jam_hazard:RequestBody?,
-        @Part("kat_bahaya") kat_bahaya:RequestBody?,
-        @Part("deskripsi") deskripsi:RequestBody?,
-        @Part("status_perbaikan") status_perbaikan:RequestBody?,
         @Part("lokasi") lokasi:RequestBody?,
         @Part("lokasi_detail") lokasi_detail:RequestBody?,
+        @Part("deskripsi") deskripsi:RequestBody?,
+        @Part("kemungkinan") kemungkinan:RequestBody?,
+        @Part("keparahan") keparahan:RequestBody?,
+        @Part("katBahaya") katBahaya:RequestBody?,
+        @Part("pengendalian") pengendalian:RequestBody?,
         @Part("tindakan") tindakan:RequestBody?,
-        @Part("penanggung_jawab") penanggung_jawab:RequestBody?,
-        @Part("sumber_bahaya") sumber_bahaya:RequestBody?,
-        @Part("risk") risk:RequestBody?,
-        @Part("tgl_selesai") tgl_selesai:RequestBody?,
-        @Part("jam_selesai") jam_selesai:RequestBody?,
+        @Part("namaPJ") namaPJ:RequestBody?,
+        @Part("nikPJ") nikPJ:RequestBody?,
+        @Part("status") status:RequestBody?,
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
                          ) : Call<HazardReportResponse>?
@@ -180,21 +186,25 @@ interface ApiEndPoint{
     @POST("/android/api/hse/hazard/reportPost/selesai")
     fun postHazardReportSelesai(
         @Part fileToUpload: MultipartBody.Part?,
+        @Part fileToUploadPJ: MultipartBody.Part?,
         @Part fileToUploadSelesai: MultipartBody.Part?,
         @Part("perusahaan") perusahaan: RequestBody?,
         @Part("tgl_hazard") tgl_hazard:RequestBody?,
         @Part("jam_hazard") jam_hazard:RequestBody?,
-        @Part("kat_bahaya") kat_bahaya:RequestBody?,
-        @Part("deskripsi") deskripsi:RequestBody?,
-        @Part("status_perbaikan") status_perbaikan:RequestBody?,
         @Part("lokasi") lokasi:RequestBody?,
         @Part("lokasi_detail") lokasi_detail:RequestBody?,
+        @Part("deskripsi") deskripsi:RequestBody?,
+        @Part("kemungkinan") kemungkinan:RequestBody?,
+        @Part("keparahan") keparahan:RequestBody?,
+        @Part("katBahaya") katBahaya:RequestBody?,
+        @Part("pengendalian") pengendalian:RequestBody?,
         @Part("tindakan") tindakan:RequestBody?,
-        @Part("penanggung_jawab") penanggung_jawab:RequestBody?,
-        @Part("sumber_bahaya") sumber_bahaya:RequestBody?,
-        @Part("risk") risk:RequestBody?,
-        @Part("tgl_selesai") tgl_selesai:RequestBody?,
-        @Part("jam_selesai") jam_selesai:RequestBody?,
+        @Part("namaPJ") namaPJ:RequestBody?,
+        @Part("nikPJ") nikPJ:RequestBody?,
+        @Part("status") status:RequestBody?,
+        @Part("tglSelesai") tglSelesai:RequestBody?,
+        @Part("jamSelesai") jamSelesai:RequestBody?,
+        @Part("keteranganPJ") keteranganPJ:RequestBody?,
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
@@ -209,7 +219,7 @@ interface ApiEndPoint{
 
     @GET("/android/api/hse/item/hazard/report")
     fun getItemHazard(@Query("uid") uid:String)
-            : Call<DataItem>?
+            : Call<HazardItem>?
 
     @GET("/android/api/user/check/data")
     fun getDataForNewUser(@Query("nik") nik:String)
