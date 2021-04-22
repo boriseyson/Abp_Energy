@@ -219,7 +219,7 @@ interface ApiEndPoint{
 
     @GET("/android/api/hse/item/hazard/report")
     fun getItemHazard(@Query("uid") uid:String)
-            : Call<HazardItem>?
+            : Call<DetailHazardResponse>?
 
     @GET("/android/api/user/check/data")
     fun getDataForNewUser(@Query("nik") nik:String)

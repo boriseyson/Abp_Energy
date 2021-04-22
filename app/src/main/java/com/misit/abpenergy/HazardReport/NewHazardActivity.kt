@@ -32,6 +32,7 @@ import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Sarpras.SarprasResponse.UserSarprasResponse
+import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.ConfigUtil.resultIntent
 import com.misit.abpenergy.Utils.PopupUtil
@@ -101,6 +102,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         btnSimpan.setOnClickListener(this)
         inJamSelesai.setOnClickListener(this)
         btnBatalHazard.setOnClickListener(this)
+        matrikResiko.setOnClickListener(this)
 //        btnOpenCamera.setOnClickListener(this)
 //        btnOpenGalery.setOnClickListener(this)
         groupStatus.setOnCheckedChangeListener { group, checkedId ->
@@ -126,6 +128,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         btnFotoPJ.setOnClickListener(this)
         btnPerbaikan.setOnClickListener(this)
         pjFOTO.setOnClickListener(this)
+        btnFotoPJ.setOnClickListener(this)
     }
     //    VIEW LISTENER
     override fun onClick(v: View?) {
@@ -187,6 +190,11 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             var intent = Intent(this@NewHazardActivity,KeparahanActivity::class.java)
             intent.putExtra("keparahanDipilih",keparahanDipilih)
             startActivityForResult(intent,458)
+        }
+        if(v?.id==R.id.matrikResiko){
+            var intent = Intent(this@NewHazardActivity,MatrikResikoWebViewActivity::class.java)
+            startActivity(intent)
+
         }
     }
     //    VIEW LISTENER
@@ -445,11 +453,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     var inPerbaikan = inPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
     var inPenanggungJawab = inPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
     var inNikPJ = inNikPJ.text.toString().toRequestBody(MultipartBody.FORM)
-//        Toasty.info(this@NewHazardActivity,lokasiDipilih.toString()).show()
-//    var z=false
-//        if(!z){
-//            return
-//        }
         if(plKta.isChecked){
             plKondisi = plKta.text.toString().toRequestBody(MultipartBody.FORM)
         }else if(plTta.isChecked){
@@ -461,6 +464,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             rbStatus= rbBelumSelesai.text.toString().toRequestBody(MultipartBody.FORM)
         }else if(rbBerlanjut.isChecked){
             rbStatus= rbBerlanjut.text.toString().toRequestBody(MultipartBody.FORM)
+        }else if(rbDLMpengerjaan.isChecked){
+            rbStatus= rbDLMpengerjaan.text.toString().toRequestBody(MultipartBody.FORM)
         }
     var inTGLSelesai = inTGLSelesai.text.toString().toRequestBody(MultipartBody.FORM)
     var inJamSelesai = inJamSelesai.text.toString().toRequestBody(MultipartBody.FORM)
@@ -484,7 +489,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         filePJ = File(filePJ, "${jam}.jpg")
         //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
         ConfigUtil.streamFoto(bitmapPJ!!,filePJ)
-        var fileUriPJ = file.asRequestBody("image/*".toMediaTypeOrNull())
+        var fileUriPJ = filePJ.asRequestBody("image/*".toMediaTypeOrNull())
         var fotoPJ = MultipartBody.Part.createFormData("fileToUploadPJ",filePJ.name,fileUriPJ)
 
         var fileUriSelsai:RequestBody?=null
@@ -567,9 +572,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                    lokasiDet:RequestBody,
                    kemungkinan:RequestBody,
                    keparahan:RequestBody,
-                   perbaikan:RequestBody,
                    kondisi:RequestBody,
                    hirarki:RequestBody,
+                   perbaikan:RequestBody,
                    namaPJ:RequestBody,
                    nikPJ:RequestBody,
                    status:RequestBody,
@@ -583,14 +588,14 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
      var call:Call<HazardReportResponse>?=null
         if(tipe=="Bukti_Progress"){
             call = apiEndPoint.postHazardReport(
-                fileBukti,filePJ,perusahaan,tanggal,jam,bahaya,lokasi,
-                lokasiDet,kemungkinan,keparahan,perbaikan,kondisi,hirarki,
+                fileBukti,filePJ,perusahaan,tanggal,jam,lokasi,
+                lokasiDet,bahaya,kemungkinan,keparahan,kondisi,hirarki,perbaikan,
                 namaPJ,nikPJ,status,user,token
             )
         }else if(tipe=="Bukti_Selesai"){
              call = apiEndPoint.postHazardReportSelesai(
-                 fileBukti,filePJ,fileSelesai,perusahaan,tanggal,jam,bahaya,lokasi,
-                 lokasiDet,kemungkinan,keparahan,perbaikan,kondisi,hirarki,
+                 fileBukti,filePJ,fileSelesai,perusahaan,tanggal,jam,lokasi,
+                 lokasiDet,bahaya,kemungkinan,keparahan,kondisi,hirarki,perbaikan,
                  namaPJ,nikPJ,status,tglSelesai,jamSelesai,keteranganPJ,user,token
             )
         }

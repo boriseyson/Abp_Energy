@@ -19,16 +19,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HazardReport.KeparahanActivity"></activity>
-        <activity android:name=".HazardReport.KemungkinanActivity" />
-        <activity android:name=".Inspeksi.AllInspeksiActivity" />
+        <activity android:name=".Service.MatrikResikoWebViewActivity" android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden"></activity>
+        <activity android:name=".HazardReport.KeparahanActivity" android:screenOrientation="portrait" />
+        <activity android:name=".HazardReport.KemungkinanActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Inspeksi.AllInspeksiActivity" android:screenOrientation="portrait" />
         <activity
             android:name=".QRCodeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".Sarpras.AllSarprasActivity" />
-        <activity android:name=".HazardReport.ALLHazardReportActivity" />
-        <activity android:name=".HazardReport.RiskActivity" />
+        <activity android:name=".Sarpras.AllSarprasActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".HazardReport.ALLHazardReportActivity" android:screenOrientation="portrait" />
+        <activity android:name=".HazardReport.RiskActivity" android:screenOrientation="portrait" />
         <activity
             android:name=".HazardReport.ImageHazardActivity"
             android:launchMode="singleTask"
@@ -65,8 +66,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-        <activity android:name=".Inspeksi.InspeksiActivity" />
-        <activity android:name=".HazardReport.DetailHazardActivity" />
+        <activity android:name=".Inspeksi.InspeksiActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity android:name=".HazardReport.DetailHazardActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HazardReport.SumberBahayaActivity"
             android:launchMode="singleTask"

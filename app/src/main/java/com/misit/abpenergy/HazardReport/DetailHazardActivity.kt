@@ -13,12 +13,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.HazardReport.Response.DetailHazardResponse
 import com.misit.abpenergy.HazardReport.Response.HazardItem
 import com.misit.abpenergy.R
+import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_detail_hazard.*
+import kotlinx.android.synthetic.main.detail_hazard.*
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -32,6 +35,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var bukti:String?=null
     private var updateBukti:String?=null
     private var adminHazard:String?=null
+    private var fotoPJ:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_hazard)
@@ -51,6 +55,8 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         floatUpdateStatus.setOnClickListener(this)
         cvImageDetail.setOnClickListener(this)
         cvStatusPerbaikan.setOnClickListener(this)
+        pjFOTO.setOnClickListener(this)
+        matrikResiko.setOnClickListener(this)
     }
     override fun onResume() {
         if(adminHazard!=null){
@@ -85,6 +91,16 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
             intent.putExtra("Direktori","https://abpjobsite.com/bukti_hazard/update/")
             startActivity(intent)
         }
+        if(v?.id==R.id.pjFOTO){
+            var intent = Intent(this@DetailHazardActivity,ImageHazardActivity::class.java)
+            intent.putExtra("ImageHazard",fotoPJ)
+            intent.putExtra("Direktori","https://abpjobsite.com/bukti_hazard/penanggung_jawab/")
+            startActivity(intent)
+        }
+        if(v?.id==R.id.matrikResiko){
+            var intent = Intent(this@DetailHazardActivity,MatrikResikoWebViewActivity::class.java)
+            startActivity(intent)
+        }
         btnFLMenu.collapse()
     }
 
@@ -102,77 +118,97 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         PopupUtil.showProgress(this@DetailHazardActivity,"Loading...","Membuat Hazard Report!")
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getItemHazard(uid)
-        call?.enqueue(object : Callback<HazardItem> {
-            override fun onFailure(call: Call<HazardItem>, t: Throwable) {
+        call?.enqueue(object : Callback<DetailHazardResponse> {
+            override fun onFailure(call: Call<DetailHazardResponse>, t: Throwable) {
                 Toasty.error(this@DetailHazardActivity,"Error : $t", Toasty.LENGTH_SHORT).show()
                 PopupUtil.dismissDialog()
             }
 
-            override fun onResponse(call: Call<HazardItem>, response: Response<HazardItem>) {
-                var itemHazard = response.body()
+            override fun onResponse(call: Call<DetailHazardResponse>, response: Response<DetailHazardResponse>) {
+                var dataHazard = response.body()
                 val fmt: DateTimeFormatter = DateTimeFormat.forPattern("d MMMM, yyyy")
 
-                if(itemHazard!=null){
-                    tvPerusahaanD.text = itemHazard.perusahaan
-                    tvTanggalD.text = LocalDate.parse(itemHazard.tglHazard).toString(fmt)
-                    tvJamD.text = itemHazard.jamHazard
-                    tvLokasiD.text = itemHazard.lokasiHazard
-                    tvLokasiDetails.text= itemHazard.lokasiDetail
-                    tvBahayaD.text = itemHazard.deskripsi
-                    tvSumberBahayaD.text = itemHazard.kemungkinan
-                    tvKatBahayaD.text = itemHazard.katBahaya
-                    tvPerbaikanD.text = itemHazard.tindakan
-                    tvStatusPerbaikanD.text = itemHazard.statusPerbaikan
-                    tvDibuat.text = itemHazard.namaLengkap
-                    if(itemHazard.keparahan!=null){
-                        tvRisk.text = itemHazard.keparahan
-//                        tvRisk.setBackgroundColor(Color.parseColor(itemHazard.bgColor))
-//                        cvRisk.setBackgroundColor(Color.parseColor(itemHazard.bgColor))
-//                        tvRisk.setTextColor(Color.parseColor(itemHazard.txtColor))
-                        cvRisk.visibility= View.VISIBLE
-                    }else{
-                        cvRisk.visibility= View.GONE
-                    }
-                    if(itemHazard.tglSelesai!=null){
-                        btnFLMenu.visibility=View.GONE
-                        tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)
-                    }else{
-                        imgStatus.visibility=View.GONE
-                        btnFLMenu.visibility=View.VISIBLE
-                        tvTGLSelesaiD.text = "-"
-                    }
-                    if(itemHazard.jamSelesai!=null){
-                    tvJamSelesaiD.text = itemHazard.jamSelesai
-                    }else{
-                        tvJamSelesaiD.text = "-"
-                    }
-                    tvPenanggungJawabD.text = itemHazard.namaPJ
-                    Glide.with(this@DetailHazardActivity)
-                        .load("https://abpjobsite.com/bukti_hazard/"+itemHazard?.bukti)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(imgView)
-                    bukti = itemHazard?.bukti
-                    if(itemHazard.updateBukti!=null){
+                if(dataHazard!=null){
+                    if(dataHazard.itemHazardList!=null){
+                        var itemHazard =dataHazard.itemHazardList!!
+                        tvPerusahaanD.text = itemHazard.perusahaan
+                        tvTanggalD.text = LocalDate.parse(itemHazard.tglHazard).toString(fmt)
+                        tvJamD.text = itemHazard.jamHazard
+                        tvLokasiD.text = itemHazard.lokasiHazard
+                        tvLokasiDetails.text= itemHazard.lokasiDetail
+                        tvBahayaD.text = itemHazard.deskripsi
+                        tvKemungkinan.text = itemHazard.kemungkinan
+                        tvKeparahan.text = itemHazard.keparahan
+                        tvPengendalian.text = itemHazard.namaPengendalian
+                        tvKatBahayaD.text = itemHazard.katBahaya
+                        tvPerbaikanD.text = itemHazard.tindakan
+                        tvStatusPerbaikanD.text = itemHazard.statusPerbaikan
+                        tvDibuat.text = itemHazard.namaLengkap
+                        tvNilaiKeparahan.text = itemHazard.nilaiKeparahan.toString()
+                        tvNilaiKemungkinan.text = itemHazard.nilaiKemungkinan.toString()
+
+                        if(itemHazard.tglSelesai!=null){
+                            btnFLMenu.visibility=View.GONE
+                            tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)
+                        }else{
+                            imgStatus.visibility=View.GONE
+                            btnFLMenu.visibility=View.VISIBLE
+                            tvTGLSelesaiD.text = "-"
+                        }
+                        if(itemHazard.jamSelesai!=null){
+                            tvJamSelesaiD.text = itemHazard.jamSelesai
+                        }else{
+                            tvJamSelesaiD.text = "-"
+                        }
+                        namaPJ.text = itemHazard.namaPJ
+                        nikPJ.text = itemHazard.nikPJ
                         Glide.with(this@DetailHazardActivity)
-                            .load("https://abpjobsite.com/bukti_hazard/update/"+itemHazard?.updateBukti)
+                            .load("https://abpjobsite.com/bukti_hazard/"+itemHazard?.bukti)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(imgStatus)
-                        imgStatus.visibility=View.VISIBLE
-                        tvStatusPerbaikan.visibility=View.VISIBLE
-                        cvStatusPerbaikan.visibility=View.VISIBLE
-                        updateBukti = itemHazard?.updateBukti
-                    }else{
-                        cvStatusPerbaikan.visibility=View.GONE
-                        tvStatusPerbaikan.visibility=View.GONE
-                        imgStatus.visibility=View.GONE
+                            .into(imgView)
+
+                        Glide.with(this@DetailHazardActivity)
+                            .load("https://abpjobsite.com/bukti_hazard/penanggung_jawab/"+itemHazard?.fotoPJ)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(pjFOTO)
+                        bukti = itemHazard?.bukti
+                        fotoPJ = itemHazard.fotoPJ
+                        if(itemHazard.updateBukti!=null){
+                            Glide.with(this@DetailHazardActivity)
+                                .load("https://abpjobsite.com/bukti_hazard/update/"+itemHazard?.updateBukti)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(imgStatus)
+                            imgStatus.visibility=View.VISIBLE
+                            tvStatusPerbaikan.visibility=View.VISIBLE
+                            cvStatusPerbaikan.visibility=View.VISIBLE
+                            updateBukti = itemHazard?.updateBukti
+                        }else{
+                            cvStatusPerbaikan.visibility=View.GONE
+                            tvStatusPerbaikan.visibility=View.GONE
+                            imgStatus.visibility=View.GONE
+                        }
+                        if(itemHazard.keteranganUpdate!=null){
+                            lnKetPerbaikan.visibility = View.VISIBLE
+                            tvKetPerbaikan.text = itemHazard.keteranganUpdate
+                        }else{
+                            lnKetPerbaikan.visibility = View.GONE
+                            tvKetPerbaikan.text = ""
+                        }
                     }
-                    if(itemHazard.keteranganUpdate!=null){
-                        lnKetPerbaikan.visibility = View.VISIBLE
-                        tvKetPerbaikan.text = itemHazard.keteranganUpdate
-                    }else{
-                        lnKetPerbaikan.visibility = View.GONE
-                        tvKetPerbaikan.text = ""
+                    if(dataHazard.nilairRisk!=null){
+                        var itemHazard =  dataHazard.itemHazardList
+                        tvTotalResiko.text = "${itemHazard!!.nilaiKemungkinan} x ${itemHazard!!.nilaiKeparahan} = ${dataHazard.nilairRisk}"
                     }
+                    if(dataHazard.risk!=null){
+                        tvKDresiko.text ="${dataHazard.risk!!.kodeBahaya}"
+                        tvRisk.text = "${dataHazard.risk!!.kategori} "
+                        tvNilaiResiko.text = "${dataHazard.risk!!.min} - ${dataHazard.risk!!.max}"
+                        cvResiko.setCardBackgroundColor(Color.parseColor(dataHazard.risk!!.bgColor))
+                        tvRisk.setBackgroundColor(Color.parseColor(dataHazard.risk!!.bgColor))
+                        tvRisk.setTextColor(Color.parseColor(dataHazard.risk!!.txtColor))
+                    }
+
+
 
                 }
                 PopupUtil.dismissDialog()

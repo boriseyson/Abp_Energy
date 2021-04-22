@@ -227,16 +227,32 @@
                 </androidx.cardview.widget.CardView>
                 <!--    Bahaya-->
                 <!--    SUMBER BAHAYA-->
+                <com.google.android.material.button.MaterialButton
+                    app:icon="@drawable/ic_info_outline_white_24dp"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="match_parent"
+                    app:iconGravity="textEnd"
+                    android:id="@+id/matrikResiko"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_margin="10dp"
+                    android:text="Matrik Resiko"
+                    app:iconPadding="15dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@color/colorPrimaryDark"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/warningColor"
+                    android:gravity="center_horizontal"
                     android:padding="10dp"
-                    android:text="SUMBER BAHAYA"
-                    android:textAlignment="center"
+                    android:text="Kemungkinan Resiko"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
+
                 <!--        PILIHAN-->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -248,16 +264,151 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:padding="15dp">
                         <TextView
-                            android:id="@+id/tvSumberBahayaD"
-                            android:layout_width="match_parent"
+                            android:id="@+id/tvKemungkinan"
+                            android:layout_weight="1.5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_horizontal|center_vertical" />
+                        <LinearLayout
+                            android:layout_weight="0.5"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal" />
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="Nilai"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal" />
+                            <TextView
+                                android:id="@+id/tvNilaiKemungkinan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal" />
+                        </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <!--        PILIHAN-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/bgCancel"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="Keparahan Resiko"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
+                        <TextView
+                            android:id="@+id/tvKeparahan"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:layout_height="match_parent"
+                            android:gravity="center_horizontal|center_vertical" />
+                        <LinearLayout
+                            android:layout_weight="0.5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                        <TextView
+                            android:text="Nilai"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal" />
+                        <TextView
+                            android:id="@+id/tvNilaiKeparahan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvTotalResiko"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:text="Nilai Resiko = Kemungkinan x Keparahan"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/tvTotalResiko"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvResiko"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/tvKDresiko"
+                            android:text="RISK"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/tvRisk"
+                            android:text="RISK"
+                            android:textColor="@color/white"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/tvNilaiResiko"
+                            android:text="RISK"
+                            android:textColor="@color/white"
+                            />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
                 <!--    SUMBER BAHAYA-->
             </LinearLayout>
             <!--Kategori Bahaya-->
@@ -304,15 +455,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:orientation="vertical">
                     <!--                    RISK-->
                     <TextView
-                        android:id="@+id/tvRisk"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="" />
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/white"
+                        android:padding="10dp"
+                        android:text="Metode Pengendalian" />
+                    <TextView
+                        android:id="@+id/tvPengendalian"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"/>
                     <!--                    RISK-->
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -450,29 +609,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
-                            android:text="Penanggung Jawab" />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.05"
-                            android:text=":" />
-                        <TextView
-                            android:id="@+id/tvPenanggungJawabD"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.25" />
-                    </LinearLayout>
-                    <!--Penanggung Jawab-->
-                    <!--        Penanggung Jawab-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:weightSum="2">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
                             android:text="Dibuat" />
                         <TextView
                             android:layout_width="0dp"
@@ -481,30 +617,6 @@
                             android:text=":" />
                         <TextView
                             android:id="@+id/tvDibuat"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.25" />
-                    </LinearLayout>
-                    <!--Penanggung Jawab-->
-                    <!--        Penanggung Jawab-->
-                    <LinearLayout
-                        android:id="@+id/lnKetPerbaikan"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:weightSum="2">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
-                            android:text="Keterangan Update" />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.05"
-                            android:text=":" />
-                        <TextView
-                            android:id="@+id/tvKetPerbaikan"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.25" />
@@ -527,25 +639,136 @@
             <androidx.cardview.widget.CardView
                 app:cardElevation="10dp"
                 android:id="@+id/cvStatusPerbaikan"
-                android:layout_marginBottom="50dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 app:cardCornerRadius="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <ImageView
-                android:layout_margin="10dp"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/ic_baseline_image_24"
-                android:scaleType="centerCrop"
-                android:id="@+id/imgStatus"
-                />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_margin="10dp"
+                        android:adjustViewBounds="true"
+                        android:background="@color/white"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_baseline_image_24" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorPrimaryDark"/>
+                <!--        Penanggung Jawab-->
+                <LinearLayout
+                    android:id="@+id/lnKetPerbaikan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="Keterangan Update" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.05"
+                        android:text=":" />
+                    <TextView
+                        android:id="@+id/tvKetPerbaikan"
+                        android:layout_width="0dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.25" />
+                </LinearLayout>
+                </LinearLayout>
+                <!--Penanggung Jawab-->
             </androidx.cardview.widget.CardView>
             <!--    BAHAYA VIEW-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                android:layout_marginBottom="50dp"
+                app:cardCornerRadius="20dp"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/pjFOTO"
+                        android:layout_margin="10dp"
+                        android:elevation="10dp"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:src="@drawable/ic_baseline_person_24"
+                        app:civ_border_color="#FF000000"
+                        app:civ_border_width="0.5dp"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/white"
+                        android:gravity="center"
+                        android:text="Nama Penanggung Jawab"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="Nama" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:gravity="center"
+                            android:id="@+id/namaPJ"
+                            android:text="Nama" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="NIK / NRP" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.5"
+                            android:id="@+id/nikPJ"
+                            android:gravity="center"
+                            android:text="NIK / NRP" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
     <com.getbase.floatingactionbutton.FloatingActionsMenu
