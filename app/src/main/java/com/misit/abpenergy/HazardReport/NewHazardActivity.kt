@@ -128,7 +128,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         btnFotoPJ.setOnClickListener(this)
         btnPerbaikan.setOnClickListener(this)
         pjFOTO.setOnClickListener(this)
-        btnFotoPJ.setOnClickListener(this)
     }
     //    VIEW LISTENER
     override fun onClick(v: View?) {
@@ -159,16 +158,23 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             showDialogOption(333,222)
         }
         if(v!!.id==R.id.btnFotoPJ){
+//            PENSNGGUNGJAWAB
             bitmapPJ=null
             imgPJ=0
             showDialogOption(533,522)
         }
         if(v!!.id==R.id.pjFOTO){
+//            PENSNGGUNGJAWAB
             bitmapPJ=null
             imgPJ=0
             showDialogOption(533,522)
         }
         if(v?.id==R.id.imgBuktiSelesai){
+//            BUKTI PERBAIKAN
+            showDialogOption(433,422)
+        }
+        if (v?.id==R.id.btnPerbaikan){
+//            BUKTI PERBAIKAN
             showDialogOption(433,422)
         }
         if(v?.id==R.id.inLokasi){
@@ -361,7 +367,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 e.printStackTrace();
             }
         }else if(resultCode==Activity.RESULT_CANCELED){
-            Toasty.info(this@NewHazardActivity,resultCode.toString(),Toasty.LENGTH_SHORT).show()
         }
 
         super.onActivityResult(requestCode, resultCode, data)

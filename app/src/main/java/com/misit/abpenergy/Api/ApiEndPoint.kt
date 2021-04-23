@@ -211,6 +211,8 @@ interface ApiEndPoint{
 
     @GET("/android/api/hse/list/hazard/report")
     fun getListHazard(@Query("username") username:String,
+                      @Query("dari") dari:String,
+                      @Query("sampai") sampai:String,
                       @Query("page") page:String)
             : Call<ListHazard>?
     @GET("/android/api/hse/list/hazard/report/all")

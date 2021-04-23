@@ -21,6 +21,7 @@ public class PrefsUtil {
     public static final String USER_NAME = "user_name";
     public static final String LEVEL = "level";
     public static final String USER_PHONE = "user_phone";
+    public static final String TOTAL_HAZARD_USER = "TOTAL_HAZARD_USER";
     public static final String CURRENT_LAT = "lat";
     public static final String CURRENT_LNG = "lng";
     public static final String LATEST_VERSION_NAME = "latest_version_name";

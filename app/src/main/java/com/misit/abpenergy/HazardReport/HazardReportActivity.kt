@@ -15,16 +15,19 @@ import com.misit.abpenergy.HazardReport.Response.HazardItem
 import com.misit.abpenergy.HazardReport.Response.ListHazard
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
+import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_hazard_report.*
-import kotlinx.android.synthetic.main.activity_sarpras.*
+import kotlinx.android.synthetic.main.activity_hazard_report.btnLoad
+import kotlinx.android.synthetic.main.activity_hazard_report.txtTglDari
+import kotlinx.android.synthetic.main.activity_hazard_report.txtTglSampai
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItemClickListener {
+class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItemClickListener,View.OnClickListener {
 
     private var adapter: ListHazardReportAdapter? = null
     private var hazardList:MutableList<HazardItem>?=null
@@ -61,13 +64,19 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         rvHazardList.adapter =adapter
         adapter?.setListener(this)
 
+        DARI =PrefsUtil.getInstance().getStringState(PrefsUtil.AWAL_BULAN,"")
+        SAMPAI = PrefsUtil.getInstance().getStringState(PrefsUtil.AKHIR_BULAN,"")
+        TOTAL_HAZARD_USER = PrefsUtil.getInstance().getStringState(PrefsUtil.TOTAL_HAZARD_USER!!,"0")
+        hazardVerify.text= TOTAL_HAZARD_USER
+        txtTglDari.setText(DARI)
+        txtTglSampai.setText(SAMPAI)
         swipeRefreshLayout = findViewById(R.id.pullRefreshHazard)
         swipeRefreshLayout.setOnRefreshListener(object :SwipeRefreshLayout.OnRefreshListener{
             override fun onRefresh() {
                 rvHazardList.adapter = adapter
                 page=1
                 hazardList?.clear()
-                load(page.toString())
+                load(page.toString(), DARI, SAMPAI)
 //                swipeRefreshLayout.isRefreshing=false
                 //PopupUtil.dismissDialog()
             }
@@ -77,7 +86,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             startActivity(intent)
         }
         hazardList?.clear()
-        load("1")
+        load("1",DARI, SAMPAI)
+        txtTglDari.setOnClickListener(this)
+        txtTglSampai.setOnClickListener(this)
+        btnLoad.setOnClickListener(this)
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_add,menu)
@@ -95,10 +107,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         onBackPressed()
         return super.onSupportNavigateUp()
     }
-    fun load(hal:String){
+    fun load(hal:String,dari:String,sampai:String){
         swipeRefreshLayout.isRefreshing=true
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
-        val call = apiEndPoint.getListHazard(USERNAME,hal)
+        val call = apiEndPoint.getListHazard(USERNAME,dari,sampai,hal)
         call?.enqueue(object : Callback<ListHazard> {
             override fun onFailure(call: Call<ListHazard>, t: Throwable) {
                 swipeRefreshLayout.isRefreshing=false
@@ -109,6 +121,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             override fun onResponse(call: Call<ListHazard>, response: Response<ListHazard>) {
                 var listHazard = response.body()
                 if(listHazard!=null){
+                    totalHazard.text = listHazard.total.toString()
                     if (listHazard.data!=null){
                         PopupUtil.showProgress(this@HazardReportActivity,"Loading...","Membuat Hazard Report!")
                         loading=true
@@ -132,7 +145,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                                 if ((visibleItem + pastVisibleItem) >= total) {
                                     loading = false
                                     page++
-                                    load(page.toString())
+                                    load(page.toString(), dari,sampai)
                                 }
                             }
                         }
@@ -152,6 +165,9 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     }
     companion object{
         var USERNAME="USERNAME"
+        private  var DARI="01 January 2021"
+        private  var SAMPAI="31 January 2021"
+        private  var TOTAL_HAZARD_USER = "TOTAL_HAZARD_USER"
     }
 
     override fun onItemClick(uid: String?) {
@@ -162,5 +178,23 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 
     override fun onUpdateClick(uid: String?) {
         Toasty.info(this@HazardReportActivity,uid!!).show()
+    }
+
+    override fun onClick(v: View?) {
+        if(v?.id==R.id.txtTglDari){
+            ConfigUtil.showDialogTgl(txtTglDari,this@HazardReportActivity)
+        }
+        if(v?.id==R.id.txtTglSampai){
+            ConfigUtil.showDialogTgl(txtTglSampai,this@HazardReportActivity)
+        }
+        if(v?.id==R.id.btnLoad){
+            hazardList!!.clear()
+            var dari = txtTglDari.text.toString()
+            var sampai = txtTglSampai.text.toString()
+            load("1",dari!!,sampai!!)
+            this@HazardReportActivity?.runOnUiThread {
+                adapter?.notifyDataSetChanged()
+            }
+        }
     }
 }

@@ -789,6 +789,7 @@
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatUpdateStatus"
             app:fab_size="mini"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/red_smooth"

@@ -164,10 +164,14 @@ class IndexActivity : AppCompatActivity(),
                 call: Call<GetUserResponse>,
                 response: Response<GetUserResponse>
             ) {
-                var r = response.body()
-                if(r!=null){
+                var res = response.body()
+                if(res!=null){
+                     var r= res.dataUser!!
                     if(r.rule!=null){
                         RULE =r.rule!!
+                        PrefsUtil.getInstance()
+                            .setStringState(PrefsUtil.TOTAL_HAZARD_USER,
+                                res!!.dataHazard!!.toString())
                         userRule =RULE.split(",").toTypedArray()
                         var apprSarpras = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             Arrays.stream(userRule).anyMatch{ t -> t== "approve sarpras"}
