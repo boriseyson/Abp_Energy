@@ -940,6 +940,15 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnQRCODES"
+                    app:fab_size="mini"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fab_colorNormal="@color/colorPrimaryDark"
+                    app:fab_colorPressed="@color/colorPrimary"
+                    app:fab_icon="@drawable/ic_baseline_qr_code_scanner_24"
+                    app:fab_title="Scan QRCode" />
+                <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btnNewSarana"
                     app:fab_size="mini"
                     android:layout_width="wrap_content"

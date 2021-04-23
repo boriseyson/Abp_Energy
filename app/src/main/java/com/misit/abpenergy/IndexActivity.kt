@@ -36,6 +36,7 @@ import com.misit.abpenergy.Sarpras.AllSarprasActivity
 import com.misit.abpenergy.Sarpras.KabagApprSarprasActivity
 import com.misit.abpenergy.Sarpras.NewSarprasActivity
 import com.misit.abpenergy.Sarpras.SarprasActivity
+import com.misit.abpenergy.Service.BarcodeScannerActivity
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_index.*
@@ -150,6 +151,7 @@ class IndexActivity : AppCompatActivity(),
         btnHazardALL.setOnClickListener(this)
         btnSarprasAll.setOnClickListener(this)
         btnInspection.setOnClickListener(this)
+        btnQRCODES.setOnClickListener(this)
     }
 
 //Get Token
@@ -423,6 +425,10 @@ class IndexActivity : AppCompatActivity(),
         }
         if(v?.id==R.id.btnInspectionALL){
             var intent = Intent(this@IndexActivity, AllInspeksiActivity::class.java)
+            startActivity(intent)
+        }
+        if(v?.id==R.id.btnQRCODES){
+            var intent = Intent(this@IndexActivity, BarcodeScannerActivity::class.java)
             startActivity(intent)
         }
     }
