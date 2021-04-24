@@ -82,6 +82,7 @@ class IndexActivity : AppCompatActivity(),
             SECTON = PrefsUtil.getInstance().getStringState(PrefsUtil.SECTION,"")
             LEVEL = PrefsUtil.getInstance().getStringState(PrefsUtil.LEVEL,"")
             RULE = PrefsUtil.getInstance().getStringState(PrefsUtil.RULE,"")
+            tvUserName.text = NAMA_LENGKAP
         }else{
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -174,7 +175,12 @@ class IndexActivity : AppCompatActivity(),
                         PrefsUtil.getInstance()
                             .setStringState(PrefsUtil.TOTAL_HAZARD_USER,
                                 res!!.dataHazard!!.toString())
-                        userRule =RULE.split(",").toTypedArray()
+                        tvHazardUser.text = res!!.dataHazard!!.toString()
+                        tvNIK.text = res!!.dataUser!!.nik.toString()
+                        tvDept.text = res!!.dataUser!!.dept
+                        tvSect.text = res!!.dataUser!!.sect
+                        tvInspeksiUser.text = res!!.datInspeksi!!.toString()
+                            userRule =RULE.split(",").toTypedArray()
                         var apprSarpras = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             Arrays.stream(userRule).anyMatch{ t -> t== "approve sarpras"}
                         } else {

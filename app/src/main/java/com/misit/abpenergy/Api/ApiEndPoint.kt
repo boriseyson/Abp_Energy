@@ -1,6 +1,7 @@
 package com.misit.abpenergy.Api
 
 import com.misit.abpenergy.HazardReport.Response.*
+import com.misit.abpenergy.Inspeksi.Response.FormInspeksiResponse
 import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
 import com.misit.abpenergy.Login.Response.SectionResponse
@@ -266,10 +267,11 @@ interface ApiEndPoint{
     ) : Call<HazardReportResponse>?
 
     @GET("/android/api/lokasi/get")
-    fun getLokasiList()
-            : Call<LokasiResponse>?
+    fun getLokasiList(): Call<LokasiResponse>?
 
     @GET("/android/api/risk/get")
-    fun getRiskList()
-            : Call<RiskResponse>?
+    fun getRiskList(): Call<RiskResponse>?
+
+    @GET("/hse/android/inspeksi/form")
+    fun getListFormInspeksi(): Call<FormInspeksiResponse>?
 }
