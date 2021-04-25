@@ -4,8 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="15dp"
-    app:cardCornerRadius="5dp"
+    app:cardCornerRadius="15dp"
     app:cardElevation="10dp"
+    app:cardBackgroundColor="@color/white"
     android:id="@+id/cvInspeksi"
     android:orientation="vertical">
     <LinearLayout
@@ -56,43 +57,9 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal">
-            <!--    Perusahaan-->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:gravity="center_horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Perusahaan"/>
-                <!--            Tv Perusahaan-->
-                <TextView
-                    android:id="@+id/tvPerusahaan"
-                    android:padding="5dp"
-                    android:textSize="17sp"
-                    android:gravity="center_horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="PT ABP"/>
-                <!--            Tv Perusahaan-->
-            </LinearLayout>
-            <!--    Perusahaan-->
-            <!--    Lokasi-->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:gravity="center_horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lokasi"/>
-                <!--            Tv Lokasi-->
+
+            android:orientation="vertical">
+            <!--    Nama Inspeksi-->
                 <TextView
                     android:id="@+id/tvLokasi"
                     android:padding="5dp"
@@ -101,9 +68,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Jalan Hauling"/>
-            </LinearLayout>
-            <!--        Tv Lokasi-->
-            <!--    Lokasi-->
         </LinearLayout>
         <!--    Data Temuan-->
         <View
@@ -119,10 +83,10 @@
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Deskripsi Bahaya"/>
+            android:text="Saran"/>
         <!--TV Deskripsi-->
         <TextView
-            android:id="@+id/tvDeskripsi"
+            android:id="@+id/tvSaran"
             android:textColor="#000000"
             android:textStyle="bold"
             android:padding="10dp"
@@ -137,7 +101,7 @@
         <!--    Bahaya-->
         <!--    Status-->
         <TextView
-            android:id="@+id/tvOpen"
+            android:id="@+id/tvValidasi"
             android:textColor="@color/white"
             android:background="@color/bgCancel"
             android:textStyle="bold"
@@ -147,59 +111,8 @@
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Status : Open"
+            android:text="DiSetujui Oleh Safety"
             />
         <!--    Status-->
-
-        <!--    USER-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <TextView
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:text="Dibuat"/>
-                <TextView
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:id="@+id/tvUSER"
-                    android:textStyle="bold"
-                    android:text="Boris Reyson"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <TextView
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:text="Penanggung Jawab"/>
-                <TextView
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:id="@+id/tvPJ"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:text="Boris Reyson"/>
-            </LinearLayout>
-        </LinearLayout>
-        <!--    USER-->
     </LinearLayout>
 </androidx.cardview.widget.CardView>

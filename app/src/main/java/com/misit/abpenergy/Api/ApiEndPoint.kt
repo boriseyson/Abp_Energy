@@ -2,6 +2,7 @@ package com.misit.abpenergy.Api
 
 import com.misit.abpenergy.HazardReport.Response.*
 import com.misit.abpenergy.Inspeksi.Response.FormInspeksiResponse
+import com.misit.abpenergy.Inspeksi.Response.InspeksiGroupsResponse
 import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
 import com.misit.abpenergy.Login.Response.SectionResponse
@@ -274,4 +275,9 @@ interface ApiEndPoint{
 
     @GET("/hse/android/inspeksi/form")
     fun getListFormInspeksi(): Call<FormInspeksiResponse>?
+
+    @GET("/hse/android/inspeksi/new")
+    fun getListSubInspeksi(@Query("idForm") idForm:String):
+            Call<InspeksiGroupsResponse>?
+
 }

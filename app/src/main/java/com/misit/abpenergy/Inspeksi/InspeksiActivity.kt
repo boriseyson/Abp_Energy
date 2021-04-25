@@ -39,7 +39,7 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inspeksi)
-        title="Form Inspeksi"
+        title="List Inspeksi"
         PrefsUtil.initInstance(this)
         val window: Window = this.window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -73,6 +73,7 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
             }
         })
         inspeksiList?.clear()
+        loadForm(page.toString())
     }
 
     companion object{
@@ -115,7 +116,7 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
                                 if ((visibleItem + pastVisibleItem) >= total) {
                                     loading = false
                                     page++
-                                    loadForm(page.toString())
+                                    loadForm(hal)
                                 }
                             }
                         }
@@ -135,9 +136,14 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
     }
 
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
     override fun onItemClick(idForm: String,nameForm: String) {
-//        var intent = Intent(this@InspeksiActivity, DetailHazardActivity::class.java)
-//        intent.putExtra(DetailHazardActivity.UID,uid.toString())
-//        startActivity(intent)
+        var intent = Intent(this@InspeksiActivity, ListInspeksiActivity::class.java)
+        intent.putExtra(ListInspeksiActivity.IDFORM,idForm)
+        intent.putExtra(ListInspeksiActivity.NAMEFORM,nameForm)
+        startActivity(intent)
     }
 }
