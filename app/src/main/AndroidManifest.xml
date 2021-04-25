@@ -21,8 +21,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Inspeksi.ListInspeksiActivity"></activity>
         <activity android:name=".Inspeksi.NewInspeksiActivity" />
-        <activity android:name=".Inspeksi.FormInspeksiActivity" />
-        <activity android:name=".Service.BarcodeScannerActivity" />
+        <activity android:name=".Service.BarcodeScannerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar" />
         <activity
             android:name=".Service.MatrikResikoWebViewActivity"
             android:configChanges="orientation|keyboardHidden"

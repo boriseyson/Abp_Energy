@@ -290,4 +290,13 @@ interface ApiEndPoint{
     )
             : Call<ItemTempResponse>?
 
+    @GET("/hse/android/inspeksi/new/add/team.temp")
+    fun addTeamInspeksi(@Query("idTemp") idTemp:String?,
+                         @Query("idForm") idForm:String?,
+                         @Query("nikTeam") nikTeam:String?
+    )
+            : Call<ItemTempResponse>?
+
+
+
 }

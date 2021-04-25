@@ -438,6 +438,7 @@ class IndexActivity : AppCompatActivity(),
         }
         if(v?.id==R.id.btnQRCODES){
             var intent = Intent(this@IndexActivity, BarcodeScannerActivity::class.java)
+            intent.putExtra("aktivitas","addTeam")
             startActivity(intent)
         }
         if(v?.id==R.id.cvBarcodeProfile){
