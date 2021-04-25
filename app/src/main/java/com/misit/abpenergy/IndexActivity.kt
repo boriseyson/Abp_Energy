@@ -78,6 +78,7 @@ class IndexActivity : AppCompatActivity(),
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",false)){
             USERNAME = PrefsUtil.getInstance().getStringState(PrefsUtil.USER_NAME,"")
             NAMA_LENGKAP = PrefsUtil.getInstance().getStringState(PrefsUtil.NAMA_LENGKAP,"")
+            NIK = PrefsUtil.getInstance().getStringState(PrefsUtil.NIK,"")
             DEPARTMENT = PrefsUtil.getInstance().getStringState(PrefsUtil.DEPT,"")
             SECTON = PrefsUtil.getInstance().getStringState(PrefsUtil.SECTION,"")
             LEVEL = PrefsUtil.getInstance().getStringState(PrefsUtil.LEVEL,"")
@@ -153,6 +154,7 @@ class IndexActivity : AppCompatActivity(),
         btnSarprasAll.setOnClickListener(this)
         btnInspection.setOnClickListener(this)
         btnQRCODES.setOnClickListener(this)
+        cvBarcodeProfile.setOnClickListener(this)
     }
 
 //Get Token
@@ -307,6 +309,7 @@ class IndexActivity : AppCompatActivity(),
         var NO_RKB = "NO_RKB"
         var TIPE = null
         var RULE = "RULE"
+        var NIK = "NIK"
     }
 //    Companion
 //Click View
@@ -435,6 +438,12 @@ class IndexActivity : AppCompatActivity(),
         }
         if(v?.id==R.id.btnQRCODES){
             var intent = Intent(this@IndexActivity, BarcodeScannerActivity::class.java)
+            startActivity(intent)
+        }
+        if(v?.id==R.id.cvBarcodeProfile){
+            val intent = Intent(this@IndexActivity,QRCodeActivity::class.java)
+            intent.putExtra("itemCodes",NIK)
+            intent.putExtra("judul","QRCode Anda")
             startActivity(intent)
         }
     }

@@ -12,7 +12,8 @@ data class ItemInspeksiItem(
 
 	@field:SerializedName("nameSub")
 	val nameSub: String? = null,
-
+	@field:SerializedName("numSub")
+	val numSub: String? = null,
 	@field:SerializedName("items")
 	val items: List<ItemsItem>? = null
 )

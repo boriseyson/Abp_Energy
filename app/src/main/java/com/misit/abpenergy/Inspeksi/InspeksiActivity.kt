@@ -2,6 +2,7 @@ package com.misit.abpenergy.Inspeksi
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ import kotlinx.android.synthetic.main.activity_inspeksi.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClickListener {
     private var adapter: ListFormInspeksiAdapater? = null
@@ -35,6 +38,7 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
     private var pastVisibleItem : Int=0
     private var loading : Boolean=false
     var curentPosition: Int=0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +90,7 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
         call?.enqueue(object : Callback<FormInspeksiResponse> {
             override fun onFailure(call: Call<FormInspeksiResponse>, t: Throwable) {
                 swipeRefreshLayout.isRefreshing=false
-                Toasty.error(this@InspeksiActivity,"Error : $t", Toasty.LENGTH_SHORT).show()
+                Log.d("Inspeksi",t.toString())
                 PopupUtil.dismissDialog()
             }
 

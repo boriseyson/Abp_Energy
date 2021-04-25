@@ -234,7 +234,8 @@ class SarprasActivity : AppCompatActivity(), SarprasAdapter.OnItemClickListener 
     }
     override fun onQRCodeClick(noIdOut: String?) {
         val intent = Intent(this@SarprasActivity,QRCodeActivity::class.java)
-        intent.putExtra("noIdOut",noIdOut)
+        intent.putExtra("itemCodes",noIdOut)
+        intent.putExtra("judul","Tunjukkan QRCode Kepada Security Untuk Di Scan")
         startActivity(intent)
     }
 
