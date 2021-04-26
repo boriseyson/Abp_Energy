@@ -110,10 +110,12 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 lnJamSelesai.visibility=View.VISIBLE
                 lnTglSelesai.visibility=View.VISIBLE
                 imagePickerBuktiSelesai.visibility=View.VISIBLE
+                lnResikoSesudah.visibility = View.VISIBLE
             }else{
                 lnJamSelesai.visibility=View.GONE
                 lnTglSelesai.visibility=View.GONE
                 imagePickerBuktiSelesai.visibility=View.GONE
+                lnResikoSesudah.visibility = View.GONE
             }
         }
         imgBuktiSelesai.setOnClickListener(this)

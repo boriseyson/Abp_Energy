@@ -582,7 +582,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:text="Dalam Pengerjaan" />
+                            android:text="DALAM PENGERJAAN" />
 
                         <RadioButton
                             android:id="@+id/rbBerlanjut"
@@ -726,8 +726,116 @@
                             android:imeOptions="actionNext"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+<LinearLayout
+    android:id="@+id/lnResikoSesudah"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:orientation="vertical">
+            <!--    SUMBER BAHAYA-->
+            <com.google.android.material.button.MaterialButton
+                app:icon="@drawable/ic_info_outline_white_24dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                app:iconGravity="textEnd"
+                android:id="@+id/matrikResikoSesudah"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_margin="10dp"
+                android:text="Matrik Resiko"
+                app:iconPadding="15dp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/warningColor"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="Kemungkinan Resiko"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+            <!--        PILIHAN-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilKemungkinanSesudah"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Kemungkinan Resiko Sesudah Perbaikan">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inKemungkinanSesudah"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="false"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/bgCancel"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="Keparahan Resiko Sesudah Perbaikan"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+            <!--        PILIHAN-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilKeparahanSesudah"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Keparahan Resiko Sesudah Perbaikan">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inKeparahanSesudah"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="false"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--        PILIHAN-->
+
             <!--        Insert Photo-->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -811,6 +919,7 @@
                                 android:hint="NIK / NRP Penanggung Jawab">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/inNikPJ"
+                                    android:inputType="phone"
                                     android:imeOptions="actionNext"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
@@ -819,7 +928,7 @@
                         </LinearLayout>
             </LinearLayout>
             </androidx.cardview.widget.CardView>
-
+</LinearLayout>
             <!--    BAHAYA VIEW-->
         </LinearLayout>
 

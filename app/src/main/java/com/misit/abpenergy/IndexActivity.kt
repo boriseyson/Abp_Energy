@@ -89,8 +89,6 @@ class IndexActivity : AppCompatActivity(),
             startActivity(intent)
             finish()
         }
-//        Session
-        getToken()
 //        Rule User
         userRule =RULE.split(",").toTypedArray()
         var apprSarpras = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -223,6 +221,7 @@ class IndexActivity : AppCompatActivity(),
                         }else{
                             btnInspectionALL.visibility=View.GONE
                         }
+                        lnLoading.visibility=View.GONE
                     }
                 }
             }
@@ -240,6 +239,9 @@ class IndexActivity : AppCompatActivity(),
 //Menu Item
 //    On Resume
     override fun onResume() {
+    lnLoading.visibility=View.VISIBLE
+//        Session
+    getToken()
         tipe =  intent.getStringExtra(TIPE)
         if(tipe=="rkb"){
             rkbNotif("0")
@@ -444,7 +446,7 @@ class IndexActivity : AppCompatActivity(),
         if(v?.id==R.id.cvBarcodeProfile){
             val intent = Intent(this@IndexActivity,QRCodeActivity::class.java)
             intent.putExtra("itemCodes",NIK)
-            intent.putExtra("judul","QRCode Anda")
+            intent.putExtra("judul","QR-Code Anda")
             startActivity(intent)
         }
     }

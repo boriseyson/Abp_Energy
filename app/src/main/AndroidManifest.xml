@@ -19,9 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Inspeksi.ListInspeksiActivity"></activity>
+        <activity android:name=".Inspeksi.PicaInspeksiActivity"></activity>
+        <activity android:name=".Inspeksi.ListInspeksiActivity" />
         <activity android:name=".Inspeksi.NewInspeksiActivity" />
-        <activity android:name=".Service.BarcodeScannerActivity"
+        <activity
+            android:name=".Service.BarcodeScannerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />

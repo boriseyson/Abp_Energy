@@ -1,9 +1,7 @@
 package com.misit.abpenergy.Api
 
 import com.misit.abpenergy.HazardReport.Response.*
-import com.misit.abpenergy.Inspeksi.Response.FormInspeksiResponse
-import com.misit.abpenergy.Inspeksi.Response.InspeksiGroupsResponse
-import com.misit.abpenergy.Inspeksi.Response.ItemTempResponse
+import com.misit.abpenergy.Inspeksi.Response.*
 import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
 import com.misit.abpenergy.Login.Response.SectionResponse
@@ -290,13 +288,34 @@ interface ApiEndPoint{
     )
             : Call<ItemTempResponse>?
 
-    @GET("/hse/android/inspeksi/new/add/team.temp")
+    @GET("/hse/android/inspeksi/new/add/team/temp")
     fun addTeamInspeksi(@Query("idTemp") idTemp:String?,
-                         @Query("idForm") idForm:String?,
-                         @Query("nikTeam") nikTeam:String?
+                        @Query("idForm") idForm:String?,
+                        @Query("nikTeam") nikTeam:String?
     )
             : Call<ItemTempResponse>?
 
+    @GET("/hse/android/inspeksi/delete/temp")
+    fun deleteInspeksiTemp(@Query("idTemp") idTemp:String?)
+            : Call<ItemTempResponse>?
 
+    @GET("/hse/android/inspeksi/new/list/team/temp")
+    fun teamInspeksiTemp(@Query("idTemp") idTemp:String?)
+            : Call<TeamInspeksiTempResponse>?
+
+    @FormUrlEncoded
+    @POST("/hse/android/inspeksi/pica/temp")
+    fun inspeksiPicaTemp(@Field("idTemp") idTemp:String?,
+                      @Field("idForm") idForm:String?,
+                      @Field("temuan") temuan:String?,
+                      @Field("nikPJ") nikPJ:String?,
+                      @Field("namaPJ") namaPJ:String?,
+                      @Field("tglTenggat") tglTenggat:String?,
+                      @Field("status") status:String?,
+                      @Field("_token") csrf_token:String?    )
+            : Call<ItemTempResponse>?
+    @GET("/hse/android/inspeksi/pica/temp")
+    fun listInspeksiPica(@Query("idTemp") idTemp:String?)
+            : Call<ListInspeksiPicaResponse>?
 
 }
