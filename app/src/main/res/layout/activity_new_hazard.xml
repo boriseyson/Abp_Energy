@@ -757,7 +757,7 @@
                 android:background="@color/warningColor"
                 android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:text="Kemungkinan Resiko"
+                android:text="Kemungkinan Resiko Sesudah Perbaikan"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
             <!--        PILIHAN-->

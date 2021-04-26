@@ -59,11 +59,15 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var lokasiDipilih:String? = null
     private var hirarkiDipilih:String? = null
     private var kemungkinanDipilih:String? = null
+    private var kemungkinanDipilihSesudah:String? = null
     private var keparahanDipilih:String? = null
+    private var keparahanDipilihSesudah:String? = null
     private var lokasiID:String? = null
     private var hirarkiID:String? = null
     private var kemungkinanID:String? = null
+    private var kemungkinanIDSesudah:String? = null
     private var keparahanID:String? = null
+    private var keparahanIDSesudah:String? = null
     private var csrf_token:String?=null
     private var plKondisi:RequestBody?=null
     var rbStatus:RequestBody?=null
@@ -122,14 +126,19 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         lnJamSelesai.visibility=View.GONE
         lnTglSelesai.visibility=View.GONE
         imagePickerBuktiSelesai.visibility=View.GONE
+        lnResikoSesudah.visibility = View.GONE
+
         inLokasi.setOnClickListener(this)
         inKemungkinan.setOnClickListener(this)
         inKeparahan.setOnClickListener(this)
+        inKemungkinanSesudah.setOnClickListener(this)
+        inKeparahanSesudah.setOnClickListener(this)
         inPengendalian.setOnClickListener(this)
         btnGambarHazard.setOnClickListener(this)
         btnFotoPJ.setOnClickListener(this)
         btnPerbaikan.setOnClickListener(this)
         pjFOTO.setOnClickListener(this)
+        matrikResikoSesudah.setOnClickListener(this)
     }
     //    VIEW LISTENER
     override fun onClick(v: View?) {
@@ -199,10 +208,20 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             intent.putExtra("keparahanDipilih",keparahanDipilih)
             startActivityForResult(intent,458)
         }
-        if(v?.id==R.id.matrikResiko){
+
+        if(v?.id==R.id.inKemungkinanSesudah){
+            var intent = Intent(this@NewHazardActivity,KemungkinanActivity::class.java)
+            intent.putExtra("kemungkinanDipilih",kemungkinanDipilihSesudah)
+            startActivityForResult(intent,477)
+        }
+        if(v?.id==R.id.inKeparahanSesudah){
+            var intent = Intent(this@NewHazardActivity,KeparahanActivity::class.java)
+            intent.putExtra("keparahanDipilih",keparahanDipilihSesudah)
+            startActivityForResult(intent,488)
+        }
+        if(v?.id==R.id.matrikResiko || v?.id==R.id.matrikResikoSesudah){
             var intent = Intent(this@NewHazardActivity,MatrikResikoWebViewActivity::class.java)
             startActivity(intent)
-
         }
     }
     //    VIEW LISTENER
@@ -273,6 +292,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             kemungkinanDipilih = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanID = data.getStringExtra("kemungkinanID")
             inKemungkinan.setText(kemungkinanDipilih)
+        }else if(resultCode== Activity.RESULT_OK && requestCode==477){
+            kemungkinanDipilihSesudah = data!!.getStringExtra("kemungkinanDipilih")
+            kemungkinanIDSesudah = data.getStringExtra("kemungkinanID")
+            inKemungkinanSesudah.setText(kemungkinanDipilihSesudah)
         }else if(resultCode== Activity.RESULT_OK && requestCode==123){
             lokasiDipilih = data!!.getStringExtra("lokasiDipilih")
             lokasiID = data.getStringExtra("lokasiID")
@@ -286,6 +309,11 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             Toasty.info(this@NewHazardActivity,keparahanDipilih.toString()).show()
             keparahanID = data.getStringExtra("keparahanID")
             inKeparahan.setText(keparahanDipilih)
+        }else if(resultCode== Activity.RESULT_OK && requestCode==488){
+            keparahanDipilihSesudah = data!!.getStringExtra("keparahanDipilih")
+            Toasty.info(this@NewHazardActivity,keparahanDipilihSesudah.toString()).show()
+            keparahanIDSesudah = data.getStringExtra("keparahanID")
+            inKeparahanSesudah.setText(keparahanDipilihSesudah)
         }else if(resultCode==Activity.RESULT_OK && requestCode==222) {
             try {
                 fileUpload = data!!.data
