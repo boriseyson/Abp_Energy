@@ -25,13 +25,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
-import com.misit.abpenergy.Sarpras.SarprasResponse.UserSarprasResponse
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.ConfigUtil.resultIntent
@@ -48,9 +46,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -59,14 +55,14 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var lokasiDipilih:String? = null
     private var hirarkiDipilih:String? = null
     private var kemungkinanDipilih:String? = null
-    private var kemungkinanDipilihSesudah:String? = null
     private var keparahanDipilih:String? = null
+    private var kemungkinanDipilihSesudah:String? = null
     private var keparahanDipilihSesudah:String? = null
     private var lokasiID:String? = null
     private var hirarkiID:String? = null
     private var kemungkinanID:String? = null
-    private var kemungkinanIDSesudah:String? = null
     private var keparahanID:String? = null
+    private var kemungkinanIDSesudah:String? = null
     private var keparahanIDSesudah:String? = null
     private var csrf_token:String?=null
     private var plKondisi:RequestBody?=null
@@ -306,12 +302,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             inPengendalian.setText(hirarkiDipilih)
         }else if(resultCode== Activity.RESULT_OK && requestCode==458){
             keparahanDipilih = data!!.getStringExtra("keparahanDipilih")
-            Toasty.info(this@NewHazardActivity,keparahanDipilih.toString()).show()
             keparahanID = data.getStringExtra("keparahanID")
             inKeparahan.setText(keparahanDipilih)
         }else if(resultCode== Activity.RESULT_OK && requestCode==488){
             keparahanDipilihSesudah = data!!.getStringExtra("keparahanDipilih")
-            Toasty.info(this@NewHazardActivity,keparahanDipilihSesudah.toString()).show()
             keparahanIDSesudah = data.getStringExtra("keparahanID")
             inKeparahanSesudah.setText(keparahanDipilihSesudah)
         }else if(resultCode==Activity.RESULT_OK && requestCode==222) {
@@ -484,6 +478,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     var inBahaya = inBahaya.text.toString().toRequestBody(MultipartBody.FORM)
     var kemungkinanID = kemungkinanID.toString().toRequestBody(MultipartBody.FORM)
     var keparahanID = keparahanID.toString().toRequestBody(MultipartBody.FORM)
+    var kemungkinanSesudah = keparahanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
+    var keparahanSesudah =keparahanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
     var hirarkiID = hirarkiID.toString().toRequestBody(MultipartBody.FORM)
     var inPerbaikan = inPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
     var inPenanggungJawab = inPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
@@ -565,7 +561,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 inJamSelesai,
                 inKeteranganPJ,
                 username,
-                _token,"Bukti_Progress")
+                _token,"Bukti_Progress",
+                kemungkinanSesudah,
+                keparahanSesudah)
         }else if(imgSelesai==1){
             hazardPost(
                 bukti,
@@ -589,7 +587,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 inJamSelesai,
                 inKeteranganPJ,
                 username,
-                _token,"Bukti_Selesai"
+                _token,"Bukti_Selesai",
+                kemungkinanSesudah,
+                keparahanSesudah
             )
         }
     }
@@ -617,7 +617,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                    jamSelesai:RequestBody,
                    keteranganPJ:RequestBody,
                    user:RequestBody,
-                   token:RequestBody,tipe:String){
+                   token:RequestBody,
+                   tipe:String,
+                   kemungkinanSesudah:RequestBody,
+                   keparahanSesudah:RequestBody){
     //    API POST
     val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
      var call:Call<HazardReportResponse>?=null
@@ -630,7 +633,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }else if(tipe=="Bukti_Selesai"){
              call = apiEndPoint.postHazardReportSelesai(
                  fileBukti,filePJ,fileSelesai,perusahaan,tanggal,jam,lokasi,
-                 lokasiDet,bahaya,kemungkinan,keparahan,kondisi,hirarki,perbaikan,
+                 lokasiDet,bahaya,kemungkinan,keparahan,kemungkinanSesudah,keparahanSesudah,kondisi,hirarki,perbaikan,
                  namaPJ,nikPJ,status,tglSelesai,jamSelesai,keteranganPJ,user,token
             )
         }
@@ -754,7 +757,6 @@ private fun getToken() {
     }
     if (imgIn <= 0 )
     {
-        Toasty.error(this@NewHazardActivity,"Harap Memilih Gambar",Toasty.LENGTH_LONG).show()
         imagePicker.performClick()
         return false
     }
@@ -802,6 +804,16 @@ private fun getToken() {
         if(inKeparahan.text!!.isEmpty()){
             tilKeparahan.error="Please Input Someting"
             inKeparahan.requestFocus()
+            return false
+        }
+        if(inKemungkinanSesudah.text!!.isEmpty()){
+            tilKemungkinanSesudah.error="Please Input Someting"
+            inKemungkinanSesudah.requestFocus()
+            return false
+        }
+        if(inKeparahanSesudah.text!!.isEmpty()){
+            tilKeparahanSesudah.error="Please Input Someting"
+            inKeparahanSesudah.requestFocus()
             return false
         }
         if(inPengendalian.text!!.isEmpty()){
@@ -869,6 +881,8 @@ private fun getToken() {
         tilBahaya.error=null
         tilKemungkinan.error=null
         tilKeparahan.error=null
+        tilKemungkinanSesudah.error=null
+        tilKeparahanSesudah.error=null
         tilPengendalian.error=null
         tilPerbaikan.error=null
         tilKatBahaya.visibility=View.GONE

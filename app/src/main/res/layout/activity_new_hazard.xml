@@ -835,6 +835,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!--        PILIHAN-->
+</LinearLayout>
 
             <!--        Insert Photo-->
             <androidx.cardview.widget.CardView
@@ -928,7 +929,6 @@
                         </LinearLayout>
             </LinearLayout>
             </androidx.cardview.widget.CardView>
-</LinearLayout>
             <!--    BAHAYA VIEW-->
         </LinearLayout>
 

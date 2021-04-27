@@ -197,6 +197,8 @@ interface ApiEndPoint{
         @Part("deskripsi") deskripsi:RequestBody?,
         @Part("kemungkinan") kemungkinan:RequestBody?,
         @Part("keparahan") keparahan:RequestBody?,
+        @Part("kemungkinanSesudah") kemungkinanSesudah:RequestBody?,
+        @Part("keparahanSesudah") keparahanSesudah:RequestBody?,
         @Part("katBahaya") katBahaya:RequestBody?,
         @Part("pengendalian") pengendalian:RequestBody?,
         @Part("tindakan") tindakan:RequestBody?,
@@ -263,6 +265,8 @@ interface ApiEndPoint{
         @Part("tgl_selesai") tgl_selesai:RequestBody?,
         @Part("jam_selesai") jam_selesai:RequestBody?,
         @Part("keterangan") keterangan:RequestBody?,
+        @Part("idKemungkinanSesudah") idKemungkinanSesudah:RequestBody?,
+        @Part("idKeparahanSesudah") idKeparahanSesudah:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
 
