@@ -137,8 +137,10 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                         tvLokasiD.text = itemHazard.lokasiHazard
                         tvLokasiDetails.text= itemHazard.lokasiDetail
                         tvBahayaD.text = itemHazard.deskripsi
-                        tvKemungkinan.text = itemHazard.kemungkinan
-                        tvKeparahan.text = itemHazard.keparahan
+                        tvKemungkinan.text = itemHazard.nilaiKemungkinan
+                        tvKeparahan.text = itemHazard.nilaiKeparahan
+                        tvKemungkinan.text = itemHazard.nilaiKemungkinan
+                        tvKeparahan.text = itemHazard.nilaiKeparahan
                         tvPengendalian.text = itemHazard.namaPengendalian
                         tvKatBahayaD.text = itemHazard.katBahaya
                         tvPerbaikanD.text = itemHazard.tindakan

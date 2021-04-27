@@ -7,11 +7,11 @@ data class DetailHazardResponse(
 	@field:SerializedName("ItemHazardList")
 	var itemHazardList: ItemHazardList? = null,
 
-	@field:SerializedName("Risk")
-	var risk: Risk? = null,
+	@field:SerializedName("nilaiRisk")
+	var nilaiRisk: Int? = null,
 
-	@field:SerializedName("nilairRisk")
-	var nilairRisk: Int? = null
+	@field:SerializedName("Risk")
+	var risk: Risk? = null
 )
 
 data class Risk(
@@ -46,17 +46,11 @@ data class Risk(
 
 data class ItemHazardList(
 
-	@field:SerializedName("kemungkinan")
-	var kemungkinan: String? = null,
-
 	@field:SerializedName("flag")
 	var flag: Int? = null,
 
 	@field:SerializedName("update_bukti")
 	var updateBukti: String? = null,
-
-	@field:SerializedName("nilai")
-	var nilai: Int? = null,
 
 	@field:SerializedName("status_perbaikan")
 	var statusPerbaikan: String? = null,
@@ -75,6 +69,12 @@ data class ItemHazardList(
 
 	@field:SerializedName("lokasi_detail")
 	var lokasiDetail: String? = null,
+
+	@field:SerializedName("idKeparahanSesudah")
+	var idKeparahanSesudah: String? = null,
+
+	@field:SerializedName("nilaiKemungkinanSesudah")
+	var nilaiKemungkinanSesudah: String? = null,
 
 	@field:SerializedName("uid")
 	var uid: String? = null,
@@ -124,6 +124,9 @@ data class ItemHazardList(
 	@field:SerializedName("idHirarki")
 	var idHirarki: Int? = null,
 
+	@field:SerializedName("nilaiKeparahanSesudah")
+	var nilaiKeparahanSesudah: String? = null,
+
 	@field:SerializedName("tgl_input")
 	var tglInput: String? = null,
 
@@ -154,11 +157,11 @@ data class ItemHazardList(
 	@field:SerializedName("time_input")
 	var timeInput: String? = null,
 
+	@field:SerializedName("idKemungkinanSesudah")
+	var idKemungkinanSesudah: String? = null,
+
 	@field:SerializedName("tgl_hazard")
 	var tglHazard: String? = null,
-
-	@field:SerializedName("keparahan")
-	var keparahan: String? = null,
 
 	@field:SerializedName("status")
 	var status: Int? = null,
