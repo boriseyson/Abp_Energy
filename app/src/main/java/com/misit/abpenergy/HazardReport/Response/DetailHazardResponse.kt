@@ -7,14 +7,20 @@ data class DetailHazardResponse(
 	@field:SerializedName("ItemHazardList")
 	var itemHazardList: ItemHazardList? = null,
 
-	@field:SerializedName("nilaiRisk")
-	var nilaiRisk: Int? = null,
+	@field:SerializedName("nilaiRiskSebelum")
+	var nilaiRiskSebelum: Int? = null,
 
-	@field:SerializedName("Risk")
-	var risk: Risk? = null
+	@field:SerializedName("nilaiRiskSesudah")
+	var nilaiRiskSesudah: Int? = null,
+
+	@field:SerializedName("RiskSesudah")
+	var riskSesudah: RiskSesudah? = null,
+
+	@field:SerializedName("RiskSebelum")
+	var riskSebelum: RiskSebelum? = null
 )
 
-data class Risk(
+data class RiskSesudah(
 
 	@field:SerializedName("min")
 	var min: Int? = null,
@@ -71,10 +77,13 @@ data class ItemHazardList(
 	var lokasiDetail: String? = null,
 
 	@field:SerializedName("idKeparahanSesudah")
-	var idKeparahanSesudah: String? = null,
+	var idKeparahanSesudah: Int? = null,
 
 	@field:SerializedName("nilaiKemungkinanSesudah")
-	var nilaiKemungkinanSesudah: String? = null,
+	var nilaiKemungkinanSesudah: Int? = null,
+
+	@field:SerializedName("kemungkinanSebelum")
+	var kemungkinanSebelum: String? = null,
 
 	@field:SerializedName("uid")
 	var uid: String? = null,
@@ -112,6 +121,9 @@ data class ItemHazardList(
 	@field:SerializedName("nilaiKemungkinan")
 	var nilaiKemungkinan: Int? = null,
 
+	@field:SerializedName("keparahanSebelum")
+	var keparahanSebelum: String? = null,
+
 	@field:SerializedName("jam_selesai")
 	var jamSelesai: String? = null,
 
@@ -125,10 +137,16 @@ data class ItemHazardList(
 	var idHirarki: Int? = null,
 
 	@field:SerializedName("nilaiKeparahanSesudah")
-	var nilaiKeparahanSesudah: String? = null,
+	var nilaiKeparahanSesudah: Int? = null,
+
+	@field:SerializedName("kemungkinanSesudah")
+	var kemungkinanSesudah: String? = null,
 
 	@field:SerializedName("tgl_input")
 	var tglInput: String? = null,
+
+	@field:SerializedName("keparahanSesudah")
+	var keparahanSesudah: String? = null,
 
 	@field:SerializedName("jam_hazard")
 	var jamHazard: String? = null,
@@ -158,7 +176,7 @@ data class ItemHazardList(
 	var timeInput: String? = null,
 
 	@field:SerializedName("idKemungkinanSesudah")
-	var idKemungkinanSesudah: String? = null,
+	var idKemungkinanSesudah: Int? = null,
 
 	@field:SerializedName("tgl_hazard")
 	var tglHazard: String? = null,
@@ -168,4 +186,34 @@ data class ItemHazardList(
 
 	@field:SerializedName("namaPJ")
 	var namaPJ: String? = null
+)
+
+data class RiskSebelum(
+
+	@field:SerializedName("min")
+	var min: Int? = null,
+
+	@field:SerializedName("flag")
+	var flag: Int? = null,
+
+	@field:SerializedName("bgColor")
+	var bgColor: String? = null,
+
+	@field:SerializedName("idResiko")
+	var idResiko: Int? = null,
+
+	@field:SerializedName("kodeBahaya")
+	var kodeBahaya: String? = null,
+
+	@field:SerializedName("max")
+	var max: Int? = null,
+
+	@field:SerializedName("tindakan")
+	var tindakan: String? = null,
+
+	@field:SerializedName("txtColor")
+	var txtColor: String? = null,
+
+	@field:SerializedName("kategori")
+	var kategori: String? = null
 )

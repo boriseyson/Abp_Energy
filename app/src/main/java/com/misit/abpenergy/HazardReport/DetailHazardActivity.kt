@@ -57,6 +57,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         cvStatusPerbaikan.setOnClickListener(this)
         pjFOTO.setOnClickListener(this)
         matrikResiko.setOnClickListener(this)
+        matrikResikoSesudah.setOnClickListener(this)
     }
     override fun onResume() {
         if(adminHazard!=null){
@@ -97,7 +98,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
             intent.putExtra("Direktori","https://abpjobsite.com/bukti_hazard/penanggung_jawab/")
             startActivity(intent)
         }
-        if(v?.id==R.id.matrikResiko){
+        if(v?.id==R.id.matrikResiko || v?.id==R.id.matrikResikoSesudah){
             var intent = Intent(this@DetailHazardActivity,MatrikResikoWebViewActivity::class.java)
             startActivity(intent)
         }
@@ -137,10 +138,10 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                         tvLokasiD.text = itemHazard.lokasiHazard
                         tvLokasiDetails.text= itemHazard.lokasiDetail
                         tvBahayaD.text = itemHazard.deskripsi
-                        tvKemungkinan.text = itemHazard.nilaiKemungkinan
-                        tvKeparahan.text = itemHazard.nilaiKeparahan
-                        tvKemungkinan.text = itemHazard.nilaiKemungkinan
-                        tvKeparahan.text = itemHazard.nilaiKeparahan
+                        tvKemungkinan.text = itemHazard.kemungkinanSebelum
+                        tvKeparahan.text = itemHazard.keparahanSebelum
+                        tvKemungkinanSesudah.text = itemHazard.kemungkinanSesudah
+                        tvKeparahanSesudah.text = itemHazard.keparahanSesudah
                         tvPengendalian.text = itemHazard.namaPengendalian
                         tvKatBahayaD.text = itemHazard.katBahaya
                         tvPerbaikanD.text = itemHazard.tindakan
@@ -197,21 +198,29 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                             tvKetPerbaikan.text = ""
                         }
                     }
-                    if(dataHazard.nilairRisk!=null){
+                    if(dataHazard.nilaiRiskSebelum!=null){
                         var itemHazard =  dataHazard.itemHazardList
-                        tvTotalResiko.text = "${itemHazard!!.nilaiKemungkinan} x ${itemHazard!!.nilaiKeparahan} = ${dataHazard.nilairRisk}"
+                        tvTotalResiko.text = "${itemHazard!!.nilaiKemungkinan} x ${itemHazard!!.nilaiKeparahan} = ${dataHazard.nilaiRiskSebelum}"
+                        tvKDresiko.text ="${dataHazard.riskSebelum!!.kodeBahaya}"
+                        tvRisk.text = "${dataHazard.riskSebelum!!.kategori} "
+                        tvNilaiResiko.text = "${dataHazard.riskSebelum!!.min} - ${dataHazard.riskSebelum!!.max}"
+                        cvResiko.setCardBackgroundColor(Color.parseColor(dataHazard.riskSebelum!!.bgColor))
+                        tvRisk.setBackgroundColor(Color.parseColor(dataHazard.riskSebelum!!.bgColor))
+                        tvRisk.setTextColor(Color.parseColor(dataHazard.riskSebelum!!.txtColor))
                     }
-                    if(dataHazard.risk!=null){
-                        tvKDresiko.text ="${dataHazard.risk!!.kodeBahaya}"
-                        tvRisk.text = "${dataHazard.risk!!.kategori} "
-                        tvNilaiResiko.text = "${dataHazard.risk!!.min} - ${dataHazard.risk!!.max}"
-                        cvResiko.setCardBackgroundColor(Color.parseColor(dataHazard.risk!!.bgColor))
-                        tvRisk.setBackgroundColor(Color.parseColor(dataHazard.risk!!.bgColor))
-                        tvRisk.setTextColor(Color.parseColor(dataHazard.risk!!.txtColor))
+                    if(dataHazard.nilaiRiskSesudah!=null){
+                        lnDetMatrikResiko.visibility = View.VISIBLE
+                        var itemHazard =  dataHazard.itemHazardList
+                        tvTotalResikoSesudah.text = "${itemHazard!!.nilaiKemungkinanSesudah} x ${itemHazard!!.nilaiKeparahanSesudah} = ${dataHazard.nilaiRiskSesudah}"
+                        tvKDresikoSesudah.text ="${dataHazard.riskSesudah!!.kodeBahaya}"
+                        tvRiskSesudah.text = "${dataHazard.riskSesudah!!.kategori} "
+                        tvNilaiResikoSesudah.text = "${dataHazard.riskSesudah!!.min} - ${dataHazard.riskSesudah!!.max}"
+                        cvResikoSesudah.setCardBackgroundColor(Color.parseColor(dataHazard.riskSesudah!!.bgColor))
+                        tvRiskSesudah.setBackgroundColor(Color.parseColor(dataHazard.riskSesudah!!.bgColor))
+                        tvRiskSesudah.setTextColor(Color.parseColor(dataHazard.riskSesudah!!.txtColor))
+                    }else{
+                        lnDetMatrikResiko.visibility = View.GONE
                     }
-
-
-
                 }
                 PopupUtil.dismissDialog()
             }

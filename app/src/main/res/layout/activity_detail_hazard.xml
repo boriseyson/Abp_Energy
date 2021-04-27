@@ -239,6 +239,7 @@
                     android:gravity="center_horizontal|center_vertical"
                     android:layout_margin="10dp"
                     android:text="Matrik Resiko"
+                    android:textAllCaps="false"
                     app:iconPadding="15dp"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
@@ -691,6 +692,195 @@
                 <!--Penanggung Jawab-->
             </androidx.cardview.widget.CardView>
             <!--    BAHAYA VIEW-->
+            <LinearLayout
+                android:id="@+id/lnDetMatrikResiko"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--    SUMBER BAHAYA-->
+                <com.google.android.material.button.MaterialButton
+                    app:icon="@drawable/ic_info_outline_white_24dp"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="match_parent"
+                    app:iconGravity="textEnd"
+                    android:id="@+id/matrikResikoSesudah"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_margin="10dp"
+                    android:textAllCaps="false"
+                    android:text="Matrik Resiko Sesudah Perbaikan"
+                    app:iconPadding="15dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/warningColor"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="Kemungkinan Resiko Sesudah Perbaikan"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <!--        PILIHAN-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
+                        <TextView
+                            android:id="@+id/tvKemungkinanSesudah"
+                            android:layout_weight="1.5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_horizontal|center_vertical" />
+                        <LinearLayout
+                            android:layout_weight="0.5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="Nilai"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal" />
+                            <TextView
+                                android:id="@+id/tvNilaiKemungkinanSesudah"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <!--        PILIHAN-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/bgCancel"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="Keparahan Resiko Sesudah Perbaikan"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
+                        <TextView
+                            android:id="@+id/tvKeparahanSesudah"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:layout_height="match_parent"
+                            android:gravity="center_horizontal|center_vertical" />
+                        <LinearLayout
+                            android:layout_weight="0.5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="Nilai"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal" />
+                            <TextView
+                                android:id="@+id/tvNilaiKeparahanSesudah"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvTotalResikoSesudah"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:text="Nilai Resiko = Kemungkinan x Keparahan"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/tvTotalResikoSesudah"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvResikoSesudah"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/tvKDresikoSesudah"
+                            android:text="RISK"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/tvRiskSesudah"
+                            android:text="RISK"
+                            android:textColor="@color/white"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/tvNilaiResikoSesudah"
+                            android:text="RISK"
+                            android:textColor="@color/white"
+                            />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <!--    SUMBER BAHAYA-->
+            </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
