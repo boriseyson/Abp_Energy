@@ -1,7 +1,10 @@
 package com.misit.abpenergy
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -14,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -60,6 +64,7 @@ class IndexActivity : AppCompatActivity(),
     var rule_user:String?=null
     private var userRule:Array<String>?=null
 //    Variable
+private val requestCodeCameraPermission = 1999
     lateinit var container: ShimmerFrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +79,10 @@ class IndexActivity : AppCompatActivity(),
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this@IndexActivity, R.color.colorPrimary)
 //        Session
+        if(ContextCompat.checkSelfPermission(this@IndexActivity,
+                Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+            askForCameraPermission()
+        }
         PrefsUtil.initInstance(this)
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",false)){
             USERNAME = PrefsUtil.getInstance().getStringState(PrefsUtil.USER_NAME,"")
@@ -154,7 +163,44 @@ class IndexActivity : AppCompatActivity(),
         btnQRCODES.setOnClickListener(this)
         cvBarcodeProfile.setOnClickListener(this)
     }
+    private fun askForCameraPermission(){
+        ActivityCompat.requestPermissions(this@IndexActivity,
+            arrayOf(Manifest.permission.CAMERA),requestCodeCameraPermission)
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+//        if(requestCode == requestCodeCameraPermission && grantResults.isNotEmpty()  && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//
+//        }else{
+//            Toasty.error(this@BarcodeScannerActivity,"Permission Denied!").show()
+//        }
+        when (requestCode) {
+            requestCodeCameraPermission -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Toasty.info(this@IndexActivity,"PERMISSION_GRANTED",Toasty.LENGTH_SHORT).show()
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toasty.info(this@IndexActivity,"PERMISSION_DENIED",Toasty.LENGTH_SHORT).show()
+                }
+                return
+            }
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+                Toasty.info(this@IndexActivity,"PERMISSION_Ignore",Toasty.LENGTH_SHORT).show()
+            }
+        }
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 //Get Token
     private fun getToken() {
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
@@ -179,6 +225,14 @@ class IndexActivity : AppCompatActivity(),
                         tvNIK.text = res!!.dataUser!!.nik.toString()
                         tvDept.text = res!!.dataUser!!.dept
                         tvSect.text = res!!.dataUser!!.sect
+                        rvCompany.text = res!!.dataUser!!.namaPerusahaan
+                        if(res!!.dataUser!!.perusahaan==0){
+                            lnSaranaPrasarana.visibility = View.VISIBLE
+                            lnRKBsystem.visibility = View.VISIBLE
+                        }else{
+                            lnSaranaPrasarana.visibility = View.GONE
+                            lnRKBsystem.visibility = View.GONE
+                        }
                         tvInspeksiUser.text = res!!.datInspeksi!!.toString()
                             userRule =RULE.split(",").toTypedArray()
                         var apprSarpras = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".IndexActivity">
-
     <FrameLayout
+        android:background="@color/colorPrimary"
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -142,22 +142,44 @@
                                     android:layout_marginLeft="100dp"
                                     android:layout_marginBottom="10dp"
                                     android:background="@color/colorPrimary"/>
-                                <TextView
-                                    android:textColor="#B2000000"
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="IT"
-                                    android:textSize="12sp"
-                                    android:gravity="center"
-                                    android:id="@+id/tvSect"/>
+                                    android:orientation="horizontal"
+                                    >
+                                    <TextView
+                                        android:textColor="#B2000000"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1.6"
+                                        android:layout_height="wrap_content"
+                                        android:text="IT"
+                                        android:textSize="12sp"
+                                        android:gravity="center_vertical|right"
+                                        android:id="@+id/tvSect"/>
+                                    <TextView
+                                        android:textColor="#B2000000"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="0.4"
+                                        android:layout_height="wrap_content"
+                                        android:text="/"
+                                        android:gravity="center"/>
+                                    <TextView
+                                        android:textSize="12sp"
+                                        android:textColor="#000000"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1.6"
+                                        android:layout_height="wrap_content"
+                                        android:text="HCGA"
+                                        android:gravity="center_vertical|left"
+                                        android:id="@+id/tvDept"/>
+                                </LinearLayout>
                                 <TextView
-                                    android:textSize="12sp"
                                     android:textColor="#000000"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="HCGA"
+                                    android:text="PT ABP"
                                     android:gravity="center"
-                                    android:id="@+id/tvDept"/>
+                                    android:id="@+id/rvCompany"/>
 
                             </LinearLayout>
                             </androidx.cardview.widget.CardView>
@@ -208,6 +230,7 @@
                      </RelativeLayout>
                     <!--Sarana Prasarana-->
                     <LinearLayout
+                        android:id="@+id/lnSaranaPrasarana"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -233,6 +256,8 @@
                             android:orientation="horizontal"
                             android:paddingBottom="10dp">
                             <LinearLayout
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:id="@+id/btnSarprasAll"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -259,6 +284,8 @@
                                     android:textAlignment="center" />
                             </LinearLayout>
                             <LinearLayout
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:id="@+id/btnSarpras"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -288,6 +315,8 @@
                                     android:textAlignment="center" />
                             </LinearLayout>
                             <LinearLayout
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:id="@+id/btnSarprasApproveKabag"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -318,6 +347,8 @@
                                     android:textAlignment="center" />
                             </LinearLayout>
                             <LinearLayout
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:id="@+id/btnNewSarpras"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -352,6 +383,7 @@
                     </LinearLayout>
                     <!--Rencana Kebutuhan Barang-->
                     <LinearLayout
+                        android:id="@+id/lnRKBsystem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
@@ -387,8 +419,9 @@
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:paddingBottom="15dp">
-
                                     <LinearLayout
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:id="@+id/btnTotal"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -418,8 +451,9 @@
                                             android:textColor="@color/white"
                                             android:textStyle="bold" />
                                     </LinearLayout>
-
                                     <LinearLayout
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:id="@+id/btnApprove"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -449,8 +483,9 @@
                                             android:textColor="@color/white"
                                             android:textStyle="bold" />
                                     </LinearLayout>
-
                                     <LinearLayout
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:id="@+id/btnWaiting"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -480,8 +515,9 @@
                                             android:textColor="@color/white"
                                             android:textStyle="bold" />
                                     </LinearLayout>
-
                                     <LinearLayout
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:id="@+id/btnCancel"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -513,9 +549,9 @@
                                             android:textColor="@color/white"
                                             android:textStyle="bold" />
                                     </LinearLayout>
-
-
                                     <LinearLayout
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:id="@+id/btnClose"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -558,13 +594,11 @@
                         android:layout_marginTop="10dp"
                         android:background="@color/white"
                         android:visibility="visible">
-
                         <LinearLayout
                             android:background="@drawable/bg_produksi_img"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -573,27 +607,22 @@
                                 android:text="@string/produksi"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
-
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="2dp"
                                 android:background="@color/strokeSmoke" />
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
-
                                 <HorizontalScrollView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
-
                                     <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:layout_weight="1"
                                         android:orientation="horizontal">
-
                                         <LinearLayout
                                             android:id="@+id/btnOB"
                                             android:layout_width="wrap_content"
@@ -601,6 +630,8 @@
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
+                                                android:foreground="?android:attr/selectableItemBackground"
+                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -630,7 +661,6 @@
                                                 </LinearLayout>
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
-
                                         <LinearLayout
                                             android:id="@+id/btnHAULING"
                                             android:layout_width="wrap_content"
@@ -638,6 +668,8 @@
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
+                                                android:foreground="?android:attr/selectableItemBackground"
+                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -667,7 +699,6 @@
                                                 </LinearLayout>
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
-
                                         <LinearLayout
                                             android:id="@+id/btnCRUSHING"
                                             android:layout_width="wrap_content"
@@ -675,6 +706,8 @@
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
+                                                android:foreground="?android:attr/selectableItemBackground"
+                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -704,7 +737,6 @@
                                                 </LinearLayout>
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
-
                                         <LinearLayout
                                             android:id="@+id/btnBARGING"
                                             android:layout_width="wrap_content"
@@ -712,6 +744,8 @@
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
+                                                android:foreground="?android:attr/selectableItemBackground"
+                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -741,8 +775,6 @@
                                                 </LinearLayout>
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
-
-
                                         <LinearLayout
                                             android:id="@+id/btnSTOCKROOM"
                                             android:layout_width="wrap_content"
@@ -750,6 +782,8 @@
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
+                                                android:foreground="?android:attr/selectableItemBackground"
+                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -779,7 +813,6 @@
                                                 </LinearLayout>
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
-
                                         <LinearLayout
                                             android:id="@+id/btnSTOCKPRODUCT"
                                             android:layout_width="wrap_content"
@@ -787,6 +820,8 @@
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
+                                                android:foreground="?android:attr/selectableItemBackground"
+                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -900,15 +935,12 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
                         android:background="#F2B705"
                         android:visibility="visible">
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -919,12 +951,10 @@
                                 android:textColor="#03588C"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
-
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="2dp"
                                 android:background="@color/strokeSmoke" />
-
                             <HorizontalScrollView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
@@ -938,14 +968,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
-
                                     <androidx.cardview.widget.CardView
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="10dp"
                                         app:cardCornerRadius="6dp"
                                         app:cardElevation="10dp">
-
                                         <LinearLayout
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -969,7 +999,6 @@
                                         </LinearLayout>
                                     </androidx.cardview.widget.CardView>
                                 </LinearLayout>
-
                                 <LinearLayout
                                     android:id="@+id/btnInspection"
                                     android:layout_width="wrap_content"
@@ -977,6 +1006,8 @@
                                     android:orientation="vertical">
 
                                     <androidx.cardview.widget.CardView
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="10dp"
@@ -1014,6 +1045,8 @@
                                     android:orientation="vertical">
 
                                     <androidx.cardview.widget.CardView
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="10dp"
@@ -1050,6 +1083,8 @@
                                     android:orientation="vertical">
 
                                     <androidx.cardview.widget.CardView
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:clickable="true"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="10dp"
@@ -1108,9 +1143,9 @@
                 app:fab_labelsPosition="left"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-
                 <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btnQRCODES"
+                    android:visibility="gone"
                     app:fab_size="mini"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -1137,7 +1172,6 @@
                     app:fab_icon="@drawable/ic_baseline_warning_24"
                     app:fab_title="Buat Hazard Report" />
             </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/lnLoading"
@@ -1160,7 +1194,6 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
-
 <!--NavigationView-->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
@@ -1169,20 +1202,15 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu_drawer"
-        android:background="@color/white"
+        android:background="@color/colorPrimary"
         >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="vertical">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimary" />
-
             <LinearLayout
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -1191,11 +1219,13 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:textAllCaps="false"
                     android:id="@+id/logOut"
+                    app:iconPadding="30dp"
+                    android:gravity="left"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
                     android:padding="10dp"
-                    android:text="Log Out" />
+                    android:text="Keluar" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
