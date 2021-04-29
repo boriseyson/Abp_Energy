@@ -98,25 +98,25 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical">
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilUsername"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:hint="@string/username"
-        app:startIconDrawable="@drawable/ic_baseline_person_24"
-        app:startIconTint="@color/skyBlue">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/InUsername"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilUsername"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:textColor="@color/skyBlue"
-            android:drawablePadding="10dp"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:padding="16dp"
+            android:hint="@string/username"
+            app:startIconDrawable="@drawable/ic_baseline_person_24"
+            app:startIconTint="@color/skyBlue">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/InUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:textColor="@color/skyBlue"
+                android:drawablePadding="10dp"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -175,17 +175,28 @@
         android:text="Atau"
         android:textColor="@color/colorPrimaryDark" />
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/btnNewUser"
-        android:textAllCaps="false"
-        android:layout_gravity="center"
-        android:padding="5dp"
-        android:text="Pengguna Baru? Daftar Sekarang"
-        android:textColor="@color/skyBlue" />
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/btnNewUser"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="Pengguna Baru? Daftar Sekarang ( PT Alamjaya Bara Pratama )"
+            android:textColor="@color/skyBlue" />
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/btnNewUserMitra"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="Pengguna Baru? Daftar Sekarang ( Mitra Kerja )"
+            android:textColor="@color/skyBlue" />
     </LinearLayout>
     <TextView
         android:id="@+id/tvVersionCode"

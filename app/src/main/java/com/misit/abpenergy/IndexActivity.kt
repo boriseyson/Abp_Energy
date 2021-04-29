@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -44,7 +43,6 @@ import com.misit.abpenergy.Service.BarcodeScannerActivity
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_index.*
-import kotlinx.android.synthetic.main.activity_new_hazard.*
 import java.util.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -229,9 +227,11 @@ private val requestCodeCameraPermission = 1999
                         if(res!!.dataUser!!.perusahaan==0){
                             lnSaranaPrasarana.visibility = View.VISIBLE
                             lnRKBsystem.visibility = View.VISIBLE
+                            btnNewSarana.visibility = View.VISIBLE
                         }else{
                             lnSaranaPrasarana.visibility = View.GONE
                             lnRKBsystem.visibility = View.GONE
+                            btnNewSarana.visibility = View.GONE
                         }
                         tvInspeksiUser.text = res!!.datInspeksi!!.toString()
                             userRule =RULE.split(",").toTypedArray()

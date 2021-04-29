@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".IndexActivity">
+
     <FrameLayout
         android:background="@color/colorPrimary"
         android:id="@+id/content_frame"
@@ -624,14 +625,14 @@
                                         android:layout_weight="1"
                                         android:orientation="horizontal">
                                         <LinearLayout
+                                            android:foreground="?android:attr/selectableItemBackground"
+                                            android:clickable="true"
                                             android:id="@+id/btnOB"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
-                                                android:foreground="?android:attr/selectableItemBackground"
-                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -662,14 +663,14 @@
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
                                         <LinearLayout
+                                            android:foreground="?android:attr/selectableItemBackground"
+                                            android:clickable="true"
                                             android:id="@+id/btnHAULING"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
-                                                android:foreground="?android:attr/selectableItemBackground"
-                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -700,14 +701,14 @@
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
                                         <LinearLayout
+                                            android:foreground="?android:attr/selectableItemBackground"
+                                            android:clickable="true"
                                             android:id="@+id/btnCRUSHING"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
-                                                android:foreground="?android:attr/selectableItemBackground"
-                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -738,14 +739,14 @@
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
                                         <LinearLayout
+                                            android:foreground="?android:attr/selectableItemBackground"
+                                            android:clickable="true"
                                             android:id="@+id/btnBARGING"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
-                                                android:foreground="?android:attr/selectableItemBackground"
-                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -776,14 +777,14 @@
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
                                         <LinearLayout
+                                            android:foreground="?android:attr/selectableItemBackground"
+                                            android:clickable="true"
                                             android:id="@+id/btnSTOCKROOM"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
-                                                android:foreground="?android:attr/selectableItemBackground"
-                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -814,14 +815,14 @@
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
                                         <LinearLayout
+                                            android:foreground="?android:attr/selectableItemBackground"
+                                            android:clickable="true"
                                             android:id="@+id/btnSTOCKPRODUCT"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
 
                                             <androidx.cardview.widget.CardView
-                                                android:foreground="?android:attr/selectableItemBackground"
-                                                android:clickable="true"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_margin="10dp"
@@ -964,13 +965,13 @@
                                 android:orientation="horizontal">
 <!--USER INSPEKSI & HAZARD REPORT-->
                                 <LinearLayout
+                                    android:foreground="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
                                     android:id="@+id/btnHazard"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
                                     <androidx.cardview.widget.CardView
-                                        android:foreground="?android:attr/selectableItemBackground"
-                                        android:clickable="true"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="10dp"
@@ -1000,14 +1001,14 @@
                                     </androidx.cardview.widget.CardView>
                                 </LinearLayout>
                                 <LinearLayout
+                                    android:foreground="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
                                     android:id="@+id/btnInspection"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
                                     <androidx.cardview.widget.CardView
-                                        android:foreground="?android:attr/selectableItemBackground"
-                                        android:clickable="true"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="10dp"
@@ -1039,14 +1040,14 @@
 <!--USER INSPEKSI & HAZARD REPORT-->
 <!--ALL INSPEKSI & HAZARD REPORT-->
                                 <LinearLayout
+                                    android:foreground="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
                                     android:id="@+id/btnHazardALL"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
                                     <androidx.cardview.widget.CardView
-                                        android:foreground="?android:attr/selectableItemBackground"
-                                        android:clickable="true"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="10dp"
@@ -1077,14 +1078,14 @@
                                     </androidx.cardview.widget.CardView>
                                 </LinearLayout>
                                 <LinearLayout
+                                    android:foreground="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
                                     android:id="@+id/btnInspectionALL"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
                                     <androidx.cardview.widget.CardView
-                                        android:foreground="?android:attr/selectableItemBackground"
-                                        android:clickable="true"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="10dp"

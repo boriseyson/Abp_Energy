@@ -35,11 +35,14 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
      private var csrf_token : String?=""
      private var android_token : String?=""
      private var app_version : String?=""
+     private var companyDipilih:String?=null
+     private var idCompany:String?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        companyDipilih=""
+        idCompany=""
         PrefsUtil.initInstance(this)
         ConfigUtil.changeColor(this)
 
@@ -59,6 +62,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         })
         tvLpSandi.setOnClickListener(this)
         btnNewUser.setOnClickListener(this)
+        btnNewUserMitra.setOnClickListener(this)
     }
 
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -78,7 +82,10 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
          var intent = Intent(this@LoginActivity,RegisterActivity::class.java)
          startActivityForResult(intent,11)
      }
-
+    private fun registerUserMitra(){
+        var intent = Intent(this@LoginActivity,RegisterMitraKerjaActivity::class.java)
+        startActivityForResult(intent,12)
+    }
      private fun forgotPasswd(){
          var intent = Intent(this@LoginActivity,ForgotPasswordActivity::class.java)
          if(InUsername.text!=null){
@@ -98,6 +105,9 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         }
         if(v?.id==R.id.btnNewUser){
             registerUser()
+        }
+        if(v?.id==R.id.btnNewUserMitra){
+            registerUserMitra()
         }
     }
 
@@ -174,9 +184,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                 PopupUtil.dismissDialog()
                 Toasty.error(this@LoginActivity,"Login Error ",Toasty.LENGTH_SHORT).show()
             }
-
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-
                 var userResponse = response.body()
                 if(userResponse!=null){
                     PopupUtil.dismissDialog()
@@ -216,7 +224,6 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                             InUsername.requestFocus()
                             PopupUtil.dismissDialog()
                         }
-
                     }else{
                         Toasty.error(this@LoginActivity,"Username Or Password Wrong!",Toasty.LENGTH_SHORT).show()
                         clearForm()
@@ -229,9 +236,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                     InUsername.requestFocus()
                     PopupUtil.dismissDialog()
                 }
-
             }
-
         })
     }
     private fun clearForm(){

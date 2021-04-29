@@ -67,7 +67,7 @@
     <string name="safety_heath_safety_environment"><![CDATA[Safety - Heath , Safety & Environment]]></string>
     <string name="sarana_prasarana_approve"><![CDATA[Sarana dan Prasarana Approve Kabag]]></string>
     <string name="inpeksi_hazard"><![CDATA[Inspeksi & Hazard Report]]></string>
-    <string name="nomor_induk_karyawan">Nomor Induk Karyawan</string>
+    <string name="nomor_induk_karyawan">Nomor Induk Karyawan (Tidak Menggunakan Titik)</string>
     <string name="nama_lengkap">Nama Lengkap</string>
     <string name="departemen">Departemen</string>
     <string name="devisi">Devisi</string>
