@@ -36,6 +36,9 @@ public class PrefsUtil {
     public static final Boolean MENU_HOME = false;
     public static final Boolean MENU_INBOX = false;
     public static final Boolean MENU_SENT = false;
+    public static final String YES_COUNTER = "0";
+    public static final String NO_COUNTER = "0";
+    public static final String TOTAL_ITEM = "0";
     public static final Boolean MENU_CHANGE_PASSWORD = false;
 
     private static PrefsUtil instance;

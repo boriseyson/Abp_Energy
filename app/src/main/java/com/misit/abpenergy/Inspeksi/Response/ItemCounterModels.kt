@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Inspeksi.Responseclass ItemCounterModels {    var totalItem:Int?=0    var totalCounter:Int?=0}
