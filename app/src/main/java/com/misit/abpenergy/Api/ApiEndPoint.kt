@@ -269,20 +269,15 @@ interface ApiEndPoint{
         @Part("idKeparahanSesudah") idKeparahanSesudah:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
-
     @GET("/android/api/lokasi/get")
     fun getLokasiList(): Call<LokasiResponse>?
-
     @GET("/android/api/risk/get")
     fun getRiskList(): Call<RiskResponse>?
-
     @GET("/hse/android/inspeksi/form")
     fun getListFormInspeksi(): Call<FormInspeksiResponse>?
-
     @GET("/hse/android/inspeksi/new")
     fun getListSubInspeksi(@Query("idForm") idForm:String):
             Call<InspeksiGroupsResponse>?
-
     @GET("/hse/android/inspeksi/new/item/temp")
     fun itemInspeksiTemp(@Query("idTemp") idTemp:String?,
                          @Query("idForm") idForm:String?,
@@ -291,32 +286,30 @@ interface ApiEndPoint{
                          @Query("user_create") user_create:String?
     )
             : Call<ItemTempResponse>?
-
     @GET("/hse/android/inspeksi/new/add/team/temp")
     fun addTeamInspeksi(@Query("idTemp") idTemp:String?,
                         @Query("idForm") idForm:String?,
                         @Query("nikTeam") nikTeam:String?
     )
             : Call<ItemTempResponse>?
-
     @GET("/hse/android/inspeksi/delete/temp")
     fun deleteInspeksiTemp(@Query("idTemp") idTemp:String?)
             : Call<ItemTempResponse>?
-
     @GET("/hse/android/inspeksi/new/list/team/temp")
     fun teamInspeksiTemp(@Query("idTemp") idTemp:String?)
             : Call<TeamInspeksiTempResponse>?
-
-    @FormUrlEncoded
+    @Multipart
     @POST("/hse/android/inspeksi/pica/temp")
-    fun inspeksiPicaTemp(@Field("idTemp") idTemp:String?,
-                      @Field("idForm") idForm:String?,
-                      @Field("temuan") temuan:String?,
-                      @Field("nikPJ") nikPJ:String?,
-                      @Field("namaPJ") namaPJ:String?,
-                      @Field("tglTenggat") tglTenggat:String?,
-                      @Field("status") status:String?,
-                      @Field("_token") csrf_token:String?    )
+    fun inspeksiPicaTemp(
+            @Part buktiTemuan: MultipartBody.Part?,
+            @Part("idTemp") idTemp:RequestBody?,
+            @Part("idForm") idForm:RequestBody?,
+            @Part("temuan") temuan:RequestBody?,
+            @Part("nikPJ") nikPJ:RequestBody?,
+            @Part("namaPJ") namaPJ:RequestBody?,
+            @Part("tglTenggat") tglTenggat:RequestBody?,
+            @Part("status") status:RequestBody?,
+            @Part("_token") csrf_token:RequestBody?    )
             : Call<ItemTempResponse>?
     @GET("/hse/android/inspeksi/pica/temp")
     fun listInspeksiPica(@Query("idTemp") idTemp:String?)

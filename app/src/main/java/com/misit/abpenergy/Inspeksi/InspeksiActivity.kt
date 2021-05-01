@@ -84,6 +84,8 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
         var USERNAME="USERNAME"
     }
     fun loadForm(hal:String){
+        PopupUtil.showProgress(this@InspeksiActivity,"Loading...","Memuat Form Inspeksi!")
+
         swipeRefreshLayout.isRefreshing=true
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getListFormInspeksi()
@@ -98,14 +100,15 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
                 var listInspeksi = response.body()
                 if(listInspeksi!=null){
                     if (listInspeksi.data!=null){
-                        PopupUtil.showProgress(this@InspeksiActivity,"Loading...","Memuat Form Inspeksi!")
                         loading=true
                         inspeksiList!!.addAll(listInspeksi.data!!)
                         adapter?.notifyDataSetChanged()
+                        PopupUtil.dismissDialog()
                     }else{
                         curentPosition = (rvFormInspeksi.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                         inspeksiList!!.addAll(listInspeksi.data!!)
                         adapter?.notifyDataSetChanged()
+                        PopupUtil.dismissDialog()
                     }
                 }
                 rvFormInspeksi.addOnScrollListener(object : RecyclerView.OnScrollListener(){

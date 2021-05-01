@@ -1,1 +1,1 @@
-package com.misit.abpenergy.Inspeksi.SQLiteimport java.io.Serializableclass ItemModels:Serializable {    var ID:Int=0    var ITEM_ID:Int=0}
+package com.misit.abpenergy.Inspeksi.SQLiteimport java.io.Serializableclass ItemModels:Serializable {    var ID:Int=0    var UNIQUEID:String?=null    var YES:Int=0    var NO:Int=0    var TOTAL:Int=0}

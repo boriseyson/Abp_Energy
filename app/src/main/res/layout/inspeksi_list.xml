@@ -4,50 +4,38 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="15dp"
-    app:cardCornerRadius="15dp"
+    app:cardCornerRadius="25dp"
     app:cardElevation="10dp"
     app:cardBackgroundColor="@color/white"
-    android:id="@+id/cvInspeksi"
+    android:id="@+id/cvInspeksiHeader"
     android:orientation="vertical">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!--    TXT Tanggal-->
-        <LinearLayout
+
+        <!--    Nama Inspeksi-->
+        <TextView
+            android:id="@+id/tvNamaInspeksi"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:gravity="center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@color/bgCancel"
-            android:weightSum="2">
-            <!--        TV Jam Inspeksi-->
-            <TextView
-                android:id="@+id/tvJamInspeksi"
-                android:layout_margin="5dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="16:00:00"
-                android:padding="10dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"/>
-            <!--        TV Jam Inspeksi-->
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="Inspeksi Workshop"/>
             <!--        TV Tanggal Inspeksi-->
             <TextView
                 android:id="@+id/tvTglInspeksi"
-                android:layout_margin="5dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="01 January 2021"
                 android:padding="10dp"
-                android:textColor="@color/white"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"/>
             <!--        TV Tanggal Inspeksi-->
-        </LinearLayout>
-        <!--    TXT Tanggal-->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -59,15 +47,24 @@
             android:layout_height="wrap_content"
 
             android:orientation="vertical">
-            <!--    Nama Inspeksi-->
-                <TextView
-                    android:id="@+id/tvLokasi"
-                    android:padding="5dp"
-                    android:textSize="17sp"
-                    android:gravity="center_horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Jalan Hauling"/>
+            <!--   Perusahaan-->
+            <TextView
+                android:id="@+id/tvPerusahaanPerusahaan"
+                android:padding="5dp"
+                android:textSize="17sp"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"/>
+            <!--   Lokasi-->
+            <TextView
+                android:id="@+id/tvLokasiInspeksi"
+                android:padding="5dp"
+                android:textSize="17sp"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"/>
         </LinearLayout>
         <!--    Data Temuan-->
         <View
@@ -86,7 +83,7 @@
             android:text="Saran"/>
         <!--TV Deskripsi-->
         <TextView
-            android:id="@+id/tvSaran"
+            android:id="@+id/tvSaranInspeksi"
             android:textColor="#000000"
             android:textStyle="bold"
             android:padding="10dp"
@@ -101,7 +98,8 @@
         <!--    Bahaya-->
         <!--    Status-->
         <TextView
-            android:id="@+id/tvValidasi"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:id="@+id/tvStatus"
             android:textColor="@color/white"
             android:background="@color/bgCancel"
             android:textStyle="bold"
@@ -109,10 +107,23 @@
             android:layout_marginBottom="20dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DiSetujui Oleh Safety"
+            android:text="Sedang Dikerjakan"
             />
+        <TextView
+        android:id="@+id/tvValidasi"
+        android:textColor="@color/white"
+        android:background="@color/bgCancel"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DiSetujui Oleh Safety"
+        />
         <!--    Status-->
     </LinearLayout>
 </androidx.cardview.widget.CardView>
