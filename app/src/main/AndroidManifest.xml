@@ -19,23 +19,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login.DepartmentActivity"
+        <activity android:name=".Inspeksi.DetailInspeksiActivity"></activity>
+        <activity
+            android:name=".Login.DepartmentActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".Login.CompanyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Login.CompanyActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Login.RegisterMitraKerjaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Login.RegisterMitraKerjaActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-        <activity android:name=".Inspeksi.PicaInspeksiActivity"
+        <activity
+            android:name=".Inspeksi.PicaInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".Inspeksi.ListInspeksiActivity"
+        <activity
+            android:name=".Inspeksi.ListInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".Inspeksi.NewInspeksiActivity"
+        <activity
+            android:name=".Inspeksi.NewInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

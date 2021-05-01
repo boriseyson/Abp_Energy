@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="15dp"
-    app:cardCornerRadius="25dp"
-    app:cardElevation="10dp"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="50dp"
     app:cardBackgroundColor="@color/white"
     android:id="@+id/cvInspeksiHeader"
     android:orientation="vertical">
@@ -13,7 +13,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <!--    Nama Inspeksi-->
         <TextView
             android:id="@+id/tvNamaInspeksi"
@@ -77,6 +76,7 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:padding="10dp"
+            android:id="@+id/tvTextSaran"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,12 +87,12 @@
             android:textColor="#000000"
             android:textStyle="bold"
             android:padding="10dp"
-            android:layout_marginBottom="20dp"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Terdapat genangan air dari kolam yang penuh lumpur,
         air melimpas ke badan jalan hauling"
+            android:layout_marginBottom="20dp"
             />
         <!--    TV Deskripsi-->
         <!--    Bahaya-->
@@ -117,7 +117,6 @@
         android:background="@color/bgCancel"
         android:textStyle="bold"
         android:padding="10dp"
-        android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
