@@ -133,7 +133,6 @@ class PhotoHazardActivity : AppCompatActivity(),View.OnClickListener {
 
         }
         if(v!!.id==R.id.btnDonePick){
-
                 val intent: Intent = Intent()
                 intent.putExtra("gambarDiFoto",bs?.toByteArray())
                 setResult(Activity.RESULT_OK,intent)

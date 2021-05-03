@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.util.Log
 import android.widget.Toast
 
 //Membuat class PopupUtil untuk menampilkan menu loading #8/
@@ -48,6 +49,7 @@ object PopupUtil {
         try {
             if (dialog != null) dialog!!.dismiss()
         } catch (e: Exception) {
+            Log.d("PopUpUtil",e.toString())
         }
     }
 
