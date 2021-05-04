@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".IndexActivity">
-
     <FrameLayout
         android:background="@color/colorPrimary"
         android:id="@+id/content_frame"
@@ -1144,16 +1143,18 @@
                 app:fab_labelsPosition="left"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
+
                 <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btnQRCODES"
-                    android:visibility="gone"
-                    app:fab_size="mini"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:fab_colorNormal="@color/colorPrimaryDark"
                     app:fab_colorPressed="@color/colorPrimary"
                     app:fab_icon="@drawable/ic_baseline_qr_code_scanner_24"
+                    app:fab_size="mini"
                     app:fab_title="Scan QRCode" />
+
                 <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btnNewSarana"
                     app:fab_size="mini"

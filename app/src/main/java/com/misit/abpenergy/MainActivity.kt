@@ -7,16 +7,12 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.install.model.*
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
@@ -87,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",false))
                 {
-                    val intent = Intent(this, IndexActivity::class.java)
+                    val intent = Intent(this, NewIndexActivity::class.java)
                     startActivity(intent)
                 }
                 else

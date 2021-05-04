@@ -19,7 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Inspeksi.DetailInspeksiActivity"></activity>
+        <activity android:name=".NewIndexActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar"></activity>
+        <activity android:name=".Inspeksi.DetailInspeksiActivity" />
         <activity
             android:name=".Login.DepartmentActivity"
             android:launchMode="singleTask"

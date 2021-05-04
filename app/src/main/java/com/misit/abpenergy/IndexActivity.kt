@@ -22,23 +22,14 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.misit.abpenergy.Api.ApiClient
-import com.misit.abpenergy.Api.ApiEndPoint
-import com.misit.abpenergy.HazardReport.ALLHazardReportActivity
-import com.misit.abpenergy.HazardReport.HazardReportActivity
-import com.misit.abpenergy.HazardReport.NewHazardActivity
-import com.misit.abpenergy.Inspeksi.AllInspeksiActivity
-import com.misit.abpenergy.Inspeksi.InspeksiActivity
-import com.misit.abpenergy.Login.LoginActivity
-import com.misit.abpenergy.Monitoring_Produksi.ProductionActivity
-import com.misit.abpenergy.Monitoring_Produksi.StockActivity
-import com.misit.abpenergy.Response.GetUserResponse
-import com.misit.abpenergy.Rkb.RkbActivity
-import com.misit.abpenergy.Sarpras.AllSarprasActivity
-import com.misit.abpenergy.Sarpras.KabagApprSarprasActivity
-import com.misit.abpenergy.Sarpras.NewSarprasActivity
-import com.misit.abpenergy.Sarpras.SarprasActivity
+import com.misit.abpenergy.Api.*
+import com.misit.abpenergy.HazardReport.*
+import com.misit.abpenergy.Inspeksi.*
+import com.misit.abpenergy.Login.*
+import com.misit.abpenergy.Monitoring_Produksi.*
+import com.misit.abpenergy.Response.*
+import com.misit.abpenergy.Rkb.*
+import com.misit.abpenergy.Sarpras.*
 import com.misit.abpenergy.Service.BarcodeScannerActivity
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
@@ -53,7 +44,6 @@ class IndexActivity : AppCompatActivity(),
     View.OnClickListener {
 
     //Variable
-    private var mFirebaseAnalytics: FirebaseAnalytics? = null
     lateinit var toolbar: Toolbar
     private var tipe:String? = null
     lateinit var drawerLayout: DrawerLayout
@@ -69,7 +59,6 @@ private val requestCodeCameraPermission = 1999
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_index)
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         title="PT Alamjaya Bara Pratama"
 
         val window: Window = this@IndexActivity.window
