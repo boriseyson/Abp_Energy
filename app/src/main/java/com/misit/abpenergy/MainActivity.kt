@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         val runnable= {
             var besar = progressHorizontal.progress
 
-            progressHorizontal.progress = besar + 10
+            progressHorizontal.progress = besar + 100
             if (besar == 50) {
                 if (cekKoneksi(this)) {
                     updateProgress()
@@ -170,7 +170,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 //            getPenumpang()
-            updateProgress()
+            if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",false))
+            {
+                val intent = Intent(this, NewIndexActivity::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+            finish()
         }
         realm?.close()
     }

@@ -123,7 +123,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         lnTglSelesai.visibility=View.GONE
         imagePickerBuktiSelesai.visibility=View.GONE
         lnResikoSesudah.visibility = View.GONE
-
         inLokasi.setOnClickListener(this)
         inKemungkinan.setOnClickListener(this)
         inKeparahan.setOnClickListener(this)
@@ -511,13 +510,13 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     val wrapper = ContextWrapper(applicationContext)
         //    var filenya = File(fileUpload!!.path, jam)
         var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-        file = File(file, "${jam}.jpg")
+        file = File(file, "${jam}_sebelum.jpg")
         ConfigUtil.streamFoto(bitmap!!,file)
         var fileUri = file.asRequestBody("image/*".toMediaTypeOrNull())
         var bukti = MultipartBody.Part.createFormData("fileToUpload",file.name,fileUri)
         //        FOTO PENANGGUNG JAWAB
         var filePJ = wrapper.getDir("images", Context.MODE_PRIVATE)
-        filePJ = File(filePJ, "${jam}.jpg")
+        filePJ = File(filePJ, "${jam}_penanggung_jawab.jpg")
         //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
         ConfigUtil.streamFoto(bitmapPJ!!,filePJ)
         var fileUriPJ = filePJ.asRequestBody("image/*".toMediaTypeOrNull())
@@ -528,7 +527,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         var fileSelesai = wrapper.getDir("images", Context.MODE_PRIVATE)
         if(bitmapBuktiSelesai!=null) {
 //        Bukti Selesai
-            fileSelesai = File(fileSelesai, "${jam}.jpg")
+            fileSelesai = File(fileSelesai, "${jam}_selesai.jpg")
             ConfigUtil.streamFoto(bitmapBuktiSelesai!!,fileSelesai)
             fileUriSelsai = fileSelesai.asRequestBody("image/*".toMediaTypeOrNull())
             buktiSelesai = MultipartBody.Part.createFormData(
