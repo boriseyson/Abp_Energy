@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.misit.abpenergy">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -19,10 +20,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewIndexActivity"
+        <activity android:name=".Master.NewPerusahaanActivity"></activity>
+        <activity android:name=".Master.PerusahaanActivity" />
+        <activity android:name=".Login.UbahDataActivity" />
+        <activity android:name=".Login.FotoProfileActivity" />
+        <activity android:name=".Service.ChangePWDActivity" />
+        <activity android:name=".Drive.DriveActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.packagename.package.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource" />
+        </provider>
+
+        <activity
+            android:name=".NewIndexActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/noActionBar"></activity>
+            android:theme="@style/noActionBar" />
         <activity android:name=".Inspeksi.DetailInspeksiActivity" />
         <activity
             android:name=".Login.DepartmentActivity"

@@ -22,7 +22,7 @@ import retrofit2.http.*
 
 interface ApiEndPoint{
     @GET("refresh-csrf")
-    fun getToken(@Query("csrf_token") tokenId:String): Call<CsrfTokenResponse>?
+    fun getToken(@Query("refresh-csrf") tokenId:String): Call<CsrfTokenResponse>?
 
     @FormUrlEncoded
     @POST("/android/api/login/validate")

@@ -11,9 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.gms.auth.api.signin.internal.Storage
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.*
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.storage.StorageReference
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.Login.LoginActivity
@@ -28,7 +30,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ConfigUtil.changeColor(this)
-
         Realm.init(this)
         versionApp()
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -81,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 //                deleteRealm()
 //                loadSarana()
             } else {
-                if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",false))
+                if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
                 {
                     val intent = Intent(this, NewIndexActivity::class.java)
                     startActivity(intent)
@@ -94,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                finish()
             }
         }
-        Handler().postDelayed(runnable,100)
+        Handler().postDelayed(runnable, 100)
     }
     private fun loadSarana(){
         val apiEndPoint = ApiClient.getClient(this@MainActivity)!!.create(ApiEndPoint::class.java)
@@ -107,6 +109,7 @@ class MainActivity : AppCompatActivity() {
                     koneksiInActive()
                 }
             }
+
             override fun onResponse(
                 call: Call<ListSaranaResponse?>,
                 response: Response<ListSaranaResponse?>
@@ -131,11 +134,15 @@ class MainActivity : AppCompatActivity() {
                             i++
                         }
                         PrefsUtil.getInstance()
-                            .setStringState(PrefsUtil.AWAL_BULAN,
-                                listSarana.awalBulan)
+                            .setStringState(
+                                PrefsUtil.AWAL_BULAN,
+                                listSarana.awalBulan
+                            )
                         PrefsUtil.getInstance()
-                            .setStringState(PrefsUtil.AKHIR_BULAN,
-                                listSarana.akhirBulan)
+                            .setStringState(
+                                PrefsUtil.AKHIR_BULAN,
+                                listSarana.akhirBulan
+                            )
                         tvLoadingText.text = "Mengumpulkan Data!!!"
                         listPenumpang()
                     }
@@ -170,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 //            getPenumpang()
-            if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",false))
+            if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
             {
                 val intent = Intent(this, NewIndexActivity::class.java)
                 startActivity(intent)
@@ -192,7 +199,7 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-    fun cekVersion(context:Context){
+    fun cekVersion(context: Context){
         val appUpdateManager = AppUpdateManagerFactory.create(context)
 
     // Returns an intent object that you use to check for an update.
@@ -218,9 +225,8 @@ class MainActivity : AppCompatActivity() {
     fun koneksiInActive(){
         AlertDialog.Builder(this)
             .setTitle("Maaf Koneksi Internet Tidak Ada!")
-            .setPositiveButton("OK, Keluar",{
-                    dialog,
-                    which ->
+            .setPositiveButton("OK, Keluar", { dialog,
+                                               which ->
                 finish()
             }).show()
     }
