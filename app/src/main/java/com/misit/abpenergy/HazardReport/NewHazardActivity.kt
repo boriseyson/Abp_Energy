@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
+import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
@@ -59,6 +60,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var kemungkinanDipilihSesudah:String? = null
     private var keparahanDipilihSesudah:String? = null
     private var lokasiID:String? = null
+    private var companyDipilih:String?=null
     private var hirarkiID:String? = null
     private var kemungkinanID:String? = null
     private var keparahanID:String? = null
@@ -91,6 +93,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         imgSelesai=0
         bitmapBuktiSelesai=null
         fileUploadPJ=null
+        companyDipilih=""
         imgPJ = 0
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
@@ -134,6 +137,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         btnPerbaikan.setOnClickListener(this)
         pjFOTO.setOnClickListener(this)
         matrikResikoSesudah.setOnClickListener(this)
+        inPerusaan.setOnClickListener(this)
     }
     //    VIEW LISTENER
     override fun onClick(v: View?) {
@@ -218,6 +222,11 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             var intent = Intent(this@NewHazardActivity,MatrikResikoWebViewActivity::class.java)
             startActivity(intent)
         }
+        if(v?.id==R.id.inPerusaan){
+            var intent = Intent(this@NewHazardActivity,CompanyActivity::class.java)
+            intent.putExtra("companyDipilih",companyDipilih)
+            startActivityForResult(intent,987)
+        }
     }
     //    VIEW LISTENER
 //    onCreateOptionsMenu
@@ -283,7 +292,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //    ATIVITY RESULT
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        if(resultCode== Activity.RESULT_OK && requestCode==457){
+        if(resultCode== Activity.RESULT_OK && requestCode==987){
+            companyDipilih = data!!.getStringExtra("companyDipilih")
+            inPerusaan.setText(companyDipilih)
+        }else if(resultCode== Activity.RESULT_OK && requestCode==457){
             kemungkinanDipilih = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanID = data.getStringExtra("kemungkinanID")
             inKemungkinan.setText(kemungkinanDipilih)
@@ -477,7 +489,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     var inBahaya = inBahaya.text.toString().toRequestBody(MultipartBody.FORM)
     var kemungkinanID = kemungkinanID.toString().toRequestBody(MultipartBody.FORM)
     var keparahanID = keparahanID.toString().toRequestBody(MultipartBody.FORM)
-    var kemungkinanSesudah = keparahanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
+    var kemungkinanSesudah = kemungkinanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
     var keparahanSesudah =keparahanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
     var hirarkiID = hirarkiID.toString().toRequestBody(MultipartBody.FORM)
     var inPerbaikan = inPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
