@@ -1,6 +1,8 @@
 package com.misit.abpenergy.HazardReport.Adapter
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +11,26 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.vision.text.Line
 import com.misit.abpenergy.HazardReport.Response.HazardItem
+import com.misit.abpenergy.Login.LoginActivity
+import com.misit.abpenergy.NewIndexActivity
 import com.misit.abpenergy.R
+import com.misit.abpenergy.Utils.PrefsUtil
+import es.dmoral.toasty.Toasty
+import kotlinx.android.synthetic.main.index_new.*
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
+import java.util.*
 
-class ListHazardReportAdapter (private val context: Context?,
+class ListHazardReportAdapter (private val context: Context,
+                               private val rule:String,
+                               private val activityName :String,
                                private val hazardList:MutableList<HazardItem>):
     RecyclerView.Adapter<ListHazardReportAdapter.MyViewHolder>(){
+    private var userRule:Array<String>?=null
 
     private var onItemClickListener: OnItemClickListener? = null
 
@@ -27,7 +39,7 @@ class ListHazardReportAdapter (private val context: Context?,
     lateinit var view:View
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            view = layoutInflater.inflate(R.layout.hazard_list,parent,false)
+        view = layoutInflater.inflate(R.layout.hazard_list,parent,false)
         return MyViewHolder(view)
     }
 
@@ -77,6 +89,32 @@ class ListHazardReportAdapter (private val context: Context?,
         holder.btnUpdateStatus.setOnClickListener {
             onItemClickListener?.onUpdateClick(hazardList.uid.toString())
         }
+        holder.bntHSEappr.setOnClickListener {
+            onItemClickListener?.onVerify(hazardList.uid.toString(),1)
+        }
+        holder.btnHSEdeny.setOnClickListener {
+            onItemClickListener?.onVerify(hazardList.uid.toString(),0)
+        }
+
+        if(activityName=="ALL") {
+            if (rule != null) {
+                userRule = rule.split(",").toTypedArray()
+                var hseAdmin = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    Arrays.stream(userRule).anyMatch { t -> t == "admin_hse" }
+                } else {
+                    userRule?.contains("admin_hse")
+                }
+                if (hseAdmin!!) {
+                    holder.lnHSEAdmin.visibility = View.VISIBLE
+                } else {
+                    holder.lnHSEAdmin.visibility = View.GONE
+                }
+            }else{
+                holder.lnHSEAdmin.visibility = View.GONE
+            }
+        }else{
+            holder.lnHSEAdmin.visibility = View.GONE
+        }
     }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var cvHazard = itemView.findViewById<View>(R.id.cvHazard) as CardView
@@ -92,15 +130,21 @@ class ListHazardReportAdapter (private val context: Context?,
         var tvUSER = itemView.findViewById<View>(R.id.tvUSER) as TextView
         var tvPJ = itemView.findViewById<View>(R.id.tvPJ) as TextView
         var tvVerfikasi = itemView.findViewById<View>(R.id.tvVerfikasi) as TextView
+        var lnHSEAdmin = itemView.findViewById<View>(R.id.lnHSEAdmin) as LinearLayout
+        var bntHSEappr = itemView.findViewById<View>(R.id.bntHSEappr) as Button
+        var btnHSEdeny = itemView.findViewById<View>(R.id.btnHSEdeny) as Button
     }
     interface OnItemClickListener{
         fun onItemClick(uid:String?)
         fun onUpdateClick(uid:String?)
+        fun onVerify(uid: String?,option:Int?)
     }
     fun setListener (listener: OnItemClickListener){
         onItemClickListener = listener
     }
     init {
+        PrefsUtil.initInstance(context)
+
         layoutInflater = LayoutInflater.from(context)
         simpleDateFormat= SimpleDateFormat("yyyy-MM-dd")
     }

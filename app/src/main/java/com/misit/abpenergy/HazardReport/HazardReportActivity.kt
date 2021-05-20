@@ -52,13 +52,14 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         actionBar?.setDisplayHomeAsUpEnabled(true)
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",false)){
             USERNAME = PrefsUtil.getInstance().getStringState(PrefsUtil.USER_NAME,"")
+            RULE = PrefsUtil.getInstance().getStringState(PrefsUtil.RULE,"")
         }else{
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
         hazardList= ArrayList()
-        adapter = ListHazardReportAdapter(this@HazardReportActivity,hazardList!!)
+        adapter = ListHazardReportAdapter(this@HazardReportActivity,RULE,"",hazardList!!)
         val linearLayoutManager = LinearLayoutManager(this@HazardReportActivity)
         rvHazardList?.layoutManager = linearLayoutManager
         rvHazardList.adapter =adapter
@@ -168,6 +169,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         private  var DARI="01 January 2021"
         private  var SAMPAI="31 January 2021"
         private  var TOTAL_HAZARD_USER = "TOTAL_HAZARD_USER"
+        private var RULE ="RULE"
     }
 
     override fun onItemClick(uid: String?) {
@@ -178,6 +180,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 
     override fun onUpdateClick(uid: String?) {
         Toasty.info(this@HazardReportActivity,uid!!).show()
+    }
+
+    override fun onVerify(uid: String?, option: Int?) {
+
     }
 
     override fun onClick(v: View?) {

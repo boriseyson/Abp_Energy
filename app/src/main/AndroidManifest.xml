@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HazardReport.HazardHSEActivity"></activity>
+        <activity android:name=".HazardReport.HazardVerifyActivity"></activity>
+        <activity android:name=".HazardReport.HazardHSEActivity" />
         <activity android:name=".HazardReport.HazardSayaActivity" />
         <activity android:name=".Master.EditCompanyActivity" />
         <activity android:name=".Master.NewPerusahaanActivity" />

@@ -218,6 +218,33 @@
         android:text="Disetujui"
         />
     <!--    OPEN-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/lnHSEAdmin"
+        >
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/bntHSEappr"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:text="Setujui"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/successColor"/>
+        <com.google.android.material.button.MaterialButton
+            android:layout_margin="10dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:text="Batalkan"
+            android:id="@+id/btnHSEdeny"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/bgCancel"/>
+    </LinearLayout>
 <!--    USER-->
 <View
     android:visibility="gone"
