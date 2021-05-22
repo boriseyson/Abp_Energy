@@ -180,6 +180,7 @@ interface ApiEndPoint{
         @Part("namaPJ") namaPJ:RequestBody?,
         @Part("nikPJ") nikPJ:RequestBody?,
         @Part("status") status:RequestBody?,
+        @Part("tglTenggat") tglTenggat:RequestBody?,
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
                          ) : Call<HazardReportResponse>?

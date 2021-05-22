@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".HazardReport.PhotoHazardActivity">
-
     <com.wonderkiln.camerakit.CameraView
         android:id="@+id/cameraKit"
         android:layout_width="0dp"
@@ -22,7 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
     <ImageButton
         android:visibility="gone"
         android:layout_width="60dp"
@@ -36,7 +34,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-
     <ImageButton
         android:visibility="visible"
         android:src="@drawable/ic_baseline_camera_80"
@@ -51,7 +48,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
     <ImageButton
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -65,8 +61,6 @@
         android:id="@+id/btnFacing"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
     <ImageButton
         android:visibility="gone"
         android:layout_width="45dp"

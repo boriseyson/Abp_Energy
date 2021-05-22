@@ -87,21 +87,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:text="Perusahaan" />
-
+                        android:orientation="horizontal">
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilPerusahaan"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
                             android:hint="Perusahaan">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inPerusaan"
@@ -120,22 +112,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:text="Tanggal" />
-
+                        android:weightSum="1">
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilTanggal"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
                             android:hint="Tanggal">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inTanggal"
                                 android:layout_width="match_parent"
@@ -153,22 +137,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:text="Jam" />
-
+                        android:weightSum="1">
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilJam"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
                             android:hint="Jam">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inJam"
                                 android:layout_width="match_parent"
@@ -186,22 +162,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:text="Lokasi" />
-
+                        android:weightSum="1">
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilLokasi"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
                             android:hint="Lokasi">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inLokasi"
                                 android:imeOptions="actionNext"
@@ -213,26 +181,18 @@
                                 android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
-                        <TextView
-                            android:gravity="center|left"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:text="Detail Lokasi" />
-
+                        android:weightSum="1">
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilLokasiDet"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
                             android:hint="Detail Lokasi">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inLokasiDet"
@@ -515,7 +475,6 @@
                         android:layout_height="250dp"
                         android:hint="Tindakan Perbaikan"
                         android:padding="10dp">
-
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/inPerbaikan"
                             android:layout_width="match_parent"
@@ -545,7 +504,6 @@
                 android:visibility="visible"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -574,7 +532,6 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:text="SELESAI" />
-
                         <RadioButton
                             android:id="@+id/rbBelumSelesai"
                             android:layout_width="match_parent"
@@ -598,6 +555,32 @@
                     </RadioGroup>
                     <!--        Pilihan-->
                     <!--        STATUS PERBAIKAN-->
+                    <!--Tanggal Tenggat-->
+                    <LinearLayout
+                        android:id="@+id/lnTglTenggat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilTGLTenggat"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:hint="Tanggal Tenggat">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/inTGLTenggat"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:imeOptions="actionNext"
+                                android:inputType="none"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--Tanggal Tenggat-->
                     <!--Tanggal Selesai-->
                     <LinearLayout
                         android:id="@+id/lnTglSelesai"
@@ -605,24 +588,14 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.5"
-                            android:gravity="center"
-                            android:text="Tanggal Selesai" />
-
+                        android:weightSum="1">
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilTGLSelesai"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
                             android:hint="Tanggal Selesai">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inTGLSelesai"
                                 android:layout_width="match_parent"
@@ -641,25 +614,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.5"
-                            android:gravity="center"
-                            android:text="Jam Selesai" />
-
+                        android:weightSum="1">
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilJamSelesai"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
                             android:hint="Jam Selesai"
                             android:maxLines="1">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inJamSelesai"
                                 android:layout_width="match_parent"
@@ -879,21 +842,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="61dp"
-                                android:layout_weight="0.5"
-                                android:gravity="center"
-                                android:text="Nama" />
-
+                            android:weightSum="1">
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/tilPenanggungJawab"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1.5"
+                                android:layout_weight="1"
                                 android:hint="Nama Penanggung Jawab">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/inPenanggungJawab"
@@ -907,22 +862,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="61dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="0.5"
-                                android:gravity="center"
-                                android:text="NIK / NRP" />
-
+                            android:weightSum="1">
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/tilNikPJ"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1.5"
+                                android:layout_weight="1"
                                 android:hint="NIK / NRP Penanggung Jawab">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/inNikPJ"

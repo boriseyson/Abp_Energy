@@ -138,6 +138,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         pjFOTO.setOnClickListener(this)
         matrikResikoSesudah.setOnClickListener(this)
         inPerusaan.setOnClickListener(this)
+        inTGLTenggat.setOnClickListener(this)
     }
     //    VIEW LISTENER
     override fun onClick(v: View?) {
@@ -149,6 +150,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
         if(v!!.id==R.id.inTGLSelesai){
             showDialogTgl(inTGLSelesai)
+        }
+        if(v!!.id==R.id.inTGLTenggat){
+            showDialogTgl(inTGLTenggat)
         }
         if(v!!.id==R.id.inJamSelesai){
             showDialogTime(inJamSelesai)
@@ -320,6 +324,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             keparahanIDSesudah = data.getStringExtra("keparahanID")
             inKeparahanSesudah.setText(keparahanDipilihSesudah)
         }else if(resultCode==Activity.RESULT_OK && requestCode==222) {
+//            GALERY
             try {
                 fileUpload = data!!.data
                 try {
@@ -511,6 +516,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
     var inTGLSelesai = inTGLSelesai.text.toString().toRequestBody(MultipartBody.FORM)
     var inJamSelesai = inJamSelesai.text.toString().toRequestBody(MultipartBody.FORM)
+    var tglTenggat = inTGLTenggat.text.toString().toRequestBody(MultipartBody.FORM)
     var inKeteranganPJ = inKeteranganPJ.text.toString().toRequestBody(MultipartBody.FORM)
     var username = USERNAME.toRequestBody(MultipartBody.FORM)
     var _token:RequestBody = csrf_token!!.toRequestBody(MultipartBody.FORM)
@@ -574,7 +580,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 username,
                 _token,"Bukti_Progress",
                 kemungkinanSesudah,
-                keparahanSesudah)
+                keparahanSesudah,
+                tglTenggat)
         }else if(imgSelesai==1){
             hazardPost(
                 bukti,
@@ -600,7 +607,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 username,
                 _token,"Bukti_Selesai",
                 kemungkinanSesudah,
-                keparahanSesudah
+                keparahanSesudah,
+                tglTenggat
             )
         }
     }
@@ -631,7 +639,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                    token:RequestBody,
                    tipe:String,
                    kemungkinanSesudah:RequestBody,
-                   keparahanSesudah:RequestBody){
+                   keparahanSesudah:RequestBody,tglTenggat:RequestBody){
     //    API POST
     val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
      var call:Call<HazardReportResponse>?=null
@@ -639,7 +647,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             call = apiEndPoint.postHazardReport(
                 fileBukti,filePJ,perusahaan,tanggal,jam,lokasi,
                 lokasiDet,bahaya,kemungkinan,keparahan,kondisi,hirarki,perbaikan,
-                namaPJ,nikPJ,status,user,token
+                namaPJ,nikPJ,status,tglTenggat,user,token
             )
         }else if(tipe=="Bukti_Selesai"){
              call = apiEndPoint.postHazardReportSelesai(

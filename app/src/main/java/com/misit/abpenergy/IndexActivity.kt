@@ -80,6 +80,9 @@ private val requestCodeCameraPermission = 1999
             LEVEL = PrefsUtil.getInstance().getStringState(PrefsUtil.LEVEL,"")
             RULE = PrefsUtil.getInstance().getStringState(PrefsUtil.RULE,"")
             tvUserName.text = NAMA_LENGKAP
+            if(PrefsUtil.getInstance().getBooleanState("PHOTO_PROFILE",false)){
+                uploadProfile()
+            }
         }else{
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -150,6 +153,11 @@ private val requestCodeCameraPermission = 1999
         btnQRCODES.setOnClickListener(this)
         cvBarcodeProfile.setOnClickListener(this)
     }
+
+    private fun uploadProfile() {
+        Toasty.info(this@IndexActivity,"Upload Photo").show()
+    }
+
     private fun askForCameraPermission(){
         ActivityCompat.requestPermissions(this@IndexActivity,
             arrayOf(Manifest.permission.CAMERA),requestCodeCameraPermission)
@@ -203,6 +211,15 @@ private val requestCodeCameraPermission = 1999
                 var res = response.body()
                 if(res!=null){
                      var r= res.dataUser!!
+                    if(r.photoProfile!=null){
+                        PrefsUtil.getInstance()
+                            .setBooleanState("PHOTO_PROFILE",
+                                true)
+                    }else{
+                        PrefsUtil.getInstance()
+                            .setBooleanState("PHOTO_PROFILE",
+                                false)
+                    }
                     if(r.rule!=null){
                         RULE =r.rule!!
                         PrefsUtil.getInstance()

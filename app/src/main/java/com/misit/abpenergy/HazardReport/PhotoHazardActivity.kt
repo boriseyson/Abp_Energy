@@ -1,5 +1,4 @@
 package com.misit.abpenergy.HazardReport
-
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -22,8 +21,6 @@ import kotlinx.android.synthetic.main.activity_photo_hazard.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
-
-
 class PhotoHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var bitmap:Bitmap?=null
     private var bs :ByteArrayOutputStream?= null
@@ -87,6 +84,7 @@ class PhotoHazardActivity : AppCompatActivity(),View.OnClickListener {
         btnCapture.setOnClickListener(this)
         btnReCapture.setOnClickListener(this)
         btnDonePick.setOnClickListener(this)
+        cameraKit.setOnClickListener(this)
     }
     override fun onBackPressed() {
 //        finish()
@@ -119,9 +117,6 @@ class PhotoHazardActivity : AppCompatActivity(),View.OnClickListener {
                 btnDonePick.visibility=View.VISIBLE
                 btnCapture.visibility=View.GONE
                 btnFacing.visibility=View.GONE
-
-
-
         }
         if(v!!.id==R.id.btnReCapture){
             cameraKit.start().let {
@@ -139,7 +134,8 @@ class PhotoHazardActivity : AppCompatActivity(),View.OnClickListener {
                 finish()
 
         }
+        if(v?.id==R.id.cameraKit){
+            cameraKit.setFocus(CameraKit.Constants.FOCUS_CONTINUOUS)
+        }
     }
-
-
 }

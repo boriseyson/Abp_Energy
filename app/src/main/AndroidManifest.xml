@@ -20,14 +20,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HazardReport.HazardVerifyActivity"></activity>
+        <activity android:name=".IntroActivity"></activity>
+        <activity android:name=".HazardReport.HazardVerifyActivity" />
         <activity android:name=".HazardReport.HazardHSEActivity" />
         <activity android:name=".HazardReport.HazardSayaActivity" />
-        <activity android:name=".Master.EditCompanyActivity" />
         <activity android:name=".Master.NewPerusahaanActivity" />
         <activity android:name=".Master.PerusahaanActivity" />
         <activity android:name=".Login.UbahDataActivity" />
-        <activity android:name=".Login.FotoProfileActivity" />
+        <activity android:name=".Login.FotoProfileActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar" />
         <activity android:name=".Service.ChangePWDActivity" />
         <activity android:name=".Drive.DriveActivity" />
 
@@ -46,7 +49,9 @@
                 android:resource="@xml/provider_paths"
                 tools:replace="android:resource" />
         </provider>
-
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".NewIndexActivity"
             android:launchMode="singleTask"
