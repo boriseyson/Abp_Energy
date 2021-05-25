@@ -302,10 +302,12 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }else if(resultCode== Activity.RESULT_OK && requestCode==457){
             kemungkinanDipilih = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanID = data.getStringExtra("kemungkinanID")
+            Toasty.info(this@NewHazardActivity, "${kemungkinanID}").show()
             inKemungkinan.setText(kemungkinanDipilih)
         }else if(resultCode== Activity.RESULT_OK && requestCode==477){
             kemungkinanDipilihSesudah = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanIDSesudah = data.getStringExtra("kemungkinanID")
+            Toasty.info(this@NewHazardActivity, "${kemungkinanIDSesudah}").show()
             inKemungkinanSesudah.setText(kemungkinanDipilihSesudah)
         }else if(resultCode== Activity.RESULT_OK && requestCode==123){
             lokasiDipilih = data!!.getStringExtra("lokasiDipilih")
@@ -420,7 +422,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             now.set(Calendar.YEAR,year)
             now.set(Calendar.MONTH,month)
             now.set(Calendar.DAY_OF_MONTH,dayOfMonth)
-            inTgl.setText(SimpleDateFormat("dd MMMM yyyy").format(now.time))
+            inTgl.setText(SimpleDateFormat("dd MMMM yyyy", Locale.US).format(now.time))
         }
         DatePickerDialog(this,
             datePicker,
@@ -437,7 +439,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 timePicker, hour, minute: Int ->
             now.set(Calendar.HOUR_OF_DAY,hour)
             now.set(Calendar.MINUTE,minute)
-            inTime.setText(SimpleDateFormat("HH:mm").format(now.time))
+            inTime.setText(SimpleDateFormat("HH:mm", Locale.US).format(now.time))
         }
         TimePickerDialog(
             this,
