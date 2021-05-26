@@ -40,7 +40,9 @@ public class PrefsUtil {
     public static final String NO_COUNTER = "0";
     public static final String TOTAL_ITEM = "0";
     public static final Boolean MENU_CHANGE_PASSWORD = false;
-    public static final Boolean PHOTO_PROFILE = false;
+    public static final String PHOTO_PROFILE = "PHOTO_PROFILE";
+    public static final String PHOTO_URL = "PHOTO_URL";
+
 
     private static PrefsUtil instance;
     private Context context;

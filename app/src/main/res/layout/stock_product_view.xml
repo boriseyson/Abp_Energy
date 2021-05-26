@@ -54,8 +54,7 @@
                 android:textColor="#000000"
                 android:text="58708.72 MT"
                 android:textSize="20sp"
-                android:gravity="center_vertical"
-                android:textAlignment="center"
+                android:gravity="center_vertical|center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <!--Monthly-->
