@@ -302,12 +302,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }else if(resultCode== Activity.RESULT_OK && requestCode==457){
             kemungkinanDipilih = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanID = data.getStringExtra("kemungkinanID")
-            Toasty.info(this@NewHazardActivity, "${kemungkinanID}").show()
             inKemungkinan.setText(kemungkinanDipilih)
         }else if(resultCode== Activity.RESULT_OK && requestCode==477){
             kemungkinanDipilihSesudah = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanIDSesudah = data.getStringExtra("kemungkinanID")
-            Toasty.info(this@NewHazardActivity, "${kemungkinanIDSesudah}").show()
             inKemungkinanSesudah.setText(kemungkinanDipilihSesudah)
         }else if(resultCode== Activity.RESULT_OK && requestCode==123){
             lokasiDipilih = data!!.getStringExtra("lokasiDipilih")
