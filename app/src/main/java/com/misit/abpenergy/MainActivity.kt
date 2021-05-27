@@ -1,5 +1,7 @@
 package com.misit.abpenergy
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -7,9 +9,12 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.internal.Storage
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -55,9 +60,16 @@ class MainActivity : AppCompatActivity() {
         PrefsUtil.initInstance(this)
         karyawan = ArrayList()
 
-        loadSarana()
+
 //        updateProgress()
 
+    }
+
+    override fun onResume() {
+        if(verifyStoragePermissions(this@MainActivity,this@MainActivity)){
+            loadSarana()
+        }
+        super.onResume()
     }
     fun deleteRealm(){
         var realm = Realm.getDefaultInstance()
@@ -98,6 +110,42 @@ class MainActivity : AppCompatActivity() {
         }
         Handler().postDelayed(runnable, 100)
     }
+    //    verifyStoragePermissions
+    private fun verifyStoragePermissions(context: Context,activity: Activity):Boolean {
+        val permission = ContextCompat.checkSelfPermission(context,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
+        val permission1 = ContextCompat.checkSelfPermission(context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permission2 = ContextCompat.checkSelfPermission(context,
+            Manifest.permission.READ_PHONE_STATE)
+        val permission3 = ContextCompat.checkSelfPermission(context,
+            Manifest.permission.CAMERA)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.i("FaceId", "READ_EXTERNAL_STORAGE Permission to record denied")
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),11)
+//            finish()
+            return false
+        }
+        if (permission1 != PackageManager.PERMISSION_GRANTED) {
+            Log.i("FaceId", "WRITE_EXTERNAL_STORAGE Permission to record denied")
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),12)
+//            finish()
+            return false
+        }
+        if (permission2 != PackageManager.PERMISSION_GRANTED) {
+            Log.i("FaceId", "READ_PHONE_STATE Permission to record denied")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE),13)
+//            finish()
+        }
+        if (permission3 != PackageManager.PERMISSION_GRANTED) {
+            Log.i("FaceId", "READ_PHONE_STATE Permission to record denied")
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CAMERA),13)
+//            finish()
+            return false
+        }
+        return true
+    }
+    //    verifyStoragePermissions
     private fun loadSarana(){
         val apiEndPoint = ApiClient.getClient(this@MainActivity)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getAllSarana()

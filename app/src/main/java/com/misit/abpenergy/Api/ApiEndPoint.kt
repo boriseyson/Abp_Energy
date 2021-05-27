@@ -255,6 +255,8 @@ interface ApiEndPoint{
         @Part("uid") uid:RequestBody?,
         @Part("tgl_selesai") tgl_selesai:RequestBody?,
         @Part("jam_selesai") jam_selesai:RequestBody?,
+        @Part("idKemungkinanSesudah") idKemungkinanSesudah:RequestBody?,
+        @Part("idKeparahanSesudah") idKeparahanSesudah:RequestBody?,
         @Part("keterangan") keterangan:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
