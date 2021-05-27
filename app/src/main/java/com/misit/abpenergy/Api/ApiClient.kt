@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient{
-    public  const val BASE_URL= "https://abpjobsite.com/"
+    public  const val BASE_URL= "http://10.10.3.13"
 //    public  const val BASE_URL= "https://borisreyson.com/"
 
     private var retrofit : Retrofit? = null

@@ -211,7 +211,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             intent.putExtra("keparahanDipilih",keparahanDipilih)
             startActivityForResult(intent,458)
         }
-
         if(v?.id==R.id.inKemungkinanSesudah){
             var intent = Intent(this@NewHazardActivity,KemungkinanActivity::class.java)
             intent.putExtra("kemungkinanDipilih",kemungkinanDipilihSesudah)
@@ -306,6 +305,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }else if(resultCode== Activity.RESULT_OK && requestCode==477){
             kemungkinanDipilihSesudah = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanIDSesudah = data.getStringExtra("kemungkinanID")
+//            Toasty.info(this@NewHazardActivity,"${kemungkinanIDSesudah}").show()
             inKemungkinanSesudah.setText(kemungkinanDipilihSesudah)
         }else if(resultCode== Activity.RESULT_OK && requestCode==123){
             lokasiDipilih = data!!.getStringExtra("lokasiDipilih")
@@ -473,6 +473,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
 //       Simpan Hazard
     fun simpanHazard(){
+
+//    Toasty.info(this@NewHazardActivity,"Sebelum : ${kemungkinanID} | Sesudah ${kemungkinanIDSesudah}").show()
         if(rbSelesai.isChecked) {
             if(!isValidate1()){
                 return
@@ -483,7 +485,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 return
             }
         }
-
     PopupUtil.showProgress(this@NewHazardActivity,"Loading...","Membuat Hazard Report!")
 
     var inPerusahan = inPerusaan.text.toString().toRequestBody(MultipartBody.FORM)
@@ -494,8 +495,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     var inBahaya = inBahaya.text.toString().toRequestBody(MultipartBody.FORM)
     var kemungkinanID = kemungkinanID.toString().toRequestBody(MultipartBody.FORM)
     var keparahanID = keparahanID.toString().toRequestBody(MultipartBody.FORM)
-    var kemungkinanSesudah = kemungkinanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
-    var keparahanSesudah =keparahanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
+    var kemungkinanSesudahID = kemungkinanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
+    var keparahanSesudahID =keparahanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
     var hirarkiID = hirarkiID.toString().toRequestBody(MultipartBody.FORM)
     var inPerbaikan = inPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
     var inPenanggungJawab = inPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
@@ -579,8 +580,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 inKeteranganPJ,
                 username,
                 _token,"Bukti_Progress",
-                kemungkinanSesudah,
-                keparahanSesudah,
+                kemungkinanSesudahID,
+                keparahanSesudahID,
                 tglTenggat)
         }else if(imgSelesai==1){
             hazardPost(
@@ -606,8 +607,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 inKeteranganPJ,
                 username,
                 _token,"Bukti_Selesai",
-                kemungkinanSesudah,
-                keparahanSesudah,
+                kemungkinanSesudahID,
+                keparahanSesudahID,
                 tglTenggat
             )
         }

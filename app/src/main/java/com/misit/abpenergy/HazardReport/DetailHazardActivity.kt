@@ -212,9 +212,11 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                         lnDetMatrikResiko.visibility = View.VISIBLE
                         var itemHazard =  dataHazard.itemHazardList
                         tvTotalResikoSesudah.text = "${itemHazard!!.nilaiKemungkinanSesudah} x ${itemHazard!!.nilaiKeparahanSesudah} = ${dataHazard.nilaiRiskSesudah}"
-                        tvKDresikoSesudah.text ="${dataHazard.riskSesudah!!.kodeBahaya}"
+                        tvNilaiKemungkinanSesudah.text ="${itemHazard.nilaiKemungkinanSesudah}"
+                        tvNilaiKeparahanSesudah.text = "${itemHazard.nilaiKeparahanSesudah} "
                         tvRiskSesudah.text = "${dataHazard.riskSesudah!!.kategori} "
                         tvNilaiResikoSesudah.text = "${dataHazard.riskSesudah!!.min} - ${dataHazard.riskSesudah!!.max}"
+                        tvKDresikoSesudah.text = "${dataHazard.riskSesudah!!.kodeBahaya} "
                         cvResikoSesudah.setCardBackgroundColor(Color.parseColor(dataHazard.riskSesudah!!.bgColor))
                         tvRiskSesudah.setBackgroundColor(Color.parseColor(dataHazard.riskSesudah!!.bgColor))
                         tvRiskSesudah.setTextColor(Color.parseColor(dataHazard.riskSesudah!!.txtColor))

@@ -758,7 +758,8 @@
                                 android:id="@+id/tvNilaiKemungkinanSesudah"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center_horizontal" />
+                                android:gravity="center_horizontal"
+                                android:text="1"/>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -805,7 +806,8 @@
                                 android:id="@+id/tvNilaiKeparahanSesudah"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center_horizontal" />
+                                android:gravity="center_horizontal"
+                                android:text="1"/>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -856,7 +858,7 @@
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
                             android:id="@+id/tvKDresikoSesudah"
-                            android:text="RISK"
+                            android:text="RISK1"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
                         <TextView
@@ -865,7 +867,7 @@
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
                             android:id="@+id/tvRiskSesudah"
-                            android:text="RISK"
+                            android:text="RISK2"
                             android:textColor="@color/white"
                             />
                         <TextView
