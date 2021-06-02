@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HazardReport.NewHazardActivity">
-
     <!--        SAVE-->
     <ScrollView
         android:id="@+id/scrollView2"
