@@ -27,13 +27,15 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar">
-        </activity>
-        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter></activity>
+            </intent-filter>
+        </activity>
+        <activity android:name=".HomeActivity"
+            android:screenOrientation="portrait"
+            ></activity>
         <activity android:name=".IndexNewActivity" />
         <activity android:name=".Master.ListUserActivity" />
         <activity android:name=".IntroActivity" />
