@@ -214,6 +214,8 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                             PrefsUtil.getInstance()
                                 .setStringState(PrefsUtil.NIK,
                                     userResponse.user?.nik)
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.PHOTO_URL, userResponse.user?.photoProfile)
                             Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
                             PopupUtil.dismissDialog()
                             startActivity(intent)

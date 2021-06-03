@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">ABP System</string>
-    <string name="pref_key">com.misit.abapenergy</string>
+    <string name="pref_key">com.misit.abpenergy</string>
     <string name="pt_alamjaya_bara_pratama">PT. Alamjaya Bara Pratama</string>
     <string name="username">Username</string>
     <string name="password">Kata Sandi</string>

@@ -44,5 +44,8 @@ data class User(
 	val username: String? = null,
 
 	@field:SerializedName("status")
-	val status: Int? = null
+	val status: Int? = null,
+
+	@field:SerializedName("photo_profile")
+	var photoProfile: String? = null
 )
