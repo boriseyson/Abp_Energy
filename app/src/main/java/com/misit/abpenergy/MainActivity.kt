@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         ConfigUtil.changeColor(this)
         Realm.init(this)
         versionApp()
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this@MainActivity)
 
         Glide.with(this).load(R.drawable.abp).into(imageView)
 

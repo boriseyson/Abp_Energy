@@ -22,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
@@ -481,14 +483,13 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                     Toasty.info(this@NewHazardActivity,fileNamePJPath.toString()).show()
                 }
                 photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
+                    val photoURI = FileProvider.getUriForFile(
                         this,
                         "com.misit.abpenergy.fileprovider",
                         it
                     )
                     pjFOTO.setImageURI(photoURI);
                     Log.d("IMGURI", photoURI.toString())
-
                 }
 //                var dataPJ = data!!
 //                bitmapPJ = BitmapFactory.decodeByteArray(
@@ -502,16 +503,21 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             }
         }else if(resultCode==Activity.RESULT_CANCELED){
         }else if (requestCode == 999 && resultCode == RESULT_OK) {
-           try{
+            val dataExtra = data?.extras?.get(MediaStore.EXTRA_OUTPUT) as String
+            Log.d("LogPath",dataExtra.toString())
+            Log.d("currentPhotoPath",currentPhotoPath.toString())
+
+            try {
 //            val imageBitmap = data?.extras?.get("data") as Bitmap
 //            val uri = ConfigUtil.bitmapToFile(imageBitmap,applicationContext)
 
 //               bitmap=imageBitmap
 //            imgView.setImageBitmap(bitmap);
-               val imagePath = File(this.getExternalFilesDir(null), "ABP_IMAGES")
+//               val imagePath = File(this.getExternalFilesDir(null), "ABP_IMAGES")
 
-//               val newFile = File(imagePath, fileNamePJ)
-//
+//               val newFile = File(currentPhotoPath, fileNamePJ)
+//                Glide.with(this@NewHazardActivity).load("file:///${currentPhotoPath}").into(pjFOTO)
+
 //               val contentUri = FileProvider.getUriForFile(
 //                   this@NewHazardActivity,
 //                   "com.misit.abpenergy.fileprovider",
@@ -519,7 +525,17 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //               )
 //               pjFOTO.setImageURI(contentUri)
 
-               imgIn = 1
+//                fileUploadPJ = "file:///${dataExtra}".toUri()
+//                try {
+//                    bitmapPJ = BitmapFactory.decodeStream(
+//                        contentResolver.openInputStream(fileUploadPJ!!)
+//                    )
+//                                   pjFOTO.setImageBitmap(bitmapPJ)
+//
+//                } catch (e: IOException) {
+//                    e.printStackTrace();
+//                }
+                    imgIn = 1
             } catch (e: IOException) {
                 imgIn = 0
                 e.printStackTrace();
@@ -598,8 +614,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-            this.delete()
+            currentPhotoPath = this.absolutePath
         }
     }
 
