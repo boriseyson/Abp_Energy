@@ -614,7 +614,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = this.absolutePath
+            currentPhotoPath = absolutePath
         }
     }
 
