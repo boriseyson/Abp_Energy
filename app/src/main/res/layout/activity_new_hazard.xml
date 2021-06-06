@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".HazardReport.NewHazardActivity">
+    android:orientation="vertical">
     <!--        SAVE-->
     <ScrollView
         android:id="@+id/scrollView2"
@@ -804,9 +803,125 @@
             </androidx.cardview.widget.CardView>
             <!--        PILIHAN-->
 </LinearLayout>
-
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--        Pilihan-->
+                    <RadioGroup
+                        android:id="@+id/groupPJ"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+                        <RadioButton
+                            android:id="@+id/rbPilih"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="Pilih Penanggung Jawab" />
+                        <RadioButton
+                            android:id="@+id/rbManual"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="Input Manual Penanggung Jawab" />
+                    </RadioGroup>
+                    <!--        Pilihan-->
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:visibility="gone"
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/cvPilihPJ"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/pjFOTOPilih"
+                        android:layout_margin="10dp"
+                        android:elevation="10dp"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:src="@drawable/ic_baseline_person_24"
+                        app:civ_border_color="#FF000000"
+                        app:civ_border_width="0.5dp"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/white"
+                        android:gravity="center"
+                        android:text="Nama Penanggung Jawab"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:weightSum="1">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilPenanggungJawabPilih"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:hint="Nama Penanggung Jawab">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/inPenanggungJawabPilih"
+                                android:imeOptions="actionNext"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:textColor="#000000"
+                                android:enabled="false"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:weightSum="1">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilNikPJPilih"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:hint="NIK / NRP Penanggung Jawab">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/inNikPJPilih"
+                                android:inputType="phone"
+                                android:enabled="false"
+                                android:textColor="#000000"
+                                android:imeOptions="actionNext"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--    BAHAYA VIEW-->
             <!--        Insert Photo-->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvManualPJ"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardElevation="10dp"
@@ -882,9 +997,7 @@
             </androidx.cardview.widget.CardView>
             <!--    BAHAYA VIEW-->
         </LinearLayout>
-
     </ScrollView>
-
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"

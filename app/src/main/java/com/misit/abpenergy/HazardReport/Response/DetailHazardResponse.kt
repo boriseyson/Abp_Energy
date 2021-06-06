@@ -185,7 +185,11 @@ data class ItemHazardList(
 	var status: Int? = null,
 
 	@field:SerializedName("namaPJ")
-	var namaPJ: String? = null
+	var namaPJ: String? = null,
+	@field:SerializedName("fotoPJ_option")
+	var fotoPjOption: Int? = null
+
+
 )
 
 data class RiskSebelum(

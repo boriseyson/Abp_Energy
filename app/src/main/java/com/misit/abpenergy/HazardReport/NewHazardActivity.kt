@@ -29,6 +29,7 @@ import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.Login.CompanyActivity
+import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
@@ -38,6 +39,7 @@ import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_new_hazard.*
+import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -48,11 +50,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
 class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
-    private var bahayaDipilih:String? = null
     private var lokasiDipilih:String? = null
     private var hirarkiDipilih:String? = null
     private var kemungkinanDipilih:String? = null
@@ -78,14 +80,13 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var imgIn:Int=0
     private var imgSelesai:Int=0
     private var imgPJ:Int=0
-    private var fileNameBukti:String?=null
-    private var fileNameSelesai:String?=null
-    private var fileNamePJ:String?=null
-    private var fileNameBuktiPath:String?=null
-    private var fileNameSelesaiPath:String?=null
-    private var fileNamePJPath:String?=null
-    lateinit var currentPhotoPath: String
-
+    private var pathFileSebelum:String?=null
+    private var pathFileSelesai:String?=null
+    private var pathFilePJ:String?=null
+    private var storageDir:File? = null
+    private var cal = Calendar.getInstance()
+    private var userPick:String?=null
+    private var pjOption:Int?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_hazard)
@@ -102,10 +103,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         bitmapBuktiSelesai=null
         fileUploadPJ=null
         companyDipilih=""
+        userPick=""
         imgPJ = 0
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-//        tvSumberBahaya.setOnClickListener(this)
         inTanggal.setOnClickListener(this)
         inJam.setOnClickListener(this)
         inTGLSelesai.setOnClickListener(this)
@@ -114,19 +115,30 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         inJamSelesai.setOnClickListener(this)
         btnBatalHazard.setOnClickListener(this)
         matrikResiko.setOnClickListener(this)
-//        btnOpenCamera.setOnClickListener(this)
-//        btnOpenGalery.setOnClickListener(this)
         groupStatus.setOnCheckedChangeListener { group, checkedId ->
-            if(checkedId==R.id.rbSelesai){
-                lnJamSelesai.visibility=View.VISIBLE
-                lnTglSelesai.visibility=View.VISIBLE
-                imagePickerBuktiSelesai.visibility=View.VISIBLE
+            if(checkedId==R.id.rbSelesai) {
+                lnJamSelesai.visibility = View.VISIBLE
+                lnTglSelesai.visibility = View.VISIBLE
+                imagePickerBuktiSelesai.visibility = View.VISIBLE
                 lnResikoSesudah.visibility = View.VISIBLE
+                lnTglTenggat.visibility = View.GONE
             }else{
                 lnJamSelesai.visibility=View.GONE
                 lnTglSelesai.visibility=View.GONE
                 imagePickerBuktiSelesai.visibility=View.GONE
                 lnResikoSesudah.visibility = View.GONE
+                lnTglTenggat.visibility = View.VISIBLE
+            }
+        }
+        groupPJ.setOnCheckedChangeListener { group, checkedId ->
+            if(checkedId==R.id.rbPilih) {
+                cvPilihPJ.visibility = View.VISIBLE
+                cvManualPJ.visibility=View.GONE
+                pjOption=1
+            }else{
+                cvPilihPJ.visibility = View.GONE
+                cvManualPJ.visibility=View.VISIBLE
+                pjOption=0
             }
         }
         imgBuktiSelesai.setOnClickListener(this)
@@ -147,26 +159,42 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         matrikResikoSesudah.setOnClickListener(this)
         inPerusaan.setOnClickListener(this)
         inTGLTenggat.setOnClickListener(this)
+        cvPilihPJ.setOnClickListener(this@NewHazardActivity)
+    }
+
+    override fun onResume() {
+        storageDir = getExternalFilesDir("ABP_IMAGES")
+        super.onResume()
     }
     //    VIEW LISTENER
     override fun onClick(v: View?) {
+        val c = this@NewHazardActivity
+        var waktu = Date()
+        cal.time = waktu
+        var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
+        if(v?.id==R.id.cvPilihPJ){
+            val intent = Intent(c, ListUserActivity::class.java)
+            intent.putExtra(ListUserActivity.DataExtra,"Hazard")
+            intent.putExtra("userPick",userPick)
+            startActivityForResult(intent,2626)
+        }
         if(v!!.id==R.id.inTanggal){
-            showDialogTgl(inTanggal)
+            ConfigUtil.showDialogTgl(inTanggal,c)
         }
         if (v!!.id==R.id.inJam){
-            showDialogTime(inJam)
+            ConfigUtil.showDialogTime(inJam,c)
         }
         if(v!!.id==R.id.inTGLSelesai){
-            showDialogTgl(inTGLSelesai)
+            ConfigUtil.showDialogTgl(inTGLSelesai,c)
         }
         if(v!!.id==R.id.inTGLTenggat){
-            showDialogTgl(inTGLTenggat)
+            ConfigUtil.showDialogTgl(inTGLTenggat,c)
         }
         if(v!!.id==R.id.inJamSelesai){
-            showDialogTime(inJamSelesai)
+            ConfigUtil.showDialogTime(inJamSelesai,c)
         }
         if(v!!.id==R.id.imagePicker){
-            showDialogOption(333, 222)
+            showDialogOption(333, 222,"sebelum")
         }
         if(v!!.id==R.id.btnSimpan){
             simpanHazard()
@@ -177,28 +205,28 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(v!!.id==R.id.btnGambarHazard){
             bitmap=null
             imgIn=0
-            showDialogOption(333, 222)
+            showDialogOption(333, 222,"sebelum")
         }
         if(v!!.id==R.id.btnFotoPJ){
 //            PENSNGGUNGJAWAB
             bitmapPJ=null
             imgPJ=0
-            showDialogOption(533, 522)
+            showDialogOption(533, 522,"penanggung_jawab")
         }
         if(v!!.id==R.id.pjFOTO){
 //            PENSNGGUNGJAWAB
             bitmapPJ=null
             imgPJ=0
-//            showDialogOption(533,522)
-            cameraIntent(this@NewHazardActivity, 999, "sebelum")
+            showDialogOption(533,522,"penanggung_jawab")
+//            cameraIntent(this@NewHazardActivity, 999, "penanggung_jawab")
         }
         if(v?.id==R.id.imgBuktiSelesai){
 //            BUKTI PERBAIKAN
-            showDialogOption(433, 422)
+            showDialogOption(433, 422,"selesai")
         }
         if (v?.id==R.id.btnPerbaikan){
 //            BUKTI PERBAIKAN
-            showDialogOption(433, 422)
+            showDialogOption(433, 422,"selesai")
         }
         if(v?.id==R.id.inLokasi){
             var intent = Intent(this@NewHazardActivity, LokasiActivity::class.java)
@@ -284,7 +312,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 // Continue only if the File was successfully created
                 photoFile?.also {
                     val photoURI = FileProvider.getUriForFile(
-                        this@NewHazardActivity,
+                        c,
                         "com.misit.abpenergy.fileprovider",
                         it
                     )
@@ -387,7 +415,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             keparahanIDSesudah = data.getStringExtra("keparahanID")
             inKeparahanSesudah.setText(keparahanDipilihSesudah)
         }else if(resultCode==Activity.RESULT_OK && requestCode==222) {
-//            GALERY
+//            GALERY INTENT SEBELUM
             try {
                 fileUpload = data!!.data
                 try {
@@ -403,21 +431,24 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 imgIn = 0
             }
         }else if(resultCode==Activity.RESULT_OK && requestCode==333){
+//            Camera Inten Sebelum
             try {
-                val imageBitmap = data?.extras?.get("data") as Bitmap
-                bitmap=imageBitmap
-//                var dataFoto = data!!
-//                bitmap = BitmapFactory.decodeByteArray(
-//                    dataFoto.getByteArrayExtra("gambarDiFoto"), 0, dataFoto
-//                        .getByteArrayExtra("gambarDiFoto").size
-//                )
-                imgView.setImageBitmap(bitmap);
+                fileUpload = "file:///${pathFileSebelum}".toUri()
+                try {
+                    bitmap = BitmapFactory.decodeStream(
+                        contentResolver.openInputStream(fileUpload!!)
+                    )
+                    Glide.with(this@NewHazardActivity).load(fileUpload).into(imgView)
+                } catch (e: IOException) {
+                    e.printStackTrace();
+                }
                 imgIn = 1
             } catch (e: IOException) {
                 imgIn = 0
                 e.printStackTrace();
             }
         }else if(resultCode==Activity.RESULT_OK && requestCode==422) {
+//            Galery Inten Selesai
             try {
                 fileUploadSelesai = data!!.data
                 try {
@@ -433,21 +464,24 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 imgSelesai = 0
             }
         }else if(resultCode==Activity.RESULT_OK && requestCode==433){
+//            Camera Intent Selesai
             try {
-                val imageBitmap = data?.extras?.get("data") as Bitmap
-                bitmapBuktiSelesai=imageBitmap
-//                var dataSelesai = data!!
-//                bitmapBuktiSelesai = BitmapFactory.decodeByteArray(
-//                    dataSelesai.getByteArrayExtra("gambarDiFoto"), 0, dataSelesai
-//                        .getByteArrayExtra("gambarDiFoto").size
-//                )
-                imgBuktiSelesai.setImageBitmap(bitmapBuktiSelesai);
+                fileUploadSelesai = "file:///${pathFileSelesai}".toUri()
+                try {
+                    bitmapBuktiSelesai = BitmapFactory.decodeStream(
+                        contentResolver.openInputStream(fileUploadSelesai!!)
+                    )
+                    Glide.with(this@NewHazardActivity).load(fileUploadSelesai).into(imgBuktiSelesai)
+                } catch (e: IOException) {
+                    e.printStackTrace();
+                }
                 imgSelesai = 1
             } catch (e: IOException) {
                 imgSelesai = 0
                 e.printStackTrace();
             }
         }else if(resultCode==Activity.RESULT_OK && requestCode==522) {
+//            Galery Intent
             try {
 //                data.clipData
                 fileUploadPJ = data!!.data
@@ -464,125 +498,73 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 imgPJ = 0
             }
         }else if(resultCode==Activity.RESULT_OK && requestCode==533){
+//            camera intent
             try {
-                val imageBitmap = data?.extras?.get("data") as Bitmap
-                bitmapPJ=imageBitmap
-                var waktu = Date()
-                val cal = Calendar.getInstance()
-                cal.time = waktu
-                var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(
-                    Calendar.SECOND
-                )}"
-                val wrapper = ContextWrapper(applicationContext)
-                //    var filenya = File(fileUpload!!.path, jam)
-                var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-                val storageDir = getExternalFilesDir("ABP_IMAGES")
-                fileNamePJ = "${jam}_sebelum"
-                val photoFile =  File.createTempFile(fileNamePJ, ".jpg", storageDir).apply {
-                    fileNamePJPath = absolutePath
-                    Toasty.info(this@NewHazardActivity,fileNamePJPath.toString()).show()
-                }
-                photoFile?.also {
-                    val photoURI = FileProvider.getUriForFile(
-                        this,
-                        "com.misit.abpenergy.fileprovider",
-                        it
+                fileUploadPJ = "file:///${pathFilePJ}".toUri()
+                try {
+                    bitmapPJ = BitmapFactory.decodeStream(
+                        contentResolver.openInputStream(fileUploadPJ!!)
                     )
-                    pjFOTO.setImageURI(photoURI);
-                    Log.d("IMGURI", photoURI.toString())
+                    Glide.with(this@NewHazardActivity).load(fileUploadPJ).into(pjFOTO)
+                } catch (e: IOException) {
+                    e.printStackTrace();
                 }
-//                var dataPJ = data!!
-//                bitmapPJ = BitmapFactory.decodeByteArray(
-//                    dataPJ.getByteArrayExtra("gambarDiFoto"), 0, dataPJ
-//                        .getByteArrayExtra("gambarDiFoto").size
-//                )
-                imgPJ = 1
+                imgIn = 1
             } catch (e: IOException) {
-                imgPJ = 0
+                imgIn = 0
                 e.printStackTrace();
             }
         }else if(resultCode==Activity.RESULT_CANCELED){
         }else if (requestCode == 999 && resultCode == RESULT_OK) {
-            val dataExtra = data?.extras?.get(MediaStore.EXTRA_OUTPUT) as String
-            Log.d("LogPath",dataExtra.toString())
-            Log.d("currentPhotoPath",currentPhotoPath.toString())
-
             try {
-//            val imageBitmap = data?.extras?.get("data") as Bitmap
-//            val uri = ConfigUtil.bitmapToFile(imageBitmap,applicationContext)
-
-//               bitmap=imageBitmap
-//            imgView.setImageBitmap(bitmap);
-//               val imagePath = File(this.getExternalFilesDir(null), "ABP_IMAGES")
-
-//               val newFile = File(currentPhotoPath, fileNamePJ)
-//                Glide.with(this@NewHazardActivity).load("file:///${currentPhotoPath}").into(pjFOTO)
-
-//               val contentUri = FileProvider.getUriForFile(
-//                   this@NewHazardActivity,
-//                   "com.misit.abpenergy.fileprovider",
-//                   newFile
-//               )
-//               pjFOTO.setImageURI(contentUri)
-
-//                fileUploadPJ = "file:///${dataExtra}".toUri()
-//                try {
-//                    bitmapPJ = BitmapFactory.decodeStream(
-//                        contentResolver.openInputStream(fileUploadPJ!!)
-//                    )
-//                                   pjFOTO.setImageBitmap(bitmapPJ)
-//
-//                } catch (e: IOException) {
-//                    e.printStackTrace();
-//                }
+                fileUploadPJ = "file:///${pathFilePJ}".toUri()
+                try {
+                    bitmapPJ = BitmapFactory.decodeStream(
+                        contentResolver.openInputStream(fileUploadPJ!!)
+                    )
+                    Glide.with(this@NewHazardActivity).load(fileUploadPJ).into(pjFOTO)
+                } catch (e: IOException) {
+                    e.printStackTrace();
+                }
                     imgIn = 1
             } catch (e: IOException) {
                 imgIn = 0
                 e.printStackTrace();
             }
+        }else if(requestCode==2626 && resultCode== RESULT_OK){
+            userPick = data!!.getStringExtra(userPick)
+            val nama = data!!.getStringExtra("nama")
+            val nik = data!!.getStringExtra("nik")
+            val profileIMG = data!!.getStringExtra("profileIMG")
+            val url = URL(profileIMG)
+            val result: Deferred<Bitmap?> = GlobalScope.async {
+                PopupUtil.showProgress(this@NewHazardActivity, "Loading...", "Membuat Hazard Report!")
+                url.toBitmap()
+            }
+            GlobalScope.launch(Dispatchers.Main) {
+                // show bitmap on image view when available
+                bitmapPJ = result.await()
+                PopupUtil.dismissDialog()
+            }
+//            bitmapPJ = ConfigUtil.getBitmapFromURL(profileIMG)
+            Glide.with(this@NewHazardActivity).load(profileIMG).into(pjFOTOPilih)
+            inPenanggungJawabPilih.setText(nama.toString())
+            inNikPJPilih.setText(nik.toString())
         }
 
         super.onActivityResult(requestCode, resultCode, data)
     }
     //ACTIVITY RESULT
-    //    DIALOG TANGGAL
-    fun showDialogTgl(inTgl: TextInputEditText){
-        val now = Calendar.getInstance()
-        val datePicker  = DatePickerDialog.OnDateSetListener{ view: DatePicker?, year: Int, month: Int, dayOfMonth: Int ->
-            now.set(Calendar.YEAR, year)
-            now.set(Calendar.MONTH, month)
-            now.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            inTgl.setText(SimpleDateFormat("dd MMMM yyyy", Locale.US).format(now.time))
+// extension function to get bitmap from url
+    fun URL.toBitmap(): Bitmap?{
+        return try {
+            BitmapFactory.decodeStream(openStream())
+        }catch (e:IOException){
+            null
         }
-        DatePickerDialog(
-            this,
-            datePicker,
-            now.get(Calendar.YEAR),
-            now.get(Calendar.MONTH),
-            now.get(Calendar.DAY_OF_MONTH)
-        ).show()
     }
-//    DIALOG TANGGAL
-//    DIALOG JAM
-    fun showDialogTime(inTime: TextInputEditText){
-        val now = Calendar.getInstance()
-        val timePicker  = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute: Int ->
-            now.set(Calendar.HOUR_OF_DAY, hour)
-            now.set(Calendar.MINUTE, minute)
-            inTime.setText(SimpleDateFormat("HH:mm", Locale.US).format(now.time))
-        }
-        TimePickerDialog(
-            this,
-            timePicker,
-            now.get(Calendar.HOUR_OF_DAY),
-            now.get(Calendar.MINUTE),
-            true
-        ).show()
-
-    }
-//    DIALOG JAM
 //    Dialog PICK PICTURE
-    fun showDialogOption(camera: Int, galery: Int){
+    fun showDialogOption(camera: Int, galery: Int,fName:String){
     val c = this@NewHazardActivity
     val alertDialog = AlertDialog.Builder(c)
     alertDialog.setTitle("Silahkan Pilih")
@@ -592,7 +574,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     )
     alertDialog!!.setItems(animals, DialogInterface.OnClickListener { dialog, which ->
         when (which) {
-            0 -> takeWithCamera(c, camera)
+            0 -> cameraIntent(c, camera,fName)
             1 -> openGalleryForImage(galery)
         }
     })
@@ -602,19 +584,21 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     @Throws(IOException::class)
     private fun createImageFile(fName: String): File {
         // Create an image file name
-        val waktu = Date()
-        val cal = Calendar.getInstance()
-        cal.time = waktu
         var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
-        val fileNm = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir = getExternalFilesDir("ABP_IMAGES")
+        val fileName = "${jam}_${fName}"
         return File.createTempFile(
-            "JPEG_${fileNm}_", /* prefix */
+            "${fName}", /* prefix */
             ".jpg", /* suffix */
             storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
+            if(fName=="sebelum"){
+                pathFileSebelum = absolutePath
+            }else if (fName=="selesai"){
+                pathFileSelesai = absolutePath
+            }else if (fName=="penanggung_jawab"){
+                pathFilePJ = absolutePath
+            }
         }
     }
 
@@ -629,14 +613,34 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 
 //    Toasty.info(this@NewHazardActivity,"Sebelum : ${kemungkinanID} | Sesudah ${kemungkinanIDSesudah}").show()
         if(rbSelesai.isChecked) {
-            if(!isValidate1()){
-                return
+            if(pjOption==1){
+                if(!isValidate2()){
+                    return
+                }
+                Toasty.info(this@NewHazardActivity,"option 1 validate 2").show()
+            }else{
+                if(!isValidate1()){
+                    return
+                }
+                Toasty.info(this@NewHazardActivity,"option 2 validate 1").show()
+
             }
+
         }
         else{
-            if (!isValidate()) {
-                return
+            if(pjOption==1){
+                if (!isValidate3()) {
+                    return
+                }
+                Toasty.info(this@NewHazardActivity,"option 1 validate 3").show()
+            }else{
+                if (!isValidate()) {
+                    return
+                }
+                Toasty.info(this@NewHazardActivity,"option 2 validate").show()
+
             }
+
         }
     PopupUtil.showProgress(this@NewHazardActivity, "Loading...", "Membuat Hazard Report!")
 
@@ -652,8 +656,16 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     var keparahanSesudahID =keparahanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
     var hirarkiID = hirarkiID.toString().toRequestBody(MultipartBody.FORM)
     var inPerbaikan = inPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
-    var inPenanggungJawab = inPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
-    var inNikPJ = inNikPJ.text.toString().toRequestBody(MultipartBody.FORM)
+    var pjNama:RequestBody?=null
+    var pjNik:RequestBody?=null
+    if(pjOption==1) {
+        pjNama = inPenanggungJawabPilih.text.toString().toRequestBody(MultipartBody.FORM)
+        pjNik = inNikPJPilih.text.toString().toRequestBody(MultipartBody.FORM)
+    }else{
+
+        pjNama = inPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
+        pjNik = inNikPJ.text.toString().toRequestBody(MultipartBody.FORM)
+    }
         if(plKta.isChecked){
             plKondisi = plKta.text.toString().toRequestBody(MultipartBody.FORM)
         }else if(plTta.isChecked){
@@ -686,15 +698,16 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         ConfigUtil.streamFoto(bitmap!!, file)
         var fileUri = file.asRequestBody("image/*".toMediaTypeOrNull())
         var bukti = MultipartBody.Part.createFormData("fileToUpload", file.name, fileUri)
-        //        FOTO PENANGGUNG JAWAB
-        var filePJ = wrapper.getDir("images", Context.MODE_PRIVATE)
-        filePJ = File(filePJ, "${jam}_penanggung_jawab.jpg")
-        //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
-        ConfigUtil.streamFoto(bitmapPJ!!, filePJ)
-        var fileUriPJ = filePJ.asRequestBody("image/*".toMediaTypeOrNull())
-        var fotoPJ = MultipartBody.Part.createFormData("fileToUploadPJ", filePJ.name, fileUriPJ)
+            //        FOTO PENANGGUNG JAWAB
+            var filePJ = wrapper.getDir("images", Context.MODE_PRIVATE)
+            filePJ = File(filePJ, "${jam}_penanggung_jawab.jpg")
+            //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
+            ConfigUtil.streamFoto(bitmapPJ!!, filePJ)
+            var fileUriPJ = filePJ.asRequestBody("image/*".toMediaTypeOrNull())
+            var fotoPJ = MultipartBody.Part.createFormData("fileToUploadPJ", filePJ.name, fileUriPJ)
+    //        FOTO PENANGGUNG JAWAB
 
-        var fileUriSelsai:RequestBody?=null
+    var fileUriSelsai:RequestBody?=null
         var buktiSelesai :MultipartBody.Part?=null
         var fileSelesai = wrapper.getDir("images", Context.MODE_PRIVATE)
         if(bitmapBuktiSelesai!=null) {
@@ -725,8 +738,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 plKondisi!!,
                 hirarkiID,
                 inPerbaikan,
-                inPenanggungJawab,
-                inNikPJ,
+                pjNama,
+                pjNik,
                 rbStatus!!,
                 inTGLSelesai,
                 inJamSelesai,
@@ -753,8 +766,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 plKondisi!!,
                 hirarkiID,
                 inPerbaikan,
-                inPenanggungJawab,
-                inNikPJ,
+                pjNama,
+                pjNik,
                 rbStatus!!,
                 inTGLSelesai,
                 inJamSelesai,
@@ -846,10 +859,15 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             var sResponse = response.body()
             if (sResponse != null) {
                 if (sResponse.success!!) {
-                    Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                    resultIntent(this@NewHazardActivity)
-                    PopupUtil.dismissDialog()
-                    finish()
+                    if(ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity)){
+                        Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                        resultIntent(this@NewHazardActivity)
+                        PopupUtil.dismissDialog()
+                        finish()
+                    }else{
+                        ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity)
+                    }
+
                 } else {
                     Toasty.error(this@NewHazardActivity, "Gagal Membuat Hazard Report! ").show()
                     PopupUtil.dismissDialog()
@@ -941,6 +959,11 @@ private fun getToken() {
         inPenanggungJawab.requestFocus()
         return false
     }
+    if(inNikPJ.text!!.isEmpty()){
+        tilNikPJ.error="Please Input Someting"
+        inNikPJ.requestFocus()
+        return false
+    }
     if (grupKategori.getCheckedRadioButtonId() == -1)
     {
         tilKatBahaya.visibility=View.VISIBLE
@@ -958,11 +981,112 @@ private fun getToken() {
         imagePicker.performClick()
         return false
     }
+    if(imgPJ<=0){
+        Toasty.error(
+            this@NewHazardActivity,
+            "Harap Memilih Gambar Penanggung Jawab",
+            Toasty.LENGTH_LONG
+        ).show()
+        pjFOTO.performClick()
+        return false
+    }
     return true
 }
+    fun isValidate2():Boolean{
+        clearError()
+
+        if(inPerusaan.text!!.isEmpty()){
+            tilPerusahaan.error="Please Input Someting"
+            inPerusaan.requestFocus()
+            return false
+        }
+        if(inTanggal.text!!.isEmpty()){
+            tilTanggal.error="Please Input Someting"
+            inTanggal.requestFocus()
+            return false
+        }
+        if(inJam.text!!.isEmpty()){
+            tilJam.error="Please Input Someting"
+            inJam.requestFocus()
+            return false
+        }
+        if(inLokasi.text!!.isEmpty()){
+            tilLokasi.error="Please Input Someting"
+            inLokasi.requestFocus()
+            return false
+        }
+        if(inLokasiDet.text!!.isEmpty()){
+            tilLokasiDet.error="Please Input Someting"
+            inLokasiDet.requestFocus()
+            return false
+        }
+
+        if(inBahaya.text!!.isEmpty()){
+            tilBahaya.error="Please Input Someting"
+            inBahaya.requestFocus()
+            return false
+        }
+        if(inKemungkinan.text!!.isEmpty()){
+            tilKemungkinan.error="Please Input Someting"
+            inKemungkinan.requestFocus()
+            return false
+        }
+        if(inKeparahan.text!!.isEmpty()){
+            tilKeparahan.error="Please Input Someting"
+            inKeparahan.requestFocus()
+            return false
+        }
+        if(inPengendalian.text!!.isEmpty()){
+            tilPengendalian.error="Please Input Someting"
+            inPengendalian.requestFocus()
+            return false
+        }
+        if(inPerbaikan.text!!.isEmpty()){
+            tilPerbaikan.error="Please Input Someting"
+            inPerbaikan.requestFocus()
+            return false
+        }
+        if(inPenanggungJawabPilih.text!!.isEmpty()){
+            tilPenanggungJawabPilih.error="Please Input Someting"
+            cvPilihPJ.performClick()
+            return false
+        }
+        if(inNikPJPilih.text!!.isEmpty()){
+            tilNikPJPilih.error="Please Input Someting"
+            cvPilihPJ.performClick()
+            return false
+        }
+        if (grupKategori.getCheckedRadioButtonId() == -1)
+        {
+            tilKatBahaya.visibility=View.VISIBLE
+            plKta.requestFocus()
+            return false
+        }
+        if (groupStatus.getCheckedRadioButtonId() == -1)
+        {
+            tilStatus.visibility=View.VISIBLE
+            rbBelumSelesai.requestFocus()
+            return false
+        }
+        if (imgIn <= 0 )
+        {
+            imagePicker.performClick()
+            return false
+        }
+        return true
+    }
     fun isValidate1():Boolean{
         clearError()
 
+        if(imgPJ<=0){
+            Toasty.error(
+                this@NewHazardActivity,
+                "Harap Memilih Gambar Bukti Selesai",
+                Toasty.LENGTH_LONG
+            ).show()
+            pjFOTO.performClick()
+            return false
+        }
         if(inPerusaan.text!!.isEmpty()){
             tilPerusahaan.error="Please Input Someting"
             inPerusaan.requestFocus()
@@ -1032,6 +1156,119 @@ private fun getToken() {
         if(inNikPJ.text!!.isEmpty()){
             tilNikPJ.error="Please Input Someting"
             inNikPJ.requestFocus()
+            return false
+        }
+        if(inTGLSelesai.text!!.isEmpty()){
+            tilTGLSelesai.error="Please Input Someting"
+            inTGLSelesai.requestFocus()
+            return false
+        }
+        if(inJamSelesai.text!!.isEmpty()){
+            tilJamSelesai.error="Please Input Someting"
+            inJamSelesai.requestFocus()
+            return false
+        }
+        if (grupKategori.getCheckedRadioButtonId() == -1)
+        {
+            tilKatBahaya.visibility=View.VISIBLE
+            plKta.requestFocus()
+            return false
+        }
+        if (groupStatus.getCheckedRadioButtonId() == -1)
+        {
+            tilStatus.visibility=View.VISIBLE
+            rbSelesai.requestFocus()
+            return false
+        }
+        if (imgIn <= 0 )
+        {
+            Toasty.error(this@NewHazardActivity, "Harap Memilih Gambar", Toasty.LENGTH_LONG).show()
+            imagePicker.performClick()
+            return false
+        }
+        if (imgSelesai <= 0 )
+        {
+            Toasty.error(
+                this@NewHazardActivity,
+                "Harap Memilih Gambar Penanggung Jawab",
+                Toasty.LENGTH_LONG
+            ).show()
+            imagePickerBuktiSelesai.performClick()
+            return false
+        }
+        return true
+    }
+    fun isValidate3():Boolean{
+        clearError()
+        if(inPerusaan.text!!.isEmpty()){
+            tilPerusahaan.error="Please Input Someting"
+            inPerusaan.requestFocus()
+            return false
+        }
+        if(inTanggal.text!!.isEmpty()){
+            tilTanggal.error="Please Input Someting"
+            inTanggal.requestFocus()
+            return false
+        }
+        if(inJam.text!!.isEmpty()){
+            tilJam.error="Please Input Someting"
+            inJam.requestFocus()
+            return false
+        }
+        if(inLokasi.text!!.isEmpty()){
+            tilLokasi.error="Please Input Someting"
+            inLokasi.requestFocus()
+            return false
+        }
+        if(inLokasiDet.text!!.isEmpty()){
+            tilLokasiDet.error="Please Input Someting"
+            inLokasiDet.requestFocus()
+            return false
+        }
+
+        if(inBahaya.text!!.isEmpty()){
+            tilBahaya.error="Please Input Someting"
+            inBahaya.requestFocus()
+            return false
+        }
+        if(inKemungkinan.text!!.isEmpty()){
+            tilKemungkinan.error="Please Input Someting"
+            inKemungkinan.requestFocus()
+            return false
+        }
+        if(inKeparahan.text!!.isEmpty()){
+            tilKeparahan.error="Please Input Someting"
+            inKeparahan.requestFocus()
+            return false
+        }
+        if(inKemungkinanSesudah.text!!.isEmpty()){
+            tilKemungkinanSesudah.error="Please Input Someting"
+            inKemungkinanSesudah.requestFocus()
+            return false
+        }
+        if(inKeparahanSesudah.text!!.isEmpty()){
+            tilKeparahanSesudah.error="Please Input Someting"
+            inKeparahanSesudah.requestFocus()
+            return false
+        }
+        if(inPengendalian.text!!.isEmpty()){
+            tilPengendalian.error="Please Input Someting"
+            inPengendalian.requestFocus()
+            return false
+        }
+        if(inPerbaikan.text!!.isEmpty()){
+            tilPerbaikan.error="Please Input Someting"
+            inPerbaikan.requestFocus()
+            return false
+        }
+        if(inPenanggungJawabPilih.text!!.isEmpty()){
+            tilPenanggungJawabPilih.error="Please Input Someting"
+            cvPilihPJ.performClick()
+            return false
+        }
+        if(inNikPJPilih.text!!.isEmpty()){
+            tilNikPJPilih.error="Please Input Someting"
+            cvPilihPJ.performClick()
             return false
         }
         if(inTGLSelesai.text!!.isEmpty()){

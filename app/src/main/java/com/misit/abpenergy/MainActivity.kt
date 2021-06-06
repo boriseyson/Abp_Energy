@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
 
 //        updateProgress()
-
+        ConfigUtil.deleteInABPIMAGES(this@MainActivity)
     }
 
     override fun onResume() {
