@@ -3,6 +3,7 @@ package com.misit.abpenergy.HazardReport.Adapter
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,7 +106,12 @@ class ListHazardReportAdapter (private val context: Context,
                     userRule?.contains("admin_hse")
                 }
                 if (hseAdmin!!) {
-                    holder.lnHSEAdmin.visibility = View.VISIBLE
+//                    Log.d("UserValid",hazardList!!.uservalid)
+                    if(hazardList?.uservalid==null || hazardList?.uservalid==""){
+                        holder.lnHSEAdmin.visibility = View.VISIBLE
+                    }else{
+                        holder.lnHSEAdmin.visibility = View.GONE
+                    }
                 } else {
                     holder.lnHSEAdmin.visibility = View.GONE
                 }

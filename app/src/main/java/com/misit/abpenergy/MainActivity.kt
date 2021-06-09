@@ -51,23 +51,21 @@ class MainActivity : AppCompatActivity() {
         Realm.init(this)
         versionApp()
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this@MainActivity)
-
         Glide.with(this).load(R.drawable.abp).into(imageView)
-
         tvVersionCode.text=" V.${app_version}"
-
-
         PrefsUtil.initInstance(this)
         karyawan = ArrayList()
-
-
-//        updateProgress()
         ConfigUtil.deleteInABPIMAGES(this@MainActivity)
+        ConfigUtil.createFolder(this@MainActivity,"ABP_IMAGES")
+        ConfigUtil.createFolder(this@MainActivity,"HAZARD_TEMP")
     }
 
     override fun onResume() {
-        if(verifyStoragePermissions(this@MainActivity,this@MainActivity)){
+        if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
             loadSarana()
+        }else{
+            startActivity(Intent(this@MainActivity,IntroActivity::class.java))
+            finish()
         }
         super.onResume()
     }

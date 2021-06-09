@@ -5,59 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login.LoginActivity">
-    <ImageView
-        android:id="@+id/ic_wave2"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_wave2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-
-        android:paddingBottom="10dp"
-        android:weightSum="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:textColor="@color/skyBlue"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/CopyRights"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:text="@string/SiteLocation"
-            android:textColor="@color/white"
-            android:textAlignment="textEnd"
-            android:textStyle="bold" />
-    </LinearLayout>
-
     <View
         android:id="@+id/viewBackground"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="70dp"
         android:background="@color/skyBlue"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ic_wave"
         android:layout_width="0dp"
-        android:layout_height="240dp"
+        android:layout_height="200dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_wave"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,10 +24,10 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginTop="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginRight="30dp"
         android:src="@drawable/ic_baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/viewBackground" />
@@ -83,20 +41,23 @@
         android:layout_marginRight="36dp"
         android:text="Sudah Memiliki Akun?"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/viewBackground"
         app:layout_constraintTop_toTopOf="@+id/viewBackground" />
-    <LinearLayout
-        android:windowSoftInputMode="adjustResize"
-        android:layout_marginTop="100dp"
+    <ScrollView
+        android:layout_marginTop="160dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@id/viewBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tvVersionCode"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilUsername"
@@ -139,20 +100,40 @@
             android:inputType="textPassword"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-        android:backgroundTint="@color/colorPrimary"
-        android:id="@+id/loginBtn"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/login_ucword"
-        android:layout_margin="16dp"
-        android:padding="8dp"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
+        android:orientation="horizontal">
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:backgroundTint="@color/successColor"
+            android:id="@+id/regBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Daftar"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:backgroundTint="@color/colorPrimary"
+            android:id="@+id/loginBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/login_ucword"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         style="@style/Widget.AppCompat.Button.Borderless"
@@ -162,9 +143,11 @@
         android:gravity="center"
         android:text="Lupa Kata Sandi?"
         android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
         android:textColor="@color/skyBlue"
         android:textAllCaps="false"/>
     <TextView
+        android:visibility="gone"
         android:id="@+id/tvOR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -176,6 +159,7 @@
         android:textColor="@color/colorPrimaryDark" />
 
         <com.google.android.material.button.MaterialButton
+            android:visibility="gone"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -187,6 +171,7 @@
             android:text="Pengguna Baru? Daftar Sekarang ( PT Alamjaya Bara Pratama )"
             android:textColor="@color/skyBlue" />
         <com.google.android.material.button.MaterialButton
+            android:visibility="gone"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -198,16 +183,5 @@
             android:text="Pengguna Baru? Daftar Sekarang ( Mitra Kerja )"
             android:textColor="@color/skyBlue" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/tvVersionCode"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dp"
-        android:textStyle="bold"
-        android:text="v.1"
-        android:textColor="@color/skyBlue"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,6 +50,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
+import java.lang.Exception
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
@@ -532,24 +533,29 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 e.printStackTrace();
             }
         }else if(requestCode==2626 && resultCode== RESULT_OK){
-            userPick = data!!.getStringExtra(userPick)
+            try {
+                userPick=""
+                userPick = data!!.getStringExtra(userPick)
             val nama = data!!.getStringExtra("nama")
             val nik = data!!.getStringExtra("nik")
             val profileIMG = data!!.getStringExtra("profileIMG")
             val url = URL(profileIMG)
-            val result: Deferred<Bitmap?> = GlobalScope.async {
-                PopupUtil.showProgress(this@NewHazardActivity, "Loading...", "Membuat Hazard Report!")
-                url.toBitmap()
+                val result: Deferred<Bitmap?> = GlobalScope.async {
+                    PopupUtil.showProgress(this@NewHazardActivity, "Loading...", "Membuat Hazard Report!")
+                    url.toBitmap()
+                }
+                GlobalScope.launch(Dispatchers.Main) {
+                    // show bitmap on image view when available
+                    bitmapPJ = result.await()
+                    PopupUtil.dismissDialog()
+                }
+                Glide.with(this@NewHazardActivity).load(profileIMG).into(pjFOTOPilih)
+                inPenanggungJawabPilih.setText(nama.toString())
+                inNikPJPilih.setText(nik.toString())
+            }catch (e:Exception){
+                Toasty.error(this@NewHazardActivity,"Penanggung Jawab Tidak Mempunyai Foto, Silahkan Memilih Manual Penanggung Jawab").show()
+                Log.d("LoadImage",e.toString())
             }
-            GlobalScope.launch(Dispatchers.Main) {
-                // show bitmap on image view when available
-                bitmapPJ = result.await()
-                PopupUtil.dismissDialog()
-            }
-//            bitmapPJ = ConfigUtil.getBitmapFromURL(profileIMG)
-            Glide.with(this@NewHazardActivity).load(profileIMG).into(pjFOTOPilih)
-            inPenanggungJawabPilih.setText(nama.toString())
-            inNikPJPilih.setText(nik.toString())
         }
 
         super.onActivityResult(requestCode, resultCode, data)
@@ -584,8 +590,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     @Throws(IOException::class)
     private fun createImageFile(fName: String): File {
         // Create an image file name
-        var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
-        val fileName = "${jam}_${fName}"
         return File.createTempFile(
             "${fName}", /* prefix */
             ".jpg", /* suffix */
@@ -614,30 +618,29 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //    Toasty.info(this@NewHazardActivity,"Sebelum : ${kemungkinanID} | Sesudah ${kemungkinanIDSesudah}").show()
         if(rbSelesai.isChecked) {
             if(pjOption==1){
+//                Toasty.info(this@NewHazardActivity,"option 1 validate 2").show()
                 if(!isValidate2()){
                     return
                 }
-                Toasty.info(this@NewHazardActivity,"option 1 validate 2").show()
             }else{
+//                Toasty.info(this@NewHazardActivity,"option 2 validate 1").show()
                 if(!isValidate1()){
                     return
                 }
-                Toasty.info(this@NewHazardActivity,"option 2 validate 1").show()
-
             }
 
         }
         else{
             if(pjOption==1){
+//                Toasty.info(this@NewHazardActivity,"option 1 validate 3").show()
                 if (!isValidate3()) {
                     return
                 }
-                Toasty.info(this@NewHazardActivity,"option 1 validate 3").show()
             }else{
+//                Toasty.info(this@NewHazardActivity,"option 2 validate").show()
                 if (!isValidate()) {
                     return
                 }
-                Toasty.info(this@NewHazardActivity,"option 2 validate").show()
 
             }
 
@@ -1241,16 +1244,6 @@ private fun getToken() {
             inKeparahan.requestFocus()
             return false
         }
-        if(inKemungkinanSesudah.text!!.isEmpty()){
-            tilKemungkinanSesudah.error="Please Input Someting"
-            inKemungkinanSesudah.requestFocus()
-            return false
-        }
-        if(inKeparahanSesudah.text!!.isEmpty()){
-            tilKeparahanSesudah.error="Please Input Someting"
-            inKeparahanSesudah.requestFocus()
-            return false
-        }
         if(inPengendalian.text!!.isEmpty()){
             tilPengendalian.error="Please Input Someting"
             inPengendalian.requestFocus()
@@ -1271,16 +1264,6 @@ private fun getToken() {
             cvPilihPJ.performClick()
             return false
         }
-        if(inTGLSelesai.text!!.isEmpty()){
-            tilTGLSelesai.error="Please Input Someting"
-            inTGLSelesai.requestFocus()
-            return false
-        }
-        if(inJamSelesai.text!!.isEmpty()){
-            tilJamSelesai.error="Please Input Someting"
-            inJamSelesai.requestFocus()
-            return false
-        }
         if (grupKategori.getCheckedRadioButtonId() == -1)
         {
             tilKatBahaya.visibility=View.VISIBLE
@@ -1297,16 +1280,6 @@ private fun getToken() {
         {
             Toasty.error(this@NewHazardActivity, "Harap Memilih Gambar", Toasty.LENGTH_LONG).show()
             imagePicker.performClick()
-            return false
-        }
-        if (imgSelesai <= 0 )
-        {
-            Toasty.error(
-                this@NewHazardActivity,
-                "Harap Memilih Gambar Bukti Selesai",
-                Toasty.LENGTH_LONG
-            ).show()
-            imagePickerBuktiSelesai.performClick()
             return false
         }
         return true

@@ -221,24 +221,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:id="@+id/lnHSEAdmin"
         >
         <com.google.android.material.button.MaterialButton
-            android:layout_width="0dp"
-            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:id="@+id/bntHSEappr"
+            android:layout_gravity="center"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:text="Setujui"
+            android:drawableRight="@drawable/ic_baseline_check_24_black"
+            android:drawableTint="@color/white"
+            android:drawablePadding="20dp"
             android:textAllCaps="false"
             android:backgroundTint="@color/successColor"/>
         <com.google.android.material.button.MaterialButton
             android:layout_margin="10dp"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:text="Batalkan"
             android:id="@+id/btnHSEdeny"

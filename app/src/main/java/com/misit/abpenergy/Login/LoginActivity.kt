@@ -5,17 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.NewIndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
@@ -25,9 +30,11 @@ import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.register_layout.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity(),View.OnClickListener
@@ -63,6 +70,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         tvLpSandi.setOnClickListener(this)
         btnNewUser.setOnClickListener(this)
         btnNewUserMitra.setOnClickListener(this)
+        regBtn.setOnClickListener(this)
     }
 
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -109,14 +117,27 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         if(v?.id==R.id.btnNewUserMitra){
             registerUserMitra()
         }
+        if(v?.id==R.id.regBtn){
+            daftarDialog(this@LoginActivity)
+        }
     }
+     private fun daftarDialog(c:Context){
+         val mDialogView = LayoutInflater.from(c).inflate(R.layout.register_layout,null)
+         val mBuilder = AlertDialog.Builder(c)
+         mBuilder.setView(mDialogView)
+         val dialog =mBuilder.show()
+         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+         mDialogView.btnAbp?.setOnClickListener { registerUser() }
+         mDialogView.btnMitra?.setOnClickListener { registerUserMitra() }
+         mDialogView.btnDismis?.setOnClickListener { dialog.dismiss() }
 
+     }
     override fun onResume() {
         if(cekKoneksi(this)){
             getToken()
             androidToken()
             versionApp()
-            tvVersionCode.text="V$app_version"
+//            tvVersionCode.text="V$app_version"
         }else{
             Toasty.error(this, "KONEKSI TIDAK ADA", Toasty.LENGTH_SHORT).show()
         }
@@ -214,6 +235,11 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                             PrefsUtil.getInstance()
                                 .setStringState(PrefsUtil.NIK,
                                     userResponse.user?.nik)
+                            if(userResponse.user?.photoProfile!=null){
+                                PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, true)
+                            }else{
+                                PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, false)
+                            }
                             PrefsUtil.getInstance()
                                 .setStringState(PrefsUtil.PHOTO_URL, userResponse.user?.photoProfile)
                             Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()

@@ -889,7 +889,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textColor="#000000"
-                                android:enabled="false"
+                                android:clickable="false"
+                                android:focusable="false"
                                 android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -908,7 +909,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inNikPJPilih"
                                 android:inputType="phone"
-                                android:enabled="false"
+                                android:focusable="false"
+                                android:clickable="false"
                                 android:textColor="#000000"
                                 android:imeOptions="actionNext"
                                 android:layout_width="match_parent"
