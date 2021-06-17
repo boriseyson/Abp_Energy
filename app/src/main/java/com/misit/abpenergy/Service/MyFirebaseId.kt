@@ -15,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.misit.abpenergy.IndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.PrefsUtil
+import java.lang.Exception
 
 class MyFirebaseId : FirebaseMessagingService() {
     override fun onCreate() {
@@ -64,9 +65,21 @@ class MyFirebaseId : FirebaseMessagingService() {
             nManager.createNotificationChannel(oChannel)
 
         }
-        nManager.notify(0,nBuilder.build())
 
+        nManager.notify(0,nBuilder.build())
+        playNotificationSound(this@MyFirebaseId)
     }
+
+    private fun playNotificationSound(c:Context) {
+        try {
+            val defSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val r = RingtoneManager.getRingtone(c,defSoundURI)
+            r.play()
+        }catch (e:Exception){
+            Log.d("ER_Ringtone",e.toString())
+        }
+    }
+
     companion object{
         var USERNAME = "username"
         var DEPARTMENT="department"
