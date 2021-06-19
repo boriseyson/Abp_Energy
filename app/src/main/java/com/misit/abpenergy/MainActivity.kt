@@ -2,6 +2,7 @@ package com.misit.abpenergy
 
 import android.Manifest
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -23,12 +24,14 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.storage.StorageReference
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.HazardReport.Service.HazardService
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Model.KaryawanModel
 import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PrefsUtil
+import es.dmoral.toasty.Toasty
 import io.realm.Realm
 import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
@@ -69,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         }
         super.onResume()
     }
+
     fun deleteRealm(){
         var realm = Realm.getDefaultInstance()
         realm?.executeTransaction {

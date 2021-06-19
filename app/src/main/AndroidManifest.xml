@@ -246,7 +246,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
+        <service android:name=".HazardReport.Service.HazardService"/>
         <activity
             android:name=".Rkb.DetailRkbActivity"
             android:launchMode="singleTask"

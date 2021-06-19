@@ -63,7 +63,6 @@ class MyFirebaseId : FirebaseMessagingService() {
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
             var oChannel = NotificationChannel(cId,"Costumer",NotificationManager.IMPORTANCE_HIGH)
             nManager.createNotificationChannel(oChannel)
-
         }
 
         nManager.notify(0,nBuilder.build())

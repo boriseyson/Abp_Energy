@@ -2,8 +2,6 @@ package com.misit.abpenergy.HazardReport
 
 import android.Manifest
 import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -15,7 +13,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +21,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
-import com.google.android.material.textfield.TextInputEditText
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
@@ -33,10 +29,8 @@ import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
-import com.misit.abpenergy.Utils.ConfigUtil
+import com.misit.abpenergy.Utils.*
 import com.misit.abpenergy.Utils.ConfigUtil.resultIntent
-import com.misit.abpenergy.Utils.PopupUtil
-import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_new_hazard.*
 import kotlinx.coroutines.*
@@ -52,7 +46,6 @@ import java.io.File
 import java.io.IOException
 import java.lang.Exception
 import java.net.URL
-import java.text.SimpleDateFormat
 import java.util.*
 
 class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
@@ -177,7 +170,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             val intent = Intent(c, ListUserActivity::class.java)
             intent.putExtra(ListUserActivity.DataExtra,"Hazard")
             intent.putExtra("userPick",userPick)
-            startActivityForResult(intent,2626)
+            startActivityForResult(intent,Constants.PJ_CODE_OPTION)
         }
         if(v!!.id==R.id.inTanggal){
             ConfigUtil.showDialogTgl(inTanggal,c)
@@ -195,7 +188,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             ConfigUtil.showDialogTime(inJamSelesai,c)
         }
         if(v!!.id==R.id.imagePicker){
-            showDialogOption(333, 222,"sebelum")
+            showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY,SEBELUM)
         }
         if(v!!.id==R.id.btnSimpan){
             simpanHazard()
@@ -206,58 +199,58 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(v!!.id==R.id.btnGambarHazard){
             bitmap=null
             imgIn=0
-            showDialogOption(333, 222,"sebelum")
+            showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY,SEBELUM)
         }
         if(v!!.id==R.id.btnFotoPJ){
 //            PENSNGGUNGJAWAB
             bitmapPJ=null
             imgPJ=0
-            showDialogOption(533, 522,"penanggung_jawab")
+            showDialogOption(Constants.PJ_CODE_CAMERA, Constants.PJ_CODE_GALERY,PENANGGUNG_JAWAB)
         }
         if(v!!.id==R.id.pjFOTO){
 //            PENSNGGUNGJAWAB
             bitmapPJ=null
             imgPJ=0
-            showDialogOption(533,522,"penanggung_jawab")
+            showDialogOption(Constants.PJ_CODE_CAMERA,Constants.PJ_CODE_GALERY,PENANGGUNG_JAWAB)
 //            cameraIntent(this@NewHazardActivity, 999, "penanggung_jawab")
         }
         if(v?.id==R.id.imgBuktiSelesai){
 //            BUKTI PERBAIKAN
-            showDialogOption(433, 422,"selesai")
+            showDialogOption(Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY,SELESAI)
         }
         if (v?.id==R.id.btnPerbaikan){
 //            BUKTI PERBAIKAN
-            showDialogOption(433, 422,"selesai")
+            showDialogOption(Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY,SELESAI)
         }
         if(v?.id==R.id.inLokasi){
             var intent = Intent(this@NewHazardActivity, LokasiActivity::class.java)
             intent.putExtra("lokasiDipilih", lokasiDipilih)
-            startActivityForResult(intent, 123)
+            startActivityForResult(intent, Constants.LOKASI_CODE)
         }
         if(v?.id==R.id.inPengendalian){
             var intent = Intent(this@NewHazardActivity, SumberBahayaActivity::class.java)
             intent.putExtra("hirarkiDipilh", hirarkiDipilih)
-            startActivityForResult(intent, 456)
+            startActivityForResult(intent, Constants.HIRARKI_CODE)
         }
         if(v?.id==R.id.inKemungkinan){
             var intent = Intent(this@NewHazardActivity, KemungkinanActivity::class.java)
             intent.putExtra("kemungkinanDipilih", kemungkinanDipilih)
-            startActivityForResult(intent, 457)
+            startActivityForResult(intent, Constants.KEMUNGKINAN_SEBELUM_CODE)
         }
         if(v?.id==R.id.inKeparahan){
             var intent = Intent(this@NewHazardActivity, KeparahanActivity::class.java)
             intent.putExtra("keparahanDipilih", keparahanDipilih)
-            startActivityForResult(intent, 458)
+            startActivityForResult(intent, Constants.KEPARAHAN_SEBELUM_CODE)
         }
         if(v?.id==R.id.inKemungkinanSesudah){
             var intent = Intent(this@NewHazardActivity, KemungkinanActivity::class.java)
             intent.putExtra("kemungkinanDipilih", kemungkinanDipilihSesudah)
-            startActivityForResult(intent, 477)
+            startActivityForResult(intent,Constants.KEMUNGKINAN_SESUDAH_CODE)
         }
         if(v?.id==R.id.inKeparahanSesudah){
             var intent = Intent(this@NewHazardActivity, KeparahanActivity::class.java)
             intent.putExtra("keparahanDipilih", keparahanDipilihSesudah)
-            startActivityForResult(intent, 488)
+            startActivityForResult(intent, Constants.KEMAPARAHAN_SESUDAH_CODE)
         }
         if(v?.id==R.id.matrikResiko || v?.id==R.id.matrikResikoSesudah){
             var intent = Intent(this@NewHazardActivity, MatrikResikoWebViewActivity::class.java)
@@ -266,7 +259,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(v?.id==R.id.inPerusaan){
             var intent = Intent(this@NewHazardActivity, CompanyActivity::class.java)
             intent.putExtra("companyDipilih", companyDipilih)
-            startActivityForResult(intent, 987)
+            startActivityForResult(intent, Constants.COMPANY_CODE)
         }
     }
     //    VIEW LISTENER
@@ -387,35 +380,35 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //    ATIVITY RESULT
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        if(resultCode== Activity.RESULT_OK && requestCode==987){
+        if(resultCode== Activity.RESULT_OK && requestCode==Constants.COMPANY_CODE){
             companyDipilih = data!!.getStringExtra("companyDipilih")
             inPerusaan.setText(companyDipilih)
-        }else if(resultCode== Activity.RESULT_OK && requestCode==457){
+        }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMUNGKINAN_SEBELUM_CODE){
             kemungkinanDipilih = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanID = data.getStringExtra("kemungkinanID")
             inKemungkinan.setText(kemungkinanDipilih)
-        }else if(resultCode== Activity.RESULT_OK && requestCode==477){
+        }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMUNGKINAN_SESUDAH_CODE){
             kemungkinanDipilihSesudah = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanIDSesudah = data.getStringExtra("kemungkinanID")
 //            Toasty.info(this@NewHazardActivity,"${kemungkinanIDSesudah}").show()
             inKemungkinanSesudah.setText(kemungkinanDipilihSesudah)
-        }else if(resultCode== Activity.RESULT_OK && requestCode==123){
+        }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.LOKASI_CODE){
             lokasiDipilih = data!!.getStringExtra("lokasiDipilih")
             lokasiID = data.getStringExtra("lokasiID")
             inLokasi.setText(lokasiDipilih)
-        }else if(resultCode== Activity.RESULT_OK && requestCode==456){
+        }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.HIRARKI_CODE){
             hirarkiDipilih = data!!.getStringExtra("hirarkiDipilih")
             hirarkiID = data.getStringExtra("hirarkiID")
             inPengendalian.setText(hirarkiDipilih)
-        }else if(resultCode== Activity.RESULT_OK && requestCode==458){
+        }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEPARAHAN_SEBELUM_CODE){
             keparahanDipilih = data!!.getStringExtra("keparahanDipilih")
             keparahanID = data.getStringExtra("keparahanID")
             inKeparahan.setText(keparahanDipilih)
-        }else if(resultCode== Activity.RESULT_OK && requestCode==488){
+        }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMAPARAHAN_SESUDAH_CODE){
             keparahanDipilihSesudah = data!!.getStringExtra("keparahanDipilih")
             keparahanIDSesudah = data.getStringExtra("keparahanID")
             inKeparahanSesudah.setText(keparahanDipilihSesudah)
-        }else if(resultCode==Activity.RESULT_OK && requestCode==222) {
+        }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.BUKTI_CODE_GALERY) {
 //            GALERY INTENT SEBELUM
             try {
                 fileUpload = data!!.data
@@ -431,7 +424,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             } catch (e: IOException) {
                 imgIn = 0
             }
-        }else if(resultCode==Activity.RESULT_OK && requestCode==333){
+        }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.BUKTI_CODE_CAMERA){
 //            Camera Inten Sebelum
             try {
                 fileUpload = "file:///${pathFileSebelum}".toUri()
@@ -448,7 +441,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 imgIn = 0
                 e.printStackTrace();
             }
-        }else if(resultCode==Activity.RESULT_OK && requestCode==422) {
+        }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.SELESAI_CODE_GALERY) {
 //            Galery Inten Selesai
             try {
                 fileUploadSelesai = data!!.data
@@ -464,7 +457,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             } catch (e: IOException) {
                 imgSelesai = 0
             }
-        }else if(resultCode==Activity.RESULT_OK && requestCode==433){
+        }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.SELESAI_CODE_CAMERA){
 //            Camera Intent Selesai
             try {
                 fileUploadSelesai = "file:///${pathFileSelesai}".toUri()
@@ -472,16 +465,17 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                     bitmapBuktiSelesai = BitmapFactory.decodeStream(
                         contentResolver.openInputStream(fileUploadSelesai!!)
                     )
+                    imgSelesai = 1
                     Glide.with(this@NewHazardActivity).load(fileUploadSelesai).into(imgBuktiSelesai)
                 } catch (e: IOException) {
                     e.printStackTrace();
+                    imgSelesai = 0
                 }
-                imgSelesai = 1
             } catch (e: IOException) {
                 imgSelesai = 0
                 e.printStackTrace();
             }
-        }else if(resultCode==Activity.RESULT_OK && requestCode==522) {
+        }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.PJ_CODE_GALERY) {
 //            Galery Intent
             try {
 //                data.clipData
@@ -498,7 +492,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             } catch (e: IOException) {
                 imgPJ = 0
             }
-        }else if(resultCode==Activity.RESULT_OK && requestCode==533){
+        }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.PJ_CODE_CAMERA){
 //            camera intent
             try {
                 fileUploadPJ = "file:///${pathFilePJ}".toUri()
@@ -510,9 +504,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 } catch (e: IOException) {
                     e.printStackTrace();
                 }
-                imgIn = 1
+                imgPJ = 1
             } catch (e: IOException) {
-                imgIn = 0
+                imgPJ = 0
                 e.printStackTrace();
             }
         }else if(resultCode==Activity.RESULT_CANCELED){
@@ -527,12 +521,12 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 } catch (e: IOException) {
                     e.printStackTrace();
                 }
-                    imgIn = 1
+                    imgPJ = 1
             } catch (e: IOException) {
-                imgIn = 0
+                imgPJ = 0
                 e.printStackTrace();
             }
-        }else if(requestCode==2626 && resultCode== RESULT_OK){
+        }else if(requestCode==Constants.PJ_CODE_OPTION && resultCode== RESULT_OK){
             try {
                 userPick=""
                 userPick = data!!.getStringExtra(userPick)
@@ -596,11 +590,11 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
-            if(fName=="sebelum"){
+            if(fName== SEBELUM){
                 pathFileSebelum = absolutePath
-            }else if (fName=="selesai"){
+            }else if (fName==SELESAI){
                 pathFileSelesai = absolutePath
-            }else if (fName=="penanggung_jawab"){
+            }else if (fName==PENANGGUNG_JAWAB){
                 pathFilePJ = absolutePath
             }
         }
@@ -1304,6 +1298,9 @@ private fun getToken() {
 //    OBJECT
     companion object{
     var USERNAME = "USERNAME"
+        var SEBELUM = "sebelum"
+        var PENANGGUNG_JAWAB = "penanggung_jawab"
+        var SELESAI = "selesai"
     }
 //    OBJECT
 }
