@@ -29,7 +29,9 @@ import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Model.KaryawanModel
 import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
+import com.misit.abpenergy.Service.LoadingServices
 import com.misit.abpenergy.Utils.ConfigUtil
+import com.misit.abpenergy.Utils.Constants
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import io.realm.Realm
@@ -65,7 +67,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
-            loadSarana()
+//            loadSarana()
+            startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
+                this.action = Constants.SERVICE_START
+            })
         }else{
             startActivity(Intent(this@MainActivity,IntroActivity::class.java))
             finish()

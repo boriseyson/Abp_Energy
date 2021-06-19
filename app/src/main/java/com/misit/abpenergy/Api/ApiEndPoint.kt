@@ -18,6 +18,7 @@ import com.misit.abpenergy.Sarpras.SarprasResponse.UserSarprasResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiEndPoint{
@@ -100,6 +101,10 @@ interface ApiEndPoint{
     @GET("/sarpras/android/get/sarana")
     fun getAllSarana()
             : Call<ListSaranaResponse>?
+
+    @GET("/sarpras/android/get/sarana")
+    suspend fun corutineAllSarana()
+            : Response<ListSaranaResponse>
 
     @GET("/sarpras/android/get/karyawan")
     fun getAllKaryawan()
