@@ -68,9 +68,20 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
 //            loadSarana()
-            startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
-                this.action = Constants.SERVICE_START
-            })
+            if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
+            {
+                startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
+                    this.action = Constants.SERVICE_START
+                })
+                val intent = Intent(this, NewIndexActivity::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+            finish()
         }else{
             startActivity(Intent(this@MainActivity,IntroActivity::class.java))
             finish()

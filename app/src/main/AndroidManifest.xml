@@ -247,6 +247,7 @@
             </intent-filter>
         </service>
         <service android:name=".HazardReport.Service.HazardService"/>
+        <service android:name=".Service.LoadingServices"/>
         <activity
             android:name=".Rkb.DetailRkbActivity"
             android:launchMode="singleTask"
