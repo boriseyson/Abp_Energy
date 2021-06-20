@@ -144,6 +144,9 @@ interface ApiEndPoint{
     @GET("/android/api/get/user")
     fun getDataUser(@Query("username") username:String)
             : Call<GetUserResponse>?
+    @GET("/android/api/get/user")
+    suspend fun corutineDataUser(@Query("username") username:String)
+            : Response<GetUserResponse>
 
     @GET("/android/api/monitoring/ob")
     fun getOBList(@Query("mtr") mtr:String,

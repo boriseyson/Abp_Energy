@@ -167,19 +167,16 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                         nikPJ.text = itemHazard.nikPJ
                         Glide.with(this@DetailHazardActivity)
                             .load("https://abpjobsite.com/bukti_hazard/"+itemHazard?.bukti)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(imgView)
 
                         Glide.with(this@DetailHazardActivity)
                             .load("https://abpjobsite.com/bukti_hazard/penanggung_jawab/"+itemHazard?.fotoPJ)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(pjFOTO)
                         bukti = itemHazard?.bukti
                         fotoPJ = itemHazard.fotoPJ
                         if(itemHazard.updateBukti!=null){
                             Glide.with(this@DetailHazardActivity)
                                 .load("https://abpjobsite.com/bukti_hazard/update/"+itemHazard?.updateBukti)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .into(imgStatus)
                             imgStatus.visibility=View.VISIBLE
                             tvStatusPerbaikan.visibility=View.VISIBLE

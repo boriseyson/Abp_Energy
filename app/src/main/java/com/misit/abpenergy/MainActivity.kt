@@ -8,6 +8,9 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -35,6 +38,7 @@ import com.misit.abpenergy.Utils.Constants
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -52,8 +56,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        realmConfig(this)
         ConfigUtil.changeColor(this)
-        Realm.init(this)
         versionApp()
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this@MainActivity)
         Glide.with(this).load(R.drawable.abp).into(imageView)
@@ -66,33 +70,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
-//            loadSarana()
-            if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
-            {
-                startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
-                    this.action = Constants.SERVICE_START
-                })
-                val intent = Intent(this, NewIndexActivity::class.java)
-                startActivity(intent)
+            if (cekKoneksi(this)) {
+                updateProgress()
+            }else{
+                koneksiInActive()
             }
-            else
-            {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-            finish()
         }else{
             startActivity(Intent(this@MainActivity,IntroActivity::class.java))
             finish()
         }
         super.onResume()
     }
-
+    fun realmConfig(c:Context){
+        Realm.init(c)
+        var realmConfig = RealmConfiguration.Builder().name(Realm.DEFAULT_REALM_NAME).schemaVersion(0)
+            .deleteRealmIfMigrationNeeded()
+            .build()
+        Realm.setDefaultConfiguration(realmConfig)
+    }
     fun deleteRealm(){
         var realm = Realm.getDefaultInstance()
         realm?.executeTransaction {
-            //it.deleteAll()
+//            it.deleteAll()
         }
         realm.close()
     }
@@ -104,6 +105,9 @@ class MainActivity : AppCompatActivity() {
             progressHorizontal.progress = besar + 100
             if (besar == 50) {
                 if (cekKoneksi(this)) {
+                    startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
+                        this.action = Constants.SERVICE_START
+                    })
                     updateProgress()
                 } else {
                     koneksiInActive()
@@ -128,42 +132,6 @@ class MainActivity : AppCompatActivity() {
         }
         Handler().postDelayed(runnable, 100)
     }
-    //    verifyStoragePermissions
-    private fun verifyStoragePermissions(context: Context,activity: Activity):Boolean {
-        val permission = ContextCompat.checkSelfPermission(context,
-            Manifest.permission.READ_EXTERNAL_STORAGE)
-        val permission1 = ContextCompat.checkSelfPermission(context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val permission2 = ContextCompat.checkSelfPermission(context,
-            Manifest.permission.READ_PHONE_STATE)
-        val permission3 = ContextCompat.checkSelfPermission(context,
-            Manifest.permission.CAMERA)
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i("FaceId", "READ_EXTERNAL_STORAGE Permission to record denied")
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),11)
-//            finish()
-            return false
-        }
-        if (permission1 != PackageManager.PERMISSION_GRANTED) {
-            Log.i("FaceId", "WRITE_EXTERNAL_STORAGE Permission to record denied")
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),12)
-//            finish()
-            return false
-        }
-        if (permission2 != PackageManager.PERMISSION_GRANTED) {
-            Log.i("FaceId", "READ_PHONE_STATE Permission to record denied")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE),13)
-//            finish()
-        }
-        if (permission3 != PackageManager.PERMISSION_GRANTED) {
-            Log.i("FaceId", "READ_PHONE_STATE Permission to record denied")
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CAMERA),13)
-//            finish()
-            return false
-        }
-        return true
-    }
-    //    verifyStoragePermissions
     private fun loadSarana(){
         val apiEndPoint = ApiClient.getClient(this@MainActivity)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getAllSarana()
@@ -210,7 +178,7 @@ class MainActivity : AppCompatActivity() {
                                 listSarana.akhirBulan
                             )
                         tvLoadingText.text = "Mengumpulkan Data!!!"
-                        listPenumpang()
+//                        listPenumpang()
                     }
                 }
             }
@@ -283,10 +251,34 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun cekKoneksi(context: Context):Boolean{
-        val connectivityManager= context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
+        var result = false
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val actNw =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            result = when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.run {
+                connectivityManager.activeNetworkInfo?.run {
+                    result = when (type) {
+                        ConnectivityManager.TYPE_WIFI -> true
+                        ConnectivityManager.TYPE_MOBILE -> true
+                        ConnectivityManager.TYPE_ETHERNET -> true
+                        else -> false
+                    }
 
-        return networkInfo != null && networkInfo.isConnected
+                }
+            }
+        }
+
+        return result
     }
     fun koneksiInActive(){
         AlertDialog.Builder(this)
