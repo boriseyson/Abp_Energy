@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
             if (cekKoneksi(this)) {
                 updateProgress()
             }else{
-                koneksiInActive()
+                updateProgress()
             }
         }else{
             startActivity(Intent(this@MainActivity,IntroActivity::class.java))
@@ -126,14 +126,13 @@ class MainActivity : AppCompatActivity() {
             var besar = progressHorizontal.progress
 
             progressHorizontal.progress = besar + 100
-            if (besar == 50) {
+            if(besar<100){
                 if (cekKoneksi(this)) {
-                    updateProgress()
+                    startService()
                 } else {
-                    koneksiInActive()
+                    updateProgress()
+                    Toasty.warning(this@MainActivity,"Anda Sedang Offline! Beberapa Menu Tidak Bisa Digunakan!").show()
                 }
-            }else if(besar<100){
-                startService()
             } else {
                 if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
                 {
