@@ -3,8 +3,10 @@ package com.misit.abpenergy
 import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
@@ -19,6 +21,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.internal.Storage
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -41,6 +44,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.index_new.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,6 +57,21 @@ class MainActivity : AppCompatActivity() {
     private var app_version : String?=""
     private var cekVersion:String?=null
     var karyawan : ArrayList<KaryawanModel>? = null
+    private val tokenPassingReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val bundle = intent.extras
+            if (bundle != null) {
+                if (bundle.containsKey("LoadData")) {
+                    val tokenData = bundle.getString("LoadData")
+                    if(tokenData=="Loaded"){
+                        updateProgress()
+                    }else{
+                        Toasty.info(this@MainActivity,"Failed To Load Data").show()
+                    }
+                }
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -67,8 +86,13 @@ class MainActivity : AppCompatActivity() {
         ConfigUtil.deleteInABPIMAGES(this@MainActivity)
         ConfigUtil.createFolder(this@MainActivity,"ABP_IMAGES")
         ConfigUtil.createFolder(this@MainActivity,"HAZARD_TEMP")
+        LocalBroadcastManager.getInstance(this).registerReceiver(tokenPassingReceiver, IntentFilter("com.misit.abpenergy"))
     }
 
+    override fun onStop() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(tokenPassingReceiver)
+        super.onStop()
+    }
     override fun onResume() {
 
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
@@ -98,24 +122,18 @@ class MainActivity : AppCompatActivity() {
         realm.close()
     }
     fun updateProgress(){
-
         val runnable= {
             var besar = progressHorizontal.progress
 
             progressHorizontal.progress = besar + 100
             if (besar == 50) {
                 if (cekKoneksi(this)) {
-                    startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
-                        this.action = Constants.SERVICE_START
-                    })
                     updateProgress()
                 } else {
                     koneksiInActive()
                 }
             }else if(besar<100){
-                updateProgress()
-//                deleteRealm()
-//                loadSarana()
+                startService()
             } else {
                 if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
                 {
@@ -131,6 +149,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         Handler().postDelayed(runnable, 100)
+    }
+    fun startService(){
+        startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
+                        this.action = Constants.SERVICE_START
+    })
     }
     private fun loadSarana(){
         val apiEndPoint = ApiClient.getClient(this@MainActivity)!!.create(ApiEndPoint::class.java)

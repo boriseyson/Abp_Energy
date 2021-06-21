@@ -64,7 +64,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         rvHazardList?.layoutManager = linearLayoutManager
         rvHazardList.adapter =adapter
         adapter?.setListener(this)
-
         DARI =PrefsUtil.getInstance().getStringState(PrefsUtil.AWAL_BULAN,"")
         SAMPAI = PrefsUtil.getInstance().getStringState(PrefsUtil.AKHIR_BULAN,"")
         TOTAL_HAZARD_USER = PrefsUtil.getInstance().getStringState(PrefsUtil.TOTAL_HAZARD_USER!!,"0")
@@ -78,8 +77,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 page=1
                 hazardList?.clear()
                 load(page.toString(), DARI, SAMPAI)
-//                swipeRefreshLayout.isRefreshing=false
-                //PopupUtil.dismissDialog()
+                pullRefreshHazard.visibility=View.VISIBLE
+                shimmerHazard.visibility = View.GONE
             }
         })
         floatingNewHazard.setOnClickListener {
@@ -128,10 +127,14 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         loading=true
                         hazardList!!.addAll(listHazard.data!!)
                         adapter?.notifyDataSetChanged()
+                        pullRefreshHazard.visibility=View.VISIBLE
+                        shimmerHazard.visibility = View.GONE
                     }else{
                         curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                         hazardList!!.addAll(listHazard.data!!)
                         adapter?.notifyDataSetChanged()
+                        pullRefreshHazard.visibility=View.VISIBLE
+                        shimmerHazard.visibility = View.GONE
                     }
                 }
                 rvHazardList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -147,6 +150,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                                     loading = false
                                     page++
                                     load(page.toString(), dari,sampai)
+                                    pullRefreshHazard.visibility=View.GONE
+                                    shimmerHazard.visibility = View.VISIBLE
                                 }
                             }
                         }
