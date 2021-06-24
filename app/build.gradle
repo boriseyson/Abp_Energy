@@ -17,8 +17,8 @@ android {
         applicationId "com.misit.abpenergy"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 9
-        versionName "9"
+        versionCode 11
+        versionName "11"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,6 +37,11 @@ android {
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    lintOptions {
+
+        checkReleaseBuilds false
+
     }
 
 }

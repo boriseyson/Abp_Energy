@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
+        android:name=".Utils.RealmConfig"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +23,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HazardReport.V_1.NewHazardActivity"></activity>
+        <service
+            android:name=".Sarpras.Service.SaranaService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".HazardReport.V_1.NewHazardActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -50,10 +56,11 @@
             android:screenOrientation="portrait" />
         <activity android:name=".IndexNewActivity" />
         <activity android:name=".Master.ListUserActivity" />
-        <activity android:name=".IntroActivity"
+        <activity
+            android:name=".IntroActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/noActionBar"  />
+            android:theme="@style/noActionBar" />
         <activity android:name=".HazardReport.HazardVerifyActivity" />
         <activity android:name=".HazardReport.HazardHSEActivity" />
         <activity android:name=".HazardReport.HazardSayaActivity" />
@@ -246,8 +253,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".HazardReport.Service.HazardService"/>
-        <service android:name=".Service.LoadingServices"/>
+        <service android:name=".HazardReport.Service.HazardService" />
+        <service android:name=".Service.LoadingServices" />
+
         <activity
             android:name=".Rkb.DetailRkbActivity"
             android:launchMode="singleTask"

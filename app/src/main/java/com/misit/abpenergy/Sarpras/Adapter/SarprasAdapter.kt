@@ -39,7 +39,6 @@ RecyclerView.Adapter<SarprasAdapter.MyViewHolder>(){
         parent: ViewGroup,
         viewType: Int
     ): MyViewHolder {
-        Realm.init(context)
         myList = ArrayList()
         userRule =ruleUser.split(",").toTypedArray()
         val view = layoutInflater.inflate(R.layout.list_sarpras,parent,false)
@@ -49,14 +48,13 @@ RecyclerView.Adapter<SarprasAdapter.MyViewHolder>(){
 
     }
     private fun getPenumpang(niknya:String,holder: MyViewHolder) {
+        Log.d("niknya",niknya)
         myList?.clear()
         var realm = Realm.getDefaultInstance()
-        var listPenumpang =
-            realm.
-                where(PenumpangModel::class.java)
-                .equalTo("nik",niknya)
-                .findFirst()
-        holder.driver.text = listPenumpang?.nama
+        realm.where(PenumpangModel::class.java).findAll().let {
+//                    holder.driver.text = it?.nama
+                    Log.d("listPenumpang",it.toString())
+                }
         realm.close()
     }
     override fun getItemCount(): Int {

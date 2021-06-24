@@ -5,98 +5,98 @@ import com.google.gson.annotations.SerializedName
 data class ListUsersResponse(
 
 	@field:SerializedName("listUser")
-	val listUser: ListUser? = null
+	var listUser: ListUser? = null
 )
 
 data class UserItem(
 
 	@field:SerializedName("tglentry")
-	val tglentry: String? = null,
+	var tglentry: String? = null,
 
 	@field:SerializedName("level")
-	val level: String? = null,
+	var level: String? = null,
 
 	@field:SerializedName("ttd")
-	val ttd: String? = null,
+	var ttd: String? = null,
 
 	@field:SerializedName("photo_profile")
-	val photoProfile: String? = null,
+	var photoProfile: String? = null,
 
 	@field:SerializedName("nama_lengkap")
-	val namaLengkap: String? = null,
+	var namaLengkap: String? = null,
 
 	@field:SerializedName("id_session")
-	val idSession: String? = null,
+	var idSession: String? = null,
 
 	@field:SerializedName("rule")
-	val rule: String? = null,
+	var rule: String? = null,
 
 	@field:SerializedName("perusahaan")
-	val perusahaan: Int? = null,
+	var perusahaan: Int? = null,
 
 	@field:SerializedName("section")
-	val section: String? = null,
+	var section: String? = null,
 
 	@field:SerializedName("nama_perusahaan")
-	val namaPerusahaan: String? = null,
+	var namaPerusahaan: String? = null,
 
 	@field:SerializedName("id_user")
-	val idUser: Int? = null,
+	var idUser: Int? = null,
 
 	@field:SerializedName("dept")
-	val dept: String? = null,
+	var dept: String? = null,
 
 	@field:SerializedName("nik")
-	val nik: Int? = null,
+	var nik: Int? = null,
 
 	@field:SerializedName("password")
-	val password: String? = null,
+	var password: String? = null,
 
 	@field:SerializedName("sect")
-	val sect: String? = null,
+	var sect: String? = null,
 
 	@field:SerializedName("department")
-	val department: String? = null,
+	var department: String? = null,
 
 	@field:SerializedName("email")
-	val email: String? = null,
+	var email: String? = null,
 
 	@field:SerializedName("username")
-	val username: String? = null,
+	var username: String? = null,
 
 	@field:SerializedName("status")
-	val status: Int? = null
+	var status: Int? = null
 )
 
 data class ListUser(
 
 	@field:SerializedName("path")
-	val path: String? = null,
+	var path: String? = null,
 
 	@field:SerializedName("per_page")
-	val perPage: Int? = null,
+	var perPage: Int? = null,
 
 	@field:SerializedName("total")
-	val total: Int? = null,
+	var total: Int? = null,
 
 	@field:SerializedName("data")
-	val data: List<UserItem>? = null,
+	var userItem: List<UserItem>? = null,
 
 	@field:SerializedName("last_page")
-	val lastPage: Int? = null,
+	var lastPage: Int? = null,
 
 	@field:SerializedName("next_page_url")
-	val nextPageUrl: String? = null,
+	var nextPageUrl: String? = null,
 
 	@field:SerializedName("from")
-	val from: Int? = null,
+	var from: Int? = null,
 
 	@field:SerializedName("to")
-	val to: Int? = null,
+	var to: Int? = null,
 
 	@field:SerializedName("prev_page_url")
-	val prevPageUrl: String? = null,
+	var prevPageUrl: String? = null,
 
 	@field:SerializedName("current_page")
-	val currentPage: Int? = null
+	var currentPage: Int? = null
 )

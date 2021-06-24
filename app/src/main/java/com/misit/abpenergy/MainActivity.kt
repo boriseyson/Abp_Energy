@@ -35,6 +35,8 @@ import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Model.KaryawanModel
 import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
+import com.misit.abpenergy.Sarpras.Service.LoadSarana
+import com.misit.abpenergy.Sarpras.Service.SaranaService
 import com.misit.abpenergy.Service.LoadingServices
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.Constants
@@ -71,11 +73,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
+    lateinit var saranaService:Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        realmConfig(this)
+//        realmConfig(this)
         ConfigUtil.changeColor(this)
         versionApp()
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this@MainActivity)
@@ -87,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         ConfigUtil.createFolder(this@MainActivity,"ABP_IMAGES")
         ConfigUtil.createFolder(this@MainActivity,"HAZARD_TEMP")
         LocalBroadcastManager.getInstance(this).registerReceiver(tokenPassingReceiver, IntentFilter("com.misit.abpenergy"))
+        saranaService = Intent(this@MainActivity,SaranaService::class.java)
     }
 
     override fun onStop() {
@@ -107,32 +112,14 @@ class MainActivity : AppCompatActivity() {
         }
         super.onResume()
     }
-    fun realmConfig(c:Context){
-        Realm.init(c)
-        var realmConfig = RealmConfiguration.Builder().name(Realm.DEFAULT_REALM_NAME).schemaVersion(0)
-            .deleteRealmIfMigrationNeeded()
-            .build()
-        Realm.setDefaultConfiguration(realmConfig)
-    }
-    fun deleteRealm(){
-        var realm = Realm.getDefaultInstance()
-        realm?.executeTransaction {
-//            it.deleteAll()
-        }
-        realm.close()
-    }
+
     fun updateProgress(){
         val runnable= {
             var besar = progressHorizontal.progress
 
             progressHorizontal.progress = besar + 100
             if(besar<100){
-                if (cekKoneksi(this)) {
-                    startService()
-                } else {
-                    updateProgress()
-                    Toasty.warning(this@MainActivity,"Anda Sedang Offline! Beberapa Menu Tidak Bisa Digunakan!").show()
-                }
+                startService()
             } else {
                 if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
                 {
@@ -150,9 +137,16 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed(runnable, 100)
     }
     fun startService(){
-        startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
-                        this.action = Constants.SERVICE_START
-    })
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
+                this.action = Constants.SERVICE_START
+//                updateProgress()
+            })
+        }else{
+            startService(saranaService).let {
+//                updateProgress()
+            }
+        }
     }
     private fun loadSarana(){
         val apiEndPoint = ApiClient.getClient(this@MainActivity)!!.create(ApiEndPoint::class.java)

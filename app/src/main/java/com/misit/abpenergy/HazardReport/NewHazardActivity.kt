@@ -169,7 +169,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(v?.id==R.id.cvPilihPJ){
             val intent = Intent(c, ListUserActivity::class.java)
             intent.putExtra(ListUserActivity.DataExtra,"Hazard")
-            intent.putExtra("userPick",userPick)
+            intent.putExtra(USEPICK,userPick)
             startActivityForResult(intent,Constants.PJ_CODE_OPTION)
         }
         if(v!!.id==R.id.inTanggal){
@@ -528,7 +528,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             }
         }else if(requestCode==Constants.PJ_CODE_OPTION && resultCode== RESULT_OK){
             try {
-                userPick=""
                 userPick = data!!.getStringExtra(userPick)
             val nama = data!!.getStringExtra("nama")
             val nik = data!!.getStringExtra("nik")
@@ -1301,6 +1300,7 @@ private fun getToken() {
         var SEBELUM = "sebelum"
         var PENANGGUNG_JAWAB = "penanggung_jawab"
         var SELESAI = "selesai"
+        var USEPICK = "USEPICK"
     }
 //    OBJECT
 }
