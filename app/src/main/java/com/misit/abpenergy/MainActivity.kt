@@ -63,10 +63,22 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             val bundle = intent.extras
             if (bundle != null) {
-                if (bundle.containsKey("LoadData")) {
-                    val tokenData = bundle.getString("LoadData")
-                    if(tokenData=="Loaded"){
+                if (bundle.containsKey("fgSarana")) {
+                    val tokenData = bundle.getString("fgSarana")
+                    Log.d("ServiceName","${tokenData} Main")
+                    if(tokenData=="fgDone"){
                         updateProgress()
+                        startStopService(LoadingServices::class.java)
+                    }else{
+                        Toasty.info(this@MainActivity,"Failed To Load Data").show()
+                    }
+                }
+                if (bundle.containsKey("bgSarana")) {
+                    val tokenData = bundle.getString("bgSarana")
+                    Log.d("ServiceName","${tokenData} Main")
+                    if(tokenData=="bgDone"){
+                        updateProgress()
+                        bgStopService(saranaService)
                     }else{
                         Toasty.info(this@MainActivity,"Failed To Load Data").show()
                     }
@@ -93,7 +105,31 @@ class MainActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(tokenPassingReceiver, IntentFilter("com.misit.abpenergy"))
         saranaService = Intent(this@MainActivity,SaranaService::class.java)
     }
+    private fun startStopService(jvClass:Class<*>) {
+        if(isMyServiceRunning(jvClass)){
+            var intent = Intent(this@MainActivity, jvClass).apply {
+                this.action = Constants.SERVICE_STOP
+                LocalBroadcastManager.getInstance(this@MainActivity).unregisterReceiver(tokenPassingReceiver!!)
+            }
+            stopService(intent)
+        }else{
+            var intent = Intent(this@MainActivity, jvClass).apply {
+                this.action = Constants.SERVICE_START
+            }
+            intent.putExtra("username", NewIndexActivity.USERNAME)
+            startService(intent)
 
+        }
+    }
+    private fun isMyServiceRunning(mClass: Class<*>): Boolean {
+        val manager: ActivityManager =getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service: ActivityManager.RunningServiceInfo in manager.getRunningServices(Integer.MAX_VALUE)){
+            if(mClass.name.equals(service.service.className)){
+                return true
+            }
+        }
+        return false
+    }
     override fun onStop() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(tokenPassingReceiver)
         super.onStop()
@@ -101,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
 
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
-            if (cekKoneksi(this)) {
+            if (ConfigUtil.cekKoneksi(this)) {
                 updateProgress()
             }else{
                 updateProgress()
@@ -136,16 +172,20 @@ class MainActivity : AppCompatActivity() {
         }
         Handler().postDelayed(runnable, 100)
     }
+    private fun bgStopService(intent: Intent){
+        stopService(intent)
+        LocalBroadcastManager.getInstance(this@MainActivity).unregisterReceiver(tokenPassingReceiver!!)
+    }
     fun startService(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
-            startService(Intent(this@MainActivity, LoadingServices::class.java).apply {
+            var intent = Intent(this@MainActivity, LoadingServices::class.java).apply {
                 this.action = Constants.SERVICE_START
-//                updateProgress()
-            })
-        }else{
-            startService(saranaService).let {
-//                updateProgress()
             }
+            startService(
+                intent
+                )
+        }else{
+            startService(saranaService)
         }
     }
     private fun loadSarana(){
@@ -249,23 +289,6 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-    fun cekVersion(context: Context){
-        val appUpdateManager = AppUpdateManagerFactory.create(context)
-
-    // Returns an intent object that you use to check for an update.
-            val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-
-    // Checks that the platform will allow the specified type of update.
-            appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    // For a flexible update, use AppUpdateType.FLEXIBLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                ) {
-                    // Request the update.
-                }
-            }
-
-    }
     fun cekKoneksi(context: Context):Boolean{
         var result = false
         val connectivityManager =
@@ -304,18 +327,7 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }).show()
     }
-//    fun alertVerson(){
-//        AlertDialog.Builder(this)
-//            .setTitle("Silahkan Update Versi Aplikasi Anda!")
-//            .setPositiveButton("OK",{
-//                    dialog,
-//                    which ->
-//                val url = "https://abpjobsite.com/api/android/app/download?app=abp_energy"
-//                val i = Intent(Intent.ACTION_VIEW)
-//                i.data = Uri.parse(url)
-//                startActivity(i)
-//            }).show()
-//    }
+
     companion object {
         private  var TAG="TAG"
     }

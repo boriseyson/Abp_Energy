@@ -133,12 +133,13 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
 
      }
     override fun onResume() {
-        if(cekKoneksi(this)){
+        if(ConfigUtil.cekKoneksi(this)){
             getToken()
             androidToken()
             versionApp()
 //            tvVersionCode.text="V$app_version"
         }else{
+            ConfigUtil.koneksiInActive(this@LoginActivity)
             Toasty.error(this, "KONEKSI TIDAK ADA", Toasty.LENGTH_SHORT).show()
         }
 

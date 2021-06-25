@@ -255,6 +255,8 @@
         </service>
         <service android:name=".HazardReport.Service.HazardService" />
         <service android:name=".Service.LoadingServices" />
+        <service android:name=".Service.BgTokenService" />
+        <service android:name=".Service.FgTokenService" />
 
         <activity
             android:name=".Rkb.DetailRkbActivity"
