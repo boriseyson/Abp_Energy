@@ -32,7 +32,10 @@ import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import io.realm.Realm
+import io.realm.exceptions.RealmException
 import kotlinx.android.synthetic.main.activity_kabag_appr_sarpras.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -265,5 +268,24 @@ class KabagApprSarprasActivity : AppCompatActivity(), ApproveSarprasAdapter.OnIt
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onResume() {
+        realmPenumpang()
+        super.onResume()
+    }
+    private fun realmPenumpang() {
+        GlobalScope.launch {
+            var realm = Realm.getDefaultInstance()
+            try {
+                realm.where(PenumpangModel::class.java).findFirst().let {
+                    Log.d("RealmININT", it.toString())
+                }
+                realm.close()
+            }catch (e: RealmException)
+            {
+                Log.d("RealmININT",e.toString())
+            }
+        }
     }
 }

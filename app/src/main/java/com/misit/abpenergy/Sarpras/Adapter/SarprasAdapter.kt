@@ -10,18 +10,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
+import com.misit.abpenergy.Sarpras.SQLite.PenumpangDataSource
 import com.misit.abpenergy.Sarpras.SarprasResponse.DataItem
-import io.realm.Realm
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class SarprasAdapter(
 private val context: Context?,
@@ -34,12 +33,12 @@ RecyclerView.Adapter<SarprasAdapter.MyViewHolder>(){
     private var simpleDateFormat: SimpleDateFormat? = null
     private var onItemClickListener: OnItemClickListener? = null
     private var userRule:Array<String>?=null
-    private var myList:MutableList<PenumpangModel>?=null
+    lateinit var d : PenumpangDataSource
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): MyViewHolder {
-        myList = ArrayList()
+        d = PenumpangDataSource(context!!)
         userRule =ruleUser.split(",").toTypedArray()
         val view = layoutInflater.inflate(R.layout.list_sarpras,parent,false)
         return MyViewHolder(
@@ -48,14 +47,8 @@ RecyclerView.Adapter<SarprasAdapter.MyViewHolder>(){
 
     }
     private fun getPenumpang(niknya:String,holder: MyViewHolder) {
-        Log.d("niknya",niknya)
-        myList?.clear()
-        var realm = Realm.getDefaultInstance()
-        realm.where(PenumpangModel::class.java).findAll().let {
-//                    holder.driver.text = it?.nama
-                    Log.d("listPenumpang",it.toString())
-                }
-        realm.close()
+           val driver = d.getItem(niknya)
+            holder.driver.text = driver?.nama
     }
     override fun getItemCount(): Int {
         return sarprasList.size

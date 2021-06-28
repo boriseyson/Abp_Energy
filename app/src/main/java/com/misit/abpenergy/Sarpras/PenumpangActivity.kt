@@ -126,7 +126,7 @@ class PenumpangActivity : AppCompatActivity(),
             .findAll()
         for (i in realmRes.indices) {
             val penumpang = realmRes[i]
-            list?.add(PenumpangListModel(i,penumpang?.nik,penumpang?.nama,penumpang?.jabatan))
+            list?.add(PenumpangListModel(i!!.toLong()!!,penumpang?.nik,penumpang?.nama,penumpang?.jabatan))
         }
         displayList!!.addAll(list!!)
         adapter?.notifyDataSetChanged()

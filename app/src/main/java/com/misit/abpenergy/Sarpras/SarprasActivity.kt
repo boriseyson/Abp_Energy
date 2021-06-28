@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,12 +23,16 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.QRCodeActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Sarpras.Adapter.SarprasAdapter
+import com.misit.abpenergy.Sarpras.SQLite.PenumpangDataSource
 import com.misit.abpenergy.Sarpras.SarprasResponse.DataItem
 import com.misit.abpenergy.Sarpras.SarprasResponse.UserSarprasResponse
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
+import io.realm.exceptions.RealmException
 import kotlinx.android.synthetic.main.activity_sarpras.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -91,8 +96,13 @@ class SarprasActivity : AppCompatActivity(), SarprasAdapter.OnItemClickListener 
 
             }
         })
+
     }
 
+    override fun onResume() {
+        getPenumpang()
+        super.onResume()
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_sarpras,menu)
         return super.onCreateOptionsMenu(menu)
@@ -266,5 +276,17 @@ class SarprasActivity : AppCompatActivity(), SarprasAdapter.OnItemClickListener 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+    private fun getPenumpang() {
+        var penumpang = PenumpangDataSource(this@SarprasActivity)
+            GlobalScope.launch {
+                try {
+                  var p=  penumpang.getItem("18060207")
+                    Log.d("PenumpangSql",p.nama.toString())
+                }catch (e:RealmException)
+                {
+                    Log.d("RealmININT",e.toString())
+                }
+        }
     }
 }

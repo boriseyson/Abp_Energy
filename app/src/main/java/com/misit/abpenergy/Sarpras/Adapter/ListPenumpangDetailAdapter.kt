@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
+import com.misit.abpenergy.Sarpras.SaranaResponse.PenumpangListModel
 import java.text.SimpleDateFormat
 
 class ListPenumpangDetailAdapter (
     private val context: Context?,
-    private val penumpangList:MutableList<PenumpangModel>):
+    private val penumpangList:MutableList<PenumpangListModel>):
     RecyclerView.Adapter<ListPenumpangDetailAdapter.MyViewHolder>(){
 
     private val layoutInflater: LayoutInflater

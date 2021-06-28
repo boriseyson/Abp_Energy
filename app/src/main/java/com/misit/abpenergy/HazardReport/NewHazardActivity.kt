@@ -194,7 +194,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             simpanHazard()
         }
         if(v!!.id==R.id.btnBatalHazard){
-            finish()
+            areYouSure("Informasi","Apakah anda yakin?")
         }
         if(v!!.id==R.id.btnGambarHazard){
             bitmap=null
@@ -271,10 +271,27 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //    onCreateOptionsMenu
 //    onSupportNavigateUp
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+//    areYouSure("Informasi","Apakah anda yakin?")
+    onBackPressed()
         return super.onSupportNavigateUp()
     }
 //    onSupportNavigateUp
+    private fun areYouSure(titleDialog:String,msgDialog:String){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(titleDialog)
+        builder.setMessage(msgDialog)
+        builder.setPositiveButton("Tidak") { dialog, which ->
+        }
+        builder.setNegativeButton("Ya") { dialog, which ->
+            finish()
+        }
+        builder.show()
+    }
+
+    override fun onBackPressed() {
+        areYouSure("Informasi","Apakah anda yakin?")
+//        super.onBackPressed()
+    }
 //    onOptionsItemSelected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==R.id.btnSubmit){

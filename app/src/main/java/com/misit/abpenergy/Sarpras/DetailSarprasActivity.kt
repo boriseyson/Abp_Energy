@@ -2,7 +2,6 @@ package com.misit.abpenergy.Sarpras
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
@@ -13,25 +12,22 @@ import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Sarpras.Adapter.ListPenumpangDetailAdapter
-import com.misit.abpenergy.Sarpras.Adapter.PenumpangAdapter
-import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
+import com.misit.abpenergy.Sarpras.SQLite.PenumpangDataSource
 import com.misit.abpenergy.Sarpras.SaranaResponse.PenumpangListModel
-import com.misit.abpenergy.Sarpras.SarprasResponse.DataPenumpang
 import com.misit.abpenergy.Sarpras.SarprasResponse.LihatSarprasResponse
 import com.misit.abpenergy.Utils.PopupUtil
-import es.dmoral.toasty.Toasty
-import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_detail_sarpras.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class DetailSarprasActivity : AppCompatActivity() {
     private var adapter: ListPenumpangDetailAdapter? = null
-    private var list:MutableList<PenumpangModel>?=null
+    private var list:MutableList<PenumpangListModel>?=null
     private var arrList:ArrayList<String>?=null
     lateinit var recyclerView: RecyclerView
-    lateinit var realm : Realm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_sarpras)
@@ -56,13 +52,10 @@ class DetailSarprasActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
     override fun onResume() {
-        Realm.init(this)
-        realm = Realm.getDefaultInstance()
         super.onResume()
     }
 
     override fun onStop() {
-        realm.close()
         super.onStop()
     }
     fun loadDetailSarpras(noIdOut:String){
@@ -123,20 +116,16 @@ class DetailSarprasActivity : AppCompatActivity() {
 
         }
     fun namaDriver(niknya:String){
-        val realmRes = realm.where(PenumpangModel::class.java)
-            .equalTo("nik",niknya)
-            .findFirst()
-        tvDriver.text = realmRes!!.nama
+            var p = PenumpangDataSource(this@DetailSarprasActivity)
+            var rowPenumpang = p.getItem(niknya)
+            tvDriver.text = rowPenumpang!!.nama
     }
     fun loadData(niknya:String){
-
-        val realmRes = realm.where(PenumpangModel::class.java)
-            .equalTo("nik",niknya)
-            .findAll()
-        list?.addAll(realmRes)
+            var p = PenumpangDataSource(this@DetailSarprasActivity)
+            var rowPenumpang = p.getItem(niknya)
+            list?.add(PenumpangListModel(rowPenumpang.id,rowPenumpang.nik,rowPenumpang.nama,rowPenumpang.jabatan))
             adapter?.notifyDataSetChanged()
     }
-
     companion object{
         var noidOut = "noidOut"
     }

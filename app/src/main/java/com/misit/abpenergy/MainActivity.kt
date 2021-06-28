@@ -155,7 +155,11 @@ class MainActivity : AppCompatActivity() {
 
             progressHorizontal.progress = besar + 100
             if(besar<100){
-                startService()
+                if (ConfigUtil.cekKoneksi(this)) {
+                    startService()
+                }else{
+                    updateProgress()
+                }
             } else {
                 if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
                 {
