@@ -169,9 +169,17 @@ interface ApiEndPoint{
     @GET("/hse/admin/resiko/kemungkinan")
     fun resikoKemungkinan()
             : Call<KemungkinanResponse>?
+    @GET("/hse/admin/resiko/kemungkinan")
+    suspend fun kemungkinanCorutine()
+            : Response<KemungkinanResponse>?
+
     @GET("/hse/admin/resiko/keparahan")
     fun resikoKeparahan()
             : Call<KeparahanResponse>?
+
+    @GET("/hse/admin/resiko/keparahan")
+    suspend fun keparahanCorutine()
+            : Response<KeparahanResponse>?
 
     @Multipart
     @POST("/android/api/hse/hazard/reportPost")

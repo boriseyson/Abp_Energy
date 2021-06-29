@@ -26,6 +26,8 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
+import com.misit.abpenergy.Model.KemungkinanDataSource
+import com.misit.abpenergy.Model.KemungkinanModel
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
@@ -46,7 +48,9 @@ import java.io.File
 import java.io.IOException
 import java.lang.Exception
 import java.net.URL
+import java.sql.SQLException
 import java.util.*
+import kotlin.collections.ArrayList
 
 class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var lokasiDipilih:String? = null
@@ -157,6 +161,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onResume() {
+        kemungkinanSQL()
         storageDir = getExternalFilesDir("ABP_IMAGES")
         super.onResume()
     }
@@ -1320,4 +1325,23 @@ private fun getToken() {
         var USEPICK = "USEPICK"
     }
 //    OBJECT
+    private fun kemungkinanSQL(){
+        var kemukinan = ArrayList<KemungkinanModel>()
+        val kemungkinanDataSource = KemungkinanDataSource(this@NewHazardActivity)
+        try {
+            val kemungkinanRow=kemungkinanDataSource.getAll()
+                if(kemungkinanRow.isEmpty()){
+                    Log.d("KemungkinanSQL",kemungkinanRow.toString())
+
+                }else{
+                    kemukinan.addAll(kemukinan)
+                    Log.d("KemungkinanSQL",kemungkinanRow.toString())
+                }
+            Log.d("KemungkinanSQL",kemungkinanRow.toString())
+
+        }catch (e:SQLException){
+            Log.d("KemungkinanSQL",e.toString())
+        }
+
+    }
 }
