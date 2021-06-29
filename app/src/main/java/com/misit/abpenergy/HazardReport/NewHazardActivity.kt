@@ -161,7 +161,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onResume() {
-        kemungkinanSQL()
         storageDir = getExternalFilesDir("ABP_IMAGES")
         super.onResume()
     }
@@ -1325,23 +1324,5 @@ private fun getToken() {
         var USEPICK = "USEPICK"
     }
 //    OBJECT
-    private fun kemungkinanSQL(){
-        var kemukinan = ArrayList<KemungkinanModel>()
-        val kemungkinanDataSource = KemungkinanDataSource(this@NewHazardActivity)
-        try {
-            val kemungkinanRow=kemungkinanDataSource.getAll()
-                if(kemungkinanRow.isEmpty()){
-                    Log.d("KemungkinanSQL",kemungkinanRow.toString())
 
-                }else{
-                    kemukinan.addAll(kemukinan)
-                    Log.d("KemungkinanSQL",kemungkinanRow.toString())
-                }
-            Log.d("KemungkinanSQL",kemungkinanRow.toString())
-
-        }catch (e:SQLException){
-            Log.d("KemungkinanSQL",e.toString())
-        }
-
-    }
 }
