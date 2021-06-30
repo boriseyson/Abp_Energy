@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Modelimport java.io.Serializableclass LokasiModel: Serializable {    var tglInput:String?=null    var userInput:String?=null    var lokasi:String?=null    var idLok:Int?=null}

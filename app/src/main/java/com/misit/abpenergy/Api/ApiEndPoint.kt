@@ -294,8 +294,12 @@ interface ApiEndPoint{
     ) : Call<HazardReportResponse>?
     @GET("/android/api/lokasi/get")
     fun getLokasiList(): Call<LokasiResponse>?
+    @GET("/android/api/lokasi/get")
+    suspend fun lokasiCorutine(): Response<LokasiResponse>?
     @GET("/android/api/risk/get")
     fun getRiskList(): Call<RiskResponse>?
+    @GET("/android/api/risk/get")
+    suspend fun pengendalianCorutine(): Response<RiskResponse>?
     @GET("/hse/android/inspeksi/form")
     fun getListFormInspeksi(): Call<FormInspeksiResponse>?
     @GET("/hse/android/inspeksi/new")

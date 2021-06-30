@@ -26,8 +26,6 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
-import com.misit.abpenergy.Model.KemungkinanDataSource
-import com.misit.abpenergy.Model.KemungkinanModel
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
@@ -48,9 +46,7 @@ import java.io.File
 import java.io.IOException
 import java.lang.Exception
 import java.net.URL
-import java.sql.SQLException
 import java.util.*
-import kotlin.collections.ArrayList
 
 class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var lokasiDipilih:String? = null
