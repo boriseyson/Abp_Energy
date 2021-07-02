@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         karyawan = ArrayList()
         ConfigUtil.deleteInABPIMAGES(this@MainActivity)
         ConfigUtil.createFolder(this@MainActivity,"ABP_IMAGES")
+        ConfigUtil.createFolder(this@MainActivity,"PROFILE_IMAGE")
         ConfigUtil.createFolder(this@MainActivity,"HAZARD_TEMP")
         LocalBroadcastManager.getInstance(this).registerReceiver(tokenPassingReceiver, IntentFilter("com.misit.abpenergy"))
         saranaService = Intent(this@MainActivity,SaranaService::class.java)
