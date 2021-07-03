@@ -23,10 +23,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".CutiOnline.DetailCutiActivity"></activity>
+        <activity android:name=".CutiOnline.CutiOnlineAllActivity" />
+        <activity android:name=".CutiOnline.RosterCutiActivity" />
+        <activity android:name=".CutiOnline.FormCutiActivity" />
+        <activity
+            android:name=".CutiOnline.CutiOnlineActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
         <service
             android:name=".Sarpras.Service.SaranaService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".HazardReport.V_1.NewHazardActivity" />
 
