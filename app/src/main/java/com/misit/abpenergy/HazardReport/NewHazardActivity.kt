@@ -872,13 +872,13 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             var sResponse = response.body()
             if (sResponse != null) {
                 if (sResponse.success!!) {
-                    if(ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity)){
+                    if(ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")){
                         Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
                         resultIntent(this@NewHazardActivity)
                         PopupUtil.dismissDialog()
                         finish()
                     }else{
-                        ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity)
+                        ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")
                     }
 
                 } else {

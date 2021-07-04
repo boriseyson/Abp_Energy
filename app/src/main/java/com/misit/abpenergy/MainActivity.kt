@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         tvVersionCode.text=" V.${app_version}"
         PrefsUtil.initInstance(this)
         karyawan = ArrayList()
-        ConfigUtil.deleteInABPIMAGES(this@MainActivity)
+        ConfigUtil.deleteInABPIMAGES(this@MainActivity,"ABP_IMAGES")
         ConfigUtil.createFolder(this@MainActivity,"ABP_IMAGES")
         ConfigUtil.createFolder(this@MainActivity,"PROFILE_IMAGE")
         ConfigUtil.createFolder(this@MainActivity,"HAZARD_TEMP")
