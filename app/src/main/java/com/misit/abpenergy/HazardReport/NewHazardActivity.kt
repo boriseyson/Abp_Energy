@@ -85,7 +85,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_hazard)
         title="Form Hazard Report"
-        getToken()
+        if(ConfigUtil.cekKoneksi(this@NewHazardActivity)){
+            getToken()
+        }
         PrefsUtil.initInstance(this)
         verifyStoragePermissions(this, this)
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false)){
