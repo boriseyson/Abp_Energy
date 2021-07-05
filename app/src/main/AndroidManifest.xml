@@ -36,6 +36,11 @@
             android:name=".Sarpras.Service.SaranaService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".Service.ConnectionService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="false"/>
 
         <activity android:name=".HazardReport.V_1.NewHazardActivity" />
 
@@ -262,7 +267,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".HazardReport.Service.HazardService" />
+        <service android:name=".HazardReport.Service.HazardService" android:stopWithTask="false" />
         <service android:name=".Service.LoadingServices" />
         <service android:name=".Service.BgTokenService" />
         <service android:name=".Service.FgTokenService" />

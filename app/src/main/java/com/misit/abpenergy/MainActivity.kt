@@ -30,6 +30,9 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.storage.StorageReference
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardDetailDataSource
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSource
 import com.misit.abpenergy.HazardReport.Service.HazardService
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Model.KaryawanModel
@@ -37,6 +40,7 @@ import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
 import com.misit.abpenergy.Sarpras.Service.LoadSarana
 import com.misit.abpenergy.Sarpras.Service.SaranaService
+import com.misit.abpenergy.Service.ConnectionService
 import com.misit.abpenergy.Service.LoadingServices
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.Constants
@@ -47,11 +51,13 @@ import io.realm.RealmConfiguration
 import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.index_new.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-
+import java.sql.SQLException
 
 
 class MainActivity : AppCompatActivity() {
@@ -88,6 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     lateinit var saranaService:Intent
+    lateinit var connectionService:Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -103,8 +110,27 @@ class MainActivity : AppCompatActivity() {
         ConfigUtil.createFolder(this@MainActivity,"ABP_IMAGES")
         ConfigUtil.createFolder(this@MainActivity,"PROFILE_IMAGE")
         ConfigUtil.createFolder(this@MainActivity,"HAZARD_TEMP")
+        ConfigUtil.createFolder(this@MainActivity,"HAZARD_OFFLINE")
         LocalBroadcastManager.getInstance(this).registerReceiver(tokenPassingReceiver, IntentFilter("com.misit.abpenergy"))
         saranaService = Intent(this@MainActivity,SaranaService::class.java)
+        connectionService = Intent(this@MainActivity,ConnectionService::class.java)
+        val hazardHeader = HazardHeaderDataSource(this)
+        val hazhardDetail = HazardDetailDataSource(this)
+        val hazardValidation = HazardValidationDataSource(this)
+//        if(hazardHeader.deleteAll()){
+//            if(hazhardDetail.deleteAll()){
+//                if(hazardValidation.deleteAll()){
+//                    Log.d("Delete","Sukses")
+//                }else{
+//                    Log.d("Delete","Gagal 1")
+//                }
+//            }else{
+//                Log.d("Delete","Gagal 2")
+//
+//            }
+//        }else{
+//            Log.d("Delete","Gagal 2")
+//        }
     }
     private fun startStopService(jvClass:Class<*>) {
         if(isMyServiceRunning(jvClass)){
@@ -136,7 +162,7 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
     override fun onResume() {
-
+        startService(connectionService)
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
             if (ConfigUtil.cekKoneksi(this)) {
                 updateProgress()
@@ -336,4 +362,5 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private  var TAG="TAG"
     }
+
 }

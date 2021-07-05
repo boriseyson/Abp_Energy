@@ -6,7 +6,9 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Path
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -24,6 +26,12 @@ import com.bumptech.glide.Glide
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardDetailDataSource
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSource
+import com.misit.abpenergy.HazardReport.SQLite.Model.HazardDetailModel
+import com.misit.abpenergy.HazardReport.SQLite.Model.HazardHeaderModel
+import com.misit.abpenergy.HazardReport.SQLite.Model.HazardValidationModel
 import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.R
@@ -46,6 +54,9 @@ import java.io.File
 import java.io.IOException
 import java.lang.Exception
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.sql.SQLException
 import java.util.*
 
 class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
@@ -159,6 +170,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onResume() {
+        loadHazardOffline()
         storageDir = getExternalFilesDir("ABP_IMAGES")
         super.onResume()
     }
@@ -193,7 +205,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY,SEBELUM)
         }
         if(v!!.id==R.id.btnSimpan){
-            simpanHazard()
+//            simpanHazard()
+            simpanOffline()
         }
         if(v!!.id==R.id.btnBatalHazard){
             areYouSure("Informasi","Apakah anda yakin?")
@@ -297,7 +310,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //    onOptionsItemSelected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==R.id.btnSubmit){
-            simpanHazard()
+            simpanOffline()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -551,17 +564,29 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             val nama = data!!.getStringExtra("nama")
             val nik = data!!.getStringExtra("nik")
             val profileIMG = data!!.getStringExtra("profileIMG")
-            val url = URL(profileIMG)
-                val result: Deferred<Bitmap?> = GlobalScope.async {
-                    PopupUtil.showProgress(this@NewHazardActivity, "Loading...", "Membuat Hazard Report!")
-                    url.toBitmap()
+                val dir = this@NewHazardActivity!!.getExternalFilesDir("PROFILE_IMAGE")
+                val file = File(dir,profileIMG)
+                fileUploadPJ = file.toUri()
+                Log.d("fileUploadPJ",fileUploadPJ.toString())
+                try {
+                    bitmapPJ = BitmapFactory.decodeStream(
+                        contentResolver.openInputStream(fileUploadPJ!!)
+                    )
+                    Glide.with(this@NewHazardActivity).load(fileUploadPJ).into(pjFOTOPilih)
+                } catch (e: IOException) {
+                    e.printStackTrace();
                 }
-                GlobalScope.launch(Dispatchers.Main) {
-                    // show bitmap on image view when available
-                    bitmapPJ = result.await()
-                    PopupUtil.dismissDialog()
-                }
-                Glide.with(this@NewHazardActivity).load(profileIMG).into(pjFOTOPilih)
+//            val url = URL(profileIMG)
+//                val result: Deferred<Bitmap?> = GlobalScope.async {
+//                    PopupUtil.showProgress(this@NewHazardActivity, "Loading...", "Membuat Hazard Report!")
+//                    url.toBitmap()
+//                }
+//                GlobalScope.launch(Dispatchers.Main) {
+//                    // show bitmap on image view when available
+//                    bitmapPJ = result.await()
+//                    PopupUtil.dismissDialog()
+//                }
+//                Glide.with(this@NewHazardActivity).load(profileIMG).into(pjFOTOPilih)
                 inPenanggungJawabPilih.setText(nama.toString())
                 inNikPJPilih.setText(nik.toString())
             }catch (e:Exception){
@@ -624,6 +649,158 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         var intent = Intent(this@NewHazardActivity, PhotoHazardActivity::class.java)
         startActivityForResult(intent, codeRequest)
     }
+//    Simpan Offline
+    private fun simpanOffline(){
+    if(rbSelesai.isChecked) {
+        if(pjOption==1){
+            if(!isValidate2()){
+                return
+            }
+        }else{
+            if(!isValidate1()){
+                return
+            }
+        }
+    }
+    else{
+        if(pjOption==1){
+            if (!isValidate3()) {
+                return
+            }
+        }else{
+            if (!isValidate()) {
+                return
+            }
+        }
+
+        }
+//    initial
+    var inPerusahan = inPerusaan.text.toString()
+    var inTanggal = inTanggal.text.toString()
+    var inJam = inJam.text.toString()
+    var lokasi = lokasiID.toString()
+    var inLokasiDet = inLokasiDet.text.toString()
+    var inBahaya = inBahaya.text.toString()
+    var kemungkinanID = kemungkinanID.toString()
+    var keparahanID = keparahanID.toString()
+    var kemungkinanSesudahID = kemungkinanIDSesudah
+    var keparahanSesudahID =keparahanIDSesudah
+    var hirarkiID = hirarkiID
+    var inPerbaikan = inPerbaikan.text.toString()
+    var inTGLSelesai = inTGLSelesai.text.toString()
+    var inJamSelesai = inJamSelesai.text.toString()
+    var tglTenggat = inTGLTenggat.text.toString()
+    var inKeteranganPJ = inKeteranganPJ.text.toString()
+    var pjNama = ""
+    var pjNik = ""
+
+    if(pjOption==1) {
+        pjNama = inPenanggungJawabPilih.text.toString()
+        pjNik = inNikPJPilih.text.toString()
+    }else{
+
+        pjNama = inPenanggungJawab.text.toString()
+        pjNik = inNikPJ.text.toString()
+    }
+    val dir = this.getExternalFilesDir("HAZARD_OFFLINE")
+    var waktu = Date()
+    val cal = Calendar.getInstance()
+    cal.time = waktu
+    var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
+    val wrapper = ContextWrapper(applicationContext)
+    //    var filenya = File(fileUpload!!.path, jam)
+    var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+    file = File(file, "${jam}_sebelum.jpg")
+    ConfigUtil.streamFoto(bitmap!!, file)
+    //        FOTO PENANGGUNG JAWAB
+    var filePJ = wrapper.getDir("images", Context.MODE_PRIVATE)
+    filePJ = File(filePJ, "${jam}_penanggung_jawab.jpg")
+        //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
+//    ConfigUtil.streamFoto(bitmapPJ!!, filePJ)
+    //        FOTO PENANGGUNG JAWAB
+    var buktiSelesai=""
+    if(bitmapBuktiSelesai!=null) {
+//        Bukti Selesai
+        var fileSelesai = wrapper.getDir("images", Context.MODE_PRIVATE)
+        fileSelesai = File(fileSelesai, "${jam}_selesai.jpg")
+        ConfigUtil.streamFoto(bitmapBuktiSelesai!!, fileSelesai)
+        buktiSelesai = fileSelesai.name
+        ConfigUtil.saveFile(bitmapBuktiSelesai!!,this@NewHazardActivity,"HAZARD_OFFLINE",buktiSelesai)
+    }
+    var bukti = file.name
+    var pjFoto = filePJ.name
+    ConfigUtil.saveFile(bitmap!!,this@NewHazardActivity,"HAZARD_OFFLINE",bukti)
+    ConfigUtil.saveFile(bitmapPJ!!,this@NewHazardActivity,"HAZARD_OFFLINE",pjFoto)
+    var plKondisi =""
+    var rbStatus = ""
+    if(plKta.isChecked){
+        plKondisi = plKta.text.toString()
+    }else if(plTta.isChecked){
+        plKondisi = plTta.text.toString()
+    }
+    if(rbSelesai.isChecked){
+        rbStatus= rbSelesai.text.toString()
+    }else if(rbBelumSelesai.isChecked){
+        rbStatus= rbBelumSelesai.text.toString()
+    }else if(rbBerlanjut.isChecked){
+        rbStatus= rbBerlanjut.text.toString()
+    }else if(rbDLMpengerjaan.isChecked){
+        rbStatus= rbDLMpengerjaan.text.toString()
+    }
+
+    val hazardHeaderModel = HazardHeaderModel()
+    GlobalScope.launch(Dispatchers.Main) {
+        val hazardHeader = HazardHeaderDataSource(this@NewHazardActivity)
+        hazardHeaderModel.perusahaan = inPerusahan
+        hazardHeaderModel.tgl_hazard = inTanggal
+        hazardHeaderModel.jam_hazard = inJam
+        hazardHeaderModel.idKemungkinan = kemungkinanID.toInt()
+        hazardHeaderModel.idKeparahan = keparahanID.toInt()
+        hazardHeaderModel.deskripsi = inBahaya
+        hazardHeaderModel.lokasi = lokasi
+        hazardHeaderModel.lokasi_detail = inLokasiDet
+        hazardHeaderModel.status_perbaikan = rbStatus
+        hazardHeaderModel.user_input = USERNAME
+        if(hazardHeader.insertItem(hazardHeaderModel)>0){
+            val hazardDetail = HazardDetailDataSource(this@NewHazardActivity)
+            val hazardDetailModel = HazardDetailModel()
+            hazardDetailModel.tindakan = inPerbaikan
+            hazardDetailModel.namaPJ = pjNama
+            hazardDetailModel.nikPJ = pjNik
+            hazardDetailModel.fotoPJ = pjFoto
+            hazardDetailModel.katBahaya = plKondisi
+            hazardDetailModel.idPengendalian = hirarkiID?.toInt()
+            hazardDetailModel.tgl_selesai = inTGLSelesai
+            hazardDetailModel.jam_selesai = inJamSelesai
+            hazardDetailModel.bukti = bukti
+            hazardDetailModel.update_bukti = buktiSelesai
+            hazardDetailModel.keterangan_update = inKeteranganPJ
+            hazardDetailModel.idKemungkinanSesudah = kemungkinanSesudahID?.toInt()
+            hazardDetailModel.idKeparahanSesudah = keparahanSesudahID?.toInt()
+            hazardDetailModel.tgl_tenggat = tglTenggat
+            if(hazardDetail.insertItem(hazardDetailModel)>0){
+                val hazardValidation = HazardValidationDataSource(this@NewHazardActivity)
+                val hazardValidationModel = HazardValidationModel()
+                hazardValidationModel.uid = null
+                hazardValidationModel.user_valid = null
+                hazardValidationModel.tgl_valid = null
+                hazardValidationModel.jam_valid= null
+                if(hazardValidation.insertItem(hazardValidationModel)>0){
+                    Log.d("SimpanOffline","Sukses")
+                    finish()
+                }else{
+                    Log.d("SimpanOffline","Gagal")
+                }
+            }else{
+                Log.d("SimpanOffline","Gagal 1")
+            }
+        }else{
+            Log.d("SimpanOffline","Gagal 2")
+        }
+    }
+//    initial
+    }
+//    Simpan Offline
 //       Simpan Hazard
     fun simpanHazard(){
 
@@ -1322,5 +1499,23 @@ private fun getToken() {
         var USEPICK = "USEPICK"
     }
 //    OBJECT
+private fun loadHazardOffline(){
+    GlobalScope.launch(Dispatchers.IO) {
+        val hazardHeader = HazardHeaderDataSource(this@NewHazardActivity)
+        try {
+            val hazardRow = hazardHeader.getAll()
+            hazardRow.forEach {
+                val detail = HazardDetailDataSource(this@NewHazardActivity)
+                val detailFirst = detail.getItem(it.idHazard.toString())
+                Log.d("HazardReport",it.idHazard.toString())
 
+                if(detailFirst!=null){
+                    Log.d("HazardReport",detailFirst.bukti.toString())
+                }
+            }
+        }catch (e: SQLException){
+            Log.d("HazardReport",e.toString())
+        }
+    }
+}
 }
