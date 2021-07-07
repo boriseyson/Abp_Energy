@@ -166,6 +166,9 @@ interface ApiEndPoint{
     @GET("/hse/admin/hiraiki/pengendalian")
     fun getHirarkiPengendalian()
             : Call<HirarkiResponse>?
+    @GET("/hse/admin/hiraiki/pengendalian")
+    suspend fun hirarkiCorutine()
+            : Response<HirarkiResponse>?
     @GET("/hse/admin/resiko/kemungkinan")
     fun resikoKemungkinan()
             : Call<KemungkinanResponse>?
@@ -299,7 +302,9 @@ interface ApiEndPoint{
     @GET("/android/api/risk/get")
     fun getRiskList(): Call<RiskResponse>?
     @GET("/android/api/risk/get")
-    suspend fun pengendalianCorutine(): Response<RiskResponse>?
+    suspend fun riskCorutine(): Response<RiskResponse>?
+    @GET("/android/api/risk/get")
+    suspend fun formInspeksiCorutine(): Response<RiskResponse>?
     @GET("/hse/android/inspeksi/form")
     fun getListFormInspeksi(): Call<FormInspeksiResponse>?
     @GET("/hse/android/inspeksi/new")

@@ -2,6 +2,8 @@ package com.misit.abpenergy.HazardReport
 
 import android.Manifest
 import android.app.Activity
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -36,6 +38,7 @@ import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
+import com.misit.abpenergy.Service.JobServices
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.*
 import com.misit.abpenergy.Utils.ConfigUtil.resultIntent
@@ -75,7 +78,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var keparahanIDSesudah:String? = null
     private var csrf_token:String?=null
     private var plKondisi:RequestBody?=null
-    var rbStatus:RequestBody?=null
+    private var rbStatus:RequestBody?=null
     private var bitmap:Bitmap?=null
     private var bitmapBuktiSelesai:Bitmap?=null
     private var bitmapPJ:Bitmap?=null
@@ -787,7 +790,30 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 hazardValidationModel.jam_valid= null
                 if(hazardValidation.insertItem(hazardValidationModel)>0){
                     Log.d("SimpanOffline","Sukses")
-                    finish()
+                    val componentName = ComponentName(this@NewHazardActivity, JobServices::class.java)
+                    val jobInfo = JobInfo.Builder(2601,componentName)
+                        .setRequiresCharging(true)
+                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                        .setPersisted(true)
+                        .setPeriodic(15 * 60 * 1000)
+                        .build()
+                    val scheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
+                    val resultCode = scheduler.schedule(jobInfo)
+
+                    if(ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")){
+                        if(resultCode == JobScheduler.RESULT_SUCCESS){
+                            Log.d("JobScheduler","Job Scheduled")
+                        }else{
+                            Log.d("JobScheduler","Job Scheduled Failed")
+
+                        }
+                        Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                        resultIntent(this@NewHazardActivity)
+                        PopupUtil.dismissDialog()
+                        finish()
+                    }else{
+                        ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")
+                    }
                 }else{
                     Log.d("SimpanOffline","Gagal")
                 }

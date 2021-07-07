@@ -1,6 +1,7 @@
 package com.misit.abpenergy.HazardReport
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,15 +13,19 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.DataSource.LokasiDataSource
 import com.misit.abpenergy.HazardReport.Adapter.HirarkiAdapter
 import com.misit.abpenergy.HazardReport.Response.HirarkiItem
 import com.misit.abpenergy.HazardReport.Response.HirarkiResponse
+import com.misit.abpenergy.HazardReport.Response.LokasiItem
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.PengendalianDataSource
 import com.misit.abpenergy.R
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_sumber_bahaya.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.sql.SQLException
 
 class SumberBahayaActivity : AppCompatActivity(),
 HirarkiAdapter.OnItemClickListener {
@@ -50,7 +55,7 @@ HirarkiAdapter.OnItemClickListener {
         rvSumberBahaya?.layoutManager = linearLayoutManager
         rvSumberBahaya.adapter =adapter
         adapter?.setListener(this)
-        loadData()
+        pengendalianSQL(this)
     }
 
     private fun loadData() {
@@ -89,6 +94,20 @@ HirarkiAdapter.OnItemClickListener {
         setResult(Activity.RESULT_OK,intent)
         finish()
     }
+    private fun pengendalianSQL(c: Context){
+        val pengendalian =
+            PengendalianDataSource(c)
+        try {
+            val lokasiRow=pengendalian.getAll()
+            lokasiRow.forEach{
+                Log.d("KemungkinanSQL",lokasiRow.toString())
+                hirarkiList?.add(HirarkiItem(it.tglInput,it.flag,it.userInput,it.namaPengendalian,it.idHirarki))
+                adapter?.notifyDataSetChanged()
+            }
+        }catch (e: SQLException){
+            Log.d("KemungkinanSQL",e.toString())
+        }
 
+    }
 
 }

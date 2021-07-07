@@ -1,1 +1,0 @@
-package com.misit.abpenergy.Modelimport java.io.Serializableclass PengendalianModel : Serializable {    var tglInput:String?=null    var descRisk:String?=null    var bgColor:String?=null    var userInput:String?=null    var txtColor:String?=null    var risk:String?=null    var idRisk:Int?=null}
