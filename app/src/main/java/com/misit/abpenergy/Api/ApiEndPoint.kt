@@ -25,6 +25,9 @@ interface ApiEndPoint{
     @GET("refresh-csrf")
     fun getToken(@Query("refresh-csrf") tokenId:String): Call<CsrfTokenResponse>?
 
+    @GET("refresh-csrf")
+    suspend fun getTokenCorutine(@Query("refresh-csrf") tokenId:String): Response<CsrfTokenResponse>?
+
     @FormUrlEncoded
     @POST("/android/api/login/validate")
     fun loginChecklogin(@Field("username") username:String?,
@@ -206,7 +209,30 @@ interface ApiEndPoint{
         @Part("tglTenggat") tglTenggat:RequestBody?,
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
-                         ) : Call<HazardReportResponse>?
+    ) : Call<HazardReportResponse>?
+    @Multipart
+    @POST("/android/api/hse/hazard/reportPost")
+    suspend fun postHazardCorutine(
+        @Part fileToUpload: MultipartBody.Part?,
+        @Part fileToUploadPJ: MultipartBody.Part?,
+        @Part("perusahaan") perusahaan: RequestBody?,
+        @Part("tgl_hazard") tgl_hazard:RequestBody?,
+        @Part("jam_hazard") jam_hazard:RequestBody?,
+        @Part("lokasi") lokasi:RequestBody?,
+        @Part("lokasi_detail") lokasi_detail:RequestBody?,
+        @Part("deskripsi") deskripsi:RequestBody?,
+        @Part("kemungkinan") kemungkinan:RequestBody?,
+        @Part("keparahan") keparahan:RequestBody?,
+        @Part("katBahaya") katBahaya:RequestBody?,
+        @Part("pengendalian") pengendalian:RequestBody?,
+        @Part("tindakan") tindakan:RequestBody?,
+        @Part("namaPJ") namaPJ:RequestBody?,
+        @Part("nikPJ") nikPJ:RequestBody?,
+        @Part("status") status:RequestBody?,
+        @Part("tglTenggat") tglTenggat:RequestBody?,
+        @Part("user_input") user_input:RequestBody?,
+        @Part("_token") _token:RequestBody?
+    ) : Response<HazardReportResponse>?
     @Multipart
     @POST("/android/api/hse/hazard/reportPost/selesai")
     fun postHazardReportSelesai(
@@ -235,6 +261,34 @@ interface ApiEndPoint{
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
+    @Multipart
+    @POST("/android/api/hse/hazard/reportPost/selesai")
+    suspend fun postHazardSelesaiCorutine(
+        @Part fileToUpload: MultipartBody.Part?,
+        @Part fileToUploadPJ: MultipartBody.Part?,
+        @Part fileToUploadSelesai: MultipartBody.Part?,
+        @Part("perusahaan") perusahaan: RequestBody?,
+        @Part("tgl_hazard") tgl_hazard:RequestBody?,
+        @Part("jam_hazard") jam_hazard:RequestBody?,
+        @Part("lokasi") lokasi:RequestBody?,
+        @Part("lokasi_detail") lokasi_detail:RequestBody?,
+        @Part("deskripsi") deskripsi:RequestBody?,
+        @Part("kemungkinan") kemungkinan:RequestBody?,
+        @Part("keparahan") keparahan:RequestBody?,
+        @Part("kemungkinanSesudah") kemungkinanSesudah:RequestBody?,
+        @Part("keparahanSesudah") keparahanSesudah:RequestBody?,
+        @Part("katBahaya") katBahaya:RequestBody?,
+        @Part("pengendalian") pengendalian:RequestBody?,
+        @Part("tindakan") tindakan:RequestBody?,
+        @Part("namaPJ") namaPJ:RequestBody?,
+        @Part("nikPJ") nikPJ:RequestBody?,
+        @Part("status") status:RequestBody?,
+        @Part("tglSelesai") tglSelesai:RequestBody?,
+        @Part("jamSelesai") jamSelesai:RequestBody?,
+        @Part("keteranganPJ") keteranganPJ:RequestBody?,
+        @Part("user_input") user_input:RequestBody?,
+        @Part("_token") _token:RequestBody?
+    ) : Response<HazardReportResponse>?
 
     @GET("/android/api/hse/list/hazard/report")
     fun getListHazard(@Query("username") username:String,

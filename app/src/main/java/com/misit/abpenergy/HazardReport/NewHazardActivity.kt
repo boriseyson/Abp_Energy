@@ -2,6 +2,7 @@ package com.misit.abpenergy.HazardReport
 
 import android.Manifest
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.*
@@ -24,6 +25,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
@@ -34,6 +36,8 @@ import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSo
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardDetailModel
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardHeaderModel
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardValidationModel
+import com.misit.abpenergy.HazardReport.Service.BgHazardService
+import com.misit.abpenergy.HazardReport.Service.FgHazardService
 import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.R
@@ -95,6 +99,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var cal = Calendar.getInstance()
     private var userPick:String?=null
     private var pjOption:Int?=null
+    private var tokenPassingReceiver: BroadcastReceiver?=null
+    lateinit var bgHazardService:Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_hazard)
@@ -170,9 +177,12 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         inPerusaan.setOnClickListener(this)
         inTGLTenggat.setOnClickListener(this)
         cvPilihPJ.setOnClickListener(this@NewHazardActivity)
+        bgHazardService = Intent(this@NewHazardActivity, BgHazardService::class.java)
+
     }
 
     override fun onResume() {
+        reciever(this@NewHazardActivity)
         loadHazardOffline()
         storageDir = getExternalFilesDir("ABP_IMAGES")
         super.onResume()
@@ -579,17 +589,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 } catch (e: IOException) {
                     e.printStackTrace();
                 }
-//            val url = URL(profileIMG)
-//                val result: Deferred<Bitmap?> = GlobalScope.async {
-//                    PopupUtil.showProgress(this@NewHazardActivity, "Loading...", "Membuat Hazard Report!")
-//                    url.toBitmap()
-//                }
-//                GlobalScope.launch(Dispatchers.Main) {
-//                    // show bitmap on image view when available
-//                    bitmapPJ = result.await()
-//                    PopupUtil.dismissDialog()
-//                }
-//                Glide.with(this@NewHazardActivity).load(profileIMG).into(pjFOTOPilih)
                 inPenanggungJawabPilih.setText(nama.toString())
                 inNikPJPilih.setText(nik.toString())
             }catch (e:Exception){
@@ -790,22 +789,15 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 hazardValidationModel.jam_valid= null
                 if(hazardValidation.insertItem(hazardValidationModel)>0){
                     Log.d("SimpanOffline","Sukses")
-                    val componentName = ComponentName(this@NewHazardActivity, JobServices::class.java)
-                    val jobInfo = JobInfo.Builder(2601,componentName)
-                        .setRequiresCharging(true)
-                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                        .setPersisted(true)
-                        .setPeriodic(15 * 60 * 1000)
-                        .build()
-                    val scheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-                    val resultCode = scheduler.schedule(jobInfo)
-
                     if(ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")){
-                        if(resultCode == JobScheduler.RESULT_SUCCESS){
-                            Log.d("JobScheduler","Job Scheduled")
-                        }else{
-                            Log.d("JobScheduler","Job Scheduled Failed")
-
+                        GlobalScope.launch(Dispatchers.IO) {
+                            if (ConfigUtil.cekKoneksi(this@NewHazardActivity)){
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                    startStopService(FgHazardService::class.java,this@NewHazardActivity)
+                                }else{
+                                    startService(bgHazardService)
+                                }
+                            }
                         }
                         Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
                         resultIntent(this@NewHazardActivity)
@@ -1525,23 +1517,68 @@ private fun getToken() {
         var USEPICK = "USEPICK"
     }
 //    OBJECT
-private fun loadHazardOffline(){
-    GlobalScope.launch(Dispatchers.IO) {
-        val hazardHeader = HazardHeaderDataSource(this@NewHazardActivity)
-        try {
-            val hazardRow = hazardHeader.getAll()
-            hazardRow.forEach {
-                val detail = HazardDetailDataSource(this@NewHazardActivity)
-                val detailFirst = detail.getItem(it.idHazard.toString())
-                Log.d("HazardReport",it.idHazard.toString())
+    private fun loadHazardOffline(){
+        GlobalScope.launch(Dispatchers.IO) {
+            val hazardHeader = HazardHeaderDataSource(this@NewHazardActivity)
+            try {
+                val hazardRow = hazardHeader.getAll()
+                hazardRow.forEach {
+                    val detail = HazardDetailDataSource(this@NewHazardActivity)
+                    val detailFirst = detail.getItem(it.idHazard.toString())
+                    Log.d("HazardReport",it.idHazard.toString())
 
-                if(detailFirst!=null){
-                    Log.d("HazardReport",detailFirst.bukti.toString())
+                    if(detailFirst!=null){
+                        Log.d("HazardReport",detailFirst.bukti.toString())
+                    }
                 }
+            }catch (e: SQLException){
+                Log.d("HazardReport",e.toString())
             }
-        }catch (e: SQLException){
-            Log.d("HazardReport",e.toString())
         }
     }
-}
+    private fun startStopService(jvClass:Class<*>,c:Context) {
+        if(isMyServiceRunning(jvClass)){
+            var intent = Intent(c, jvClass).apply {
+                this.action = Constants.SERVICE_STOP
+                LocalBroadcastManager.getInstance(c).unregisterReceiver(tokenPassingReceiver!!)
+            }
+            stopService(intent)
+        }else{
+            var intent = Intent(c, jvClass).apply {
+                this.action = Constants.SERVICE_START
+            }
+            startService(intent)
+        }
+    }
+    private fun isMyServiceRunning(mClass: Class<*>): Boolean {
+        val manager: ActivityManager =getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service: ActivityManager.RunningServiceInfo in manager.getRunningServices(Integer.MAX_VALUE)){
+            if(mClass.name.equals(service.service.className)){
+                return true
+            }
+        }
+        return false
+    }
+    private fun bgStopService(intent: Intent,c:Context){
+        stopService(intent)
+        LocalBroadcastManager.getInstance(c).unregisterReceiver(tokenPassingReceiver!!)
+    }
+    private fun reciever(c:Context){
+        tokenPassingReceiver= object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val bundle = intent.extras
+                if (bundle != null) {
+                    if (bundle.containsKey("SavingHazard")) {
+                        val tokenData = bundle.getString("SavingHazard")
+                        Log.d("ServiceName",tokenData)
+                        if(tokenData=="FgHazardDone"){
+                            startStopService(FgHazardService::class.java,c)
+                        }else if(tokenData=="BgHazardDone"){
+                            bgStopService(bgHazardService,c)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
