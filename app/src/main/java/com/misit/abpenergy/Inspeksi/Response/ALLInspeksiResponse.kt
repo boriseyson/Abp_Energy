@@ -4,6 +4,12 @@ import com.google.gson.annotations.SerializedName
 
 data class ALLInspeksiResponse(
 
+	@field:SerializedName("allInspection")
+	var allInspection: AllInspection? = null
+)
+
+data class AllInspection(
+
 	@field:SerializedName("path")
 	var path: String? = null,
 
@@ -14,7 +20,7 @@ data class ALLInspeksiResponse(
 	var total: Int? = null,
 
 	@field:SerializedName("data")
-	var data: List<DataItem?>? = null,
+	var inpeksiItem: List<InpeksiItem>? = null,
 
 	@field:SerializedName("last_page")
 	var lastPage: Int? = null,
@@ -35,7 +41,7 @@ data class ALLInspeksiResponse(
 	var currentPage: Int? = null
 )
 
-data class DataItem(
+data class InpeksiItem(
 
 	@field:SerializedName("flag")
 	var flag: Int? = null,

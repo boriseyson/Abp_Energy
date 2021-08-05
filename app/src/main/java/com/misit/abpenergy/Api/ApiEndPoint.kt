@@ -360,7 +360,8 @@ interface ApiEndPoint{
     @GET("/android/api/risk/get")
     suspend fun formInspeksiCorutine(): Response<RiskResponse>?
     @GET("/hse/android/inspeksi/form")
-    fun getListFormInspeksi(): Call<FormInspeksiResponse>?
+    fun getListFormInspeksi(
+        @Query("page") page:String): Call<FormInspeksiResponse>?
     @GET("/hse/android/inspeksi/new")
     fun getListSubInspeksi(@Query("idForm") idForm:String):
             Call<InspeksiGroupsResponse>?

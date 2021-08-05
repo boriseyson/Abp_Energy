@@ -88,7 +88,7 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
 
         swipeRefreshLayout.isRefreshing=true
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
-        val call = apiEndPoint.getListFormInspeksi()
+        val call = apiEndPoint.getListFormInspeksi(hal)
         call?.enqueue(object : Callback<FormInspeksiResponse> {
             override fun onFailure(call: Call<FormInspeksiResponse>, t: Throwable) {
                 swipeRefreshLayout.isRefreshing=false
@@ -123,7 +123,7 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
                                 if ((visibleItem + pastVisibleItem) >= total) {
                                     loading = false
                                     page++
-                                    loadForm(hal)
+                                    loadForm(page.toString())
                                 }
                             }
                         }
@@ -148,9 +148,14 @@ class InspeksiActivity : AppCompatActivity(),ListFormInspeksiAdapater.OnItemClic
         return super.onSupportNavigateUp()
     }
     override fun onItemClick(idForm: String,nameForm: String) {
-        var intent = Intent(this@InspeksiActivity, ListInspeksiActivity::class.java)
-        intent.putExtra(ListInspeksiActivity.IDFORM,idForm)
-        intent.putExtra(ListInspeksiActivity.NAMEFORM,nameForm)
-        startActivity(intent)
+//        var intent = Intent(this@InspeksiActivity, ListInspeksiActivity::class.java)
+//        intent.putExtra(ListInspeksiActivity.IDFORM,idForm)
+//        intent.putExtra(ListInspeksiActivity.NAMEFORM,nameForm)
+//        startActivity(intent)
+        var intent = Intent(this@InspeksiActivity,NewInspeksiActivity::class.java)
+        intent.putExtra(NewInspeksiActivity.IDFORM,idForm)
+        intent.putExtra(NewInspeksiActivity.NAMEFORM,nameForm)
+        startActivityForResult(intent,100)
     }
+
 }
