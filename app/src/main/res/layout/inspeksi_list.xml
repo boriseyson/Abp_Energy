@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="15dp"
-    app:cardCornerRadius="15dp"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="2dp"
     app:cardElevation="50dp"
     app:cardBackgroundColor="@color/white"
     android:id="@+id/cvInspeksiHeader"
@@ -16,7 +16,7 @@
         <!--    Nama Inspeksi-->
         <TextView
             android:id="@+id/tvNamaInspeksi"
-            android:padding="5dp"
+            android:padding="10dp"
             android:textSize="18sp"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/bgTotal"/>
         <!--    Data Temuan-->
         <LinearLayout
             android:layout_marginTop="5dp"
@@ -57,6 +57,14 @@
                 android:text="@string/app_name"/>
             <!--   Lokasi-->
             <TextView
+                android:padding="5dp"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:text="Lokasi"/>
+            <TextView
                 android:id="@+id/tvLokasiInspeksi"
                 android:padding="5dp"
                 android:textSize="17sp"
@@ -68,8 +76,8 @@
         <!--    Data Temuan-->
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorPrimaryDark"/>
+            android:layout_height="1dp"
+            android:background="@color/bgTotal"/>
         <!--    Bahaya-->
         <TextView
             android:background="@color/bgCancel"
@@ -95,9 +103,31 @@
             android:layout_marginBottom="20dp"
             />
         <!--    TV Deskripsi-->
+
+        <TextView
+            android:background="@color/bgCancel"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dibuat Oleh"/>
+        <TextView
+            android:id="@+id/tvUserCrate"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginBottom="20dp"
+            />
         <!--    Bahaya-->
         <!--    Status-->
         <TextView
+            android:visibility="gone"
             style="@style/Widget.MaterialComponents.TextView"
             android:id="@+id/tvStatus"
             android:textColor="@color/white"

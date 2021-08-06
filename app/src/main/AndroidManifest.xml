@@ -24,7 +24,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CutiOnline.DetailCutiActivity"></activity>
+        <activity android:name=".Inspeksi.InspeksiHSEActivity"></activity>
+        <activity android:name=".Inspeksi.InspeksiUserActivity" />
+        <activity android:name=".CutiOnline.DetailCutiActivity" />
         <activity android:name=".CutiOnline.CutiOnlineAllActivity" />
         <activity android:name=".CutiOnline.RosterCutiActivity" />
         <activity android:name=".CutiOnline.FormCutiActivity" />
@@ -41,7 +43,7 @@
             android:name=".Service.ConnectionService"
             android:enabled="true"
             android:exported="false"
-            android:stopWithTask="false"/>
+            android:stopWithTask="false" />
 
         <activity android:name=".HazardReport.V_1.NewHazardActivity" />
 
@@ -157,7 +159,7 @@
         <activity
             android:name=".Inspeksi.AllInspeksiActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"  />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".QRCodeActivity"
             android:launchMode="singleTask"
@@ -269,7 +271,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".HazardReport.Service.HazardService" android:stopWithTask="false" />
+        <service
+            android:name=".HazardReport.Service.HazardService"
+            android:stopWithTask="false" />
         <service android:name=".Service.LoadingServices" />
         <service android:name=".Service.BgTokenService" />
         <service android:name=".Service.FgTokenService" />
@@ -299,9 +303,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
 
-        <service android:name=".Service.JobServices"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true"/>
+        <service
+            android:name=".Service.JobServices"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
