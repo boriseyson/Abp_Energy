@@ -166,11 +166,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/hazard_shimmer"/>
-            <include layout="@layout/hazard_shimmer"/>
-            <include layout="@layout/hazard_shimmer"/>
-            <include layout="@layout/hazard_shimmer"/>
-            <include layout="@layout/hazard_shimmer"/>
+            <include android:visibility="gone" layout="@layout/hazard_shimmer"/>
+            <include android:visibility="gone" layout="@layout/hazard_shimmer"/>
+            <include android:visibility="gone" layout="@layout/hazard_shimmer"/>
+            <include android:visibility="gone" layout="@layout/hazard_shimmer"/>
+            <include android:visibility="gone" layout="@layout/hazard_shimmer"/>
 
         </LinearLayout>
 </LinearLayout>
