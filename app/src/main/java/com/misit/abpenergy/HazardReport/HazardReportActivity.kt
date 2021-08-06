@@ -86,7 +86,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             startActivity(intent)
         }
         hazardList?.clear()
-        load("1",DARI, SAMPAI)
+//        load("1",DARI, SAMPAI)
         txtTglDari.setOnClickListener(this)
         txtTglSampai.setOnClickListener(this)
         btnLoad.setOnClickListener(this)
