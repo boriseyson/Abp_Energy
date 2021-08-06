@@ -95,6 +95,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         cld = ConnectionLiveData(application)
         cld.observe(this@HazardReportActivity,{ isConnected->
             if (isConnected){
+                shimmerHazard.visibility = View.GONE
                 hazardList?.clear()
                 load("1",DARI, SAMPAI)
                 internetConnection.visibility = View.GONE
