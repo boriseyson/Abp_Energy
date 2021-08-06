@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -16,13 +17,11 @@ import com.misit.abpenergy.HazardReport.Response.ListHazard
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.ConfigUtil
+import com.misit.abpenergy.Utils.ConnectionLiveData
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_hazard_report.*
-import kotlinx.android.synthetic.main.activity_hazard_report.btnLoad
-import kotlinx.android.synthetic.main.activity_hazard_report.txtTglDari
-import kotlinx.android.synthetic.main.activity_hazard_report.txtTglSampai
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,6 +37,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     private var pastVisibleItem : Int=0
     private var loading : Boolean=false
     var curentPosition: Int=0
+    private lateinit var cld: ConnectionLiveData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +91,23 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         txtTglSampai.setOnClickListener(this)
         btnLoad.setOnClickListener(this)
     }
+    private fun checkNetworkConnection() {
+        cld = ConnectionLiveData(application)
+        cld.observe(this@HazardReportActivity,{ isConnected->
+            if (isConnected){
+                hazardList?.clear()
+                load("1",DARI, SAMPAI)
+                internetConnection.visibility = View.GONE
+            }else{
+                internetConnection.visibility= View.VISIBLE
+            }
+        })
+    }
+
+    override fun onResume() {
+        checkNetworkConnection()
+        super.onResume()
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_add,menu)
         return super.onCreateOptionsMenu(menu)
@@ -103,6 +120,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         }
         return super.onOptionsItemSelected(item)
     }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
@@ -114,7 +132,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         call?.enqueue(object : Callback<ListHazard> {
             override fun onFailure(call: Call<ListHazard>, t: Throwable) {
                 swipeRefreshLayout.isRefreshing=false
-                Toasty.error(this@HazardReportActivity,"Error : $t", Toasty.LENGTH_SHORT).show()
+                Toasty.error(this@HazardReportActivity,"Error : No Internet Connection", Toasty.LENGTH_SHORT).show()
                 PopupUtil.dismissDialog()
             }
 
