@@ -9,11 +9,17 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.security.SecureRandom
+import java.util.*
+import javax.net.ssl.SSLContext
+//import javax.net.ssl.SSLSocketFactory
+import org.apache.http.conn.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManager
 
 object ApiClient{
 //    public  const val BASE_URL= "http://10.10.3.13"
 //    public  const val BASE_URL= "https://borisreyson.com/"
-    public  const val BASE_URL= "https://abpjobsite.com/"
+    public  const val BASE_URL= "https://abpjobsite.com:8443/"
 
     private var retrofit : Retrofit? = null
     fun getClient(context: Context?):Retrofit?{
@@ -30,7 +36,11 @@ object ApiClient{
     private fun getHeader(context: Context?): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
-        val cookieJar: ClearableCookieJar = PersistentCookieJar(SetCookieCache(),SharedPrefsCookiePersistor(context))
+        val cookieJar: ClearableCookieJar = PersistentCookieJar(
+            SetCookieCache(), SharedPrefsCookiePersistor(
+                context
+            )
+        )
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .cookieJar(cookieJar)
