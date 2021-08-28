@@ -17,8 +17,8 @@ android {
         applicationId "com.misit.abpenergy"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 13
-        versionName "13"
+        versionCode 16
+        versionName "16"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
