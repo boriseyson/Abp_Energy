@@ -44,6 +44,7 @@ object ApiClient{
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .cookieJar(cookieJar)
+            .retryOnConnectionFailure(true)
             .build()
     }
 }
