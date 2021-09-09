@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                     if(tokenData=="fgDone"){
                         updateProgress()
                         startStopService(LoadingServices::class.java)
+                        stopService(saranaService)
                     }else{
                         Toasty.info(this@MainActivity,"Failed To Load Data").show()
                     }
@@ -90,6 +91,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 if (bundle.containsKey("bsConnection")) {
+                    stopService(saranaService)
                     val tokenData = bundle.getString("bsConnection")
                     Log.d("ServiceName","${tokenData} Main")
                     if(tokenData=="Online"){
