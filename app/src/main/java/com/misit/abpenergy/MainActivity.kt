@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                     if(tokenData=="fgDone"){
                         updateProgress()
                         startStopService(LoadingServices::class.java)
+                        stopService(saranaService)
                     }else{
                         Toasty.info(this@MainActivity,"Failed To Load Data").show()
                     }
@@ -89,6 +90,19 @@ class MainActivity : AppCompatActivity() {
                         Toasty.info(this@MainActivity,"Failed To Load Data").show()
                     }
                 }
+                if (bundle.containsKey("bsConnection")) {
+                    stopService(saranaService)
+                    val tokenData = bundle.getString("bsConnection")
+                    Log.d("ServiceName","${tokenData} Main")
+                    if(tokenData=="Online"){
+                        serviceStart()
+                            Log.d("ConnectionCheck",tokenData)
+                    }else{
+                        updateProgress()
+                            Log.d("ConnectionCheck",tokenData)
+                        Toasty.info(this@MainActivity,"Failed To Load Data").show()
+                    }
+                }
             }
         }
 
@@ -98,7 +112,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        realmConfig(this)
         ConfigUtil.changeColor(this)
         versionApp()
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this@MainActivity)
@@ -117,20 +130,6 @@ class MainActivity : AppCompatActivity() {
         val hazardHeader = HazardHeaderDataSource(this)
         val hazhardDetail = HazardDetailDataSource(this)
         val hazardValidation = HazardValidationDataSource(this)
-//        if(hazardHeader.deleteAll()){
-//            if(hazhardDetail.deleteAll()){
-//                if(hazardValidation.deleteAll()){
-//                    Log.d("Delete","Sukses")
-//                }else{
-//                    Log.d("Delete","Gagal 1")
-//                }
-//            }else{
-//                Log.d("Delete","Gagal 2")
-//
-//            }
-//        }else{
-//            Log.d("Delete","Gagal 2")
-//        }
     }
     private fun startStopService(jvClass:Class<*>) {
         if(isMyServiceRunning(jvClass)){
@@ -164,11 +163,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         startService(connectionService)
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
-            if (ConfigUtil.cekKoneksi(this)) {
                 updateProgress()
-            }else{
-                updateProgress()
-            }
         }else{
             startActivity(Intent(this@MainActivity,IntroActivity::class.java))
             finish()
@@ -182,11 +177,7 @@ class MainActivity : AppCompatActivity() {
 
             progressHorizontal.progress = besar + 100
             if(besar<100){
-                if (ConfigUtil.cekKoneksi(this)) {
-                    startService()
-                }else{
-                    updateProgress()
-                }
+                updateProgress()
             } else {
                 if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
                 {
@@ -207,7 +198,7 @@ class MainActivity : AppCompatActivity() {
         stopService(intent)
         LocalBroadcastManager.getInstance(this@MainActivity).unregisterReceiver(tokenPassingReceiver!!)
     }
-    fun startService(){
+    fun serviceStart(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
             var intent = Intent(this@MainActivity, LoadingServices::class.java).apply {
                 this.action = Constants.SERVICE_START

@@ -23,11 +23,13 @@ import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
 import com.misit.abpenergy.Sarpras.SaranaResponse.DataItem
 import com.misit.abpenergy.Sarpras.SaranaResponse.IzinKeluarSaranaResponse
+import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import io.realm.Realm
 import io.realm.Sort
+import kotlinx.android.synthetic.main.activity_new_hazard.*
 import kotlinx.android.synthetic.main.activity_new_sarpras.*
 import kotlinx.android.synthetic.main.activity_new_sarpras.noLV
 import retrofit2.Call
@@ -360,17 +362,19 @@ fun postIzinKeluarSarana(){
 
 
     override fun onClick(v: View?) {
+        val c= this@NewSarprasActivity
+
         if(v!!.id == R.id.inTglKeluar){
-            showDialogTgl(inTglKeluar)
+            ConfigUtil.showDialogTgl(inTglKeluar,c)
         }
         if(v!!.id == R.id.inJamKeluar){
-            showDialogJam(inJamKeluar)
+            ConfigUtil.showDialogTgl(inJamKeluar,c)
         }
         if(v!!.id == R.id.inTglKembali){
-            showDialogTgl(inTglKembali)
+            ConfigUtil.showDialogTgl(inTglKembali,c)
         }
         if(v!!.id == R.id.inJamKembali){
-            showDialogJam(inJamKembali)
+            ConfigUtil.showDialogTime(inJamKembali,c)
         }
         if(v!!.id == R.id.inDriver){
             showKaryawan(inDriver)
@@ -424,37 +428,7 @@ fun postIzinKeluarSarana(){
         })
         spinnerDialog!!.showSpinerDialog()
     }
-    fun showDialogTgl(inTgl:TextInputEditText){
-        val now = Calendar.getInstance()
-        val datePicker  = DatePickerDialog.OnDateSetListener{
-            view: DatePicker?, year: Int, month: Int, dayOfMonth: Int ->
-            now.set(Calendar.YEAR,year)
-            now.set(Calendar.MONTH,month)
-            now.set(Calendar.DAY_OF_MONTH,dayOfMonth)
-            inTgl.setText(SimpleDateFormat("dd MMMM yyyy").format(now.time))
-        }
 
-        DatePickerDialog(this,
-            datePicker,
-            now.get(Calendar.YEAR),
-            now.get(Calendar.MONTH),
-            now.get(Calendar.DAY_OF_MONTH)
-        ).show()
-    }
-    fun showDialogJam(inJam :TextInputEditText){
-        var now = Calendar.getInstance()
-        var timeListener  = TimePickerDialog.OnTimeSetListener{
-                timerPiker,hour,minute->
-            now.set(Calendar.HOUR_OF_DAY,hour)
-            now.set(Calendar.MINUTE,minute)
-            inJam.setText(SimpleDateFormat("HH:mm").format(now.time))
-        }
-        TimePickerDialog(this,
-            timeListener,
-            now.get(Calendar.HOUR_OF_DAY),
-            now.get(Calendar.MINUTE),
-            true).show()
-    }
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val tglPilih = "$dayOfMonth - ${month+1} - $year"
 //        inTglKeluar.setText(tglPilih)

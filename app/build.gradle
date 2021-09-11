@@ -9,7 +9,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'realm-android'
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -17,16 +16,19 @@ android {
         applicationId "com.misit.abpenergy"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 12
-        versionName "12"
+        versionCode 19
+        versionName "19"
         multiDexEnabled true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
         }
     }
 
@@ -43,6 +45,7 @@ android {
         checkReleaseBuilds false
 
     }
+    ndkVersion '23.0.7599858'
 
 }
 
@@ -77,9 +80,16 @@ dependencies {
 
 //    implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.5.0'
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
 
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+//    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
+//    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.5.0'
+//    implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
 
@@ -104,7 +114,6 @@ dependencies {
 
     implementation 'com.camerakit:camerakit:1.0.0-beta3.11'
     implementation 'com.camerakit:jpegkit:0.1.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.30'
 
     implementation group: 'com.camerakit', name:'camerakit', version:'1.0.0-Snapshot', changing: true
     implementation 'com.facebook.shimmer:shimmer:0.5.0'

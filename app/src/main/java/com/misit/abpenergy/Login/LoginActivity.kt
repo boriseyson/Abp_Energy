@@ -16,11 +16,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
-import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.NewIndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
@@ -179,7 +177,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
     }
      fun androidToken(){
          FirebaseMessaging.getInstance().isAutoInitEnabled = true
-         FirebaseInstanceId.getInstance().instanceId
+         FirebaseMessaging.getInstance().token
              .addOnCompleteListener(OnCompleteListener { task ->
                  if (!task.isSuccessful) {
                      Toast.makeText(this@LoginActivity,"Error : $task.exception", Toast.LENGTH_SHORT).show()
@@ -187,7 +185,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                      return@OnCompleteListener
                  }
                  // Get new Instance ID token
-                 android_token = task.result?.token
+                 android_token = task.result
              })
      }
     fun loginSubmit(userIn:String,passIn:String){

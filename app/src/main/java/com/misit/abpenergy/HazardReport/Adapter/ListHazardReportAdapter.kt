@@ -1,9 +1,7 @@
 package com.misit.abpenergy.HazardReport.Adapter
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +10,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.vision.text.Line
 import com.misit.abpenergy.HazardReport.Response.HazardItem
-import com.misit.abpenergy.Login.LoginActivity
-import com.misit.abpenergy.NewIndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.PrefsUtil
-import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.index_new.*
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
