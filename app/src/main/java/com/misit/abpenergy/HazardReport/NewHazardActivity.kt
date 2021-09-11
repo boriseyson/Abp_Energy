@@ -200,16 +200,16 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             startActivityForResult(intent,Constants.PJ_CODE_OPTION)
         }
         if(v!!.id==R.id.inTanggal){
-            ConfigUtil.dateDialog(inTanggal,c,true,false)
+            ConfigUtil.showDialogTgl(inTanggal,c)
         }
         if (v!!.id==R.id.inJam){
             ConfigUtil.showDialogTime(inJam,c)
         }
         if(v!!.id==R.id.inTGLSelesai){
-            ConfigUtil.dateDialog(inTGLSelesai,c,false,true)
+            ConfigUtil.showDialogTime(inTGLSelesai,c)
         }
         if(v!!.id==R.id.inTGLTenggat){
-            ConfigUtil.dateDialog(inTGLTenggat,c,false,true)
+            ConfigUtil.showDialogTime(inTGLTenggat,c)
         }
         if(v!!.id==R.id.inJamSelesai){
             ConfigUtil.showDialogTime(inJamSelesai,c)
