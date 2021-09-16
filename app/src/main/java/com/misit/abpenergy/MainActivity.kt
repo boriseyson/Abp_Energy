@@ -130,6 +130,8 @@ class MainActivity : AppCompatActivity() {
         val hazardHeader = HazardHeaderDataSource(this)
         val hazhardDetail = HazardDetailDataSource(this)
         val hazardValidation = HazardValidationDataSource(this)
+        startService(connectionService)
+
     }
     private fun startStopService(jvClass:Class<*>) {
         if(isMyServiceRunning(jvClass)){
@@ -161,7 +163,6 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
     override fun onResume() {
-        startService(connectionService)
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
                 updateProgress()
         }else{

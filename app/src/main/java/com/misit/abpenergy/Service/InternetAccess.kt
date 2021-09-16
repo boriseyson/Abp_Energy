@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Serviceimport androidx.lifecycle.LiveDataimport java.net.SocketAddressclass InternetAccess(private val sockaddr: SocketAddress):LiveData<Boolean>() {}
