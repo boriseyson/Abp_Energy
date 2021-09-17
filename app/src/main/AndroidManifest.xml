@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:name=".Utils.RealmConfig"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
@@ -25,8 +24,24 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Inspeksi.InspeksiHSEActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".HomePage.IndexActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar"></activity>
+        <activity
+            android:name=".MainPageActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Inspeksi.InspeksiHSEActivity" />
         <activity android:name=".Inspeksi.InspeksiUserActivity" />
         <activity android:name=".CutiOnline.DetailCutiActivity" />
         <activity android:name=".CutiOnline.CutiOnlineAllActivity" />
@@ -63,13 +78,7 @@
             android:name=".MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/noActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/noActionBar"></activity>
         <activity
             android:name=".HomeActivity"
             android:screenOrientation="portrait" />

@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.MainActivity
+import com.misit.abpenergy.MainPageActivity
 import com.misit.abpenergy.NewIndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
@@ -190,7 +192,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
      }
     fun loginSubmit(userIn:String,passIn:String){
         PopupUtil.showLoading(this@LoginActivity,"Logging In","Please Wait")
-        var intent = Intent(this, NewIndexActivity::class.java)
+        var intent = Intent(this, MainPageActivity::class.java)
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.loginChecklogin(
                 userIn,
