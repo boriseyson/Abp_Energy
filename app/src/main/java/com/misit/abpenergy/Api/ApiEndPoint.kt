@@ -149,7 +149,7 @@ interface ApiEndPoint{
             : Call<GetUserResponse>?
 
     @GET("/android/api/get/user")
-    suspend fun dataUserCorutine(@Query("username") username:String)
+    suspend fun dataUserCorutine(@Query("username") username:String?)
             : Response<GetUserResponse>?
     @GET("/android/api/get/user")
     suspend fun corutineDataUser(@Query("username") username:String)
