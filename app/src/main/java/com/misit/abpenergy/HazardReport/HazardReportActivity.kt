@@ -157,7 +157,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         ""
                         ))
                 }
-                                        adapter?.notifyDataSetChanged()
 
             }else{
 
@@ -165,7 +164,11 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             Log.d("modelHazard",hazardList.toString())
 
         })
-        viewModel.offlineHazard(this@HazardReportActivity)
+        adapter?.notifyDataSetChanged()
+
+//        viewModel.offlineHazard(this@HazardReportActivity)
+        viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI)
+
     }
     override fun onResume() {
         checkNetworkConnection()
