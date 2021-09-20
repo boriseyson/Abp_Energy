@@ -113,61 +113,63 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     }
     private fun hazardViewModel(){
         rvHazardList.adapter = adapter
-        viewModel.hazardObserver().observe(this@HazardReportActivity,{
-            if(it!=null){
-                it.forEach{data->
-                    hazardList!!.add(HazardItem(
-                        "",
-                        0,
-                        "",
-                        0,
-                        data.status_perbaikan,
-                        "",
-                        data.perusahaan,
-                        "",
-                        "",
-                        data.lokasi_detail,
-                        data.uid,
-                        "",
-                        0,
-                        data.user_input,
-                        0,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        0,
-                        "",
-                        0,
-                        "",
-                        0,
-                        "",
-                        data.jam_hazard,
-                        "",
-                        data.lokasi,
-                        "",
-                        data.idHazard,
-                        "",
-                        "",
-                        data.time_input,
-                        data.tgl_hazard,
-                        "",
-                        0,
-                        ""
-                        ))
+        viewModel.hazardObserver().observe(this@HazardReportActivity) {
+            if (it != null) {
+                it.forEach { data ->
+                    hazardList!!.add(
+                        HazardItem(
+                            "",
+                            0,
+                            "",
+                            0,
+                            data.status_perbaikan,
+                            "",
+                            data.perusahaan,
+                            "",
+                            "",
+                            data.lokasi_detail,
+                            data.uid,
+                            "",
+                            0,
+                            data.user_input,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            0,
+                            "",
+                            0,
+                            "",
+                            0,
+                            "",
+                            data.jam_hazard,
+                            "",
+                            data.lokasi,
+                            "",
+                            data.idHazard,
+                            "",
+                            "",
+                            data.time_input,
+                            data.tgl_hazard,
+                            "",
+                            0,
+                            ""
+                        )
+                    )
                 }
 
-            }else{
+            } else {
 
             }
-            Log.d("modelHazard",hazardList.toString())
+            Log.d("modelHazard", hazardList.toString())
 
-        })
+        }
         adapter?.notifyDataSetChanged()
 
-//        viewModel.offlineHazard(this@HazardReportActivity)
-        viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI)
+        viewModel.offlineHazard(this@HazardReportActivity)
+//        viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI)
 
     }
     override fun onResume() {

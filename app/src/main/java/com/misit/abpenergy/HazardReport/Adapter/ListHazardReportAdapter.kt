@@ -2,6 +2,7 @@ package com.misit.abpenergy.HazardReport.Adapter
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ class ListHazardReportAdapter (private val context: Context,
     }
 
     override fun getItemCount(): Int {
+        Log.d("HazarList",hazardList.size.toString())
         return hazardList.size
     }
 
