@@ -34,7 +34,10 @@ data class ListHazard(
 	@field:SerializedName("current_page")
 	var currentPage: Int? = null
 )
-
+data class HazardList (
+	@field:SerializedName("data")
+	var data: MutableList<HazardItem>? = null
+)
 data class HazardItem(
 
 	@field:SerializedName("kemungkinan")

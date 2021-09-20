@@ -20,26 +20,28 @@
         android:src="@drawable/ic_wave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewBackground" />
+        app:layout_constraintTop_toBottomOf="@id/viewBackground"
+        android:contentDescription="@string/icwave" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginTop="24dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         android:src="@drawable/ic_baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewBackground" />
+        app:layout_constraintTop_toTopOf="@+id/viewBackground"
+        android:contentDescription="@string/icwave" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        android:layout_marginRight="36dp"
-        android:text="Sudah Memiliki Akun?"
+        android:layout_marginEnd="36dp"
+        android:text="@string/sudah_memiliki_akun"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -112,7 +114,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Daftar"
+            android:text="@string/daftar"
             android:layout_margin="16dp"
             android:padding="8dp"
             android:textStyle="bold"
@@ -141,7 +143,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Lupa Kata Sandi?"
+        android:text="@string/lupa_kata_sandi"
         android:layout_gravity="center"
         android:layout_marginBottom="30dp"
         android:textColor="@color/skyBlue"
@@ -155,7 +157,7 @@
         android:padding="5dp"
         android:layout_gravity="center"
         android:textStyle="bold"
-        android:text="Atau"
+        android:text="@string/atau"
         android:textColor="@color/colorPrimaryDark" />
 
         <com.google.android.material.button.MaterialButton
@@ -168,7 +170,7 @@
             android:textAllCaps="false"
             android:layout_gravity="center"
             android:padding="5dp"
-            android:text="Pengguna Baru? Daftar Sekarang ( PT Alamjaya Bara Pratama )"
+            android:text="@string/pengguna_baru_daftar_sekarang_pt_alamjaya_bara_pratama"
             android:textColor="@color/skyBlue" />
         <com.google.android.material.button.MaterialButton
             android:visibility="gone"
@@ -180,7 +182,7 @@
             android:textAllCaps="false"
             android:layout_gravity="center"
             android:padding="5dp"
-            android:text="Pengguna Baru? Daftar Sekarang ( Mitra Kerja )"
+            android:text="@string/pengguna_baru_daftar_sekarang_mitra_kerja"
             android:textColor="@color/skyBlue" />
     </LinearLayout>
     </ScrollView>

@@ -3,8 +3,10 @@ package com.misit.abpenergy.HazardReport
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,8 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Adapter.ListHazardReportAdapter
 import com.misit.abpenergy.HazardReport.Response.HazardItem
 import com.misit.abpenergy.HazardReport.Response.ListHazard
+import com.misit.abpenergy.HazardReport.SQLite.Model.HeaderListModel
+import com.misit.abpenergy.HazardReport.ViewModel.HeaderViewModel
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.ConfigUtil
@@ -38,7 +42,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     private var loading : Boolean=false
     var curentPosition: Int=0
     private lateinit var cld: ConnectionLiveData
-
+    lateinit var viewModel: HeaderViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hazard_report)
@@ -58,6 +62,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             startActivity(intent)
             finish()
         }
+        viewModel = ViewModelProvider(this@HazardReportActivity).get(HeaderViewModel::class.java)
+
         hazardList= ArrayList()
         adapter = ListHazardReportAdapter(this@HazardReportActivity,RULE,"",hazardList!!)
         val linearLayoutManager = LinearLayoutManager(this@HazardReportActivity)
@@ -75,8 +81,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             override fun onRefresh() {
                 rvHazardList.adapter = adapter
                 page=1
-                hazardList?.clear()
-                load(page.toString(), DARI, SAMPAI)
+//                hazardList?.clear()
+//                load(page.toString(), DARI, SAMPAI)
                 pullRefreshHazard.visibility=View.VISIBLE
                 shimmerHazard.visibility = View.GONE
             }
@@ -85,7 +91,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             var intent = Intent(this@HazardReportActivity,NewHazardActivity::class.java)
             startActivity(intent)
         }
-        hazardList?.clear()
+//        hazardList?.clear()
 //        load("1",DARI, SAMPAI)
         txtTglDari.setOnClickListener(this)
         txtTglSampai.setOnClickListener(this)
@@ -96,15 +102,71 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         cld.observe(this@HazardReportActivity,{ isConnected->
             if (isConnected){
                 shimmerHazard.visibility = View.GONE
-                hazardList?.clear()
-                load("1",DARI, SAMPAI)
+//                hazardList?.clear()
+//                load("1",DARI, SAMPAI)
+                hazardViewModel()
                 internetConnection.visibility = View.GONE
             }else{
                 internetConnection.visibility= View.VISIBLE
             }
         })
     }
+    private fun hazardViewModel(){
+        rvHazardList.adapter = adapter
+        viewModel.hazardObserver().observe(this@HazardReportActivity,{
+            if(it!=null){
+                it.forEach{data->
+                    hazardList!!.add(HazardItem(
+                        "",
+                        0,
+                        "",
+                        0,
+                        data.status_perbaikan,
+                        "",
+                        data.perusahaan,
+                        "",
+                        "",
+                        data.lokasi_detail,
+                        data.uid,
+                        "",
+                        0,
+                        data.user_input,
+                        0,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        0,
+                        "",
+                        0,
+                        "",
+                        0,
+                        "",
+                        data.jam_hazard,
+                        "",
+                        data.lokasi,
+                        "",
+                        data.idHazard,
+                        "",
+                        "",
+                        data.time_input,
+                        data.tgl_hazard,
+                        "",
+                        0,
+                        ""
+                        ))
+                }
+                                        adapter?.notifyDataSetChanged()
 
+            }else{
+
+            }
+            Log.d("modelHazard",hazardList.toString())
+
+        })
+        viewModel.offlineHazard(this@HazardReportActivity)
+    }
     override fun onResume() {
         checkNetworkConnection()
         super.onResume()
@@ -145,12 +207,12 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         PopupUtil.showProgress(this@HazardReportActivity,"Loading...","Membuat Hazard Report!")
                         loading=true
                         hazardList!!.addAll(listHazard.data!!)
-                        adapter?.notifyDataSetChanged()
+//                        adapter?.notifyDataSetChanged()
                         pullRefreshHazard.visibility=View.VISIBLE
                         shimmerHazard.visibility = View.GONE
                     }else{
                         curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                        hazardList!!.addAll(listHazard.data!!)
+//                        hazardList!!.addAll(listHazard.data!!)
                         adapter?.notifyDataSetChanged()
                         pullRefreshHazard.visibility=View.VISIBLE
                         shimmerHazard.visibility = View.GONE
@@ -218,13 +280,14 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             ConfigUtil.showDialogTgl(txtTglSampai,this@HazardReportActivity)
         }
         if(v?.id==R.id.btnLoad){
-            hazardList!!.clear()
+//            hazardList!!.clear()
             var dari = txtTglDari.text.toString()
             var sampai = txtTglSampai.text.toString()
-            load("1",dari!!,sampai!!)
-            this@HazardReportActivity?.runOnUiThread {
-                adapter?.notifyDataSetChanged()
-            }
+//            load("1",dari!!,sampai!!)
+//            this@HazardReportActivity?.runOnUiThread {
+//                adapter?.notifyDataSetChanged()
+//            }
+            viewModel.onlineHazard(this@HazardReportActivity, dari, sampai)
         }
     }
 }

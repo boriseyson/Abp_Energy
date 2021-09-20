@@ -83,5 +83,12 @@
     <string name="not_open_file">Could not open file</string>
     <string name="hge_external"><![CDATA[HGE & External]]></string>
     <string name="shimmer_text">Shimmer Text</string>
+    <string name="icwave">icwave</string>
+    <string name="sudah_memiliki_akun">Sudah Memiliki Akun?</string>
+    <string name="daftar">Daftar</string>
+    <string name="lupa_kata_sandi">Lupa Kata Sandi?</string>
+    <string name="atau">Atau</string>
+    <string name="pengguna_baru_daftar_sekarang_pt_alamjaya_bara_pratama">Pengguna Baru? Daftar Sekarang ( PT Alamjaya Bara Pratama )</string>
+    <string name="pengguna_baru_daftar_sekarang_mitra_kerja">Pengguna Baru? Daftar Sekarang ( Mitra Kerja )</string>
 
 </resources>

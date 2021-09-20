@@ -72,6 +72,8 @@ data class DataUser(
 
 	@field:SerializedName("id_user")
 	var idUser: Int? = null,
+	@field:SerializedName("id")
+	var id: Int? = null,
 
 	@field:SerializedName("dept")
 	var dept: String? = null,
