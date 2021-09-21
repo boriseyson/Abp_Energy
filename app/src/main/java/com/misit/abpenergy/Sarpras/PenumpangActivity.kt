@@ -22,10 +22,8 @@ import kotlin.collections.ArrayList
 class PenumpangActivity : AppCompatActivity(),
     View.OnClickListener,
     PenumpangAdapter.OnItemClickListener {
-
     private var adapter: PenumpangAdapter? = null
     private var penumpangList: ArrayList<String>? = null
-//    private var penumpangPilih: ArrayList<PilihPenumpangModel>? = null
     private var list:MutableList<PenumpangListModel>?=null
     private var displayList:MutableList<PenumpangListModel>?=null
 

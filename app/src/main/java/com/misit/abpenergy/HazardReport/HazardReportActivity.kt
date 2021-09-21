@@ -1,6 +1,9 @@
 package com.misit.abpenergy.HazardReport
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.LinearGradient
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -21,17 +25,25 @@ import com.misit.abpenergy.HazardReport.Response.ListHazard
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HeaderDataSourceOffline
 import com.misit.abpenergy.HazardReport.SQLite.Model.HeaderListModel
 import com.misit.abpenergy.HazardReport.ViewModel.HeaderViewModel
+import com.misit.abpenergy.HomePage.IndexActivity
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
+import com.misit.abpenergy.Service.ConnectionService
+import com.misit.abpenergy.Service.InitService
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.ConnectionLiveData
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_hazard_report.*
+import kotlinx.android.synthetic.main.activity_hazard_report.internetConnection
+import kotlinx.android.synthetic.main.index_new.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,6 +63,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     private var halamanTotal=1
     private lateinit var cld: ConnectionLiveData
     lateinit var viewModel: HeaderViewModel
+    var tokenPassingReceiver : BroadcastReceiver?=null
+    lateinit var connectionService:Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +85,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             startActivity(intent)
             finish()
         }
+        reciever()
+        connectionService = Intent(this@HazardReportActivity, ConnectionService::class.java)
+//        startService(connectionService)
         viewModel = ViewModelProvider(this@HazardReportActivity).get(HeaderViewModel::class.java)
-
         hazardList= ArrayList()
         displayList = ArrayList()
         adapter = ListHazardReportAdapter(this@HazardReportActivity,RULE,"",displayList!!)
@@ -119,7 +135,9 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 //                                shimmerHazard.visibility = View.VISIBLE
                                 loading = false
                                 page =  page + 1
-                                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+                                }
                             }
                             Log.d("TotalHalaman","visible : $visibleItem | Total : $total | Past : $pastVisibleItem | total halaman : $halamanTotal | page : $page")
                         }
@@ -133,12 +151,12 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         cld = ConnectionLiveData(application)
         cld.observe(this@HazardReportActivity,{ isConnected->
             if (isConnected){
+                startService(connectionService)
                 shimmerHazard.visibility = View.GONE
-//                hazardList?.clear()
-//                load("1",DARI, SAMPAI)
-                hazardViewModel()
                 internetConnection.visibility = View.GONE
             }else{
+                stopService(connectionService)
+                shimmerHazard.visibility = View.GONE
                 internetConnection.visibility= View.VISIBLE
             }
         })
@@ -251,20 +269,20 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         })
         viewModel.setStatus().observe(this@HazardReportActivity,{
             if(it){
-                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+                GlobalScope.launch(Dispatchers.IO) {
+                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+                }
             }else{
 //                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
             }
             Log.d("SetStatus","$it")
         })
     }
-
     override fun onResume() {
+        LocalBroadcastManager.getInstance(this@HazardReportActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
+        hazardViewModel()
         pullRefreshHazard.visibility=View.GONE
         shimmerHazard.visibility = View.VISIBLE
-        viewModel.offlineHazard(this@HazardReportActivity,1, DARI, SAMPAI)
-        Log.d("hazardList","RESUME")
-
         checkNetworkConnection()
         super.onResume()
     }
@@ -272,7 +290,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         menuInflater.inflate(R.menu.menu_add,menu)
         return super.onCreateOptionsMenu(menu)
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==R.id.newForm){
             var intent = Intent(this@HazardReportActivity,NewHazardActivity::class.java)
@@ -280,7 +297,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         }
         return super.onOptionsItemSelected(item)
     }
-
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
@@ -354,28 +370,27 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         private  var TOTAL_HAZARD_USER = "TOTAL_HAZARD_USER"
         private var RULE ="RULE"
     }
-
     override fun onItemClick(uid: String?) {
         var intent = Intent(this@HazardReportActivity,DetailHazardActivity::class.java)
         intent.putExtra(DetailHazardActivity.UID,uid.toString())
         startActivity(intent)
     }
-
     override fun onUpdateClick(uid: String?) {
         Toasty.info(this@HazardReportActivity,uid!!).show()
     }
-
     override fun onVerify(uid: String?, option: Int?) {
 
     }
-
     override fun onClick(v: View?) {
         hazardList?.clear()
+        val fmt: DateTimeFormatter = DateTimeFormat.forPattern("d MMMM yyyy")
         if(v?.id==R.id.txtTglDari){
-            ConfigUtil.showDialogTgl(txtTglDari,this@HazardReportActivity)
+            var dari = fmt.parseLocalDate(DARI).toString()
+            ConfigUtil.dialogTglCurdate(txtTglDari,this@HazardReportActivity, dari)
         }
         if(v?.id==R.id.txtTglSampai){
-            ConfigUtil.showDialogTgl(txtTglSampai,this@HazardReportActivity)
+            var sampai = fmt.parseLocalDate(SAMPAI).toString()
+            ConfigUtil.dialogTglCurdate(txtTglSampai,this@HazardReportActivity, sampai)
         }
         if(v?.id==R.id.btnLoad){
             page=1
@@ -387,9 +402,44 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             var sampai = txtTglSampai.text.toString()
             DARI = dari
             SAMPAI = sampai
-            viewModel.onlineHazard(this@HazardReportActivity, dari, sampai)
-//            viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
-
+            startService(connectionService)
+        }
+    }
+    private fun reciever() {
+        tokenPassingReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val bundle = intent.extras
+                if (bundle != null) {
+                    if (bundle.containsKey("bsConnection")) {
+                        val tokenData = bundle.getString("bsConnection")
+                        Log.d("ServiceName","${tokenData} Index")
+                        if(tokenData=="Online"){
+                            GlobalScope.launch(Dispatchers.IO) {
+                                viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI)
+                            }
+                            internetConnection.visibility= View.GONE
+//                            stopService(connectionService)
+                            Log.d("ConnectionCheck",tokenData)
+                        }else if(tokenData=="Offline"){
+                            GlobalScope.launch(Dispatchers.IO) {
+                                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+                            }
+                            Log.d("ConnectionCheck",tokenData)
+                            Toasty.error(this@HazardReportActivity,"No Internet Connection").show()
+//                            stopService(connectionService)
+                            internetConnection.visibility= View.VISIBLE
+                        }else if(tokenData=="Disabled"){
+                            GlobalScope.launch(Dispatchers.IO) {
+                                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+                            }
+                            Log.d("ConnectionCheck",tokenData)
+//                            stopService(connectionService)
+                            internetConnection.visibility= View.VISIBLE
+                            Toasty.error(this@HazardReportActivity,"Network Disabled").show()
+                        }
+                    }
+                }
+            }
         }
     }
 }

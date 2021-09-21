@@ -18,6 +18,25 @@
     app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/internetConnection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bgCancel"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_baseline_info_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/white"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:text="No Internet Access"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
             android:background="@color/white"
             android:padding="10dp"
             android:layout_width="match_parent"
@@ -189,27 +208,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/internetConnection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bgCancel"
-        android:gravity="center_horizontal"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_baseline_info_24"
-            android:drawablePadding="10dp"
-            android:drawableTint="@color/white"
-            android:gravity="center_vertical"
-            android:padding="5dp"
-            android:text="No Internet Access"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
