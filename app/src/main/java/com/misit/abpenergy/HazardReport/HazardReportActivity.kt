@@ -146,6 +146,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 }
             }
         })
+        hazardViewModel()
+
     }
     private fun checkNetworkConnection() {
         cld = ConnectionLiveData(application)
@@ -280,7 +282,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     }
     override fun onResume() {
         LocalBroadcastManager.getInstance(this@HazardReportActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
-        hazardViewModel()
         pullRefreshHazard.visibility=View.GONE
         shimmerHazard.visibility = View.VISIBLE
         checkNetworkConnection()
@@ -418,7 +419,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                                 viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI)
                             }
                             internetConnection.visibility= View.GONE
-//                            stopService(connectionService)
+                            stopService(connectionService)
                             Log.d("ConnectionCheck",tokenData)
                         }else if(tokenData=="Offline"){
                             GlobalScope.launch(Dispatchers.IO) {
@@ -426,14 +427,14 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             }
                             Log.d("ConnectionCheck",tokenData)
                             Toasty.error(this@HazardReportActivity,"No Internet Connection").show()
-//                            stopService(connectionService)
+                            stopService(connectionService)
                             internetConnection.visibility= View.VISIBLE
                         }else if(tokenData=="Disabled"){
                             GlobalScope.launch(Dispatchers.IO) {
                                 viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
                             }
                             Log.d("ConnectionCheck",tokenData)
-//                            stopService(connectionService)
+                            stopService(connectionService)
                             internetConnection.visibility= View.VISIBLE
                             Toasty.error(this@HazardReportActivity,"Network Disabled").show()
                         }
