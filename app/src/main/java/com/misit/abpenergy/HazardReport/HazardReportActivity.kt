@@ -1,11 +1,13 @@
 package com.misit.abpenergy.HazardReport
 
 import android.content.Intent
+import android.graphics.LinearGradient
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,7 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Adapter.ListHazardReportAdapter
 import com.misit.abpenergy.HazardReport.Response.HazardItem
 import com.misit.abpenergy.HazardReport.Response.ListHazard
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.HeaderDataSourceOffline
 import com.misit.abpenergy.HazardReport.SQLite.Model.HeaderListModel
 import com.misit.abpenergy.HazardReport.ViewModel.HeaderViewModel
 import com.misit.abpenergy.Login.LoginActivity
@@ -26,6 +29,9 @@ import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_hazard_report.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +40,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 
     private var adapter: ListHazardReportAdapter? = null
     private var hazardList:MutableList<HazardItem>?=null
+    private var displayList:MutableList<HazardItem>?=null
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var page : Int=1
     private var visibleItem : Int=0
@@ -41,8 +48,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     private var pastVisibleItem : Int=0
     private var loading : Boolean=false
     var curentPosition: Int=0
+    private var halamanTotal=1
     private lateinit var cld: ConnectionLiveData
     lateinit var viewModel: HeaderViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hazard_report)
@@ -65,7 +74,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         viewModel = ViewModelProvider(this@HazardReportActivity).get(HeaderViewModel::class.java)
 
         hazardList= ArrayList()
-        adapter = ListHazardReportAdapter(this@HazardReportActivity,RULE,"",hazardList!!)
+        displayList = ArrayList()
+        adapter = ListHazardReportAdapter(this@HazardReportActivity,RULE,"",displayList!!)
         val linearLayoutManager = LinearLayoutManager(this@HazardReportActivity)
         rvHazardList?.layoutManager = linearLayoutManager
         rvHazardList.adapter =adapter
@@ -96,6 +106,28 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         txtTglDari.setOnClickListener(this)
         txtTglSampai.setOnClickListener(this)
         btnLoad.setOnClickListener(this)
+        rvHazardList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    visibleItem = recyclerView.layoutManager!!.childCount
+                    total = recyclerView.layoutManager!!.itemCount
+                    pastVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if(loading){
+                        if ((visibleItem + pastVisibleItem) >= total) {
+                            if(page < halamanTotal){
+//                                pullRefreshHazard.visibility=View.GONE
+//                                shimmerHazard.visibility = View.VISIBLE
+                                loading = false
+                                page =  page + 1
+                                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+                            }
+                            Log.d("TotalHalaman","visible : $visibleItem | Total : $total | Past : $pastVisibleItem | total halaman : $halamanTotal | page : $page")
+                        }
+
+                    }
+                }
+            }
+        })
     }
     private fun checkNetworkConnection() {
         cld = ConnectionLiveData(application)
@@ -112,12 +144,12 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         })
     }
     private fun hazardViewModel(){
-        rvHazardList.adapter = adapter
         viewModel.hazardObserver().observe(this@HazardReportActivity) {
-            if (it != null) {
-                it.forEach { data ->
-                    hazardList!!.add(
-                        HazardItem(
+            if (it.size!=0) {
+                if(displayList!!.size==0){
+                    hazardList?.clear()
+                    it.forEach { data ->
+                        hazardList?.add(HazardItem(
                             "",
                             0,
                             "",
@@ -130,7 +162,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             data.lokasi_detail,
                             data.uid,
                             "",
-                            0,
+                            data.idKeparahan,
                             data.user_input,
                             0,
                             "",
@@ -140,39 +172,99 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             "",
                             0,
                             "",
-                            0,
+                            data.idKemungkinan,
                             "",
                             0,
-                            "",
+                            data.time_input,
                             data.jam_hazard,
                             "",
                             data.lokasi,
                             "",
                             data.idHazard,
-                            "",
+                            data.deskripsi,
                             "",
                             data.time_input,
                             data.tgl_hazard,
                             "",
-                            0,
+                            data.status,
                             ""
-                        )
-                    )
+                            ))
+                    }
+                    hazardList?.let { it1 -> displayList?.addAll(it1) }
+                    loading=true
+                    adapter?.notifyDataSetChanged()
+                }else{
+                    hazardList?.clear()
+                    it.forEach { data ->
+                        hazardList?.add(HazardItem(
+                            "",
+                            0,
+                            "",
+                            0,
+                            data.status_perbaikan,
+                            "",
+                            data.perusahaan,
+                            "",
+                            "",
+                            data.lokasi_detail,
+                            data.uid,
+                            "",
+                            data.idKeparahan,
+                            data.user_input,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            0,
+                            "",
+                            data.idKemungkinan,
+                            "",
+                            0,
+                            data.time_input,
+                            data.jam_hazard,
+                            "",
+                            data.lokasi,
+                            "",
+                            data.idHazard,
+                            data.deskripsi,
+                            "",
+                            data.time_input,
+                            data.tgl_hazard,
+                            "",
+                            data.status,
+                            ""
+                        ))
+                    }
+                    curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    hazardList?.let { it1 -> displayList?.addAll(it1) }
+                    adapter?.notifyDataSetChanged()
                 }
-
-            } else {
-
             }
-            Log.d("modelHazard", hazardList.toString())
-
+            pullRefreshHazard.visibility = View.VISIBLE
+            shimmerHazard.visibility = View.GONE
+            swipeRefreshLayout.isRefreshing=false
         }
-        adapter?.notifyDataSetChanged()
-
-        viewModel.offlineHazard(this@HazardReportActivity)
-//        viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI)
-
+        viewModel.hazardPaginate().observe(this@HazardReportActivity,{
+            halamanTotal = it
+        })
+        viewModel.setStatus().observe(this@HazardReportActivity,{
+            if(it){
+                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+            }else{
+//                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+            }
+            Log.d("SetStatus","$it")
+        })
     }
+
     override fun onResume() {
+        pullRefreshHazard.visibility=View.GONE
+        shimmerHazard.visibility = View.VISIBLE
+        viewModel.offlineHazard(this@HazardReportActivity,1, DARI, SAMPAI)
+        Log.d("hazardList","RESUME")
+
         checkNetworkConnection()
         super.onResume()
     }
@@ -278,6 +370,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     }
 
     override fun onClick(v: View?) {
+        hazardList?.clear()
         if(v?.id==R.id.txtTglDari){
             ConfigUtil.showDialogTgl(txtTglDari,this@HazardReportActivity)
         }
@@ -285,14 +378,18 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             ConfigUtil.showDialogTgl(txtTglSampai,this@HazardReportActivity)
         }
         if(v?.id==R.id.btnLoad){
-//            hazardList!!.clear()
+            page=1
+            hazardList?.clear()
+            displayList?.clear()
+            pullRefreshHazard.visibility=View.GONE
+            shimmerHazard.visibility = View.VISIBLE
             var dari = txtTglDari.text.toString()
             var sampai = txtTglSampai.text.toString()
-//            load("1",dari!!,sampai!!)
-//            this@HazardReportActivity?.runOnUiThread {
-//                adapter?.notifyDataSetChanged()
-//            }
+            DARI = dari
+            SAMPAI = sampai
             viewModel.onlineHazard(this@HazardReportActivity, dari, sampai)
+//            viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+
         }
     }
 }
