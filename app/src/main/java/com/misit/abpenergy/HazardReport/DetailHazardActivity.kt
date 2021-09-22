@@ -223,7 +223,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
         if(dataHazard.nilaiRiskSebelum!=null){
             var itemHazard =  dataHazard.itemHazardList
-            Log.d("riskSebelum","${dataHazard.riskSebelum}")
+            Log.d("riskSebelum","${dataHazard}")
             tvTotalResiko.text = "${itemHazard!!.nilaiKemungkinan} x ${itemHazard!!.nilaiKeparahan} = ${dataHazard.nilaiRiskSebelum}"
             tvKDresiko.text ="${dataHazard.riskSebelum!!.kodeBahaya}"
             tvRisk.text = "${dataHazard.riskSebelum!!.kategori} "
