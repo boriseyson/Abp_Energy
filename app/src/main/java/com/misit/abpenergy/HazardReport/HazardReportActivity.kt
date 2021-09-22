@@ -178,6 +178,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         hazardList?.let { it1 -> displayList?.addAll(it1) }
                         loading=true
                     adapter?.notifyDataSetChanged()
+                        btnLoad.isEnabled = true
                     }else{
                         curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                         hazardList?.addAll(it)
@@ -185,6 +186,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         adapter?.notifyDataSetChanged()
                         loading=true
                     }
+                }else{
+                    btnLoad.isEnabled = true
                 }
                 pullRefreshHazard.visibility = View.VISIBLE
                 shimmerHazard.visibility = View.GONE
@@ -194,6 +197,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 halamanTotal = it
             })
             viewModel.setStatus().observe(this@HazardReportActivity,{
+                swipeRefreshLayout.isRefreshing=true
                 if(it){
                     GlobalScope.launch(Dispatchers.IO) {
                         viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
@@ -237,68 +241,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         onBackPressed()
         return super.onSupportNavigateUp()
     }
-    fun load(hal:String,dari:String,sampai:String){
-        swipeRefreshLayout.isRefreshing=true
-        val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
-        val call = apiEndPoint.getListHazard(USERNAME,dari,sampai,hal)
-        call?.enqueue(object : Callback<ListHazard> {
-            override fun onFailure(call: Call<ListHazard>, t: Throwable) {
-                swipeRefreshLayout.isRefreshing=false
-                Toasty.error(this@HazardReportActivity,"Error : No Internet Connection", Toasty.LENGTH_SHORT).show()
-                PopupUtil.dismissDialog()
-            }
 
-            override fun onResponse(call: Call<ListHazard>, response: Response<ListHazard>) {
-                var listHazard = response.body()
-                if(listHazard!=null){
-                    totalHazard.text = listHazard.total.toString()
-                    if (listHazard.data!=null){
-                        PopupUtil.showProgress(this@HazardReportActivity,"Loading...","Membuat Hazard Report!")
-                        loading=true
-                        hazardList!!.addAll(listHazard.data!!)
-//                        adapter?.notifyDataSetChanged()
-                        pullRefreshHazard.visibility=View.VISIBLE
-                        shimmerHazard.visibility = View.GONE
-                    }else{
-                        curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-//                        hazardList!!.addAll(listHazard.data!!)
-                        adapter?.notifyDataSetChanged()
-                        pullRefreshHazard.visibility=View.VISIBLE
-                        shimmerHazard.visibility = View.GONE
-                    }
-                }
-                rvHazardList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-
-                        if (dy > 0) {
-                            visibleItem = recyclerView.layoutManager!!.childCount
-                            total = recyclerView.layoutManager!!.itemCount
-                            pastVisibleItem =
-                                (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                            if (loading) {
-                                if ((visibleItem + pastVisibleItem) >= total) {
-                                    loading = false
-                                    page++
-                                    load(page.toString(), dari,sampai)
-                                    pullRefreshHazard.visibility=View.GONE
-                                    shimmerHazard.visibility = View.VISIBLE
-                                }
-                            }
-                        }
-                    }
-                    override fun onScrollStateChanged(
-                        recyclerView: RecyclerView,
-                        newState: Int
-                    ) {
-                        super.onScrollStateChanged(recyclerView, newState)
-                    }
-                })
-                    PopupUtil.dismissDialog()
-                    swipeRefreshLayout.isRefreshing=false
-
-            }
-        })
-    }
     companion object{
         var USERNAME="USERNAME"
         private  var DARI="01 January 2021"
@@ -329,6 +272,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             ConfigUtil.dialogTglCurdate(txtTglSampai,this@HazardReportActivity, sampai)
         }
         if(v?.id==R.id.btnLoad){
+            btnLoad.isEnabled = false
             page=1
             hazardList?.clear()
             displayList?.clear()

@@ -5,16 +5,19 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Response.DetailHazardResponse
-import com.misit.abpenergy.HazardReport.Response.HazardItem
+import com.misit.abpenergy.HazardReport.ViewModel.HazardDetailViewModel
+import com.misit.abpenergy.HazardReport.ViewModel.HeaderViewModel
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.PopupUtil
@@ -22,6 +25,9 @@ import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_detail_hazard.*
 import kotlinx.android.synthetic.main.detail_hazard.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -36,6 +42,8 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var updateBukti:String?=null
     private var adminHazard:String?=null
     private var fotoPJ:String?=null
+    lateinit var viewModel: HazardDetailViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_hazard)
@@ -50,7 +58,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         uid = intent.getStringExtra(UID)
         adminHazard = intent.getStringExtra("ALLHazard")
 
-        loadDetail(uid.toString())
+//        loadDetail(uid.toString())
         floatUpdateDenganGambar.setOnClickListener(this)
         floatUpdateStatus.setOnClickListener(this)
         cvImageDetail.setOnClickListener(this)
@@ -58,6 +66,8 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         pjFOTO.setOnClickListener(this)
         matrikResiko.setOnClickListener(this)
         matrikResikoSesudah.setOnClickListener(this)
+        viewModel = ViewModelProvider(this@DetailHazardActivity).get(HazardDetailViewModel::class.java)
+        initViewModel()
     }
     override fun onResume() {
         if(adminHazard!=null){
@@ -107,8 +117,13 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode==Activity.RESULT_OK){
-            loadDetail(uid!!)
+            PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
+//            loadDetail(uid!!)
+            GlobalScope.launch(Dispatchers.IO) {
+                viewModel?.loadDetailOnline("${uid}",this@DetailHazardActivity)
+            }
         }
+
         super.onActivityResult(requestCode, resultCode, data)
     }
     override fun onSupportNavigateUp(): Boolean {
@@ -116,7 +131,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         return super.onSupportNavigateUp()
     }
     fun loadDetail(uid:String){
-        PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Membuat Hazard Report!")
+        PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getItemHazard(uid)
         call?.enqueue(object : Callback<DetailHazardResponse> {
@@ -127,104 +142,125 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
 
             override fun onResponse(call: Call<DetailHazardResponse>, response: Response<DetailHazardResponse>) {
                 var dataHazard = response.body()
-                val fmt: DateTimeFormatter = DateTimeFormat.forPattern("d MMMM, yyyy")
 
                 if(dataHazard!=null){
                     if(dataHazard.itemHazardList!=null){
-                        var itemHazard =dataHazard.itemHazardList!!
-                        tvPerusahaanD.text = itemHazard.perusahaan
-                        tvTanggalD.text = LocalDate.parse(itemHazard.tglHazard).toString(fmt)
-                        tvJamD.text = itemHazard.jamHazard
-                        tvLokasiD.text = itemHazard.lokasiHazard
-                        tvLokasiDetails.text= itemHazard.lokasiDetail
-                        tvBahayaD.text = itemHazard.deskripsi
-                        tvKemungkinan.text = itemHazard.kemungkinanSebelum
-                        tvKeparahan.text = itemHazard.keparahanSebelum
-                        tvKemungkinanSesudah.text = itemHazard.kemungkinanSesudah
-                        tvKeparahanSesudah.text = itemHazard.keparahanSesudah
-                        tvPengendalian.text = itemHazard.namaPengendalian
-                        tvKatBahayaD.text = itemHazard.katBahaya
-                        tvPerbaikanD.text = itemHazard.tindakan
-                        tvStatusPerbaikanD.text = itemHazard.statusPerbaikan
-                        tvDibuat.text = itemHazard.namaLengkap
-                        tvNilaiKeparahan.text = itemHazard.nilaiKeparahan.toString()
-                        tvNilaiKemungkinan.text = itemHazard.nilaiKemungkinan.toString()
-
-                        if(itemHazard.tglSelesai!=null){
-                            btnFLMenu.visibility=View.GONE
-                            tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)
-                        }else{
-                            imgStatus.visibility=View.GONE
-                            btnFLMenu.visibility=View.VISIBLE
-                            tvTGLSelesaiD.text = "-"
-                        }
-                        if(itemHazard.jamSelesai!=null){
-                            tvJamSelesaiD.text = itemHazard.jamSelesai
-                        }else{
-                            tvJamSelesaiD.text = "-"
-                        }
-                        namaPJ.text = itemHazard.namaPJ
-                        nikPJ.text = itemHazard.nikPJ
-                        Glide.with(this@DetailHazardActivity)
-                            .load("https://abpjobsite.com/bukti_hazard/"+itemHazard?.bukti)
-                            .into(imgView)
-
-                        Glide.with(this@DetailHazardActivity)
-                            .load("https://abpjobsite.com/bukti_hazard/penanggung_jawab/"+itemHazard?.fotoPJ)
-                            .into(pjFOTO)
-                        bukti = itemHazard?.bukti
-                        fotoPJ = itemHazard.fotoPJ
-                        if(itemHazard.updateBukti!=null){
-                            Glide.with(this@DetailHazardActivity)
-                                .load("https://abpjobsite.com/bukti_hazard/update/"+itemHazard?.updateBukti)
-                                .into(imgStatus)
-                            imgStatus.visibility=View.VISIBLE
-                            tvStatusPerbaikan.visibility=View.VISIBLE
-                            cvStatusPerbaikan.visibility=View.VISIBLE
-                            updateBukti = itemHazard?.updateBukti
-                        }else{
-                            cvStatusPerbaikan.visibility=View.GONE
-                            tvStatusPerbaikan.visibility=View.GONE
-                            imgStatus.visibility=View.GONE
-                        }
-                        if(itemHazard.keteranganUpdate!=null){
-                            lnKetPerbaikan.visibility = View.VISIBLE
-                            tvKetPerbaikan.text = itemHazard.keteranganUpdate
-                        }else{
-                            lnKetPerbaikan.visibility = View.GONE
-                            tvKetPerbaikan.text = ""
-                        }
-                    }
-                    if(dataHazard.nilaiRiskSebelum!=null){
-                        var itemHazard =  dataHazard.itemHazardList
-                        tvTotalResiko.text = "${itemHazard!!.nilaiKemungkinan} x ${itemHazard!!.nilaiKeparahan} = ${dataHazard.nilaiRiskSebelum}"
-                        tvKDresiko.text ="${dataHazard.riskSebelum!!.kodeBahaya}"
-                        tvRisk.text = "${dataHazard.riskSebelum!!.kategori} "
-                        tvNilaiResiko.text = "${dataHazard.riskSebelum!!.min} - ${dataHazard.riskSebelum!!.max}"
-                        cvResiko.setCardBackgroundColor(Color.parseColor(dataHazard.riskSebelum!!.bgColor))
-                        tvRisk.setBackgroundColor(Color.parseColor(dataHazard.riskSebelum!!.bgColor))
-                        tvRisk.setTextColor(Color.parseColor(dataHazard.riskSebelum!!.txtColor))
-                    }
-                    if(dataHazard.riskSesudah!=null){
-                        lnDetMatrikResiko.visibility = View.VISIBLE
-                        var itemHazard =  dataHazard.itemHazardList
-                        tvTotalResikoSesudah.text = "${itemHazard!!.nilaiKemungkinanSesudah} x ${itemHazard!!.nilaiKeparahanSesudah} = ${dataHazard.nilaiRiskSesudah}"
-                        tvNilaiKemungkinanSesudah.text ="${itemHazard.nilaiKemungkinanSesudah}"
-                        tvNilaiKeparahanSesudah.text = "${itemHazard.nilaiKeparahanSesudah} "
-                        tvRiskSesudah.text = "${dataHazard.riskSesudah!!.kategori} "
-                        tvNilaiResikoSesudah.text = "${dataHazard.riskSesudah!!.min} - ${dataHazard.riskSesudah!!.max}"
-                        tvKDresikoSesudah.text = "${dataHazard.riskSesudah!!.kodeBahaya} "
-                        cvResikoSesudah.setCardBackgroundColor(Color.parseColor(dataHazard.riskSesudah!!.bgColor))
-                        tvRiskSesudah.setBackgroundColor(Color.parseColor(dataHazard.riskSesudah!!.bgColor))
-                        tvRiskSesudah.setTextColor(Color.parseColor(dataHazard.riskSesudah!!.txtColor))
-                    }else{
-                        lnDetMatrikResiko.visibility = View.GONE
+                        itemHazardList(dataHazard!!)
                     }
                 }
                 PopupUtil.dismissDialog()
             }
         })
 
+    }
+
+    private fun itemHazardList(dataHazard: DetailHazardResponse){
+        val fmt: DateTimeFormatter = DateTimeFormat.forPattern("d MMMM, yyyy")
+        var itemHazard =dataHazard.itemHazardList
+        if(itemHazard!=null){
+            tvPerusahaanD.text = itemHazard.perusahaan
+            tvTanggalD.text = LocalDate.parse(itemHazard.tglHazard).toString(fmt)
+            tvJamD.text = itemHazard.jamHazard
+            tvLokasiD.text = itemHazard.lokasiHazard
+            tvLokasiDetails.text= itemHazard.lokasiDetail
+            tvBahayaD.text = itemHazard.deskripsi
+            tvKemungkinan.text = itemHazard.kemungkinanSebelum
+            tvKeparahan.text = itemHazard.keparahanSebelum
+            tvKemungkinanSesudah.text = itemHazard.kemungkinanSesudah
+            tvKeparahanSesudah.text = itemHazard.keparahanSesudah
+            tvPengendalian.text = itemHazard.namaPengendalian
+            tvKatBahayaD.text = itemHazard.katBahaya
+            tvPerbaikanD.text = itemHazard.tindakan
+            tvStatusPerbaikanD.text = itemHazard.statusPerbaikan
+            tvDibuat.text = itemHazard.namaLengkap
+            tvNilaiKeparahan.text = itemHazard.nilaiKeparahan.toString()
+            tvNilaiKemungkinan.text = itemHazard.nilaiKemungkinan.toString()
+
+            if(itemHazard.tglSelesai!=null){
+                btnFLMenu.visibility=View.GONE
+                tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)
+            }else{
+                imgStatus.visibility=View.GONE
+                btnFLMenu.visibility=View.VISIBLE
+                tvTGLSelesaiD.text = "-"
+            }
+            if(itemHazard.jamSelesai!=null){
+                tvJamSelesaiD.text = itemHazard.jamSelesai
+            }else{
+                tvJamSelesaiD.text = "-"
+            }
+            namaPJ.text = itemHazard.namaPJ
+            nikPJ.text = itemHazard.nikPJ
+            Glide.with(this@DetailHazardActivity)
+                .load("https://abpjobsite.com/bukti_hazard/"+itemHazard?.bukti)
+                .into(imgView)
+
+            Glide.with(this@DetailHazardActivity)
+                .load("https://abpjobsite.com/bukti_hazard/penanggung_jawab/"+itemHazard?.fotoPJ)
+                .into(pjFOTO)
+            bukti = itemHazard?.bukti
+            fotoPJ = itemHazard.fotoPJ
+            if(itemHazard.updateBukti!=null){
+                Glide.with(this@DetailHazardActivity)
+                    .load("https://abpjobsite.com/bukti_hazard/update/"+itemHazard?.updateBukti)
+                    .into(imgStatus)
+                imgStatus.visibility=View.VISIBLE
+                tvStatusPerbaikan.visibility=View.VISIBLE
+                cvStatusPerbaikan.visibility=View.VISIBLE
+                updateBukti = itemHazard?.updateBukti
+            }else{
+                cvStatusPerbaikan.visibility=View.GONE
+                tvStatusPerbaikan.visibility=View.GONE
+                imgStatus.visibility=View.GONE
+            }
+            if(itemHazard.keteranganUpdate!=null){
+                lnKetPerbaikan.visibility = View.VISIBLE
+                tvKetPerbaikan.text = itemHazard.keteranganUpdate
+            }else{
+                lnKetPerbaikan.visibility = View.GONE
+                tvKetPerbaikan.text = ""
+            }
+        }
+        if(dataHazard.nilaiRiskSebelum!=null){
+            var itemHazard =  dataHazard.itemHazardList
+            Log.d("riskSebelum","${dataHazard.riskSebelum}")
+            tvTotalResiko.text = "${itemHazard!!.nilaiKemungkinan} x ${itemHazard!!.nilaiKeparahan} = ${dataHazard.nilaiRiskSebelum}"
+            tvKDresiko.text ="${dataHazard.riskSebelum!!.kodeBahaya}"
+            tvRisk.text = "${dataHazard.riskSebelum!!.kategori} "
+            tvNilaiResiko.text = "${dataHazard.riskSebelum!!.min} - ${dataHazard.riskSebelum!!.max}"
+            cvResiko.setCardBackgroundColor(Color.parseColor(dataHazard.riskSebelum!!.bgColor))
+            tvRisk.setBackgroundColor(Color.parseColor(dataHazard.riskSebelum!!.bgColor))
+            tvRisk.setTextColor(Color.parseColor(dataHazard.riskSebelum!!.txtColor))
+        }
+        if(dataHazard.riskSesudah!=null){
+            lnDetMatrikResiko.visibility = View.VISIBLE
+            var itemHazard =  dataHazard.itemHazardList
+            tvTotalResikoSesudah.text = "${itemHazard!!.nilaiKemungkinanSesudah} x ${itemHazard!!.nilaiKeparahanSesudah} = ${dataHazard.nilaiRiskSesudah}"
+            tvNilaiKemungkinanSesudah.text ="${itemHazard.nilaiKemungkinanSesudah}"
+            tvNilaiKeparahanSesudah.text = "${itemHazard.nilaiKeparahanSesudah} "
+            tvRiskSesudah.text = "${dataHazard.riskSesudah!!.kategori} "
+            tvNilaiResikoSesudah.text = "${dataHazard.riskSesudah!!.min} - ${dataHazard.riskSesudah!!.max}"
+            tvKDresikoSesudah.text = "${dataHazard.riskSesudah!!.kodeBahaya} "
+            cvResikoSesudah.setCardBackgroundColor(Color.parseColor(dataHazard.riskSesudah!!.bgColor))
+            tvRiskSesudah.setBackgroundColor(Color.parseColor(dataHazard.riskSesudah!!.bgColor))
+            tvRiskSesudah.setTextColor(Color.parseColor(dataHazard.riskSesudah!!.txtColor))
+        }else{
+            lnDetMatrikResiko.visibility = View.GONE
+        }
+    }
+    private fun initViewModel(){
+        viewModel.hazardDetailObserver()?.observe(this@DetailHazardActivity,{
+            if(it!=null){
+                itemHazardList(it)
+                PopupUtil.dismissDialog()
+            }
+        })
+        GlobalScope.launch(Dispatchers.IO) {
+            PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
+//            viewModel?.loadDetailOnline("${uid}",this@DetailHazardActivity)
+            viewModel?.loadDetailOffline("${uid}",this@DetailHazardActivity)
+
+        }
     }
     companion object{
         var UID = "UID"

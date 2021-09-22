@@ -186,8 +186,12 @@ data class ItemHazardList(
 
 	@field:SerializedName("namaPJ")
 	var namaPJ: String? = null,
+
 	@field:SerializedName("fotoPJ_option")
-	var fotoPjOption: Int? = null
+	var fotoPjOption: Int? = null,
+
+	@field:SerializedName("tgl_tenggat")
+	var tgl_tenggat: String? = null
 
 
 )
