@@ -54,7 +54,7 @@ class ListHazardReportAdapter (private val context: Context,
         holder.tvStatus.text = hazardList.statusPerbaikan
         holder.tvUSER.text = hazardList.namaLengkap
         holder.tvPJ.text = hazardList.namaPJ
-
+Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
         if(hazardList.statusPerbaikan=="BELUM SELESAI"){
             holder.lnHeader.setBackgroundResource(R.color.bgCancel)
             holder.tvDeskripsiBahaya.setBackgroundResource(R.color.bgCancel)

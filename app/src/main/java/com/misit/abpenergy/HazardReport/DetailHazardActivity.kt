@@ -116,7 +116,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         return super.onSupportNavigateUp()
     }
     fun loadDetail(uid:String){
-        PopupUtil.showProgress(this@DetailHazardActivity,"Loading...","Membuat Hazard Report!")
+        PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Membuat Hazard Report!")
         val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
         val call = apiEndPoint.getItemHazard(uid)
         call?.enqueue(object : Callback<DetailHazardResponse> {

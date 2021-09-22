@@ -79,6 +79,9 @@ data class HazardItem(
 	@field:SerializedName("idKeparahan")
 	var idKeparahan: Int? = null,
 
+	@field:SerializedName("idKeparahanSesudah")
+	var idKeparahanSesudah: Int? = null,
+
 	@field:SerializedName("user_input")
 	var userInput: String? = null,
 
@@ -100,7 +103,7 @@ data class HazardItem(
 	@field:SerializedName("fotoPJ")
 	var fotoPJ: String? = null,
 
-	@field:SerializedName("idvalidation")
+	@field:SerializedName("idValidation")
 	var idvalidation: Int? = null,
 
 	@field:SerializedName("jam_selesai")
@@ -108,6 +111,9 @@ data class HazardItem(
 
 	@field:SerializedName("idKemungkinan")
 	var idKemungkinan: Int? = null,
+
+	@field:SerializedName("idKemungkinanSesudah")
+	var idKemungkinanSesudah: Int? = null,
 
 	@field:SerializedName("jam_varid")
 	var jamvarid: String? = null,
@@ -148,9 +154,16 @@ data class HazardItem(
 	@field:SerializedName("keparahan")
 	var keparahan: String? = null,
 
+	@field:SerializedName("fotoPJ_option")
+	var fotoPJ_option: Int? = null,
+
 	@field:SerializedName("status")
 	var status: Int? = null,
 
 	@field:SerializedName("namaPJ")
-	var namaPJ: String? = null
+	var namaPJ: String? = null,
+
+	@field:SerializedName("tgl_tenggat")
+	var tgl_tenggat: String? = null
+
 )

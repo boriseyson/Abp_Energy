@@ -30,6 +30,7 @@ import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Service.ConnectionService
 import com.misit.abpenergy.Service.InitService
+import com.misit.abpenergy.TestActivity
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.ConnectionLiveData
 import com.misit.abpenergy.Utils.PopupUtil
@@ -85,6 +86,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             startActivity(intent)
             finish()
         }
+        checkNetworkConnection()
         reciever()
         connectionService = Intent(this@HazardReportActivity, ConnectionService::class.java)
 //        startService(connectionService)
@@ -98,8 +100,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         adapter?.setListener(this)
         DARI =PrefsUtil.getInstance().getStringState(PrefsUtil.AWAL_BULAN,"")
         SAMPAI = PrefsUtil.getInstance().getStringState(PrefsUtil.AKHIR_BULAN,"")
-        TOTAL_HAZARD_USER = PrefsUtil.getInstance().getStringState(PrefsUtil.TOTAL_HAZARD_USER!!,"0")
-        hazardVerify.text= TOTAL_HAZARD_USER
+//        TOTAL_HAZARD_USER = PrefsUtil.getInstance().getStringState(PrefsUtil.TOTAL_HAZARD_USER!!,"0")
+//        hazardVerify.text= TOTAL_HAZARD_USER
         txtTglDari.setText(DARI)
         txtTglSampai.setText(SAMPAI)
         swipeRefreshLayout = findViewById(R.id.pullRefreshHazard)
@@ -107,7 +109,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             override fun onRefresh() {
                 rvHazardList.adapter = adapter
                 page=1
-//                hazardList?.clear()
+                hazardList?.clear()
+                displayList?.clear()
+                startService(connectionService)
+
 //                load(page.toString(), DARI, SAMPAI)
                 pullRefreshHazard.visibility=View.VISIBLE
                 shimmerHazard.visibility = View.GONE
@@ -163,128 +168,58 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             }
         })
     }
-    private fun hazardViewModel(){
-        viewModel.hazardObserver().observe(this@HazardReportActivity) {
-            if (it.size!=0) {
-                if(displayList!!.size==0){
+        private fun hazardViewModel() {
+            viewModel.hazardsObserver().observe(this@HazardReportActivity,{
+                if(it.size>0){
                     hazardList?.clear()
-                    it.forEach { data ->
-                        hazardList?.add(HazardItem(
-                            "",
-                            0,
-                            "",
-                            0,
-                            data.status_perbaikan,
-                            "",
-                            data.perusahaan,
-                            "",
-                            "",
-                            data.lokasi_detail,
-                            data.uid,
-                            "",
-                            data.idKeparahan,
-                            data.user_input,
-                            0,
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            0,
-                            "",
-                            data.idKemungkinan,
-                            "",
-                            0,
-                            data.time_input,
-                            data.jam_hazard,
-                            "",
-                            data.lokasi,
-                            "",
-                            data.idHazard,
-                            data.deskripsi,
-                            "",
-                            data.time_input,
-                            data.tgl_hazard,
-                            "",
-                            data.status,
-                            ""
-                            ))
-                    }
-                    hazardList?.let { it1 -> displayList?.addAll(it1) }
-                    loading=true
+                    if(displayList!!.size==0){
+                        displayList?.clear()
+                        hazardList?.addAll(it)
+                        hazardList?.let { it1 -> displayList?.addAll(it1) }
+                        loading=true
                     adapter?.notifyDataSetChanged()
+                    }else{
+                        curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                        hazardList?.addAll(it)
+                        hazardList?.let { it1 -> displayList?.addAll(it1) }
+                        adapter?.notifyDataSetChanged()
+                        loading=true
+                    }
+                }
+                pullRefreshHazard.visibility = View.VISIBLE
+                shimmerHazard.visibility = View.GONE
+                swipeRefreshLayout.isRefreshing=false
+            })
+            viewModel.hazardPaginate().observe(this@HazardReportActivity,{
+                halamanTotal = it
+            })
+            viewModel.setStatus().observe(this@HazardReportActivity,{
+                if(it){
+                    GlobalScope.launch(Dispatchers.IO) {
+                        viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
+                    }
+                }
+                Log.d("SetStatus","$it")
+            })
+            viewModel.totalHazardUsers.observe(this@HazardReportActivity,{
+                if(it!=null){
+                    totalHazard.text=it
                 }else{
-                    hazardList?.clear()
-                    it.forEach { data ->
-                        hazardList?.add(HazardItem(
-                            "",
-                            0,
-                            "",
-                            0,
-                            data.status_perbaikan,
-                            "",
-                            data.perusahaan,
-                            "",
-                            "",
-                            data.lokasi_detail,
-                            data.uid,
-                            "",
-                            data.idKeparahan,
-                            data.user_input,
-                            0,
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            0,
-                            "",
-                            data.idKemungkinan,
-                            "",
-                            0,
-                            data.time_input,
-                            data.jam_hazard,
-                            "",
-                            data.lokasi,
-                            "",
-                            data.idHazard,
-                            data.deskripsi,
-                            "",
-                            data.time_input,
-                            data.tgl_hazard,
-                            "",
-                            data.status,
-                            ""
-                        ))
-                    }
-                    curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                    hazardList?.let { it1 -> displayList?.addAll(it1) }
-                    adapter?.notifyDataSetChanged()
+                    totalHazard.text="0"
                 }
-            }
-            pullRefreshHazard.visibility = View.VISIBLE
-            shimmerHazard.visibility = View.GONE
-            swipeRefreshLayout.isRefreshing=false
+            })
+            viewModel.hazardUserVerify.observe(this@HazardReportActivity,{
+                if(it!=null){
+                    hazardVerify.text = it
+                }else{
+                    hazardVerify.text = "0"
+                }
+            })
         }
-        viewModel.hazardPaginate().observe(this@HazardReportActivity,{
-            halamanTotal = it
-        })
-        viewModel.setStatus().observe(this@HazardReportActivity,{
-            if(it){
-                GlobalScope.launch(Dispatchers.IO) {
-                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
-                }
-            }else{
-//                viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
-            }
-            Log.d("SetStatus","$it")
-        })
-    }
     override fun onResume() {
         LocalBroadcastManager.getInstance(this@HazardReportActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
         pullRefreshHazard.visibility=View.GONE
         shimmerHazard.visibility = View.VISIBLE
-        checkNetworkConnection()
         super.onResume()
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -415,6 +350,9 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         val tokenData = bundle.getString("bsConnection")
                         Log.d("ServiceName","${tokenData} Index")
                         if(tokenData=="Online"){
+                            page = 1
+                            hazardList?.clear()
+                            displayList?.clear()
                             GlobalScope.launch(Dispatchers.IO) {
                                 viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI)
                             }
@@ -442,5 +380,11 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 }
             }
         }
+    }
+
+    override fun onStop() {
+        LocalBroadcastManager.getInstance(this@HazardReportActivity).unregisterReceiver(tokenPassingReceiver!!)
+
+        super.onStop()
     }
 }
