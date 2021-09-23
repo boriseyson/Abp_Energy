@@ -3,6 +3,7 @@ package com.misit.abpenergy.HazardReport
 import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
+import android.app.IntentService
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.*
@@ -42,6 +43,7 @@ import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
+import com.misit.abpenergy.Service.ConnectionService
 import com.misit.abpenergy.Service.JobServices
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.*
@@ -101,7 +103,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var pjOption:Int?=null
     private var tokenPassingReceiver: BroadcastReceiver?=null
     lateinit var bgHazardService:Intent
-
+    lateinit var connectionService:Intent
+    private var scheduler: JobScheduler?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_hazard)
@@ -114,6 +117,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false)){
             USERNAME = PrefsUtil.getInstance().getStringState(PrefsUtil.USER_NAME, "")
         }
+        connectionService = Intent(this@NewHazardActivity, ConnectionService::class.java)
+        scheduler = this@NewHazardActivity.getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
         imgIn=0
         bitmap=null
         imgSelesai=0
@@ -178,13 +183,17 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         inTGLTenggat.setOnClickListener(this)
         cvPilihPJ.setOnClickListener(this@NewHazardActivity)
         bgHazardService = Intent(this@NewHazardActivity, BgHazardService::class.java)
-
+        if(ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
+            ConfigUtil.stopJobScheduler(scheduler)
+            Log.d("JobService","Not Running")
+        }
     }
 
     override fun onResume() {
-        reciever(this@NewHazardActivity)
-        loadHazardOffline()
+        reciever()
         storageDir = getExternalFilesDir("ABP_IMAGES")
+        LocalBroadcastManager.getInstance(this@NewHazardActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
+
         super.onResume()
     }
     //    VIEW LISTENER
@@ -206,10 +215,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             ConfigUtil.showDialogTime(inJam,c)
         }
         if(v!!.id==R.id.inTGLSelesai){
-            ConfigUtil.showDialogTime(inTGLSelesai,c)
+            ConfigUtil.showDialogTgl(inTGLSelesai,c)
         }
         if(v!!.id==R.id.inTGLTenggat){
-            ConfigUtil.showDialogTime(inTGLTenggat,c)
+            ConfigUtil.showDialogTgl(inTGLTenggat,c)
         }
         if(v!!.id==R.id.inJamSelesai){
             ConfigUtil.showDialogTime(inJamSelesai,c)
@@ -311,7 +320,13 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         builder.setPositiveButton("Tidak") { dialog, which ->
         }
         builder.setNegativeButton("Ya") { dialog, which ->
-            finish()
+            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
+                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
+                Log.d("JobService","Is Running")
+                finish()
+            }else{
+                finish()
+            }
         }
         builder.show()
     }
@@ -752,6 +767,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 
     val hazardHeaderModel = HazardHeaderModel()
     GlobalScope.launch(Dispatchers.Main) {
+
         val hazardHeader = HazardHeaderDataSource(this@NewHazardActivity)
         hazardHeaderModel.perusahaan = inPerusahan
         hazardHeaderModel.tgl_hazard = inTanggal
@@ -790,19 +806,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 if(hazardValidation.insertItem(hazardValidationModel)>0){
                     Log.d("SimpanOffline","Sukses")
                     if(ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")){
-                        GlobalScope.launch(Dispatchers.IO) {
-                            if (ConfigUtil.cekKoneksi(this@NewHazardActivity)){
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                    startStopService(FgHazardService::class.java,this@NewHazardActivity)
-                                }else{
-                                    startService(bgHazardService)
-                                }
-                            }
-                        }
-                        Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                        resultIntent(this@NewHazardActivity)
-                        PopupUtil.dismissDialog()
-                        finish()
+                        PopupUtil.showProgress(this@NewHazardActivity,"Membuat Hazard Report","Saving . . . !")
+                                startService(connectionService)
                     }else{
                         ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")
                     }
@@ -1204,7 +1209,11 @@ private fun getToken() {
 }
     fun isValidate2():Boolean{
         clearError()
-
+        if(inTGLTenggat.text!!.isEmpty()){
+            tilTGLTenggat.error="Please Input Someting"
+            inTGLTenggat.requestFocus()
+            return false
+        }
         if(inPerusaan.text!!.isEmpty()){
             tilPerusahaan.error="Please Input Someting"
             inPerusaan.requestFocus()
@@ -1415,6 +1424,11 @@ private fun getToken() {
             inPerusaan.requestFocus()
             return false
         }
+        if(inTGLTenggat.text!!.isEmpty()){
+            tilTGLTenggat.error="Please Input Someting"
+            inTGLTenggat.requestFocus()
+            return false
+        }
         if(inTanggal.text!!.isEmpty()){
             tilTanggal.error="Please Input Someting"
             inTanggal.requestFocus()
@@ -1517,68 +1531,99 @@ private fun getToken() {
         var USEPICK = "USEPICK"
     }
 //    OBJECT
-    private fun loadHazardOffline(){
-        GlobalScope.launch(Dispatchers.IO) {
-            val hazardHeader = HazardHeaderDataSource(this@NewHazardActivity)
-            try {
-                val hazardRow = hazardHeader.getAll()
-                hazardRow.forEach {
-                    val detail = HazardDetailDataSource(this@NewHazardActivity)
-                    val detailFirst = detail.getItem(it.idHazard.toString())
-                    Log.d("HazardReport",it.idHazard.toString())
 
-                    if(detailFirst!=null){
-                        Log.d("HazardReport",detailFirst.bukti.toString())
-                    }
-                }
-            }catch (e: SQLException){
-                Log.d("HazardReport",e.toString())
-            }
-        }
-    }
-    private fun startStopService(jvClass:Class<*>,c:Context) {
-        if(isMyServiceRunning(jvClass)){
-            var intent = Intent(c, jvClass).apply {
-                this.action = Constants.SERVICE_STOP
-                LocalBroadcastManager.getInstance(c).unregisterReceiver(tokenPassingReceiver!!)
-            }
-            stopService(intent)
-        }else{
-            var intent = Intent(c, jvClass).apply {
-                this.action = Constants.SERVICE_START
-            }
-            startService(intent)
-        }
-    }
-    private fun isMyServiceRunning(mClass: Class<*>): Boolean {
-        val manager: ActivityManager =getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        for (service: ActivityManager.RunningServiceInfo in manager.getRunningServices(Integer.MAX_VALUE)){
-            if(mClass.name.equals(service.service.className)){
-                return true
-            }
-        }
-        return false
-    }
     private fun bgStopService(intent: Intent,c:Context){
         stopService(intent)
         LocalBroadcastManager.getInstance(c).unregisterReceiver(tokenPassingReceiver!!)
     }
-    private fun reciever(c:Context){
+    private fun reciever(){
         tokenPassingReceiver= object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val bundle = intent.extras
                 if (bundle != null) {
                     if (bundle.containsKey("SavingHazard")) {
                         val tokenData = bundle.getString("SavingHazard")
-                        Log.d("ServiceName",tokenData)
+                        Log.d("ServiceName","${tokenData} Saving Hazard Hazard")
                         if(tokenData=="FgHazardDone"){
-                            startStopService(FgHazardService::class.java,c)
+
+                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
+                                ConfigUtil.startStopService(FgHazardService::class.java,context, USERNAME,tokenPassingReceiver!!)
+                                stopService(connectionService)
+                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
+                                Log.d("JobService","Is Running")
+                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                                resultIntent(this@NewHazardActivity)
+                                PopupUtil.dismissDialog()
+                                finish()
+                            }
                         }else if(tokenData=="BgHazardDone"){
-                            bgStopService(bgHazardService,c)
+                            bgStopService(bgHazardService,context)
+                            stopService(connectionService)
+                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
+                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
+                                Log.d("JobService","Is Running")
+                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                                resultIntent(this@NewHazardActivity)
+                                PopupUtil.dismissDialog()
+                                finish()
+                            }
+
+                        }
+                    }
+                    if (bundle.containsKey("bsConnection")) {
+                        val tokenData = bundle.getString("bsConnection")
+                        Log.d("ServiceName","${tokenData} New Hazard")
+                        if(tokenData=="Online"){
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                ConfigUtil.startStopService(FgHazardService::class.java,this@NewHazardActivity,
+                                    USERNAME,tokenPassingReceiver!!)
+                            }else{
+                                startService(bgHazardService)
+                            }
+                            Log.d("ConnectionCheck",tokenData)
+                        }else if(tokenData=="Offline"){
+                            Log.d("ConnectionCheck",tokenData)
+                            Toasty.error(this@NewHazardActivity,"No Internet Connection").show()
+//                            stopService(connectionService)
+                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
+                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
+                                Log.d("JobService","Is Running")
+                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                                resultIntent(this@NewHazardActivity)
+                                PopupUtil.dismissDialog()
+                                finish()
+                            }
+                        }else if(tokenData=="Disabled"){
+                            Log.d("ConnectionCheck",tokenData)
+                            //                                  stopService(connectionService)
+                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
+                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
+                                Log.d("JobService","Is Running")
+                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                                resultIntent(this@NewHazardActivity)
+                                PopupUtil.dismissDialog()
+                                finish()
+                            }
                         }
                     }
                 }
             }
         }
     }
+    suspend private fun reRunScheduler():Boolean{
+        var status =false
+        coroutineScope {
+            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
+                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
+//                Log.d("JobService","Not Running")
+                status = true
+            }else{
+                ConfigUtil.stopJobScheduler(scheduler)
+                status = false
+//                Log.d("JobService","Is Running")
+            }
+        }
+        return status
+    }
+
 }

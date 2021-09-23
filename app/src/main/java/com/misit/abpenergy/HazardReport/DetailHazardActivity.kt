@@ -232,7 +232,8 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
             tvRisk.setBackgroundColor(Color.parseColor(dataHazard.riskSebelum!!.bgColor))
             tvRisk.setTextColor(Color.parseColor(dataHazard.riskSebelum!!.txtColor))
         }
-        if(dataHazard.riskSesudah!=null){
+        Log.d("RiskSesudah","${dataHazard.riskSesudah}")
+        if(dataHazard.nilaiRiskSesudah!! > 0){
             lnDetMatrikResiko.visibility = View.VISIBLE
             var itemHazard =  dataHazard.itemHazardList
             tvTotalResikoSesudah.text = "${itemHazard!!.nilaiKemungkinanSesudah} x ${itemHazard!!.nilaiKeparahanSesudah} = ${dataHazard.nilaiRiskSesudah}"

@@ -13,7 +13,7 @@ data class LokasiItem(
 	@field:SerializedName("tgl_input")
 	var tglInput: String? = null,
 
-	@field:SerializedName("user_input")
+	@field:SerializedName("userInput")
 	var userInput: String? = null,
 
 	@field:SerializedName("lokasi")

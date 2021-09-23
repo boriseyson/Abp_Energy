@@ -16,7 +16,7 @@ data class HirarkiItem(
 	@field:SerializedName("flag")
 	var flag: Int? = null,
 
-	@field:SerializedName("user_input")
+	@field:SerializedName("userInput")
 	var userInput: String? = null,
 
 	@field:SerializedName("namaPengendalian")
