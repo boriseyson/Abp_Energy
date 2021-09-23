@@ -34,7 +34,6 @@ import com.misit.abpenergy.HazardReport.SQLite.Model.HazardDetailModel
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardHeaderModel
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardValidationModel
 import com.misit.abpenergy.HazardReport.Service.BgHazardService
-import com.misit.abpenergy.HazardReport.Service.FgHazardService
 import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.R
@@ -315,8 +314,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         builder.setNegativeButton("Ya") { dialog, which ->
                 LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(tokenPassingReceiver!!)
                 Log.d("JobService","Is Running")
-                var intent = Intent()
-                setResult(Activity.RESULT_OK,intent)
+//                var intent = Intent()
+//                setResult(Activity.RESULT_OK,intent)
                 finish()
 
         }
@@ -1549,7 +1548,7 @@ private fun getToken() {
                         Log.d("ServiceName","${tokenData} Saving Hazard Hazard")
                         if(tokenData=="FgHazardDone"){
 //                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
-                                ConfigUtil.startStopService(FgHazardService::class.java,context, USERNAME,tokenPassingReceiver!!)
+//                                ConfigUtil.startStopService(FgHazardService::class.java,context, USERNAME,tokenPassingReceiver!!)
                                 stopService(connectionService)
 //                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
 //                                Log.d("JobService","Is Running")
@@ -1578,8 +1577,8 @@ private fun getToken() {
                         Log.d("ServiceName","${tokenData} New Hazard")
                         if(tokenData=="Online"){
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                ConfigUtil.startStopService(FgHazardService::class.java,this@NewHazardActivity,
-                                    USERNAME,tokenPassingReceiver!!)
+//                                ConfigUtil.startStopService(FgHazardService::class.java,this@NewHazardActivity,
+//                                    USERNAME,tokenPassingReceiver!!)
                             }else{
                                 startService(bgHazardService)
                             }
