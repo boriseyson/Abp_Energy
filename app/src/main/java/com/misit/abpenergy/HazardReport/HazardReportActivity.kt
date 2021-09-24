@@ -140,9 +140,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 //                                shimmerHazard.visibility = View.VISIBLE
                                 loading = false
                                 page =  page + 1
-                                GlobalScope.launch(Dispatchers.IO) {
                                     viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
-                                }
                             }
                             Log.d("TotalHalaman","visible : $visibleItem | Total : $total | Past : $pastVisibleItem | total halaman : $halamanTotal | page : $page")
                         }
@@ -187,6 +185,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         loading=true
                         btnLoad.isEnabled = true
                     }
+                    Log.d("SetStatus","hazardList $it")
+                    Log.d("SetStatus","hazardList $hazardList")
+                    Log.d("SetStatus","displayList $displayList")
+
                 }else{
                     btnLoad.isEnabled = true
                 }
@@ -197,14 +199,13 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             })
             viewModel.hazardPaginate().observe(this@HazardReportActivity,{
                 halamanTotal = it
+                Log.d("SetStatus","$halamanTotal")
+
             })
             viewModel.setStatus().observe(this@HazardReportActivity,{
                 swipeRefreshLayout.isRefreshing=true
                 if(it){
-                    GlobalScope.launch(Dispatchers.IO) {
-                        viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
-
-                    }
+                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
                     btnLoad.isEnabled = true
 
                 }else{
@@ -311,17 +312,13 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             internetConnection.visibility= View.GONE
                             Log.d("ConnectionCheck",tokenData)
                         }else if(tokenData=="Offline"){
-                            GlobalScope.launch(Dispatchers.IO) {
                                 viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
-                            }
                             btnLoad.isEnabled = true
                             Log.d("ConnectionCheck",tokenData)
                             Toasty.error(this@HazardReportActivity,"No Internet Connection").show()
                             internetConnection.visibility= View.VISIBLE
                         }else if(tokenData=="Disabled"){
-                            GlobalScope.launch(Dispatchers.IO) {
                                 viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
-                            }
                             btnLoad.isEnabled = true
                             Log.d("ConnectionCheck",tokenData)
                             internetConnection.visibility= View.VISIBLE
