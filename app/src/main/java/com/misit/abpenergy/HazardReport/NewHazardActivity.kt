@@ -650,21 +650,23 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             }
         }
     }
-
     //    Dialog PICK PICTURE
     fun openCamera(codeRequest: Int){
         btnFLMenu.collapse()
         var intent = Intent(this@NewHazardActivity, PhotoHazardActivity::class.java)
         startActivityForResult(intent, codeRequest)
     }
-//    Simpan Offline
+
+    //    Simpan Offline
     private fun simpanOffline(){
     if(rbSelesai.isChecked) {
         if(pjOption==1){
+            Log.d("CheckStatus","validate 2")
             if(!isValidate2()){
                 return
             }
         }else{
+            Log.d("CheckStatus","validate 1")
             if(!isValidate1()){
                 return
             }
@@ -672,10 +674,14 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
     else{
         if(pjOption==1){
+            Log.d("CheckStatus","validate 3")
+
             if (!isValidate3()) {
                 return
             }
         }else{
+            Log.d("CheckStatus","validate")
+
             if (!isValidate()) {
                 return
             }
@@ -683,8 +689,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 
         }
     PopupUtil.showLoading(this@NewHazardActivity,"Membuat Hazard Report","Saving . . . !")
-
-//    initial
+    //    initial
     var inPerusahan = inPerusaan.text.toString()
     var inTanggal = inTanggal.text.toString()
     var inJam = inJam.text.toString()
@@ -825,279 +830,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //    initial
     }
 //    Simpan Offline
-//       Simpan Hazard
-    fun simpanHazard(){
-
-//    Toasty.info(this@NewHazardActivity,"Sebelum : ${kemungkinanID} | Sesudah ${kemungkinanIDSesudah}").show()
-        if(rbSelesai.isChecked) {
-            if(pjOption==1){
-//                Toasty.info(this@NewHazardActivity,"option 1 validate 2").show()
-                if(!isValidate2()){
-                    return
-                }
-            }else{
-//                Toasty.info(this@NewHazardActivity,"option 2 validate 1").show()
-                if(!isValidate1()){
-                    return
-                }
-            }
-
-        }
-        else{
-            if(pjOption==1){
-//                Toasty.info(this@NewHazardActivity,"option 1 validate 3").show()
-                if (!isValidate3()) {
-                    return
-                }
-            }else{
-//                Toasty.info(this@NewHazardActivity,"option 2 validate").show()
-                if (!isValidate()) {
-                    return
-                }
-
-            }
-
-        }
-    PopupUtil.showProgress(this@NewHazardActivity, "Loading...", "Membuat Hazard Report!")
-
-    var inPerusahan = inPerusaan.text.toString().toRequestBody(MultipartBody.FORM)
-    var inTanggal = inTanggal.text.toString().toRequestBody(MultipartBody.FORM)
-    var inJam = inJam.text.toString().toRequestBody(MultipartBody.FORM)
-    var lokasi = lokasiID.toString().toRequestBody(MultipartBody.FORM)
-    var inLokasiDet = inLokasiDet.text.toString().toRequestBody(MultipartBody.FORM)
-    var inBahaya = inBahaya.text.toString().toRequestBody(MultipartBody.FORM)
-    var kemungkinanID = kemungkinanID.toString().toRequestBody(MultipartBody.FORM)
-    var keparahanID = keparahanID.toString().toRequestBody(MultipartBody.FORM)
-    var kemungkinanSesudahID = kemungkinanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
-    var keparahanSesudahID =keparahanIDSesudah.toString().toRequestBody(MultipartBody.FORM)
-    var hirarkiID = hirarkiID.toString().toRequestBody(MultipartBody.FORM)
-    var inPerbaikan = inPerbaikan.text.toString().toRequestBody(MultipartBody.FORM)
-    var pjNama:RequestBody?=null
-    var pjNik:RequestBody?=null
-    if(pjOption==1) {
-        pjNama = inPenanggungJawabPilih.text.toString().toRequestBody(MultipartBody.FORM)
-        pjNik = inNikPJPilih.text.toString().toRequestBody(MultipartBody.FORM)
-    }else{
-
-        pjNama = inPenanggungJawab.text.toString().toRequestBody(MultipartBody.FORM)
-        pjNik = inNikPJ.text.toString().toRequestBody(MultipartBody.FORM)
-    }
-        if(plKta.isChecked){
-            plKondisi = plKta.text.toString().toRequestBody(MultipartBody.FORM)
-        }else if(plTta.isChecked){
-            plKondisi = plTta.text.toString().toRequestBody(MultipartBody.FORM)
-        }
-        if(rbSelesai.isChecked){
-            rbStatus= rbSelesai.text.toString().toRequestBody(MultipartBody.FORM)
-        }else if(rbBelumSelesai.isChecked){
-            rbStatus= rbBelumSelesai.text.toString().toRequestBody(MultipartBody.FORM)
-        }else if(rbBerlanjut.isChecked){
-            rbStatus= rbBerlanjut.text.toString().toRequestBody(MultipartBody.FORM)
-        }else if(rbDLMpengerjaan.isChecked){
-            rbStatus= rbDLMpengerjaan.text.toString().toRequestBody(MultipartBody.FORM)
-        }
-    var inTGLSelesai = inTGLSelesai.text.toString().toRequestBody(MultipartBody.FORM)
-    var inJamSelesai = inJamSelesai.text.toString().toRequestBody(MultipartBody.FORM)
-    var tglTenggat = inTGLTenggat.text.toString().toRequestBody(MultipartBody.FORM)
-    var inKeteranganPJ = inKeteranganPJ.text.toString().toRequestBody(MultipartBody.FORM)
-    var username = USERNAME.toRequestBody(MultipartBody.FORM)
-    var _token:RequestBody = csrf_token!!.toRequestBody(MultipartBody.FORM)
-
-    var waktu = Date()
-    val cal = Calendar.getInstance()
-    cal.time = waktu
-    var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
-    val wrapper = ContextWrapper(applicationContext)
-        //    var filenya = File(fileUpload!!.path, jam)
-        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-        file = File(file, "${jam}_sebelum.jpg")
-        ConfigUtil.streamFoto(bitmap!!, file)
-        var fileUri = file.asRequestBody("image/*".toMediaTypeOrNull())
-        var bukti = MultipartBody.Part.createFormData("fileToUpload", file.name, fileUri)
-            //        FOTO PENANGGUNG JAWAB
-            var filePJ = wrapper.getDir("images", Context.MODE_PRIVATE)
-            filePJ = File(filePJ, "${jam}_penanggung_jawab.jpg")
-            //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
-            ConfigUtil.streamFoto(bitmapPJ!!, filePJ)
-            var fileUriPJ = filePJ.asRequestBody("image/*".toMediaTypeOrNull())
-            var fotoPJ = MultipartBody.Part.createFormData("fileToUploadPJ", filePJ.name, fileUriPJ)
-    //        FOTO PENANGGUNG JAWAB
-
-    var fileUriSelsai:RequestBody?=null
-        var buktiSelesai :MultipartBody.Part?=null
-        var fileSelesai = wrapper.getDir("images", Context.MODE_PRIVATE)
-        if(bitmapBuktiSelesai!=null) {
-//        Bukti Selesai
-            fileSelesai = File(fileSelesai, "${jam}_selesai.jpg")
-            ConfigUtil.streamFoto(bitmapBuktiSelesai!!, fileSelesai)
-            fileUriSelsai = fileSelesai.asRequestBody("image/*".toMediaTypeOrNull())
-            buktiSelesai = MultipartBody.Part.createFormData(
-                "fileToUploadSelesai",
-                fileSelesai.name,
-                fileUriSelsai!!
-            )
-//        Bukti Selesai
-        }
-        if(imgSelesai==0){
-            hazardPost(
-                bukti,
-                fotoPJ,
-                buktiSelesai,
-                inPerusahan,
-                inTanggal,
-                inJam,
-                inBahaya,
-                lokasi,
-                inLokasiDet,
-                kemungkinanID,
-                keparahanID,
-                plKondisi!!,
-                hirarkiID,
-                inPerbaikan,
-                pjNama,
-                pjNik,
-                rbStatus!!,
-                inTGLSelesai,
-                inJamSelesai,
-                inKeteranganPJ,
-                username,
-                _token, "Bukti_Progress",
-                kemungkinanSesudahID,
-                keparahanSesudahID,
-                tglTenggat
-            )
-        }else if(imgSelesai==1){
-            hazardPost(
-                bukti,
-                fotoPJ,
-                buktiSelesai,
-                inPerusahan,
-                inTanggal,
-                inJam,
-                inBahaya,
-                lokasi,
-                inLokasiDet,
-                kemungkinanID,
-                keparahanID,
-                plKondisi!!,
-                hirarkiID,
-                inPerbaikan,
-                pjNama,
-                pjNik,
-                rbStatus!!,
-                inTGLSelesai,
-                inJamSelesai,
-                inKeteranganPJ,
-                username,
-                _token, "Bukti_Selesai",
-                kemungkinanSesudahID,
-                keparahanSesudahID,
-                tglTenggat
-            )
-        }
-    }
-//        Simpan Hazard
-//    Save Hazard
-    private fun hazardPost(
-    fileBukti: MultipartBody.Part,
-    filePJ: MultipartBody.Part?,
-    fileSelesai: MultipartBody.Part?,
-    perusahaan: RequestBody,
-    tanggal: RequestBody,
-    jam: RequestBody,
-    bahaya: RequestBody,
-    lokasi: RequestBody,
-    lokasiDet: RequestBody,
-    kemungkinan: RequestBody,
-    keparahan: RequestBody,
-    kondisi: RequestBody,
-    hirarki: RequestBody,
-    perbaikan: RequestBody,
-    namaPJ: RequestBody,
-    nikPJ: RequestBody,
-    status: RequestBody,
-    tglSelesai: RequestBody,
-    jamSelesai: RequestBody,
-    keteranganPJ: RequestBody,
-    user: RequestBody,
-    token: RequestBody,
-    tipe: String,
-    kemungkinanSesudah: RequestBody,
-    keparahanSesudah: RequestBody, tglTenggat: RequestBody
-){
-    //    API POST
-    val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
-     var call:Call<HazardReportResponse>?=null
-        if(tipe=="Bukti_Progress"){
-            call = apiEndPoint.postHazardReport(
-                fileBukti, filePJ, perusahaan, tanggal, jam, lokasi,
-                lokasiDet, bahaya, kemungkinan, keparahan, kondisi, hirarki, perbaikan,
-                namaPJ, nikPJ, status, tglTenggat, user, token
-            )
-        }else if(tipe=="Bukti_Selesai"){
-             call = apiEndPoint.postHazardReportSelesai(
-                 fileBukti,
-                 filePJ,
-                 fileSelesai,
-                 perusahaan,
-                 tanggal,
-                 jam,
-                 lokasi,
-                 lokasiDet,
-                 bahaya,
-                 kemungkinan,
-                 keparahan,
-                 kemungkinanSesudah,
-                 keparahanSesudah,
-                 kondisi,
-                 hirarki,
-                 perbaikan,
-                 namaPJ,
-                 nikPJ,
-                 status,
-                 tglSelesai,
-                 jamSelesai,
-                 keteranganPJ,
-                 user,
-                 token
-             )
-        }
-    call?.enqueue(object : Callback<HazardReportResponse> {
-        override fun onFailure(call: Call<HazardReportResponse>, t: Throwable) {
-            Toast.makeText(this@NewHazardActivity, "Error : $t", Toast.LENGTH_SHORT).show()
-            PopupUtil.dismissDialog()
-        }
-
-        override fun onResponse(
-            call: Call<HazardReportResponse>,
-            response: Response<HazardReportResponse>
-        ) {
-            var sResponse = response.body()
-            if (sResponse != null) {
-                if (sResponse.success!!) {
-                    if(ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")){
-                        Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                        val intent = Intent()
-                        setResult(RESULT_OK,intent)
-                        PopupUtil.dismissDialog()
-                        finish()
-                    }else{
-                        ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")
-                    }
-
-                } else {
-                    Toasty.error(this@NewHazardActivity, "Gagal Membuat Hazard Report! ").show()
-                    PopupUtil.dismissDialog()
-                }
-            } else {
-                Toasty.error(this@NewHazardActivity, "Gagal Membuat Hazard Report! ").show()
-                PopupUtil.dismissDialog()
-            }
-        }
-    })
-//    API POST
-    }
-//    Save Hazard
 //    TOKEN
 private fun getToken() {
     val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
@@ -1211,11 +943,6 @@ private fun getToken() {
 }
     fun isValidate2():Boolean{
         clearError()
-        if(inTGLTenggat.text!!.isEmpty()){
-            tilTGLTenggat.error="Please Input Someting"
-            inTGLTenggat.requestFocus()
-            return false
-        }
         if(inPerusaan.text!!.isEmpty()){
             tilPerusahaan.error="Please Input Someting"
             inPerusaan.requestFocus()
