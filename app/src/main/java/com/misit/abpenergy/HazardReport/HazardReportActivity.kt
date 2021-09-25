@@ -186,9 +186,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         btnLoad.isEnabled = true
                     }
                     Log.d("SetStatus","hazardList $it")
-                    Log.d("SetStatus","hazardList $hazardList")
-                    Log.d("SetStatus","displayList $displayList")
-
                 }else{
                     btnLoad.isEnabled = true
                 }
@@ -196,6 +193,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 shimmerHazard.visibility = View.GONE
                 swipeRefreshLayout.isRefreshing=false
                 btnLoad.isEnabled = true
+
+                Log.d("SetStatus","hazardList $hazardList")
+                Log.d("SetStatus","displayList $displayList")
+
             })
             viewModel.hazardPaginate().observe(this@HazardReportActivity,{
                 halamanTotal = it
@@ -207,7 +208,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 if(it){
                     viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
                     btnLoad.isEnabled = true
-
                 }else{
                     btnLoad.isEnabled = true
                 }
@@ -260,6 +260,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     override fun onItemClick(uid: String?) {
         var intent = Intent(this@HazardReportActivity,DetailHazardActivity::class.java)
         intent.putExtra(DetailHazardActivity.UID,uid.toString())
+        intent.putExtra("Method","Offline")
         startActivity(intent)
     }
     override fun onUpdateClick(uid: String?) {

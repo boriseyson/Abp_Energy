@@ -43,7 +43,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var adminHazard:String?=null
     private var fotoPJ:String?=null
     lateinit var viewModel: HazardDetailViewModel
-
+    var method:String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_hazard)
@@ -57,7 +57,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         uid = intent.getStringExtra(UID)
         adminHazard = intent.getStringExtra("ALLHazard")
-
+        method = intent.getStringExtra("Method")
 //        loadDetail(uid.toString())
         floatUpdateDenganGambar.setOnClickListener(this)
         floatUpdateStatus.setOnClickListener(this)
@@ -67,6 +67,19 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         matrikResiko.setOnClickListener(this)
         matrikResikoSesudah.setOnClickListener(this)
         viewModel = ViewModelProvider(this@DetailHazardActivity).get(HazardDetailViewModel::class.java)
+        if(method!=null){
+            if(method=="Online"){
+                GlobalScope.launch(Dispatchers.IO) {
+                    PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
+                    viewModel?.loadDetailOnline("${uid}",this@DetailHazardActivity)
+                }
+            }else if (method =="Offline"){
+                GlobalScope.launch(Dispatchers.IO) {
+                    PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
+                    viewModel?.loadDetailOffline("${uid}",this@DetailHazardActivity)
+                }
+            }
+        }
         initViewModel()
     }
     override fun onResume() {
@@ -256,12 +269,15 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                 PopupUtil.dismissDialog()
             }
         })
-        GlobalScope.launch(Dispatchers.IO) {
-            PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
-//            viewModel?.loadDetailOnline("${uid}",this@DetailHazardActivity)
-            viewModel?.loadDetailOffline("${uid}",this@DetailHazardActivity)
-
-        }
+        viewModel.progressObserver()?.observe(this@DetailHazardActivity,{
+            if(it){
+                PopupUtil.dismissDialog()
+                crlDetail.visibility = View.VISIBLE
+            }else{
+                crlDetail.visibility = View.GONE
+                PopupUtil.showProgress(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
+            }
+        })
     }
     companion object{
         var UID = "UID"
