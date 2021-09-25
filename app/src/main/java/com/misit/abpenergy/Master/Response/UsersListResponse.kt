@@ -65,5 +65,9 @@ data class UsersListItem(
 	var username: String? = null,
 
 	@field:SerializedName("status")
-	var status: Int? = null
+	var status: Int? = null,
+
+	@field:SerializedName("user_update")
+	var user_update: String? = null
+
 )

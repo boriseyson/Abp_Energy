@@ -347,6 +347,19 @@ interface ApiEndPoint{
     ) : Call<HazardReportResponse>?
 
     @Multipart
+    @POST("/android/api/hse/hazard/report/update/bukti/bergambar")
+    suspend fun corotineUpdateBuktiBergambar(
+        @Part fileToUpload: MultipartBody.Part?,
+        @Part("uid") uid:RequestBody?,
+        @Part("tgl_selesai") tgl_selesai:RequestBody?,
+        @Part("jam_selesai") jam_selesai:RequestBody?,
+        @Part("idKemungkinanSesudah") idKemungkinanSesudah:RequestBody?,
+        @Part("idKeparahanSesudah") idKeparahanSesudah:RequestBody?,
+        @Part("keterangan") keterangan:RequestBody?,
+        @Part("_token") _token:RequestBody?
+    ) : Response<HazardReportResponse>?
+
+    @Multipart
     @POST("/android/api/hse/hazard/report/update/bukti")
     fun updateBukti(
         @Part("uid") uid:RequestBody?,
@@ -357,6 +370,18 @@ interface ApiEndPoint{
         @Part("idKeparahanSesudah") idKeparahanSesudah:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
+
+    @Multipart
+    @POST("/android/api/hse/hazard/report/update/bukti")
+    suspend fun corotineUpdateBukti(
+        @Part("uid") uid:RequestBody?,
+        @Part("tgl_selesai") tgl_selesai:RequestBody?,
+        @Part("jam_selesai") jam_selesai:RequestBody?,
+        @Part("keterangan") keterangan:RequestBody?,
+        @Part("idKemungkinanSesudah") idKemungkinanSesudah:RequestBody?,
+        @Part("idKeparahanSesudah") idKeparahanSesudah:RequestBody?,
+        @Part("_token") _token:RequestBody?
+    ) : Response<HazardReportResponse>?
     @GET("/android/api/lokasi/get")
     fun getLokasiList(): Call<LokasiResponse>?
     @GET("/android/api/lokasi/get")

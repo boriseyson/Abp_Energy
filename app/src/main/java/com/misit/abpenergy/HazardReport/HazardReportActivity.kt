@@ -175,8 +175,12 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         hazardList?.addAll(it)
                         hazardList?.let { it1 -> displayList?.addAll(it1) }
                         loading=true
-                    adapter?.notifyDataSetChanged()
+                        adapter?.notifyDataSetChanged()
                         btnLoad.isEnabled = true
+                        swipeRefreshLayout.isRefreshing=false
+
+                        pullRefreshHazard.visibility = View.VISIBLE
+                        shimmerHazard.visibility = View.GONE
                     }else{
                         curentPosition = (rvHazardList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                         hazardList?.addAll(it)
@@ -184,16 +188,20 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         adapter?.notifyDataSetChanged()
                         loading=true
                         btnLoad.isEnabled = true
+                        swipeRefreshLayout.isRefreshing=false
+
+                        pullRefreshHazard.visibility = View.VISIBLE
+                        shimmerHazard.visibility = View.GONE
                     }
                     Log.d("SetStatus","hazardList $it")
                 }else{
+
+                    pullRefreshHazard.visibility = View.VISIBLE
+                    shimmerHazard.visibility = View.GONE
+                    swipeRefreshLayout.isRefreshing=false
+                    loading=false
                     btnLoad.isEnabled = true
                 }
-                pullRefreshHazard.visibility = View.VISIBLE
-                shimmerHazard.visibility = View.GONE
-                swipeRefreshLayout.isRefreshing=false
-                btnLoad.isEnabled = true
-
                 Log.d("SetStatus","hazardList $hazardList")
                 Log.d("SetStatus","displayList $displayList")
 
@@ -209,6 +217,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                     viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
                     btnLoad.isEnabled = true
                 }else{
+                    pullRefreshHazard.visibility = View.VISIBLE
+                    shimmerHazard.visibility = View.GONE
                     btnLoad.isEnabled = true
                 }
                 Log.d("SetStatus","$it")
