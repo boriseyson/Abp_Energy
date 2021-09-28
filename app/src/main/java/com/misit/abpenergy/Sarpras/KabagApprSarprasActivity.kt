@@ -25,14 +25,11 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Sarpras.Adapter.ApproveSarprasAdapter
 import com.misit.abpenergy.Sarpras.Adapter.SarprasAdapter
-import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SarprasResponse.DataItem
 import com.misit.abpenergy.Sarpras.SarprasResponse.UserSarprasResponse
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
-import io.realm.Realm
-import io.realm.exceptions.RealmException
 import kotlinx.android.synthetic.main.activity_kabag_appr_sarpras.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -45,7 +42,6 @@ class KabagApprSarprasActivity : AppCompatActivity(), ApproveSarprasAdapter.OnIt
     private var adapter: ApproveSarprasAdapter? = null
     private var noidOut:String?=null
     private var username:String?=null
-    private var myList:MutableList<PenumpangModel>?=null
     var curentPosition: Int=0
     private var page : Int=1
     private var visibleItem : Int=0
@@ -64,7 +60,6 @@ class KabagApprSarprasActivity : AppCompatActivity(), ApproveSarprasAdapter.OnIt
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
         title="Keluar Masuk Sarana Approve"
         PrefsUtil.initInstance(this)
-        Realm.init(this@KabagApprSarprasActivity)
 
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",true)){
             USERNAME = PrefsUtil.getInstance().getStringState(PrefsUtil.USER_NAME,"")
@@ -82,8 +77,6 @@ class KabagApprSarprasActivity : AppCompatActivity(), ApproveSarprasAdapter.OnIt
         var actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         sarprasList = ArrayList()
-        myList = ArrayList()
-        getPenumpang()
         adapter = ApproveSarprasAdapter(
             this,
             sarprasList!!,
@@ -106,18 +99,7 @@ class KabagApprSarprasActivity : AppCompatActivity(), ApproveSarprasAdapter.OnIt
 
     }
 
-    fun getPenumpang(){
-        myList?.clear()
-        var realm = Realm.getDefaultInstance()
-        var listPenumpang =
-            realm.
-                where(PenumpangModel::class.java)
-                .findAll()
-        listPenumpang?.forEach {
-            myList?.add(it)
-        }
-        realm.close()
-    }
+
     override fun onItemClick(noIdOut: String?) {
         var url:String = "https://abpjobsite.com/sarpras/sarana/keluar-masuk-print-out-"+noIdOut.toString()
         val request = DownloadManager.Request(Uri.parse(url))
@@ -271,21 +253,6 @@ class KabagApprSarprasActivity : AppCompatActivity(), ApproveSarprasAdapter.OnIt
     }
 
     override fun onResume() {
-        realmPenumpang()
         super.onResume()
-    }
-    private fun realmPenumpang() {
-        GlobalScope.launch {
-            var realm = Realm.getDefaultInstance()
-            try {
-                realm.where(PenumpangModel::class.java).findFirst().let {
-                    Log.d("RealmININT", it.toString())
-                }
-                realm.close()
-            }catch (e: RealmException)
-            {
-                Log.d("RealmININT",e.toString())
-            }
-        }
     }
 }

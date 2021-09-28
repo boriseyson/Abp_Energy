@@ -8,13 +8,15 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +28,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
-import com.misit.abpenergy.HazardReport.Response.HazardReportResponse
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardDetailDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSource
@@ -39,24 +40,17 @@ import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Service.ConnectionService
-import com.misit.abpenergy.Service.JobServices
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.*
-import com.misit.abpenergy.Utils.ConfigUtil.resultIntent
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_new_hazard.*
 import kotlinx.coroutines.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
-import java.lang.Exception
 import java.net.URL
 import java.util.*
 
@@ -97,13 +91,12 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     lateinit var bgHazardService:Intent
     lateinit var connectionService:Intent
     private var scheduler: JobScheduler?=null
+    var builder : AlertDialog.Builder?=null
+    var dialog : AlertDialog?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_hazard)
         title="Form Hazard Report"
-        if(ConfigUtil.cekKoneksi(this@NewHazardActivity)){
-            getToken()
-        }
         PrefsUtil.initInstance(this)
         verifyStoragePermissions(this, this)
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false)){
@@ -175,16 +168,20 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         inTGLTenggat.setOnClickListener(this)
         cvPilihPJ.setOnClickListener(this@NewHazardActivity)
         bgHazardService = Intent(this@NewHazardActivity, BgHazardService::class.java)
-        if(ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
+        if(ConfigUtil.isJobServiceOn(this@NewHazardActivity, Constants.JOB_SERVICE_ID)){
             ConfigUtil.stopJobScheduler(scheduler)
-            Log.d("JobService","Not Running")
+            Log.d("JobService", "Not Running")
         }
     }
 
     override fun onResume() {
         reciever()
         storageDir = getExternalFilesDir("ABP_IMAGES")
-        LocalBroadcastManager.getInstance(this@NewHazardActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
+        LocalBroadcastManager.getInstance(this@NewHazardActivity).registerReceiver(
+            tokenPassingReceiver!!, IntentFilter(
+                "com.misit.abpenergy"
+            )
+        )
 
         super.onResume()
     }
@@ -196,60 +193,60 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
         if(v?.id==R.id.cvPilihPJ){
             val intent = Intent(c, ListUserActivity::class.java)
-            intent.putExtra(ListUserActivity.DataExtra,"Hazard")
-            intent.putExtra(USEPICK,userPick)
-            startActivityForResult(intent,Constants.PJ_CODE_OPTION)
+            intent.putExtra(ListUserActivity.DataExtra, "Hazard")
+            intent.putExtra(USEPICK, userPick)
+            startActivityForResult(intent, Constants.PJ_CODE_OPTION)
         }
         if(v!!.id==R.id.inTanggal){
-            ConfigUtil.showDialogTgl(inTanggal,c)
+            ConfigUtil.showDialogTgl(inTanggal, c)
         }
         if (v!!.id==R.id.inJam){
-            ConfigUtil.showDialogTime(inJam,c)
+            ConfigUtil.showDialogTime(inJam, c)
         }
         if(v!!.id==R.id.inTGLSelesai){
-            ConfigUtil.showDialogTgl(inTGLSelesai,c)
+            ConfigUtil.showDialogTgl(inTGLSelesai, c)
         }
         if(v!!.id==R.id.inTGLTenggat){
-            ConfigUtil.showDialogTgl(inTGLTenggat,c)
+            ConfigUtil.showDialogTgl(inTGLTenggat, c)
         }
         if(v!!.id==R.id.inJamSelesai){
-            ConfigUtil.showDialogTime(inJamSelesai,c)
+            ConfigUtil.showDialogTime(inJamSelesai, c)
         }
         if(v!!.id==R.id.imagePicker){
-            showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY,SEBELUM)
+            showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY, SEBELUM)
         }
         if(v!!.id==R.id.btnSimpan){
 //            simpanHazard()
             simpanOffline()
         }
         if(v!!.id==R.id.btnBatalHazard){
-            areYouSure("Informasi","Apakah anda yakin?")
+            areYouSure("Informasi", "Apakah anda yakin?")
         }
         if(v!!.id==R.id.btnGambarHazard){
             bitmap=null
             imgIn=0
-            showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY,SEBELUM)
+            showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY, SEBELUM)
         }
         if(v!!.id==R.id.btnFotoPJ){
 //            PENSNGGUNGJAWAB
             bitmapPJ=null
             imgPJ=0
-            showDialogOption(Constants.PJ_CODE_CAMERA, Constants.PJ_CODE_GALERY,PENANGGUNG_JAWAB)
+            showDialogOption(Constants.PJ_CODE_CAMERA, Constants.PJ_CODE_GALERY, PENANGGUNG_JAWAB)
         }
         if(v!!.id==R.id.pjFOTO){
 //            PENSNGGUNGJAWAB
             bitmapPJ=null
             imgPJ=0
-            showDialogOption(Constants.PJ_CODE_CAMERA,Constants.PJ_CODE_GALERY,PENANGGUNG_JAWAB)
+            showDialogOption(Constants.PJ_CODE_CAMERA, Constants.PJ_CODE_GALERY, PENANGGUNG_JAWAB)
 //            cameraIntent(this@NewHazardActivity, 999, "penanggung_jawab")
         }
         if(v?.id==R.id.imgBuktiSelesai){
 //            BUKTI PERBAIKAN
-            showDialogOption(Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY,SELESAI)
+            showDialogOption(Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY, SELESAI)
         }
         if (v?.id==R.id.btnPerbaikan){
 //            BUKTI PERBAIKAN
-            showDialogOption(Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY,SELESAI)
+            showDialogOption(Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY, SELESAI)
         }
         if(v?.id==R.id.inLokasi){
             var intent = Intent(this@NewHazardActivity, LokasiActivity::class.java)
@@ -274,7 +271,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(v?.id==R.id.inKemungkinanSesudah){
             var intent = Intent(this@NewHazardActivity, KemungkinanActivity::class.java)
             intent.putExtra("kemungkinanDipilih", kemungkinanDipilihSesudah)
-            startActivityForResult(intent,Constants.KEMUNGKINAN_SESUDAH_CODE)
+            startActivityForResult(intent, Constants.KEMUNGKINAN_SESUDAH_CODE)
         }
         if(v?.id==R.id.inKeparahanSesudah){
             var intent = Intent(this@NewHazardActivity, KeparahanActivity::class.java)
@@ -305,15 +302,17 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         return super.onSupportNavigateUp()
     }
 //    onSupportNavigateUp
-    private fun areYouSure(titleDialog:String,msgDialog:String){
+    private fun areYouSure(titleDialog: String, msgDialog: String){
         val builder = AlertDialog.Builder(this)
         builder.setTitle(titleDialog)
         builder.setMessage(msgDialog)
         builder.setPositiveButton("Tidak") { dialog, which ->
         }
         builder.setNegativeButton("Ya") { dialog, which ->
-                LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(tokenPassingReceiver!!)
-                Log.d("JobService","Is Running")
+                LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(
+                    tokenPassingReceiver!!
+                )
+                Log.d("JobService", "Is Running")
 //                var intent = Intent()
 //                setResult(Activity.RESULT_OK,intent)
                 finish()
@@ -323,7 +322,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        areYouSure("Informasi","Apakah anda yakin?")
+        areYouSure("Informasi", "Apakah anda yakin?")
 //        super.onBackPressed()
     }
 //    onOptionsItemSelected
@@ -584,9 +583,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             val nik = data!!.getStringExtra("nik")
             val profileIMG = data!!.getStringExtra("profileIMG")
                 val dir = this@NewHazardActivity!!.getExternalFilesDir("PROFILE_IMAGE")
-                val file = File(dir,profileIMG)
+                val file = File(dir, profileIMG)
                 fileUploadPJ = file.toUri()
-                Log.d("fileUploadPJ",fileUploadPJ.toString())
+                Log.d("fileUploadPJ", fileUploadPJ.toString())
                 try {
                     bitmapPJ = BitmapFactory.decodeStream(
                         contentResolver.openInputStream(fileUploadPJ!!)
@@ -597,9 +596,12 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 }
                 inPenanggungJawabPilih.setText(nama.toString())
                 inNikPJPilih.setText(nik.toString())
-            }catch (e:Exception){
-                Toasty.error(this@NewHazardActivity,"Penanggung Jawab Tidak Mempunyai Foto, Silahkan Memilih Manual Penanggung Jawab").show()
-                Log.d("LoadImage",e.toString())
+            }catch (e: Exception){
+                Toasty.error(
+                    this@NewHazardActivity,
+                    "Penanggung Jawab Tidak Mempunyai Foto, Silahkan Memilih Manual Penanggung Jawab"
+                ).show()
+                Log.d("LoadImage", e.toString())
             }
         }
 
@@ -610,12 +612,12 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     fun URL.toBitmap(): Bitmap?{
         return try {
             BitmapFactory.decodeStream(openStream())
-        }catch (e:IOException){
+        }catch (e: IOException){
             null
         }
     }
 //    Dialog PICK PICTURE
-    fun showDialogOption(camera: Int, galery: Int,fName:String){
+    fun showDialogOption(camera: Int, galery: Int, fName: String){
     val c = this@NewHazardActivity
     val alertDialog = AlertDialog.Builder(c)
     alertDialog.setTitle("Silahkan Pilih")
@@ -625,7 +627,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     )
     alertDialog!!.setItems(animals, DialogInterface.OnClickListener { dialog, which ->
         when (which) {
-            0 -> cameraIntent(c, camera,fName)
+            0 -> cameraIntent(c, camera, fName)
             1 -> openGalleryForImage(galery)
         }
     })
@@ -659,14 +661,14 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 
     //    Simpan Offline
     private fun simpanOffline(){
-    if(rbSelesai.isChecked) {
+        if(rbSelesai.isChecked) {
         if(pjOption==1){
-            Log.d("CheckStatus","validate 2")
+            Log.d("CheckStatus", "validate 2")
             if(!isValidate2()){
                 return
             }
         }else{
-            Log.d("CheckStatus","validate 1")
+            Log.d("CheckStatus", "validate 1")
             if(!isValidate1()){
                 return
             }
@@ -674,13 +676,13 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
     else{
         if(pjOption==1){
-            Log.d("CheckStatus","validate 3")
+            Log.d("CheckStatus", "validate 3")
 
             if (!isValidate3()) {
                 return
             }
         }else{
-            Log.d("CheckStatus","validate")
+            Log.d("CheckStatus", "validate")
 
             if (!isValidate()) {
                 return
@@ -688,8 +690,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
 
         }
-    PopupUtil.showLoading(this@NewHazardActivity,"Membuat Hazard Report","Saving . . . !")
-    //    initial
+        showLoading(this@NewHazardActivity, "Membuat Hazard Report", "abp")
+        //    initial
     var inPerusahan = inPerusaan.text.toString()
     var inTanggal = inTanggal.text.toString()
     var inJam = inJam.text.toString()
@@ -740,12 +742,17 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         fileSelesai = File(fileSelesai, "${jam}_selesai.jpg")
         ConfigUtil.streamFoto(bitmapBuktiSelesai!!, fileSelesai)
         buktiSelesai = fileSelesai.name
-        ConfigUtil.saveFile(bitmapBuktiSelesai!!,this@NewHazardActivity,"HAZARD_OFFLINE",buktiSelesai)
+        ConfigUtil.saveFile(
+            bitmapBuktiSelesai!!,
+            this@NewHazardActivity,
+            "HAZARD_OFFLINE",
+            buktiSelesai
+        )
     }
     var bukti = file.name
     var pjFoto = filePJ.name
-    ConfigUtil.saveFile(bitmap!!,this@NewHazardActivity,"HAZARD_OFFLINE",bukti)
-    ConfigUtil.saveFile(bitmapPJ!!,this@NewHazardActivity,"HAZARD_OFFLINE",pjFoto)
+    ConfigUtil.saveFile(bitmap!!, this@NewHazardActivity, "HAZARD_OFFLINE", bukti)
+    ConfigUtil.saveFile(bitmapPJ!!, this@NewHazardActivity, "HAZARD_OFFLINE", pjFoto)
     var plKondisi =""
     var rbStatus = ""
     if(plKta.isChecked){
@@ -805,49 +812,36 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 hazardValidationModel.jam_valid= null
                 var inValidate = async { hazardValidation.insertItem(hazardValidationModel) }
                 if(inValidate.await()>0){
-                    Log.d("SimpanOffline","Sukses")
-                    var deleteImg = async { ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES") }
+                    Log.d("SimpanOffline", "Sukses")
+                    var deleteImg = async { ConfigUtil.deleteInABPIMAGES(
+                        this@NewHazardActivity,
+                        "ABP_IMAGES"
+                    ) }
                     if(deleteImg.await()){
 //                        Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                        LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(tokenPassingReceiver!!)
-                        Log.d("JobService","Is Running")
+                        LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(
+                            tokenPassingReceiver!!
+                        )
+                        Log.d("JobService", "Is Running")
                         var intent = Intent()
-                        setResult(Activity.RESULT_OK,intent)
+                        setResult(Activity.RESULT_OK, intent)
                         finish()
                     }else{
-                        ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity,"ABP_IMAGES")
+                        ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity, "ABP_IMAGES")
                     }
                 }else{
-                    Log.d("SimpanOffline","Gagal")
+                    Log.d("SimpanOffline", "Gagal")
                 }
             }else{
-                Log.d("SimpanOffline","Gagal 1")
+                Log.d("SimpanOffline", "Gagal 1")
             }
         }else{
-            Log.d("SimpanOffline","Gagal 2")
+            Log.d("SimpanOffline", "Gagal 2")
         }
     }
 //    initial
     }
 //    Simpan Offline
-//    TOKEN
-private fun getToken() {
-    val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
-    val call = apiEndPoint.getToken("csrf_token")
-    call?.enqueue(object : Callback<CsrfTokenResponse> {
-        override fun onFailure(call: Call<CsrfTokenResponse>, t: Throwable) {
-            Toast.makeText(this@NewHazardActivity, "Error : $t", Toast.LENGTH_SHORT).show()
-        }
-
-        override fun onResponse(
-            call: Call<CsrfTokenResponse>,
-            response: Response<CsrfTokenResponse>
-        ) {
-            csrf_token = response.body()?.csrfToken
-        }
-    })
-}
-//    TOKEN
     //    Validasi
     fun isValidate():Boolean{
     clearError()
@@ -1261,7 +1255,7 @@ private fun getToken() {
     }
 //    OBJECT
 
-    private fun bgStopService(intent: Intent,c:Context){
+    private fun bgStopService(intent: Intent, c: Context){
         stopService(intent)
         LocalBroadcastManager.getInstance(c).unregisterReceiver(tokenPassingReceiver!!)
     }
@@ -1272,69 +1266,46 @@ private fun getToken() {
                 if (bundle != null) {
                     if (bundle.containsKey("SavingHazard")) {
                         val tokenData = bundle.getString("SavingHazard")
-                        Log.d("ServiceName","${tokenData} Saving Hazard Hazard")
+                        Log.d("ServiceName", "${tokenData} Saving Hazard Hazard")
                         if(tokenData=="FgHazardDone"){
-//                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
-//                                ConfigUtil.startStopService(FgHazardService::class.java,context, USERNAME,tokenPassingReceiver!!)
                                 stopService(connectionService)
-//                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
-//                                Log.d("JobService","Is Running")
-                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+//                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
                                 PopupUtil.dismissDialog()
-//                                finish()
-                                resultIntent(this@NewHazardActivity)
-
-//                            }
+                            var intent = Intent()
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
                         }else if(tokenData=="BgHazardDone"){
-                            bgStopService(bgHazardService,context)
+                            bgStopService(bgHazardService, context)
                             stopService(connectionService)
-//                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
-//                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
-//                                Log.d("JobService","Is Running")
-                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                                PopupUtil.dismissDialog()
-                                resultIntent(this@NewHazardActivity)
-//                                finish()
-//                            }
+                            Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                            dialog?.dismiss()
+                            var intent = Intent()
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
 
                         }
                     }
                     if (bundle.containsKey("bsConnection")) {
                         val tokenData = bundle.getString("bsConnection")
-                        Log.d("ServiceName","${tokenData} New Hazard")
+                        Log.d("ServiceName", "${tokenData} New Hazard")
                         if(tokenData=="Online"){
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//                                ConfigUtil.startStopService(FgHazardService::class.java,this@NewHazardActivity,
-//                                    USERNAME,tokenPassingReceiver!!)
-                            }else{
                                 startService(bgHazardService)
-                            }
-                            Log.d("ConnectionCheck",tokenData)
+                            Log.d("ConnectionCheck", tokenData)
                         }else if(tokenData=="Offline"){
-                            Log.d("ConnectionCheck",tokenData)
-                            Toasty.error(this@NewHazardActivity,"No Internet Connection").show()
-//                            stopService(connectionService)
-//                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
-//                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
-//                                Log.d("JobService","Is Running")
-                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                            Log.d("ConnectionCheck", tokenData)
+                            Toasty.error(this@NewHazardActivity, "No Internet Connection").show()
+//                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
                                 PopupUtil.dismissDialog()
-                                resultIntent(this@NewHazardActivity)
-
-//                                finish()
-//                            }
+                            var intent = Intent()
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
                         }else if(tokenData=="Disabled"){
-                            Log.d("ConnectionCheck",tokenData)
-                            //                                  stopService(connectionService)
-//                            if(!ConfigUtil.isJobServiceOn(this@NewHazardActivity,Constants.JOB_SERVICE_ID)){
-//                                ConfigUtil.jobScheduler(this@NewHazardActivity,scheduler)
-//                                Log.d("JobService","Is Running")
-                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
+                            Log.d("ConnectionCheck", tokenData)
+//                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
                                 PopupUtil.dismissDialog()
-                                resultIntent(this@NewHazardActivity)
-
-//                                finish()
-//                            }
+                            var intent = Intent()
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
                         }
                     }
                 }
@@ -1342,4 +1313,31 @@ private fun getToken() {
         }
     }
 
+
+    private fun showLoading(c: Context, title: String, option: String){
+        builder = AlertDialog.Builder(this)
+        var layout = layoutInflater.inflate(R.layout.custom_loading, null)
+        var titleDialog = layout.findViewById<View>(R.id.tvTitleDialog) as TextView
+        var circle = layout.findViewById<View>(R.id.circleProgress) as ProgressBar
+        var imgLoading = layout.findViewById<View>(R.id.abpLoading) as ImageView
+        titleDialog.text = title
+        Glide.with(c).load(R.drawable.abp).into(imgLoading)
+        if(option=="circle"){
+            circle.visibility = View.VISIBLE
+            imgLoading.visibility = View.GONE
+        }else if(option=="abp"){
+            circle.visibility = View.GONE
+            imgLoading.visibility = View.VISIBLE
+        }
+        builder?.setView(layout)
+        builder?.setCancelable(false)
+        dialog = builder?.show()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        if (dialog != null) {
+            dialog?.dismiss()
+            dialog = null
+        }
+    }
 }

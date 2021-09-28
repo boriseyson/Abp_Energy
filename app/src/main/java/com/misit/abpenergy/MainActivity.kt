@@ -36,7 +36,6 @@ import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSo
 import com.misit.abpenergy.HazardReport.Service.HazardService
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Model.KaryawanModel
-import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
 import com.misit.abpenergy.Sarpras.Service.LoadSarana
 import com.misit.abpenergy.Sarpras.Service.SaranaService
@@ -46,9 +45,6 @@ import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.Constants
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
-import io.realm.Realm
-import io.realm.RealmConfiguration
-import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.index_new.*
 import kotlinx.coroutines.Dispatchers
@@ -99,7 +95,9 @@ class MainActivity : AppCompatActivity() {
                             Log.d("ConnectionCheck",tokenData)
                     }else{
                         updateProgress()
+                        if (tokenData != null) {
                             Log.d("ConnectionCheck",tokenData)
+                        }
                         Toasty.info(this@MainActivity,"Failed To Load Data").show()
                     }
                 }
@@ -263,46 +261,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun listPenumpang(){
-        var realm = Realm.getDefaultInstance()
-        realm?.executeTransaction {
-            var listPenumpang =
-                realm?.where(PenumpangModel::class.java)
-                    ?.findAllSorted("id", Sort.DESCENDING)
-            listPenumpang?.deleteAllFromRealm()
 
-            val penumpang = PenumpangModel()
-            karyawan?.forEach {
-                penumpang.id = it.id
-                penumpang.nik = it.nik
-                penumpang.nama = it.nama
-                penumpang.jabatan = it.jabatan
-                try {
-                    realm?.copyToRealm(penumpang)
-                    tvLoadingText.text = "Menyiapkan Data!!!"
-                } catch (e: Exception) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Load Data Karyawan Gagal : $e",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-//            getPenumpang()
-            if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN", false))
-            {
-                val intent = Intent(this, NewIndexActivity::class.java)
-                startActivity(intent)
-            }
-            else
-            {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-            finish()
-        }
-        realm?.close()
-    }
     fun versionApp(){
         Use@ try {
             val pInfo: PackageInfo = this.getPackageManager().getPackageInfo(packageName, 0)

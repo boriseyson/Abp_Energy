@@ -35,5 +35,9 @@ data class KaryawanItem(
 	var dept: String? = null,
 
 	@field:SerializedName("department")
-	var department: String? = null
+	var department: String? = null,
+
+	@field:SerializedName("dt_update")
+	var dt_update: String? = null
+
 )

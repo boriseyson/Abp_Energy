@@ -19,7 +19,6 @@ import com.misit.abpenergy.Model.KaryawanModel
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Sarpras.Adapter.SaranaAdapter
-import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
 import com.misit.abpenergy.Sarpras.SaranaResponse.DataItem
 import com.misit.abpenergy.Sarpras.SaranaResponse.IzinKeluarSaranaResponse
@@ -27,8 +26,6 @@ import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
-import io.realm.Realm
-import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_new_hazard.*
 import kotlinx.android.synthetic.main.activity_new_sarpras.*
 import kotlinx.android.synthetic.main.activity_new_sarpras.noLV
@@ -51,8 +48,6 @@ class NewSarprasActivity :
     var driver : String?=null
     var listArr:List<String>?=null
     var inPenumpangList:ArrayList<String>?=null
-    var penumpangs : ArrayList<PenumpangModel>?=null
-    private var myList:MutableList<PenumpangModel>?=null
     var displayPenumpang : ArrayList<String>?=null
     var spinnerDialog:SpinnerDialog?=null
     var listDipilih:ArrayList<String>?=null
@@ -63,7 +58,6 @@ class NewSarprasActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_sarpras)
         getToken()
-        Realm.init(this@NewSarprasActivity)
         var actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         val window: Window = this.window
@@ -85,8 +79,6 @@ class NewSarprasActivity :
         listDipilih= ArrayList()
         saranaList = ArrayList()
         list = ArrayList()
-        penumpangs = ArrayList()
-        myList = ArrayList()
         displayPenumpang = ArrayList()
         karyawan = ArrayList()
         inPenumpangList=ArrayList()
@@ -256,7 +248,6 @@ fun postIzinKeluarSarana(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if(resultCode==Activity.RESULT_OK){
-            getPenumpang()
             inPenumpangList?.clear()
             listDipilih = data!!.getStringArrayListExtra("listDipilih")
 //            listArr = listDipilih!!.split(",")
@@ -264,11 +255,7 @@ fun postIzinKeluarSarana(){
             for(i in listDipilih!!){
 //                Toasty.info(this@NewSarprasActivity,i,Toasty.LENGTH_SHORT).show()
 
-                myList?.forEach {
-                    if(it.nik.equals(i)){
-                        inPenumpangList?.add("(${it.nik}) ${it.nama} | ${it.jabatan}")
-                    }
-                }
+
             }
             inPenumpang.setText(inPenumpangList?.joinToString(separator=", \r\n"){ "${it}" })
         }else if(resultCode==Activity.RESULT_CANCELED){
@@ -276,19 +263,6 @@ fun postIzinKeluarSarana(){
         }
 
         super.onActivityResult(requestCode, resultCode, data)
-    }
-    fun getPenumpang(){
-        myList?.clear()
-        var realm = Realm.getDefaultInstance()
-        var listPenumpang =
-            realm.
-            where(PenumpangModel::class.java)
-                .findAll()
-        listPenumpang?.forEach {
-            myList?.add(it)
-        }
-
-        realm.close()
     }
     companion object{
         var NO_RKB = "no_rkb"
@@ -380,43 +354,13 @@ fun postIzinKeluarSarana(){
             showKaryawan(inDriver)
         }
         if(v!!.id == R.id.inPenumpang){
-            listPenumpang()
 //            showKaryawan(inPenumpang)
             var intent = Intent(this@NewSarprasActivity,PenumpangActivity::class.java)
             intent.putExtra("listDipilih",listDipilih)
             startActivityForResult(intent,1)
         }
     }
-    fun listPenumpang(){
 
-        var realm = Realm.getDefaultInstance()
-        realm?.executeTransaction {
-            var listPenumpang =
-                realm?.where(PenumpangModel::class.java)
-                    ?.findAllSorted("id", Sort.DESCENDING)
-            listPenumpang?.deleteAllFromRealm()
-            val penumpang = PenumpangModel()
-            karyawan?.forEach {
-                penumpang.id = it.id
-                penumpang.nik = it.nik
-                penumpang.nama = it.nama
-                penumpang.jabatan = it.jabatan
-                try {
-                    realm?.copyToRealm(penumpang)
-
-                } catch (e: Exception) {
-                    Toast.makeText(
-                        this@NewSarprasActivity,
-                        "Load Data Karyawan Gagal : $e",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-        }
-        realm?.close()
-
-    }
 
     fun showKaryawan(inKaryawan:TextInputEditText){
         spinnerDialog = SpinnerDialog(this@NewSarprasActivity,modelList(),"Select Karyawan")

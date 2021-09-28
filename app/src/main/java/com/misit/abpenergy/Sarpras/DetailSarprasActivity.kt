@@ -44,7 +44,9 @@ class DetailSarprasActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.rvPenumpangList)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
-        loadDetailSarpras(noidOut)
+        if (noidOut != null) {
+            loadDetailSarpras(noidOut)
+        }
 
     }
     override fun onSupportNavigateUp(): Boolean {

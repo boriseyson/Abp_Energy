@@ -78,7 +78,7 @@ class CameraFrame(private var cameraHandler: Handler,private val textureView : T
             return
         }
         val texture = textureView.surfaceTexture
-        texture.setDefaultBufferSize(MAX_PREVIEW_WIDTH,MAX_PREVIEW_HEIGHT)
+        texture?.setDefaultBufferSize(MAX_PREVIEW_WIDTH,MAX_PREVIEW_HEIGHT)
         val surface = Surface(texture)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Log.d("CameraHazard","Build.VERSION_CODES.LOLLIPOP")

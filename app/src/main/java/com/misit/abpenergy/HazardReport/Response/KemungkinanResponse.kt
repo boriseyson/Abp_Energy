@@ -20,5 +20,9 @@ data class KemungkinanItem(
 	var nilai: Int? = null,
 
 	@field:SerializedName("idKemungkinan")
-	var idKemungkinan: Int? = null
+	var idKemungkinan: Int? = null,
+
+	@field:SerializedName("kemungkinan_update")
+	var kemungkinan_update: String? = null
+
 )

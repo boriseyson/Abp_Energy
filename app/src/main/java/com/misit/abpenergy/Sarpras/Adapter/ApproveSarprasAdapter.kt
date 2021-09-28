@@ -13,10 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SarprasResponse.DataItem
 import es.dmoral.toasty.Toasty
-import io.realm.Realm
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -35,14 +33,11 @@ class ApproveSarprasAdapter(
     private var simpleDateFormat: SimpleDateFormat? = null
     private var onItemClickListener: OnItemClickListener? = null
     private var userRule:Array<String>?=null
-    private var myList:MutableList<PenumpangModel>?=null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): MyViewHolder {
-        Realm.init(context)
-        myList = ArrayList()
         userRule =ruleUser.split(",").toTypedArray()
 
         val view = layoutInflater.inflate(R.layout.list_sarpras,parent,false)
@@ -52,17 +47,7 @@ class ApproveSarprasAdapter(
 
     }
 
-    private fun getPenumpang(niknya:String,holder: MyViewHolder) {
-        myList?.clear()
-        var realm = Realm.getDefaultInstance()
-        var listPenumpang =
-            realm.
-                where(PenumpangModel::class.java)
-                .equalTo("nik",niknya)
-                .findFirst()
-        holder.driver.text = listPenumpang?.nama
-        realm.close()
-    }
+
 
     override fun getItemCount(): Int {
         return sarprasList.size
@@ -88,7 +73,6 @@ class ApproveSarprasAdapter(
             holder.noLV.text = "${sarprasList.noLv!!.capitalize()} ( ${sarprasList.noPol} )"
         }else{
             holder.txtDriver.text="Driver :"
-            getPenumpang(sarprasList.driver!!,holder)
             holder.txtNoLV.text="NO LV : "
             holder.noLV.text = "${sarprasList.noLv}"
         }

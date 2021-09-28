@@ -10,11 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.misit.abpenergy.Sarpras.Adapter.PenumpangAdapter
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.Realm.PenumpangModel
 import com.misit.abpenergy.Sarpras.SaranaResponse.KaryawanItem
 import com.misit.abpenergy.Sarpras.SaranaResponse.PenumpangListModel
 import es.dmoral.toasty.Toasty
-import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_penumpang.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -60,7 +58,6 @@ class PenumpangActivity : AppCompatActivity(),
 
         rvPenumpang.adapter =adapter
         adapter?.setListener(this)
-        loadData()
 
     }
 
@@ -117,18 +114,7 @@ class PenumpangActivity : AppCompatActivity(),
         onBackPressed()
         return super.onSupportNavigateUp()
     }
-    fun loadData(){
-        Realm.init(this)
-        val realm = Realm.getDefaultInstance()
-        val realmRes = realm.where(PenumpangModel::class.java)
-            .findAll()
-        for (i in realmRes.indices) {
-            val penumpang = realmRes[i]
-            list?.add(PenumpangListModel(i!!.toLong()!!,penumpang?.nik,penumpang?.nama,penumpang?.jabatan))
-        }
-        displayList!!.addAll(list!!)
-        adapter?.notifyDataSetChanged()
-    }
+
     override fun onItemClick(nik: String?) {
 
     }

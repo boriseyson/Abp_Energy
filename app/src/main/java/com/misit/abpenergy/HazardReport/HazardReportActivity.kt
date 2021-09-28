@@ -1,9 +1,9 @@
 package com.misit.abpenergy.HazardReport
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.Activity
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.*
 import android.graphics.LinearGradient
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,11 +30,9 @@ import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Service.ConnectionService
 import com.misit.abpenergy.Service.InitService
+import com.misit.abpenergy.Service.JobServices
 import com.misit.abpenergy.TestActivity
-import com.misit.abpenergy.Utils.ConfigUtil
-import com.misit.abpenergy.Utils.ConnectionLiveData
-import com.misit.abpenergy.Utils.PopupUtil
-import com.misit.abpenergy.Utils.PrefsUtil
+import com.misit.abpenergy.Utils.*
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_hazard_report.*
 import kotlinx.android.synthetic.main.activity_hazard_report.internetConnection
@@ -66,6 +64,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     lateinit var viewModel: HeaderViewModel
     var tokenPassingReceiver : BroadcastReceiver?=null
     lateinit var connectionService:Intent
+    private var scheduler: JobScheduler?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,7 +119,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         })
         floatingNewHazard.setOnClickListener {
             var intent = Intent(this@HazardReportActivity,NewHazardActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent,101)
         }
 //        hazardList?.clear()
 //        load("1",DARI, SAMPAI)
@@ -150,7 +149,27 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             }
         })
         hazardViewModel()
+        if(!ConfigUtil.isJobServiceOn(this@HazardReportActivity, Constants.JOB_SERVICE_ID)){
+            jobScheduler()
+        }else{
+            Log.d("JobService","Is Running")
+        }
 
+    }
+    private fun jobScheduler(){
+        val componentName = ComponentName(this@HazardReportActivity, JobServices::class.java)
+        val jobInfo = JobInfo.Builder(Constants.JOB_SERVICE_ID,componentName)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            .setPersisted(true)
+            .setPeriodic(900000)
+            .build()
+        val resultCode = scheduler?.schedule(jobInfo)
+        if(resultCode == JobScheduler.RESULT_SUCCESS){
+            Log.d("JobScheduler","Job Scheduled")
+        }else{
+            Log.d("JobScheduler","Job Scheduled Failed")
+
+        }
     }
     private fun checkNetworkConnection() {
         cld = ConnectionLiveData(application)
@@ -251,7 +270,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==R.id.newForm){
             var intent = Intent(this@HazardReportActivity,NewHazardActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent,101)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -278,6 +297,17 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     }
     override fun onVerify(uid: String?, option: Int?) {
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode==Activity.RESULT_OK && requestCode==101){
+            if(!ConfigUtil.isJobServiceOn(this@HazardReportActivity, Constants.JOB_SERVICE_ID)){
+                jobScheduler()
+            }else{
+                Log.d("JobService","Is Running")
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
     override fun onClick(v: View?) {
         hazardList?.clear()
@@ -334,6 +364,12 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             Log.d("ConnectionCheck",tokenData)
                             internetConnection.visibility= View.VISIBLE
                             Toasty.error(this@HazardReportActivity,"Network Disabled").show()
+                        }
+                    }
+                    if(bundle.containsKey("SavingHazard")){
+                        val tokenData = bundle.getString("SavingHazard")
+                        if(tokenData=="HAZARD_DIBUAT"){
+                            startService(connectionService)
                         }
                     }
                 }

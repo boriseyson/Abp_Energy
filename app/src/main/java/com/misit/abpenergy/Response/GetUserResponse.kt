@@ -96,6 +96,9 @@ data class DataUser(
 	@field:SerializedName("username")
 	var username: String? = null,
 
+	@field:SerializedName("user_update")
+	var user_update: String? = null,
+
 	@field:SerializedName("status")
 	var status: Int? = null
 )

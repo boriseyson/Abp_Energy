@@ -29,7 +29,6 @@ import com.misit.abpenergy.Sarpras.SarprasResponse.UserSarprasResponse
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
-import io.realm.exceptions.RealmException
 import kotlinx.android.synthetic.main.activity_sarpras.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -283,7 +282,7 @@ class SarprasActivity : AppCompatActivity(), SarprasAdapter.OnItemClickListener 
                 try {
                   var p=  penumpang.getItem("18060207")
                     Log.d("PenumpangSql",p.nama.toString())
-                }catch (e:RealmException)
+                }catch (e:Exception)
                 {
                     Log.d("RealmININT",e.toString())
                 }

@@ -11,5 +11,7 @@ data class PenumpangListModel(
     @field:SerializedName("nama")
     var nama: String? = null,
     @field:SerializedName("jabatan")
-    var jabatan: String? = null
+    var jabatan: String? = null,
+    @field:SerializedName("penumpang_update")
+    var penumpang_update: String? = null
 )
