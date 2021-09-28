@@ -20,7 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
-import com.misit.abpenergy.QRCodeActivity
+import com.misit.abpenergy.Barcode.QRCodeActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Sarpras.Adapter.SarprasAdapter
 import com.misit.abpenergy.Sarpras.SQLite.PenumpangDataSource
@@ -242,7 +242,7 @@ class SarprasActivity : AppCompatActivity(), SarprasAdapter.OnItemClickListener 
         startActivity(intent)
     }
     override fun onQRCodeClick(noIdOut: String?) {
-        val intent = Intent(this@SarprasActivity,QRCodeActivity::class.java)
+        val intent = Intent(this@SarprasActivity, QRCodeActivity::class.java)
         intent.putExtra("itemCodes",noIdOut)
         intent.putExtra("judul","Tunjukkan QRCode Kepada Security Untuk Di Scan")
         startActivity(intent)

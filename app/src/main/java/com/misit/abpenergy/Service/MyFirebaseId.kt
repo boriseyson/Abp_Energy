@@ -12,7 +12,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.misit.abpenergy.IndexActivity
+import com.misit.abpenergy.OlderClass.IndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.PrefsUtil
 import java.lang.Exception
@@ -40,7 +40,7 @@ class MyFirebaseId : FirebaseMessagingService() {
         notif(title,teks,tipe)
     }
     private fun notif(title: String?, body: String?,tipe:String?){
-        var intent = Intent(this,IndexActivity::class.java)
+        var intent = Intent(this, IndexActivity::class.java)
         intent.putExtra(IndexActivity.TIPE,tipe)
         showNotification(title,body,intent)
     }
