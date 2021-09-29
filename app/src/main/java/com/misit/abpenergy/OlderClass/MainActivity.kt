@@ -1,7 +1,5 @@
-package com.misit.abpenergy
+package com.misit.abpenergy.OlderClass
 
-import android.Manifest
-import android.app.Activity
 import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -11,33 +9,26 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
-import com.google.android.gms.auth.api.signin.internal.Storage
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.*
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.storage.StorageReference
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardDetailDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSource
-import com.misit.abpenergy.HazardReport.Service.HazardService
+import com.misit.abpenergy.IntroActivity
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.Model.KaryawanModel
+import com.misit.abpenergy.R
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
-import com.misit.abpenergy.Sarpras.Service.LoadSarana
 import com.misit.abpenergy.Sarpras.Service.SaranaService
 import com.misit.abpenergy.Service.ConnectionService
 import com.misit.abpenergy.Service.LoadingServices
@@ -47,13 +38,9 @@ import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.index_new.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.sql.SQLException
 
 
 class MainActivity : AppCompatActivity() {
@@ -162,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         if(PrefsUtil.getInstance().getBooleanState("INTRO_APP",false)){
                 updateProgress()
         }else{
-            startActivity(Intent(this@MainActivity,IntroActivity::class.java))
+            startActivity(Intent(this@MainActivity, IntroActivity::class.java))
             finish()
         }
         super.onResume()

@@ -19,9 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
-import com.misit.abpenergy.MainActivity
 import com.misit.abpenergy.MainPageActivity
-import com.misit.abpenergy.NewIndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Rkb.Response.UserResponse

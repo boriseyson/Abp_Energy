@@ -1,4 +1,4 @@
-package com.misit.abpenergy
+package com.misit.abpenergy.OlderClass
 
 import android.Manifest
 import android.app.Activity
@@ -30,7 +30,9 @@ import com.misit.abpenergy.Monitoring_Produksi.*
 import com.misit.abpenergy.Response.*
 import com.misit.abpenergy.Rkb.*
 import com.misit.abpenergy.Sarpras.*
-import com.misit.abpenergy.Service.BarcodeScannerActivity
+import com.misit.abpenergy.Barcode.BarcodeScannerActivity
+import com.misit.abpenergy.Barcode.QRCodeActivity
+import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_index.*
@@ -89,7 +91,7 @@ private val requestCodeCameraPermission = 1999
             finish()
         }
 //        Rule User
-        userRule =RULE.split(",").toTypedArray()
+        userRule = RULE.split(",").toTypedArray()
         var apprSarpras = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Arrays.stream(userRule).anyMatch{ t -> t== "approve sarpras"}
         } else {
@@ -240,7 +242,7 @@ private val requestCodeCameraPermission = 1999
                             btnNewSarana.visibility = View.GONE
                         }
                         tvInspeksiUser.text = res!!.datInspeksi!!.toString()
-                            userRule =RULE.split(",").toTypedArray()
+                            userRule = RULE.split(",").toTypedArray()
                         var apprSarpras = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             Arrays.stream(userRule).anyMatch{ t -> t== "approve sarpras"}
                         } else {
@@ -291,7 +293,7 @@ private val requestCodeCameraPermission = 1999
     //Menu Item
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         drawer_layout.closeDrawer(GravityCompat.START)
-        if(item.itemId==R.id.settingAdmin){
+        if(item.itemId== R.id.settingAdmin){
             Toasty.info(this@IndexActivity,"OKE").show()
         }
         return true
@@ -324,10 +326,10 @@ private val requestCodeCameraPermission = 1999
 //    NotifRkb
     private fun rkbNotif(tabindex:String?){
         var intent = Intent(this@IndexActivity,RkbActivity::class.java)
-        intent.putExtra(RkbActivity.USERNAME,USERNAME)
-        intent.putExtra(RkbActivity.DEPARTMENT,DEPARTMENT)
-        intent.putExtra(RkbActivity.SECTON,SECTON)
-        intent.putExtra(RkbActivity.LEVEL,LEVEL)
+        intent.putExtra(RkbActivity.USERNAME, USERNAME)
+        intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
+        intent.putExtra(RkbActivity.SECTON, SECTON)
+        intent.putExtra(RkbActivity.LEVEL, LEVEL)
         intent.putExtra(RkbActivity.Tab_INDEX,tabindex)
         intent.putExtra(RkbActivity.TIPE,"notif")
         startActivity(intent)
@@ -377,135 +379,135 @@ private val requestCodeCameraPermission = 1999
 //Click View
     override fun onClick(v: View?) {
         btnFLMenuIndex.collapse()
-        if(v?.id==R.id.btnTotal){
+        if(v?.id== R.id.btnTotal){
                 var intent = Intent(this@IndexActivity,RkbActivity::class.java)
-                intent.putExtra(RkbActivity.USERNAME,USERNAME)
-                intent.putExtra(RkbActivity.DEPARTMENT,DEPARTMENT)
-                intent.putExtra(RkbActivity.SECTON,SECTON)
-                intent.putExtra(RkbActivity.LEVEL,LEVEL)
+                intent.putExtra(RkbActivity.USERNAME, USERNAME)
+                intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
+                intent.putExtra(RkbActivity.SECTON, SECTON)
+                intent.putExtra(RkbActivity.LEVEL, LEVEL)
                 var tbindex = 0 as Int
                 intent.putExtra(RkbActivity.Tab_INDEX,tbindex)
                 startActivity(intent)
             }
-        if(v?.id==R.id.btnApprove){
+        if(v?.id== R.id.btnApprove){
             var intent = Intent(this@IndexActivity,RkbActivity::class.java)
-            intent.putExtra(RkbActivity.USERNAME,USERNAME)
-            intent.putExtra(RkbActivity.DEPARTMENT,DEPARTMENT)
-            intent.putExtra(RkbActivity.SECTON,SECTON)
-            intent.putExtra(RkbActivity.LEVEL,LEVEL)
+            intent.putExtra(RkbActivity.USERNAME, USERNAME)
+            intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
+            intent.putExtra(RkbActivity.SECTON, SECTON)
+            intent.putExtra(RkbActivity.LEVEL, LEVEL)
             var tbindex = 1 as Int
             intent.putExtra(RkbActivity.Tab_INDEX,tbindex)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnWaiting){
+        if(v?.id== R.id.btnWaiting){
             var intent = Intent(this@IndexActivity,RkbActivity::class.java)
-            intent.putExtra(RkbActivity.USERNAME,USERNAME)
-            intent.putExtra(RkbActivity.DEPARTMENT,DEPARTMENT)
-            intent.putExtra(RkbActivity.SECTON,SECTON)
-            intent.putExtra(RkbActivity.LEVEL,LEVEL)
+            intent.putExtra(RkbActivity.USERNAME, USERNAME)
+            intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
+            intent.putExtra(RkbActivity.SECTON, SECTON)
+            intent.putExtra(RkbActivity.LEVEL, LEVEL)
             var tbindex = 2 as Int
             intent.putExtra(RkbActivity.Tab_INDEX,tbindex)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnCancel){
+        if(v?.id== R.id.btnCancel){
             var intent = Intent(this@IndexActivity,RkbActivity::class.java)
-            intent.putExtra(RkbActivity.USERNAME,USERNAME)
-            intent.putExtra(RkbActivity.DEPARTMENT,DEPARTMENT)
-            intent.putExtra(RkbActivity.SECTON,SECTON)
-            intent.putExtra(RkbActivity.LEVEL,LEVEL)
+            intent.putExtra(RkbActivity.USERNAME, USERNAME)
+            intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
+            intent.putExtra(RkbActivity.SECTON, SECTON)
+            intent.putExtra(RkbActivity.LEVEL, LEVEL)
             var tbindex = 3 as Int
             intent.putExtra(RkbActivity.Tab_INDEX,tbindex)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnClose){
+        if(v?.id== R.id.btnClose){
             var intent = Intent(this@IndexActivity,RkbActivity::class.java)
-            intent.putExtra(RkbActivity.USERNAME,USERNAME)
-            intent.putExtra(RkbActivity.DEPARTMENT,DEPARTMENT)
-            intent.putExtra(RkbActivity.SECTON,SECTON)
-            intent.putExtra(RkbActivity.LEVEL,LEVEL)
+            intent.putExtra(RkbActivity.USERNAME, USERNAME)
+            intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
+            intent.putExtra(RkbActivity.SECTON, SECTON)
+            intent.putExtra(RkbActivity.LEVEL, LEVEL)
             var tbindex = 4 as Int
             intent.putExtra(RkbActivity.Tab_INDEX,tbindex)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnSarpras){
+        if(v?.id== R.id.btnSarpras){
            var intent = Intent(this@IndexActivity,
                 SarprasActivity::class.java)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnNewSarpras){
+        if(v?.id== R.id.btnNewSarpras){
             var intent = Intent(this@IndexActivity,NewSarprasActivity::class.java)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnSarprasApproveKabag){
+        if(v?.id== R.id.btnSarprasApproveKabag){
             var intent = Intent(this@IndexActivity,KabagApprSarprasActivity::class.java)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnOB){
+        if(v?.id== R.id.btnOB){
             var intent = Intent(this@IndexActivity,ProductionActivity::class.java)
             intent.putExtra(ProductionActivity.MONITORING,"OB")
             startActivity(intent)
         }
-        if(v?.id==R.id.btnHAULING){
+        if(v?.id== R.id.btnHAULING){
             var  intent = Intent(this@IndexActivity,ProductionActivity::class.java)
             intent.putExtra(ProductionActivity.MONITORING,"HAULING")
             startActivity(intent)
         }
-        if(v?.id==R.id.btnCRUSHING){
+        if(v?.id== R.id.btnCRUSHING){
             var  intent = Intent(this@IndexActivity,ProductionActivity::class.java)
             intent.putExtra(ProductionActivity.MONITORING,"CRUSHING")
             startActivity(intent)
         }
-        if(v?.id==R.id.btnBARGING){
+        if(v?.id== R.id.btnBARGING){
             var intent = Intent(this@IndexActivity,ProductionActivity::class.java)
             intent.putExtra(ProductionActivity.MONITORING,"BARGING")
             startActivity(intent)
         }
-        if(v?.id==R.id.btnSTOCKROOM){
+        if(v?.id== R.id.btnSTOCKROOM){
             var intent = Intent(this@IndexActivity,StockActivity::class.java)
             intent.putExtra(ProductionActivity.MONITORING,"ROOM")
             startActivity(intent)
         }
-        if(v?.id==R.id.btnSTOCKPRODUCT){
+        if(v?.id== R.id.btnSTOCKPRODUCT){
         var intent = Intent(this@IndexActivity,StockActivity::class.java)
         intent.putExtra(ProductionActivity.MONITORING,"PRODUCT")
         startActivity(intent)
         }
-        if(v?.id==R.id.btnHazard){
+        if(v?.id== R.id.btnHazard){
             hazardReport()
         }
-        if(v!!.id==R.id.btnNewSarana){
+        if(v!!.id== R.id.btnNewSarana){
             newSarana()
         }
-        if(v!!.id==R.id.btnNewHazard){
+        if(v!!.id== R.id.btnNewHazard){
             newHazardReport()
         }
-        if(v?.id==R.id.content_frame){
+        if(v?.id== R.id.content_frame){
             btnFLMenuIndex.collapse()
         }
-        if(v?.id==R.id.btnHazardALL){
+        if(v?.id== R.id.btnHazardALL){
             var intent = Intent(this@IndexActivity, ALLHazardReportActivity::class.java)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnSarprasAll){
+        if(v?.id== R.id.btnSarprasAll){
             var intent = Intent(this@IndexActivity, AllSarprasActivity::class.java)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnInspection){
+        if(v?.id== R.id.btnInspection){
             var intent = Intent(this@IndexActivity, InspeksiActivity::class.java)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnInspectionALL){
+        if(v?.id== R.id.btnInspectionALL){
             var intent = Intent(this@IndexActivity, AllInspeksiActivity::class.java)
             startActivity(intent)
         }
-        if(v?.id==R.id.btnQRCODES){
+        if(v?.id== R.id.btnQRCODES){
             var intent = Intent(this@IndexActivity, BarcodeScannerActivity::class.java)
             intent.putExtra("aktivitas","addTeam")
             startActivity(intent)
         }
-        if(v?.id==R.id.cvBarcodeProfile){
-            val intent = Intent(this@IndexActivity,QRCodeActivity::class.java)
-            intent.putExtra("itemCodes",NIK)
+        if(v?.id== R.id.cvBarcodeProfile){
+            val intent = Intent(this@IndexActivity, QRCodeActivity::class.java)
+            intent.putExtra("itemCodes", NIK)
             intent.putExtra("judul","QR-Code Anda")
             startActivity(intent)
         }

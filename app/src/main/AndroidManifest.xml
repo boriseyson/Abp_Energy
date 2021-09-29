@@ -65,14 +65,14 @@
             android:screenOrientation="portrait" />
         <activity android:name=".HazardReport.V_1.NewHazardActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".OlderClass.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".OlderClass.HomeActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".IndexNewActivity" />
+        <activity android:name=".OlderClass.IndexNewActivity" />
         <activity android:name=".Master.ListUserActivity" />
         <activity
             android:name=".IntroActivity"
@@ -96,7 +96,7 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
-            android:name=".NewIndexActivity"
+            android:name=".OlderClass.NewIndexActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
@@ -127,7 +127,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Service.BarcodeScannerActivity"
+            android:name=".Barcode.BarcodeScannerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -145,7 +145,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".QRCodeActivity"
+            android:name=".Barcode.QRCodeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -253,7 +253,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
         <activity
-            android:name=".IndexActivity"
+            android:name=".OlderClass.IndexActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
