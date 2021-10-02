@@ -1,37 +1,24 @@
 package com.misit.abpenergy.HazardReport
 
 import android.app.Activity
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
 import android.content.*
-import android.graphics.LinearGradient
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.misit.abpenergy.Api.ApiClient
-import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HazardReport.Adapter.ListHazardReportAdapter
 import com.misit.abpenergy.HazardReport.Response.HazardItem
-import com.misit.abpenergy.HazardReport.Response.ListHazard
-import com.misit.abpenergy.HazardReport.SQLite.DataSource.HeaderDataSourceOffline
-import com.misit.abpenergy.HazardReport.SQLite.Model.HeaderListModel
 import com.misit.abpenergy.HazardReport.ViewModel.HeaderViewModel
-import com.misit.abpenergy.HomePage.IndexActivity
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Service.ConnectionService
-import com.misit.abpenergy.Service.InitService
-import com.misit.abpenergy.Service.JobServices
-import com.misit.abpenergy.TestActivity
 import com.misit.abpenergy.Utils.*
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_hazard_report.*
@@ -39,13 +26,9 @@ import kotlinx.android.synthetic.main.activity_hazard_report.internetConnection
 import kotlinx.android.synthetic.main.index_new.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItemClickListener,View.OnClickListener {
 
@@ -64,7 +47,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     lateinit var viewModel: HeaderViewModel
     var tokenPassingReceiver : BroadcastReceiver?=null
     lateinit var connectionService:Intent
-    private var scheduler: JobScheduler?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,27 +131,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             }
         })
         hazardViewModel()
-        if(!ConfigUtil.isJobServiceOn(this@HazardReportActivity, Constants.JOB_SERVICE_ID)){
-            jobScheduler()
-        }else{
-            Log.d("JobService","Is Running")
-        }
 
-    }
-    private fun jobScheduler(){
-        val componentName = ComponentName(this@HazardReportActivity, JobServices::class.java)
-        val jobInfo = JobInfo.Builder(Constants.JOB_SERVICE_ID,componentName)
-            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-            .setPersisted(true)
-            .setPeriodic(900000)
-            .build()
-        val resultCode = scheduler?.schedule(jobInfo)
-        if(resultCode == JobScheduler.RESULT_SUCCESS){
-            Log.d("JobScheduler","Job Scheduled")
-        }else{
-            Log.d("JobScheduler","Job Scheduled Failed")
-
-        }
     }
     private fun checkNetworkConnection() {
         cld = ConnectionLiveData(application)
@@ -301,11 +263,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode==Activity.RESULT_OK && requestCode==101){
-            if(!ConfigUtil.isJobServiceOn(this@HazardReportActivity, Constants.JOB_SERVICE_ID)){
-                jobScheduler()
-            }else{
-                Log.d("JobService","Is Running")
-            }
+
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

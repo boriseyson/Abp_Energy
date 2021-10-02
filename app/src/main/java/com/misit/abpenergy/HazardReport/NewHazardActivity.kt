@@ -68,9 +68,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var keparahanID:String? = null
     private var kemungkinanIDSesudah:String? = null
     private var keparahanIDSesudah:String? = null
-    private var csrf_token:String?=null
-    private var plKondisi:RequestBody?=null
-    private var rbStatus:RequestBody?=null
     private var bitmap:Bitmap?=null
     private var bitmapBuktiSelesai:Bitmap?=null
     private var bitmapPJ:Bitmap?=null
@@ -175,7 +172,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onResume() {
-        reciever()
         storageDir = getExternalFilesDir("ABP_IMAGES")
         LocalBroadcastManager.getInstance(this@NewHazardActivity).registerReceiver(
             tokenPassingReceiver!!, IntentFilter(
@@ -312,11 +308,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(
                     tokenPassingReceiver!!
                 )
-                Log.d("JobService", "Is Running")
-//                var intent = Intent()
-//                setResult(Activity.RESULT_OK,intent)
                 finish()
-
         }
         builder.show()
     }
@@ -650,6 +642,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             }else if (fName==PENANGGUNG_JAWAB){
                 pathFilePJ = absolutePath
             }
+            Log.d("absolutePath","${absolutePath}")
         }
     }
     //    Dialog PICK PICTURE
@@ -818,14 +811,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                         "ABP_IMAGES"
                     ) }
                     if(deleteImg.await()){
-//                        Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                        LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(
-                            tokenPassingReceiver!!
-                        )
                         Log.d("JobService", "Is Running")
-                        var intent = Intent()
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
+//                        var intent = Intent()
+//                        setResult(Activity.RESULT_OK, intent)
+//                        finish()
                     }else{
                         ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity, "ABP_IMAGES")
                     }
@@ -1254,66 +1243,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         var USEPICK = "USEPICK"
     }
 //    OBJECT
-
-    private fun bgStopService(intent: Intent, c: Context){
-        stopService(intent)
-        LocalBroadcastManager.getInstance(c).unregisterReceiver(tokenPassingReceiver!!)
-    }
-    private fun reciever(){
-        tokenPassingReceiver= object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val bundle = intent.extras
-                if (bundle != null) {
-                    if (bundle.containsKey("SavingHazard")) {
-                        val tokenData = bundle.getString("SavingHazard")
-                        Log.d("ServiceName", "${tokenData} Saving Hazard Hazard")
-                        if(tokenData=="FgHazardDone"){
-                                stopService(connectionService)
-//                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                                PopupUtil.dismissDialog()
-                            var intent = Intent()
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }else if(tokenData=="BgHazardDone"){
-                            bgStopService(bgHazardService, context)
-                            stopService(connectionService)
-                            Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                            dialog?.dismiss()
-                            var intent = Intent()
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-
-                        }
-                    }
-                    if (bundle.containsKey("bsConnection")) {
-                        val tokenData = bundle.getString("bsConnection")
-                        Log.d("ServiceName", "${tokenData} New Hazard")
-                        if(tokenData=="Online"){
-                                startService(bgHazardService)
-                            Log.d("ConnectionCheck", tokenData)
-                        }else if(tokenData=="Offline"){
-                            Log.d("ConnectionCheck", tokenData)
-                            Toasty.error(this@NewHazardActivity, "No Internet Connection").show()
-//                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                                PopupUtil.dismissDialog()
-                            var intent = Intent()
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }else if(tokenData=="Disabled"){
-                            Log.d("ConnectionCheck", tokenData)
-//                                Toasty.success(this@NewHazardActivity, "Hazard Report Telah Dibuat! ").show()
-                                PopupUtil.dismissDialog()
-                            var intent = Intent()
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
     private fun showLoading(c: Context, title: String, option: String){
         builder = AlertDialog.Builder(this)
         var layout = layoutInflater.inflate(R.layout.custom_loading, null)

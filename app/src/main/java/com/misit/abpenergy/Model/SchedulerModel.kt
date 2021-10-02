@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Modelclass SchedulerModel {    var idscheduler: Int=0    var kode_shcedule: String?=null    var desk: String?=null}
