@@ -28,6 +28,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.DataSource.SchedulerDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardDetailDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSource
@@ -37,6 +38,7 @@ import com.misit.abpenergy.HazardReport.SQLite.Model.HazardValidationModel
 import com.misit.abpenergy.HazardReport.Service.BgHazardService
 import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
+import com.misit.abpenergy.Model.SchedulerModel
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Service.ConnectionService
@@ -165,20 +167,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         inTGLTenggat.setOnClickListener(this)
         cvPilihPJ.setOnClickListener(this@NewHazardActivity)
         bgHazardService = Intent(this@NewHazardActivity, BgHazardService::class.java)
-        if(ConfigUtil.isJobServiceOn(this@NewHazardActivity, Constants.JOB_SERVICE_ID)){
-            ConfigUtil.stopJobScheduler(scheduler)
-            Log.d("JobService", "Not Running")
-        }
     }
 
     override fun onResume() {
         storageDir = getExternalFilesDir("ABP_IMAGES")
-        LocalBroadcastManager.getInstance(this@NewHazardActivity).registerReceiver(
-            tokenPassingReceiver!!, IntentFilter(
-                "com.misit.abpenergy"
-            )
-        )
-
         super.onResume()
     }
     //    VIEW LISTENER
@@ -811,10 +803,21 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                         "ABP_IMAGES"
                     ) }
                     if(deleteImg.await()){
-                        Log.d("JobService", "Is Running")
-//                        var intent = Intent()
-//                        setResult(Activity.RESULT_OK, intent)
-//                        finish()
+                        val createSchedule = SchedulerDataSource(this@NewHazardActivity)
+                        var scheduleIn = SchedulerModel()
+                        scheduleIn.kode_shcedule = "new_hazard"
+                        scheduleIn.desk = "New Hazard Report"
+                        val newHazard = async {  createSchedule.insertItem(scheduleIn) }
+                        if(newHazard.await()>0){
+                            dialog?.dismiss()
+                            Log.d("JobService", "New Hazard Done")
+                            Log.d("JobService", "New Schedule Done")
+
+                        var intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                        }
+
                     }else{
                         ConfigUtil.deleteInABPIMAGES(this@NewHazardActivity, "ABP_IMAGES")
                     }
