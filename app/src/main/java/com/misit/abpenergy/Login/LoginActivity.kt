@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -145,11 +146,11 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
     }
 
     fun versionApp(){
-        Use@ try {
+        try {
             val pInfo: PackageInfo = this.getPackageManager().getPackageInfo(packageName, 0)
             app_version = pInfo.versionName
         } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+           Log.d("AppVersion","${e.message}")
         }
     }
 
