@@ -70,12 +70,10 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(method!=null){
             if(method=="Online"){
                 GlobalScope.launch(Dispatchers.IO) {
-                    PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
                     viewModel?.loadDetailOnline("${uid}",this@DetailHazardActivity)
                 }
             }else if (method =="Offline"){
                 GlobalScope.launch(Dispatchers.IO) {
-                    PopupUtil.showLoading(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
                     viewModel?.loadDetailOffline("${uid}",this@DetailHazardActivity)
                 }
             }
@@ -266,17 +264,16 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         viewModel.hazardDetailObserver()?.observe(this@DetailHazardActivity,{
             if(it!=null){
                 itemHazardList(it)
-                PopupUtil.dismissDialog()
             }
+
         })
         viewModel.progressObserver()?.observe(this@DetailHazardActivity,{
             if(it){
-                PopupUtil.dismissDialog()
                 crlDetail.visibility = View.VISIBLE
             }else{
                 crlDetail.visibility = View.GONE
-                PopupUtil.showProgress(this@DetailHazardActivity,"Loading...","Memuat Hazard Report!")
             }
+
         })
     }
     companion object{

@@ -107,6 +107,7 @@
         <!--RecyclerView-->
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:background="@color/white_smoke"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/pullRefresh">

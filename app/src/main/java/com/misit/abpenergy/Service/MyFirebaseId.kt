@@ -12,7 +12,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.misit.abpenergy.OlderClass.IndexActivity
+import com.misit.abpenergy.HomePage.IndexActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.PrefsUtil
 import java.lang.Exception
@@ -37,11 +37,15 @@ class MyFirebaseId : FirebaseMessagingService() {
         val teks = data["text"]
         val title = data["title"]
         val tipe = data["tipe"]
-        notif(title,teks,tipe)
+        val uid = data["uid"]
+        notif(title,teks,tipe,uid)
     }
-    private fun notif(title: String?, body: String?,tipe:String?){
+    private fun notif(title: String?, body: String?,tipe:String?,uid:String?){
+        Log.d("UID", "${uid}")
+
         var intent = Intent(this, IndexActivity::class.java)
         intent.putExtra(IndexActivity.TIPE,tipe)
+        intent.putExtra("UID",uid)
         showNotification(title,body,intent)
     }
     private fun showNotification(title: String?, body: String?,intent: Intent) {

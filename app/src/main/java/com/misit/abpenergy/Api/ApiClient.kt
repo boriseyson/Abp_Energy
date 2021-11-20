@@ -19,7 +19,7 @@ import javax.net.ssl.TrustManager
 object ApiClient{
 //    public  const val BASE_URL= "http://10.10.3.13"
 //    public  const val BASE_URL= "https://borisreyson.com/"
-    public  const val BASE_URL= "https://abpjobsite.com:8443/"
+    public  const val BASE_URL= "https://abpjobsite.com/"
 
     private var retrofit : Retrofit? = null
     fun getClient(context: Context?):Retrofit?{

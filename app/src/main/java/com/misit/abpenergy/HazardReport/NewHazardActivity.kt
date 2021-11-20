@@ -297,9 +297,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         builder.setPositiveButton("Tidak") { dialog, which ->
         }
         builder.setNegativeButton("Ya") { dialog, which ->
-                LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(
-                    tokenPassingReceiver!!
-                )
+//                LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(
+//                    tokenPassingReceiver!!
+//                )
                 finish()
         }
         builder.show()
