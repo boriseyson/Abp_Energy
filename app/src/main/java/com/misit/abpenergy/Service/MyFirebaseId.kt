@@ -58,7 +58,7 @@ class MyFirebaseId : FirebaseMessagingService() {
                                             .setColor(R.drawable.abp_blue)
                                             .setContentTitle(title)
                                             .setContentText(null)
-                                            .setAutoCancel(false)
+                                            .setAutoCancel(true)
             .addAction(R.drawable.ic_baseline_open_in_new_24,"Open",pendingIntent)
                                             .setSound(dSoundUri)
                                             .setContentIntent(pendingIntent)
