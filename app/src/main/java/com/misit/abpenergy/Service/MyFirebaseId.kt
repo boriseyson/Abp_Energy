@@ -46,9 +46,9 @@ class MyFirebaseId : FirebaseMessagingService() {
         var intent = Intent(this, IndexActivity::class.java)
         intent.putExtra(IndexActivity.TIPE,tipe)
         intent.putExtra("UID",uid)
-        showNotification(title,body,intent)
+        showNotification(title,body,intent,tipe)
     }
-    private fun showNotification(title: String?, body: String?,intent: Intent) {
+    private fun showNotification(title: String?, body: String?,intent: Intent,tipe: String?) {
         var pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT)
         var cId = "fcm_default_channel"
         var dSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -57,19 +57,23 @@ class MyFirebaseId : FirebaseMessagingService() {
                                             .setSmallIcon(R.drawable.abp_white)
                                             .setColor(R.drawable.abp_blue)
                                             .setContentTitle(title)
-                                            .setContentText(body)
-                                            .setAutoCancel(true)
+                                            .setContentText(null)
+                                            .setAutoCancel(false)
+            .addAction(R.drawable.ic_baseline_open_in_new_24,"Open",pendingIntent)
                                             .setSound(dSoundUri)
                                             .setContentIntent(pendingIntent)
                                             .setPriority(Notification.PRIORITY_HIGH)
+                                            .setStyle(NotificationCompat.BigTextStyle()
+                                                .bigText(body))
+                                            .setGroup(tipe)
         var nManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
             var oChannel = NotificationChannel(cId,"Costumer",NotificationManager.IMPORTANCE_HIGH)
             nManager.createNotificationChannel(oChannel)
         }
-
-        nManager.notify(0,nBuilder.build())
+        var id =(1..9999).random()
+        nManager.notify(id,nBuilder.build())
         playNotificationSound(this@MyFirebaseId)
     }
 
