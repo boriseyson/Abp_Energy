@@ -59,7 +59,6 @@ class MyFirebaseId : FirebaseMessagingService() {
                                             .setContentTitle(title)
                                             .setContentText(null)
                                             .setAutoCancel(true)
-            .addAction(R.drawable.ic_baseline_open_in_new_24,"Open",pendingIntent)
                                             .setSound(dSoundUri)
                                             .setContentIntent(pendingIntent)
                                             .setPriority(Notification.PRIORITY_HIGH)
