@@ -15,8 +15,8 @@ android {
         applicationId "com.misit.abpenergy"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 48
-        versionName "48"
+        versionCode 50
+        versionName "50"
         multiDexEnabled true
 
     }

@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".Inspeksi.Form.InspeksiActivity"></activity>
+        <activity android:name=".TestActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -296,8 +297,7 @@
             android:stopWithTask="false" />
         <service android:name=".Service.LoadingServices" />
         <service android:name=".Service.BgTokenService" />
-        <service android:name=".Service.FgTokenService" />
-<!--        <service android:name=".HazardReport.Service.FgHazardService" />-->
+        <service android:name=".Service.FgTokenService" /> <!-- <service android:name=".HazardReport.Service.FgHazardService" /> -->
         <service android:name=".HazardReport.Service.BgHazardService" />
         <service android:name=".Service.InitService" />
         <service

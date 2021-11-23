@@ -36,11 +36,11 @@ import com.misit.abpenergy.HazardReport.SQLite.Model.HazardDetailModel
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardHeaderModel
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardValidationModel
 import com.misit.abpenergy.HazardReport.Service.BgHazardService
+import com.misit.abpenergy.HazardReport.Service.HazardService
 import com.misit.abpenergy.Login.CompanyActivity
 import com.misit.abpenergy.Master.ListUserActivity
 import com.misit.abpenergy.Model.SchedulerModel
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
 import com.misit.abpenergy.Service.ConnectionService
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.*
@@ -95,6 +95,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_hazard)
+        reciever()
         title="Form Hazard Report"
         PrefsUtil.initInstance(this)
         verifyStoragePermissions(this, this)
@@ -170,6 +171,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onResume() {
+        LocalBroadcastManager.getInstance(this@NewHazardActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
         storageDir = getExternalFilesDir("ABP_IMAGES")
         super.onResume()
     }
@@ -809,7 +811,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                         scheduleIn.desk = "New Hazard Report"
                         val newHazard = async {  createSchedule.insertItem(scheduleIn) }
                         if(newHazard.await()>0){
+                            saveService()
                             dialog?.dismiss()
+//                            startService(connectionService)
                             Log.d("JobService", "New Hazard Done")
                             Log.d("JobService", "New Schedule Done")
 
@@ -1271,5 +1275,44 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             dialog?.dismiss()
             dialog = null
         }
+    }
+    private fun reciever() {
+        tokenPassingReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val bundle = intent.extras
+                if (bundle != null) {
+                }
+
+            }
+        }
+    }
+    private fun saveService(){
+        if(ConfigUtil.cekKoneksi(this@NewHazardActivity)){
+            Log.d("saveService","Connected!")
+            GlobalScope.launch(Dispatchers.IO) {
+                coroutineScope {
+                    val deffered = async {
+                        ConfigUtil.isOnline()
+                    }
+                    val result = deffered.await()
+                    if(result){
+                        ConfigUtil.startStopService(
+                            HazardService::class.java,this@NewHazardActivity,
+                            USERNAME,tokenPassingReceiver!!)
+//                        sendMessageToActivity("bsConnection","Online",this@ConnectionService)
+                    }else{
+//                        sendMessageToActivity("bsConnection","Offline",this@ConnectionService)
+                    }
+                    Log.d("saveService","bsConnection ${result}")
+                }
+            }
+        }else{
+//            sendMessageToActivity("bsConnection","Disabled",this@ConnectionService)
+            Log.d("saveService","Not Connected!")
+        }
+    }
+    override fun onStop() {
+        LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(tokenPassingReceiver!!)
+        super.onStop()
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.misit.abpenergy.HazardReport.Adapter.ListHazardReportAdapter
 import com.misit.abpenergy.HazardReport.Response.HazardItem
+import com.misit.abpenergy.HazardReport.Service.FgHazardService
+import com.misit.abpenergy.HazardReport.Service.HazardService
 import com.misit.abpenergy.HazardReport.ViewModel.HeaderViewModel
 import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
@@ -67,7 +70,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             startActivity(intent)
             finish()
         }
-        checkNetworkConnection()
         reciever()
         connectionService = Intent(this@HazardReportActivity, ConnectionService::class.java)
 //        startService(connectionService)
@@ -131,24 +133,26 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             }
         })
         hazardViewModel()
+        checkNetworkConnection()
 
     }
     private fun checkNetworkConnection() {
+        startService(connectionService)
         cld = ConnectionLiveData(application)
-        cld.observe(this@HazardReportActivity,{ isConnected->
+        cld.observe(this@HazardReportActivity,Observer{ isConnected->
             if (isConnected){
                 startService(connectionService)
                 shimmerHazard.visibility = View.GONE
                 internetConnection.visibility = View.GONE
             }else{
-                stopService(connectionService)
+                startService(connectionService)
                 shimmerHazard.visibility = View.GONE
                 internetConnection.visibility= View.VISIBLE
             }
         })
     }
         private fun hazardViewModel() {
-            viewModel.hazardsObserver().observe(this@HazardReportActivity,{
+            viewModel.hazardsObserver().observe(this@HazardReportActivity,Observer{
                 if(it.size>0){
                     hazardList?.clear()
                     if(displayList!!.size==0){
@@ -187,12 +191,12 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 Log.d("SetStatus","displayList $displayList")
 
             })
-            viewModel.hazardPaginate().observe(this@HazardReportActivity,{
+            viewModel.hazardPaginate().observe(this@HazardReportActivity,Observer{
                 halamanTotal = it
                 Log.d("SetStatus","$halamanTotal")
 
             })
-            viewModel.setStatus().observe(this@HazardReportActivity,{
+            viewModel.setStatus().observe(this@HazardReportActivity, Observer{
                 swipeRefreshLayout.isRefreshing=true
                 if(it){
                     viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
@@ -204,14 +208,14 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 }
                 Log.d("SetStatus","$it")
             })
-            viewModel.totalHazardUsers.observe(this@HazardReportActivity,{
+            viewModel.totalHazardUsers.observe(this@HazardReportActivity,Observer{
                 if(it!=null){
                     totalHazard.text=it
                 }else{
                     totalHazard.text="0"
                 }
             })
-            viewModel.hazardUserVerify.observe(this@HazardReportActivity,{
+            viewModel.hazardUserVerify.observe(this@HazardReportActivity, Observer{
                 if(it!=null){
                     hazardVerify.text = it
                 }else{
@@ -263,7 +267,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode==Activity.RESULT_OK && requestCode==101){
-
+            Log.d("connectionService","Start")
+            startService(connectionService)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -306,11 +311,15 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             page = 1
                             GlobalScope.launch(Dispatchers.IO) {
                                 viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI)
+
                             }
                             btnLoad.isEnabled = true
                             internetConnection.visibility= View.GONE
+
                             Log.d("ConnectionCheck",tokenData)
                         }else if(tokenData=="Offline"){
+                            hazardList?.clear()
+                            displayList?.clear()
                                 viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI)
                             btnLoad.isEnabled = true
                             Log.d("ConnectionCheck",tokenData)
@@ -327,7 +336,22 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                     if(bundle.containsKey("SavingHazard")){
                         val tokenData = bundle.getString("SavingHazard")
                         if(tokenData=="HAZARD_DIBUAT"){
+                            hazardList?.clear()
+                            displayList?.clear()
                             startService(connectionService)
+                        }
+                    }
+                    if(bundle.containsKey("FgHazard")){
+                        val tokenData = bundle.getString("FgHazard")
+                        if(tokenData=="FgHazardDone"){
+                            stopService(Intent(this@HazardReportActivity, HazardService::class.java).apply {
+                                this.action = Constants.SERVICE_STOP
+                            })
+                            hazardList?.clear()
+                            displayList?.clear()
+                            startService(connectionService)
+
+                            Log.d("FgHazard","${tokenData}")
                         }
                     }
                 }
@@ -337,7 +361,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 
     override fun onStop() {
         LocalBroadcastManager.getInstance(this@HazardReportActivity).unregisterReceiver(tokenPassingReceiver!!)
-
         super.onStop()
     }
 }

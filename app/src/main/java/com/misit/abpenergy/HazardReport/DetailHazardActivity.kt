@@ -10,6 +10,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
@@ -261,13 +262,13 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
     private fun initViewModel(){
-        viewModel.hazardDetailObserver()?.observe(this@DetailHazardActivity,{
+        viewModel.hazardDetailObserver()?.observe(this@DetailHazardActivity, Observer{
             if(it!=null){
                 itemHazardList(it)
             }
 
         })
-        viewModel.progressObserver()?.observe(this@DetailHazardActivity,{
+        viewModel.progressObserver()?.observe(this@DetailHazardActivity, Observer{
             if(it){
                 crlDetail.visibility = View.VISIBLE
             }else{

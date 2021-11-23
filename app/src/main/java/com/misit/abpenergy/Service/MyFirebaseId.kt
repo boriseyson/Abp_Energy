@@ -38,7 +38,9 @@ class MyFirebaseId : FirebaseMessagingService() {
         val title = data["title"]
         val tipe = data["tipe"]
         val uid = data["uid"]
-        notif(title,teks,tipe,uid)
+        if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",true)) {
+            notif(title, teks, tipe, uid)
+        }
     }
     private fun notif(title: String?, body: String?,tipe:String?,uid:String?){
         Log.d("UID", "${uid}")
