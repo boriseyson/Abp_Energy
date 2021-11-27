@@ -22,12 +22,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import kotlin.math.log
 
 class MyFirebaseId : FirebaseMessagingService() {
     var nManager:NotificationManager?=null
     var notificationIntent : Intent?=null
+    lateinit var listUID :List<String>
     lateinit var nBuilder:NotificationCompat.Builder
     override fun onCreate() {
+        listUID = listOf()
         createNotificationChannel()
         notificationIntent = Intent(this, IndexActivity::class.java)
         PrefsUtil.initInstance(this)
@@ -52,7 +55,9 @@ class MyFirebaseId : FirebaseMessagingService() {
         val id_notif = data["id_notif"]
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",true)) {
             if(tipe=="tenggat_hazard"){
-                firebaseMessage()
+                listUID = listOf(uid!!)
+                Log.d("listUID","${listUID}")
+//                firebaseMessage()
             }else{
                 notif(title, teks, tipe, uid)
             }
@@ -114,7 +119,7 @@ class MyFirebaseId : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
     }
     private fun getMessage(){
-        sendMessage()
+//        sendMessage()
         var iStyle = NotificationCompat.InboxStyle()
 
         GlobalScope.launch(Dispatchers.IO){
@@ -126,12 +131,13 @@ class MyFirebaseId : FirebaseMessagingService() {
                     val pesan = response.body()
                     if (pesan != null) {
                         pesan?.message?.forEach {
-                            iStyle.addLine(it)
+//                            iStyle.addLine(it)
+
                         }
-                        nBuilder.setStyle(iStyle)
-                            .setContentTitle("TENGGAT HAZARD")
-                        var id = (1..9999).random()
-                        nManager?.notify(id,nBuilder.build())
+//                        nBuilder.setStyle(iStyle)
+//                            .setContentTitle("TENGGAT HAZARD")
+//                        var id = (1..9999).random()
+//                        nManager?.notify(id,nBuilder.build())
                         Log.d("PesanMasuk","${pesan.message}")
                     }
                 }
