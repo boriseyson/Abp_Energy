@@ -14,6 +14,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.misit.abpenergy.HazardReport.Adapter.ListHazardReportAdapter
 import com.misit.abpenergy.HazardReport.Response.HazardItem
 import com.misit.abpenergy.HazardReport.Service.FgHazardService
@@ -26,6 +27,7 @@ import com.misit.abpenergy.Utils.*
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_hazard_report.*
 import kotlinx.android.synthetic.main.activity_hazard_report.internetConnection
+import kotlinx.android.synthetic.main.activity_main_page.*
 import kotlinx.android.synthetic.main.index_new.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -350,8 +352,11 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             hazardList?.clear()
                             displayList?.clear()
                             startService(connectionService)
-
+                            cvLoadingSaving.visibility = View.GONE
                             Log.d("FgHazard","${tokenData}")
+                        }else if(tokenData=="FgHazardSaving"){
+                            cvLoadingSaving.visibility = View.VISIBLE
+                            Glide.with(this@HazardReportActivity).load(R.drawable.abp).into(imgLoadingSaving)
                         }
                     }
                 }

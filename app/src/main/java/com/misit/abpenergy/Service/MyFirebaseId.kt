@@ -9,26 +9,33 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPointTwo
 import com.misit.abpenergy.HomePage.IndexActivity
+import com.misit.abpenergy.Model.NotifGroupResponse
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.Constants
 import com.misit.abpenergy.Utils.PrefsUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.lang.Exception
+import kotlin.math.log
 
 class MyFirebaseId : FirebaseMessagingService() {
     var nManager:NotificationManager?=null
     var notificationIntent : Intent?=null
+    var android_token:String?=null
     lateinit var nBuilder:NotificationCompat.Builder
     override fun onCreate() {
-        createNotificationChannel()
+        androidToken(this@MyFirebaseId)
         notificationIntent = Intent(this, IndexActivity::class.java)
         PrefsUtil.initInstance(this)
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",true)){
@@ -44,6 +51,7 @@ class MyFirebaseId : FirebaseMessagingService() {
         if (p0.data.isNotEmpty()) {
             Log.d(TAG, "Message data : " + p0.data)
         }
+        Log.d("android_token","${android_token}");
         val data: Map<String, String> = p0.data
         val teks = data["text"]
         val title = data["title"]
@@ -52,14 +60,16 @@ class MyFirebaseId : FirebaseMessagingService() {
         val id_notif = data["id_notif"]
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",true)) {
             if(tipe=="tenggat_hazard"){
-                firebaseMessage()
-            }else{
+                createNotificationChannel("${tipe}")
+                getMessage(tipe)
+            }else if(tipe=="hazard_verify"){
+                createNotificationChannel("${tipe}")
+                getMessage(tipe)
+            }
+            else{
                 notif(title, teks, tipe, uid)
             }
         }
-    }
-    private fun firebaseMessage(){
-        getMessage()
     }
     private fun notifSender(title: String?, body: String?,tipe:String?,uid:String?,id_notif:Int?){
         Log.d("UID", "${uid}")
@@ -99,11 +109,11 @@ class MyFirebaseId : FirebaseMessagingService() {
         nManager?.notify(id,nBuilder.build())
         playNotificationSound(this@MyFirebaseId)
     }
-    private fun sendMessage() {
-        val GROUP_KEY_WORK_EMAIL = "com.misit.abpenergy.WORK_EMAIL"
+    private fun sendMessage(namaChannel:String) {
+        val GROUP_KEY_WORK_EMAIL = "${namaChannel}"
         var pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_ONE_SHOT)
         nBuilder = NotificationCompat
-            .Builder(this,Constants.CHANNEL_ID)
+            .Builder(this,namaChannel)
             .setSmallIcon(R.drawable.abp_white)
             .setColor(R.drawable.abp_blue)
             .setGroup(GROUP_KEY_WORK_EMAIL)
@@ -113,37 +123,60 @@ class MyFirebaseId : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
     }
-    private fun getMessage(){
-        sendMessage()
-        var iStyle = NotificationCompat.InboxStyle()
-
+    private fun getMessage(tipe: String?){
+        sendMessage("${tipe}")
+        var response :Response<NotifGroupResponse>?=null
         GlobalScope.launch(Dispatchers.IO){
             val apiEndPoint =
                 ApiClient.getClient(this@MyFirebaseId)?.create(ApiEndPointTwo::class.java)
-            val response = apiEndPoint?.pesanNotifikasi()
+            if (tipe=="tenggat_hazard"){
+                response = apiEndPoint?.notifGroup()
+            }else if(tipe=="hazard_verify"){
+                response = apiEndPoint?.notifVerify()
+            }
             if (response != null) {
-                if (response.isSuccessful) {
-                    val pesan = response.body()
-                    if (pesan != null) {
-                        pesan?.message?.forEach {
-                            iStyle.addLine(it)
+                if (response!!.isSuccessful) {
+                    val response = response!!.body()
+                    if (response != null) {
+                        var res = response.hazardNotClose
+                        if(res!=null){
+                            res.forEach {
+                                var id = (1..1000000).random()
+                                var iStyle = NotificationCompat.InboxStyle()
+                                Log.d("tipeHazard","${tipe}")
+                                if (tipe=="tenggat_hazard") {
+                                    if (it!!.phoneToken == android_token) {
+                                        nBuilder.setStyle(iStyle)
+                                            .setContentTitle("${it.judul}")
+                                        it.pesan?.forEach { message ->
+                                            iStyle.addLine(message)
+                                            Log.d("PesanMasuk", "${message}")
+                                        }
+                                        nManager?.notify(id, nBuilder.build())
+                                    }
+                                }
+                                if(tipe=="hazard_verify"){
+                                    nBuilder.setStyle(iStyle)
+                                            .setContentTitle("${it!!.judul}")
+                                    it!!.pesan!!.forEach { message ->
+                                        iStyle.addLine(message)
+                                        Log.d("PesanMasuk", "${message}")
+                                    }
+                                    nManager?.notify(id, nBuilder.build())
+                                }
+                            }
                         }
-                        nBuilder.setStyle(iStyle)
-                            .setContentTitle("TENGGAT HAZARD")
-                        var id = (1..9999).random()
-                        nManager?.notify(id,nBuilder.build())
-                        Log.d("PesanMasuk","${pesan.message}")
                     }
                 }
             }
         }
     }
-    private fun createNotificationChannel(){
+    private fun createNotificationChannel(namaChannel:String){
         Log.d("FirebaseService","CreateChannel")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val serviceChannel = NotificationChannel(
-                Constants.CHANNEL_ID,
-                "com.misit.abpenergy",
+                "${namaChannel}",
+                "${namaChannel}",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             nManager = getSystemService(
@@ -161,6 +194,23 @@ class MyFirebaseId : FirebaseMessagingService() {
         }catch (e:Exception){
             Log.d("ER_Ringtone",e.toString())
         }
+    }
+    fun androidToken(c: Context){
+        FirebaseMessaging.getInstance().isAutoInitEnabled = true
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Toast.makeText(c,"Error : $task.exception", Toast.LENGTH_SHORT).show()
+
+                    return@OnCompleteListener
+                }
+                // Get new Instance ID token
+                if(task.result!=null){
+                    android_token = task.result
+                }else{
+                    androidToken(c)
+                }
+            })
     }
     companion object{
         var USERNAME = "username"
