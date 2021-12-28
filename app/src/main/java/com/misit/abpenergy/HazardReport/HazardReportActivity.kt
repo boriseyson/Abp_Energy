@@ -270,6 +270,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode==Activity.RESULT_OK && requestCode==101){
             Log.d("connectionService","Start")
+            sendMessageToActivity(this,"HazardLoading","Loading")
+
             startService(connectionService)
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -279,11 +281,11 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         val fmt: DateTimeFormatter = DateTimeFormat.forPattern("d MMMM yyyy")
         if(v?.id==R.id.txtTglDari){
             var dari = fmt.parseLocalDate(DARI).toString()
-            ConfigUtil.dialogTglCurdate(txtTglDari,this@HazardReportActivity, dari)
+            ConfigUtil.showDialogTgl(txtTglDari,this@HazardReportActivity)
         }
         if(v?.id==R.id.txtTglSampai){
             var sampai = fmt.parseLocalDate(SAMPAI).toString()
-            ConfigUtil.dialogTglCurdate(txtTglSampai,this@HazardReportActivity, sampai)
+            ConfigUtil.showDialogTgl(txtTglSampai,this@HazardReportActivity)
         }
         if(v?.id==R.id.btnLoad){
             btnLoad.isEnabled = false
@@ -354,11 +356,20 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             startService(connectionService)
                             cvLoadingSaving.visibility = View.GONE
                             Log.d("FgHazard","${tokenData}")
-                        }else if(tokenData=="FgHazardSaving"){
+                        }
+                        if(tokenData=="FgHazardSaving"){
                             cvLoadingSaving.visibility = View.VISIBLE
                             Glide.with(this@HazardReportActivity).load(R.drawable.abp).into(imgLoadingSaving)
                         }
                     }
+                    if(bundle.containsKey("HazardLoading")){
+                        val tokenData = bundle.getString("HazardLoading")
+                        if(tokenData=="Loading"){
+                            cvLoadingSaving.visibility = View.VISIBLE
+                            Glide.with(this@HazardReportActivity).load(R.drawable.abp).into(imgLoadingSaving)
+                        }
+                    }
+
                 }
             }
         }
@@ -367,5 +378,13 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
     override fun onStop() {
         LocalBroadcastManager.getInstance(this@HazardReportActivity).unregisterReceiver(tokenPassingReceiver!!)
         super.onStop()
+    }
+
+    private fun sendMessageToActivity(c: Context, name:String, msg: String) {
+        Log.d("BroadcastMessage","$msg")
+        val intent = Intent()
+        intent.action = "com.misit.abpenergy"
+        intent.putExtra(name, msg)
+        LocalBroadcastManager.getInstance(c).sendBroadcast(intent)
     }
 }

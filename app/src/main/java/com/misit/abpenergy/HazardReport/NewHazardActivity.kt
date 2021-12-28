@@ -706,6 +706,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         pjNama = inPenanggungJawab.text.toString()
         pjNik = inNikPJ.text.toString()
     }
+        var deviceId = ConfigUtil.deviceId(this@NewHazardActivity);
     val dir = this.getExternalFilesDir("HAZARD_OFFLINE")
     var waktu = Date()
     val cal = Calendar.getInstance()
@@ -714,11 +715,11 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     val wrapper = ContextWrapper(applicationContext)
     //    var filenya = File(fileUpload!!.path, jam)
     var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-    file = File(file, "${jam}_sebelum.jpg")
+    file = File(file, "${jam}_${deviceId}_sebelum.jpg")
     ConfigUtil.streamFoto(bitmap!!, file)
     //        FOTO PENANGGUNG JAWAB
     var filePJ = wrapper.getDir("images", Context.MODE_PRIVATE)
-    filePJ = File(filePJ, "${jam}_penanggung_jawab.jpg")
+    filePJ = File(filePJ, "${jam}_${deviceId}_penanggung_jawab.jpg")
         //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
 //    ConfigUtil.streamFoto(bitmapPJ!!, filePJ)
     //        FOTO PENANGGUNG JAWAB
@@ -726,7 +727,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     if(bitmapBuktiSelesai!=null) {
 //        Bukti Selesai
         var fileSelesai = wrapper.getDir("images", Context.MODE_PRIVATE)
-        fileSelesai = File(fileSelesai, "${jam}_selesai.jpg")
+        fileSelesai = File(fileSelesai, "${jam}_${deviceId}_selesai.jpg")
         ConfigUtil.streamFoto(bitmapBuktiSelesai!!, fileSelesai)
         buktiSelesai = fileSelesai.name
         ConfigUtil.saveFile(
@@ -1287,6 +1288,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
     private fun saveService(){
+        sendMessageToActivity("FgHazardSaving")
         if(ConfigUtil.cekKoneksi(this@NewHazardActivity)){
             Log.d("saveService","Connected!")
             GlobalScope.launch(Dispatchers.IO) {
@@ -1314,5 +1316,11 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     override fun onStop() {
         LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(tokenPassingReceiver!!)
         super.onStop()
+    }
+    private fun sendMessageToActivity(msg: String) {
+        val intent = Intent()
+        intent.action = "com.misit.abpenergy"
+        intent.putExtra("FgHazard", msg)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 }
