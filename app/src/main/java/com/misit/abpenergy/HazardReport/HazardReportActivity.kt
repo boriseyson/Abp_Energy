@@ -2,10 +2,12 @@ package com.misit.abpenergy.HazardReport
 
 import android.app.Activity
 import android.content.*
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,6 +36,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItemClickListener,View.OnClickListener {
 
@@ -226,6 +232,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             })
         }
     override fun onResume() {
+        Locale.setDefault(Locale.US)
         LocalBroadcastManager.getInstance(this@HazardReportActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
         pullRefreshHazard.visibility=View.GONE
         shimmerHazard.visibility = View.VISIBLE
@@ -276,9 +283,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
+
     override fun onClick(v: View?) {
         hazardList?.clear()
-        val fmt: DateTimeFormatter = DateTimeFormat.forPattern("d MMMM yyyy")
+        val fmt = DateTimeFormat.forPattern("d MMMM yyyy")
         if(v?.id==R.id.txtTglDari){
             var dari = fmt.parseLocalDate(DARI).toString()
             ConfigUtil.showDialogTgl(txtTglDari,this@HazardReportActivity)
@@ -364,6 +372,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                     }
                     if(bundle.containsKey("HazardLoading")){
                         val tokenData = bundle.getString("HazardLoading")
+                        Log.d("BroadcastMessage","$tokenData")
                         if(tokenData=="Loading"){
                             cvLoadingSaving.visibility = View.VISIBLE
                             Glide.with(this@HazardReportActivity).load(R.drawable.abp).into(imgLoadingSaving)

@@ -14,10 +14,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -26,8 +23,6 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
-import com.misit.abpenergy.Api.ApiClient
-import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.DataSource.SchedulerDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardDetailDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
@@ -47,10 +42,6 @@ import com.misit.abpenergy.Utils.*
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_new_hazard.*
 import kotlinx.coroutines.*
-import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.net.URL
@@ -91,6 +82,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     lateinit var connectionService:Intent
     private var scheduler: JobScheduler?=null
     var builder : AlertDialog.Builder?=null
+    var scrView : ScrollView?=null
     var dialog : AlertDialog?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,24 +145,28 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         lnTglSelesai.visibility=View.GONE
         imagePickerBuktiSelesai.visibility=View.GONE
         lnResikoSesudah.visibility = View.GONE
-        inLokasi.setOnClickListener(this)
-        inKemungkinan.setOnClickListener(this)
-        inKeparahan.setOnClickListener(this)
-        inKemungkinanSesudah.setOnClickListener(this)
-        inKeparahanSesudah.setOnClickListener(this)
-        inPengendalian.setOnClickListener(this)
-        btnGambarHazard.setOnClickListener(this)
-        btnFotoPJ.setOnClickListener(this)
-        btnPerbaikan.setOnClickListener(this)
-        pjFOTO.setOnClickListener(this)
-        matrikResikoSesudah.setOnClickListener(this)
-        inPerusaan.setOnClickListener(this)
-        inTGLTenggat.setOnClickListener(this)
+        inLokasi.setOnClickListener(this@NewHazardActivity)
+        inKemungkinan.setOnClickListener(this@NewHazardActivity)
+        inKeparahan.setOnClickListener(this@NewHazardActivity)
+        inKemungkinanSesudah.setOnClickListener(this@NewHazardActivity)
+        inKeparahanSesudah.setOnClickListener(this@NewHazardActivity)
+        inPengendalian.setOnClickListener(this@NewHazardActivity)
+        btnGambarHazard.setOnClickListener(this@NewHazardActivity)
+        btnFotoPJ.setOnClickListener(this@NewHazardActivity)
+        btnPerbaikan.setOnClickListener(this@NewHazardActivity)
+        pjFOTO.setOnClickListener(this@NewHazardActivity)
+        matrikResikoSesudah.setOnClickListener(this@NewHazardActivity)
+        inPerusaan.setOnClickListener(this@NewHazardActivity)
+        inTGLTenggat.setOnClickListener(this@NewHazardActivity)
         cvPilihPJ.setOnClickListener(this@NewHazardActivity)
+        tilBahaya.setOnClickListener(this@NewHazardActivity)
+        inLokasiDet.setOnClickListener(this@NewHazardActivity)
+        scrView =findViewById(R.id.scrollView2)
         bgHazardService = Intent(this@NewHazardActivity, BgHazardService::class.java)
     }
 
     override fun onResume() {
+        Locale.setDefault(Locale.US)
         LocalBroadcastManager.getInstance(this@NewHazardActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
         storageDir = getExternalFilesDir("ABP_IMAGES")
         super.onResume()
@@ -182,31 +178,48 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         cal.time = waktu
         var jam = "${cal.get(Calendar.HOUR_OF_DAY)}${cal.get(Calendar.MINUTE)}${cal.get(Calendar.SECOND)}"
         if(v?.id==R.id.cvPilihPJ){
+            scrView?.postDelayed( {
+                scrView?.scrollTo(
+                    0,
+                    cvPilihPJ.y.toInt()
+                )
+            }, 100)
             val intent = Intent(c, ListUserActivity::class.java)
             intent.putExtra(ListUserActivity.DataExtra, "Hazard")
             intent.putExtra(USEPICK, userPick)
             startActivityForResult(intent, Constants.PJ_CODE_OPTION)
         }
         if(v!!.id==R.id.inTanggal){
+
+
             ConfigUtil.showDialogTgl(inTanggal, c)
         }
         if (v!!.id==R.id.inJam){
+
+
             ConfigUtil.showDialogTime(inJam, c)
         }
         if(v!!.id==R.id.inTGLSelesai){
+
+
             ConfigUtil.showDialogTgl(inTGLSelesai, c)
         }
         if(v!!.id==R.id.inTGLTenggat){
+
             ConfigUtil.showDialogTgl(inTGLTenggat, c)
         }
         if(v!!.id==R.id.inJamSelesai){
+
             ConfigUtil.showDialogTime(inJamSelesai, c)
         }
         if(v!!.id==R.id.imagePicker){
+
+
             showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY, SEBELUM)
         }
         if(v!!.id==R.id.btnSimpan){
 //            simpanHazard()
+
             simpanOffline()
         }
         if(v!!.id==R.id.btnBatalHazard){
@@ -225,6 +238,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
         if(v!!.id==R.id.pjFOTO){
 //            PENSNGGUNGJAWAB
+
             bitmapPJ=null
             imgPJ=0
             showDialogOption(Constants.PJ_CODE_CAMERA, Constants.PJ_CODE_GALERY, PENANGGUNG_JAWAB)
@@ -232,6 +246,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
         if(v?.id==R.id.imgBuktiSelesai){
 //            BUKTI PERBAIKAN
+
             showDialogOption(Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY, SELESAI)
         }
         if (v?.id==R.id.btnPerbaikan){
@@ -239,31 +254,44 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             showDialogOption(Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY, SELESAI)
         }
         if(v?.id==R.id.inLokasi){
+
             var intent = Intent(this@NewHazardActivity, LokasiActivity::class.java)
             intent.putExtra("lokasiDipilih", lokasiDipilih)
             startActivityForResult(intent, Constants.LOKASI_CODE)
         }
         if(v?.id==R.id.inPengendalian){
+
             var intent = Intent(this@NewHazardActivity, SumberBahayaActivity::class.java)
             intent.putExtra("hirarkiDipilh", hirarkiDipilih)
             startActivityForResult(intent, Constants.HIRARKI_CODE)
         }
         if(v?.id==R.id.inKemungkinan){
+
             var intent = Intent(this@NewHazardActivity, KemungkinanActivity::class.java)
             intent.putExtra("kemungkinanDipilih", kemungkinanDipilih)
             startActivityForResult(intent, Constants.KEMUNGKINAN_SEBELUM_CODE)
         }
         if(v?.id==R.id.inKeparahan){
+
             var intent = Intent(this@NewHazardActivity, KeparahanActivity::class.java)
             intent.putExtra("keparahanDipilih", keparahanDipilih)
             startActivityForResult(intent, Constants.KEPARAHAN_SEBELUM_CODE)
         }
         if(v?.id==R.id.inKemungkinanSesudah){
+
             var intent = Intent(this@NewHazardActivity, KemungkinanActivity::class.java)
             intent.putExtra("kemungkinanDipilih", kemungkinanDipilihSesudah)
             startActivityForResult(intent, Constants.KEMUNGKINAN_SESUDAH_CODE)
         }
         if(v?.id==R.id.inKeparahanSesudah){
+            scrView?.postDelayed( {
+                scrView?.scrollTo(
+                    0,
+                    tilKeparahanSesudah.y.toInt()
+                )
+            }, 100)
+            Log.d("Posision","${tilKeparahanSesudah.y.toInt()}")
+
             var intent = Intent(this@NewHazardActivity, KeparahanActivity::class.java)
             intent.putExtra("keparahanDipilih", keparahanDipilihSesudah)
             startActivityForResult(intent, Constants.KEMAPARAHAN_SESUDAH_CODE)
@@ -274,9 +302,15 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
         if(v?.id==R.id.inPerusaan){
             var intent = Intent(this@NewHazardActivity, CompanyActivity::class.java)
+
             intent.putExtra("companyDipilih", companyDipilih)
             startActivityForResult(intent, Constants.COMPANY_CODE)
         }
+        if(v?.id==R.id.inBahaya){
+
+
+        }
+
     }
     //    VIEW LISTENER
 //    onCreateOptionsMenu
@@ -715,11 +749,11 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     val wrapper = ContextWrapper(applicationContext)
     //    var filenya = File(fileUpload!!.path, jam)
     var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-    file = File(file, "${jam}_${deviceId}_sebelum.jpg")
+    file = File(file, "${jam}_${deviceId}_sebelum_${ConfigUtil.uniqueID()}.jpg")
     ConfigUtil.streamFoto(bitmap!!, file)
     //        FOTO PENANGGUNG JAWAB
     var filePJ = wrapper.getDir("images", Context.MODE_PRIVATE)
-    filePJ = File(filePJ, "${jam}_${deviceId}_penanggung_jawab.jpg")
+    filePJ = File(filePJ, "${jam}_${deviceId}_penanggung_jawab_${ConfigUtil.uniqueID()}.jpg")
         //    var reqFile = RequestBody.create("image/*".toMediaTypeOrNull(),file!!);
 //    ConfigUtil.streamFoto(bitmapPJ!!, filePJ)
     //        FOTO PENANGGUNG JAWAB
@@ -727,7 +761,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     if(bitmapBuktiSelesai!=null) {
 //        Bukti Selesai
         var fileSelesai = wrapper.getDir("images", Context.MODE_PRIVATE)
-        fileSelesai = File(fileSelesai, "${jam}_${deviceId}_selesai.jpg")
+        fileSelesai = File(fileSelesai, "${jam}_${deviceId}_selesai_${ConfigUtil.uniqueID()}.jpg")
         ConfigUtil.streamFoto(bitmapBuktiSelesai!!, fileSelesai)
         buktiSelesai = fileSelesai.name
         ConfigUtil.saveFile(

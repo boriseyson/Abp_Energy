@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Utilsimport android.view.Viewimport android.widget.ScrollViewobject Scroll {    fun to(scrView:ScrollView,v: View){        scrView?.postDelayed( {            scrView?.scrollTo(                0,                v.y.toInt()            )        }, 100)    }}
