@@ -18,18 +18,21 @@ import com.google.firebase.messaging.RemoteMessage
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPointTwo
 import com.misit.abpenergy.HomePage.IndexActivity
+import com.misit.abpenergy.Model.NotifGroupResponse
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.Constants
 import com.misit.abpenergy.Utils.PrefsUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.lang.Exception
 
 class MyFirebaseId : FirebaseMessagingService() {
     var nManager:NotificationManager?=null
     var notificationIntent : Intent?=null
     var android_token : String? = null
+    var response: Response<NotifGroupResponse>? = null
     lateinit var nBuilder:NotificationCompat.Builder
     override fun onCreate() {
         androidToken()
@@ -56,8 +59,12 @@ class MyFirebaseId : FirebaseMessagingService() {
         val uid = data["uid"]
         val id_notif = data["id_notif"]
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",true)) {
-            if(tipe=="tenggat_hazard"){
+            if(tipe=="tenggat_hazard") {
                 getMessage()
+            }else if(tipe=="tenggat_user"||tipe=="tenggat_pj"){
+                userMessage("tenggat_user")
+            }else if(tipe=="penaggung_jawab"){
+                userMessage("penaggung_jawab")
             }else{
                 notif(title, teks, tipe, uid)
             }
@@ -147,15 +154,19 @@ class MyFirebaseId : FirebaseMessagingService() {
             }
         }
     }
-    private fun userMessage(){
+    private fun userMessage(tipe: String?){
         sendMessage()
         GlobalScope.launch(Dispatchers.IO){
             val apiEndPoint =
                 ApiClient.getClient(this@MyFirebaseId)?.create(ApiEndPointTwo::class.java)
-            val response = apiEndPoint?.notifUser()
+            if(tipe=="tenggat_user"){
+                response = apiEndPoint?.tenggatUsers(android_token)
+            }else if(tipe=="penanggung_jawab"){
+                response = apiEndPoint?.notifUser(android_token)
+            }
             if (response != null) {
-                if (response.isSuccessful) {
-                    val pesan = response.body()
+                if (response!!.isSuccessful) {
+                    val pesan = response!!.body()
                     if (pesan != null) {
                         if(pesan.hazardNotClose!=null){
                             pesan.hazardNotClose.forEach { itempesan->
@@ -164,12 +175,16 @@ class MyFirebaseId : FirebaseMessagingService() {
                                     itempesan.pesan?.forEach {
                                         iStyle.addLine(it)
                                     }
-                                    nBuilder.setStyle(iStyle)
-                                        .setContentTitle("${itempesan.judul}")
-                                    var id = (1..9999).random()
-                                    nManager?.notify(id,nBuilder.build())
-                                    Log.d("PesanMasuk","${iStyle}")
+                                    if(itempesan.phoneToken==android_token){
+                                        nBuilder.setStyle(iStyle)
+                                            .setContentTitle("${itempesan.judul}")
+                                        var id = (1..9999).random()
+                                        nManager?.notify(id,nBuilder.build())
 
+                                    }
+                                    Log.d("android_token","${android_token} | ${itempesan.phoneToken}")
+
+                                    Log.d("PesanMasuk","${iStyle}")
                                 }
                             }
 
