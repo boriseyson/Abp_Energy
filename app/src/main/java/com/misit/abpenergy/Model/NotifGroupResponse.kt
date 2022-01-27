@@ -3,11 +3,9 @@ package com.misit.abpenergy.Model
 import com.google.gson.annotations.SerializedName
 
 data class NotifGroupResponse(
-
 	@field:SerializedName("hazardNotClose")
 	val hazardNotClose: List<HazardNotCloseItem?>? = null
 )
-
 data class HazardNotCloseItem(
 
 	@field:SerializedName("uid")

@@ -9,7 +9,10 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.misit.abpenergy.Api.ApiClient
@@ -26,8 +29,10 @@ import java.lang.Exception
 class MyFirebaseId : FirebaseMessagingService() {
     var nManager:NotificationManager?=null
     var notificationIntent : Intent?=null
+    var android_token : String? = null
     lateinit var nBuilder:NotificationCompat.Builder
     override fun onCreate() {
+        androidToken()
         createNotificationChannel()
         notificationIntent = Intent(this, IndexActivity::class.java)
         PrefsUtil.initInstance(this)
@@ -52,14 +57,11 @@ class MyFirebaseId : FirebaseMessagingService() {
         val id_notif = data["id_notif"]
         if(PrefsUtil.getInstance().getBooleanState("IS_LOGGED_IN",true)) {
             if(tipe=="tenggat_hazard"){
-                firebaseMessage()
+                getMessage()
             }else{
                 notif(title, teks, tipe, uid)
             }
         }
-    }
-    private fun firebaseMessage(){
-        getMessage()
     }
     private fun notifSender(title: String?, body: String?,tipe:String?,uid:String?,id_notif:Int?){
         Log.d("UID", "${uid}")
@@ -115,24 +117,63 @@ class MyFirebaseId : FirebaseMessagingService() {
     }
     private fun getMessage(){
         sendMessage()
-        var iStyle = NotificationCompat.InboxStyle()
-
         GlobalScope.launch(Dispatchers.IO){
             val apiEndPoint =
                 ApiClient.getClient(this@MyFirebaseId)?.create(ApiEndPointTwo::class.java)
-            val response = apiEndPoint?.pesanNotifikasi()
+            val response = apiEndPoint?.notifGroup()
             if (response != null) {
                 if (response.isSuccessful) {
                     val pesan = response.body()
                     if (pesan != null) {
-                        pesan?.message?.forEach {
-                            iStyle.addLine(it)
+                        if(pesan.hazardNotClose!=null){
+                            pesan.hazardNotClose.forEach { itempesan->
+                                var iStyle = NotificationCompat.InboxStyle()
+                                if(itempesan?.pesan!=null){
+                                    itempesan.pesan?.forEach {
+                                        iStyle.addLine(it)
+                                    }
+                                    nBuilder.setStyle(iStyle)
+                                        .setContentTitle("${itempesan.judul}")
+                                    var id = (1..9999).random()
+                                    nManager?.notify(id,nBuilder.build())
+                                    Log.d("PesanMasuk","${iStyle}")
+
+                                }
+                            }
+
                         }
-                        nBuilder.setStyle(iStyle)
-                            .setContentTitle("TENGGAT HAZARD")
-                        var id = (1..9999).random()
-                        nManager?.notify(id,nBuilder.build())
-                        Log.d("PesanMasuk","${pesan.message}")
+                    }
+                }
+            }
+        }
+    }
+    private fun userMessage(){
+        sendMessage()
+        GlobalScope.launch(Dispatchers.IO){
+            val apiEndPoint =
+                ApiClient.getClient(this@MyFirebaseId)?.create(ApiEndPointTwo::class.java)
+            val response = apiEndPoint?.notifUser()
+            if (response != null) {
+                if (response.isSuccessful) {
+                    val pesan = response.body()
+                    if (pesan != null) {
+                        if(pesan.hazardNotClose!=null){
+                            pesan.hazardNotClose.forEach { itempesan->
+                                var iStyle = NotificationCompat.InboxStyle()
+                                if(itempesan?.pesan!=null){
+                                    itempesan.pesan?.forEach {
+                                        iStyle.addLine(it)
+                                    }
+                                    nBuilder.setStyle(iStyle)
+                                        .setContentTitle("${itempesan.judul}")
+                                    var id = (1..9999).random()
+                                    nManager?.notify(id,nBuilder.build())
+                                    Log.d("PesanMasuk","${iStyle}")
+
+                                }
+                            }
+
+                        }
                     }
                 }
             }
@@ -169,5 +210,19 @@ class MyFirebaseId : FirebaseMessagingService() {
         var LEVEL="level"
         var NAMA_LENGKAP = "nama_lengkap"
         private  var TAG="MyFirebaseMessagingService"
+    }
+
+    fun androidToken(){
+        FirebaseMessaging.getInstance().isAutoInitEnabled = true
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Toast.makeText(this@MyFirebaseId,"Error : $task.exception", Toast.LENGTH_SHORT).show()
+
+                    return@OnCompleteListener
+                }
+                // Get new Instance ID token
+                android_token = task.result
+            })
     }
 }
