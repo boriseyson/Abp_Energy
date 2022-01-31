@@ -172,6 +172,9 @@ interface ApiEndPoint{
     @GET("/hse/admin/hiraiki/pengendalian")
     suspend fun hirarkiCorutine()
             : Response<HirarkiResponse>?
+    @GET("/hse/admin/hiraiki/pengendalian/detail")
+    suspend fun detHirarkiCorutine()
+            : Response<DetailHirarkiResponse>?
     @GET("/hse/admin/resiko/kemungkinan")
     fun resikoKemungkinan()
             : Call<KemungkinanResponse>?

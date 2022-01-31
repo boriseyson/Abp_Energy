@@ -32,7 +32,7 @@ class MyFirebaseId : FirebaseMessagingService() {
     var nManager:NotificationManager?=null
     var notificationIntent : Intent?=null
     var android_token : String? = null
-    var response: Response<NotifGroupResponse>? = null
+
     lateinit var nBuilder:NotificationCompat.Builder
     override fun onCreate() {
         androidToken()
@@ -63,8 +63,8 @@ class MyFirebaseId : FirebaseMessagingService() {
                 getMessage()
             }else if(tipe=="tenggat_user"||tipe=="tenggat_pj"){
                 userMessage("tenggat_user")
-            }else if(tipe=="penaggung_jawab"){
-                userMessage("penaggung_jawab")
+            }else if(tipe=="penanggung_jawab"){
+                userMessage("penanggung_jawab")
             }else{
                 notif(title, teks, tipe, uid)
             }
@@ -155,6 +155,7 @@ class MyFirebaseId : FirebaseMessagingService() {
         }
     }
     private fun userMessage(tipe: String?){
+        var response: Response<NotifGroupResponse>? = null
         sendMessage()
         GlobalScope.launch(Dispatchers.IO){
             val apiEndPoint =
@@ -163,6 +164,8 @@ class MyFirebaseId : FirebaseMessagingService() {
                 response = apiEndPoint?.tenggatUsers(android_token)
             }else if(tipe=="penanggung_jawab"){
                 response = apiEndPoint?.notifUser(android_token)
+                Log.d("PESAN","${tipe}")
+
             }
             if (response != null) {
                 if (response!!.isSuccessful) {

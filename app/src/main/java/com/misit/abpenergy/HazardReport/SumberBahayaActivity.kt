@@ -3,6 +3,7 @@ package com.misit.abpenergy.HazardReport
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.database.sqlite.SQLiteException
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,9 +16,8 @@ import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.DataSource.LokasiDataSource
 import com.misit.abpenergy.HazardReport.Adapter.HirarkiAdapter
-import com.misit.abpenergy.HazardReport.Response.HirarkiItem
-import com.misit.abpenergy.HazardReport.Response.HirarkiResponse
-import com.misit.abpenergy.HazardReport.Response.LokasiItem
+import com.misit.abpenergy.HazardReport.Response.*
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.DetHirarkiDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.PengendalianDataSource
 import com.misit.abpenergy.R
 import es.dmoral.toasty.Toasty
@@ -30,9 +30,10 @@ import java.sql.SQLException
 class SumberBahayaActivity : AppCompatActivity(),
 HirarkiAdapter.OnItemClickListener {
     private var adapter: HirarkiAdapter? = null
-    private var hirarkiList:MutableList<HirarkiItem>?=null
+    private var hirarkiList:MutableList<HirarkiItemFull>?=null
     private var hirarkiDipilih:String?=null
     private var call: Call<HirarkiResponse>?=null
+    var detHirarkiList:MutableList<DetHirarkiItem>?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +75,7 @@ HirarkiAdapter.OnItemClickListener {
                 if(hirarkiRes!=null){
                     Log.d("HIRARKI_LOG",hirarkiRes.toString())
                     if(hirarkiRes.hirarki!=null){
-                        hirarkiList?.addAll(hirarkiRes.hirarki!!)
+//                        hirarkiList?.addAll(hirarkiRes.hirarki!!)
                             adapter?.notifyDataSetChanged()
                     }
                 }
@@ -100,14 +101,31 @@ HirarkiAdapter.OnItemClickListener {
         try {
             val lokasiRow=pengendalian.getAll()
             lokasiRow.forEach{
-                Log.d("KemungkinanSQL",lokasiRow.toString())
-                hirarkiList?.add(HirarkiItem(it.tglInput,it.flag,it.userInput,it.namaPengendalian,it.idHirarki))
+                detHirarkiList=ArrayList()
+                hirarkiList?.add(HirarkiItemFull(it.tglInput,it.flag,it.userInput,it.namaPengendalian,it.idHirarki,loadDetail("${it.idHirarki}",c)))
                 adapter?.notifyDataSetChanged()
+                Log.d("KemungkinanSQL","${hirarkiList}")
             }
+
         }catch (e: SQLException){
             Log.d("KemungkinanSQL",e.toString())
         }
 
+    }
+    fun  loadDetail(id_hirarki:String,c: Context): MutableList<DetHirarkiItem>? {
+        detHirarkiList?.clear()
+        var hirarkiDetDB = DetHirarkiDataSource(c)
+        try {
+            val getItem = hirarkiDetDB.getBy(id_hirarki)
+            getItem.forEach {
+                detHirarkiList?.add(DetHirarkiItem(it.keterangan,it.id_ket,it.time_input,it.ket_input,it.id_hirarki?.toInt()))
+                Log.d("detHirarkiList", "${detHirarkiList}")
+            }
+        }catch (e: SQLiteException){
+            e.message?.let { Log.d("ErrorDetail", it) }
+        }
+
+        return detHirarkiList;
     }
 
 }

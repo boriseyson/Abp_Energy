@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_keparahan.xml" value="0.14993169398907105" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_sumber_bahaya.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/bahaya.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/detail_pengendalian.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/kemungkinan.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/keparahan.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/sumber_bahaya_list.xml" value="0.17702702702702702" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
