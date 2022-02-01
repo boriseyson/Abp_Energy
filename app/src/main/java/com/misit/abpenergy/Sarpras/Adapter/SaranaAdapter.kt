@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.SaranaModel
+import com.misit.abpenergy.Sarpras.SQLite.Model.SaranaModel
 
 class SaranaAdapter(val mContex:Context,val mData:ArrayList<SaranaModel>) :BaseAdapter(){
     private val mInflater:LayoutInflater

@@ -43,11 +43,10 @@ class PenumpangAdapter (
         holder.tvNik.text= listPenumpang.nik
         holder.tvNama.text= listPenumpang.nama
         holder.tvJabatan.text= listPenumpang.jabatan
-        list.forEach {
-            if(listPenumpang.nik!!.toLowerCase(Locale.getDefault()).equals(it)){
-//                holder.cbNik.isChecked=true
-                holder.cbNik.performClick()
-            }
+        if(list.contains(listPenumpang.nik)) {
+                holder.cbNik.isChecked=true
+        }else{
+                holder.cbNik.isChecked=false
         }
         if(onItemClickListener!=null){
             holder.lnPenumpang.setOnClickListener {

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
-import com.misit.abpenergy.HazardReport.DetailHazardActivity
 import com.misit.abpenergy.Inspeksi.Adapter.ListFormInspeksiAdapater
 import com.misit.abpenergy.Inspeksi.Response.FormInspeksiResponse
 import com.misit.abpenergy.Inspeksi.Response.FormItem
@@ -20,7 +19,6 @@ import com.misit.abpenergy.Login.LoginActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
-import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_inspeksi.*
 import retrofit2.Call
 import retrofit2.Callback

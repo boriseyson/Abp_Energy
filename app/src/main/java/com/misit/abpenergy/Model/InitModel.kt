@@ -1,1 +1,0 @@
-package com.misit.abpenergy.Modelimport java.io.Serializableopen class InitModel:Serializable {    var id:Long=0    var dataHazard:Int=0    var dataInspeksi:Int=0}

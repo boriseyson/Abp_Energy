@@ -4,7 +4,8 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-tools:context=".Sarpras.KabagApprSarprasActivity">
+    android:background="@color/white_smoke"
+tools:context=".Sarpras.Activity.KabagApprSarprasActivity">
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"

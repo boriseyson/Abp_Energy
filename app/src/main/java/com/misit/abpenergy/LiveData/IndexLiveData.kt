@@ -1,1 +1,0 @@
-package com.misit.abpenergy.LiveDataclass IndexLiveData {}

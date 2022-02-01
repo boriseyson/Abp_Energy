@@ -17,8 +17,8 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPointTwo
-import com.misit.abpenergy.HomePage.IndexActivity
-import com.misit.abpenergy.Model.NotifGroupResponse
+import com.misit.abpenergy.Main.HomePage.IndexActivity
+import com.misit.abpenergy.Main.Model.NotifGroupResponse
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.Constants
 import com.misit.abpenergy.Utils.PrefsUtil

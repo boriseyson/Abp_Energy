@@ -13,6 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.misit.abpenergy.R
+import com.misit.abpenergy.Sarpras.SQLite.DataSource.PenumpangDataSource
+import com.misit.abpenergy.Sarpras.SQLite.Model.PenumpangModel
 import com.misit.abpenergy.Sarpras.SarprasResponse.DataItem
 import es.dmoral.toasty.Toasty
 import org.joda.time.LocalDate
@@ -73,6 +75,7 @@ class ApproveSarprasAdapter(
             holder.noLV.text = "${sarprasList.noLv!!.capitalize()} ( ${sarprasList.noPol} )"
         }else{
             holder.txtDriver.text="Driver :"
+            holder.driver.text = sarprasList.driver?.let { driver(context!!, it).nama }
             holder.txtNoLV.text="NO LV : "
             holder.noLV.text = "${sarprasList.noLv}"
         }
@@ -175,6 +178,11 @@ class ApproveSarprasAdapter(
             holder.vUser.visibility=View.GONE
 
         }
+    }
+    fun driver(c:Context,nik:String): PenumpangModel {
+        var driverDB = PenumpangDataSource(c)
+        var listDriver = driverDB.getItem(nik)
+        return listDriver
     }
     init {
         layoutInflater = LayoutInflater.from(context)

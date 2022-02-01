@@ -1,1 +1,0 @@
-package com.misit.abpenergy.Modelimport com.google.gson.annotations.SerializedName

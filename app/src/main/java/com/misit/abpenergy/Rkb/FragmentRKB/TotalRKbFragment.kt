@@ -17,7 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.misit.abpenergy.Rkb.DetailRkbActivity
 
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Adapter.UserRkbListAdapter
+import com.misit.abpenergy.Main.Adapter.UserRkbListAdapter
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.Rkb.Response.*

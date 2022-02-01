@@ -2,7 +2,7 @@
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:id="@+id/cvSarpras"
-app:cardElevation="16dp"
+app:cardElevation="50dp"
 app:cardCornerRadius="4dp"
 android:layout_margin="10dp"
 android:layout_width="match_parent"
@@ -243,24 +243,22 @@ android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApprove"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:backgroundTint="@color/colorPrimary"
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:text="Approve"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />
+                    android:textColor="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_margin="5dp"
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:backgroundTint="@color/red_smooth"
                     android:textColor="@color/white"
-                    android:textSize="8sp"
                     android:id="@+id/btnCancel"
                     android:text="Cancel"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"/>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -295,11 +293,10 @@ android:layout_height="wrap_content">
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/red_smooth"
-                    android:textSize="8sp"
                     android:id="@+id/CancelUser"
                     android:text="Cancel"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"/>
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

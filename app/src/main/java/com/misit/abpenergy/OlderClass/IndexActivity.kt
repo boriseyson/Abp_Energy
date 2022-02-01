@@ -27,12 +27,19 @@ import com.misit.abpenergy.HazardReport.*
 import com.misit.abpenergy.Inspeksi.*
 import com.misit.abpenergy.Login.*
 import com.misit.abpenergy.Monitoring_Produksi.*
-import com.misit.abpenergy.Response.*
+import com.misit.abpenergy.Main.Response.*
 import com.misit.abpenergy.Rkb.*
 import com.misit.abpenergy.Sarpras.*
 import com.misit.abpenergy.Barcode.BarcodeScannerActivity
 import com.misit.abpenergy.Barcode.QRCodeActivity
+import com.misit.abpenergy.HazardReport.Activity.ALLHazardReportActivity
+import com.misit.abpenergy.HazardReport.Activity.HazardReportActivity
+import com.misit.abpenergy.HazardReport.Activity.NewHazardActivity
 import com.misit.abpenergy.R
+import com.misit.abpenergy.Sarpras.Activity.AllSarprasActivity
+import com.misit.abpenergy.Sarpras.Activity.KabagApprSarprasActivity
+import com.misit.abpenergy.Sarpras.Activity.NewSarprasActivity
+import com.misit.abpenergy.Sarpras.Activity.SarprasActivity
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_index.*
@@ -435,11 +442,11 @@ private val requestCodeCameraPermission = 1999
             startActivity(intent)
         }
         if(v?.id== R.id.btnNewSarpras){
-            var intent = Intent(this@IndexActivity,NewSarprasActivity::class.java)
+            var intent = Intent(this@IndexActivity, NewSarprasActivity::class.java)
             startActivity(intent)
         }
         if(v?.id== R.id.btnSarprasApproveKabag){
-            var intent = Intent(this@IndexActivity,KabagApprSarprasActivity::class.java)
+            var intent = Intent(this@IndexActivity, KabagApprSarprasActivity::class.java)
             startActivity(intent)
         }
         if(v?.id== R.id.btnOB){
@@ -523,7 +530,7 @@ private val requestCodeCameraPermission = 1999
 //    onActivityResult
 //    HazardRepord
     fun hazardReport() {
-        var intent = Intent(this@IndexActivity,HazardReportActivity::class.java)
+        var intent = Intent(this@IndexActivity, HazardReportActivity::class.java)
         startActivity(intent)
     }
     fun newSarana(){

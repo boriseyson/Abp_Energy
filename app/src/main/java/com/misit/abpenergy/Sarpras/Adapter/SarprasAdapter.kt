@@ -3,7 +3,6 @@ package com.misit.abpenergy.Sarpras.Adapter
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.SQLite.PenumpangDataSource
+import com.misit.abpenergy.Sarpras.SQLite.DataSource.PenumpangDataSource
 import com.misit.abpenergy.Sarpras.SarprasResponse.DataItem
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter

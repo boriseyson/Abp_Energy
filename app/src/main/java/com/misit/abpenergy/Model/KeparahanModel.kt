@@ -1,1 +1,0 @@
-package com.misit.abpenergy.Modelimport java.io.Serializableclass KeparahanModel: Serializable {    var idKeparahan:Int?=null    var keparahan:String?=null    var flag:Int?=null    var nilai:Int?=null}

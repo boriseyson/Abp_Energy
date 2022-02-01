@@ -8,7 +8,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.misit.abpenergy.Adapter.DetailRkbAdapter
+import com.misit.abpenergy.Main.Adapter.DetailRkbAdapter
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.R

@@ -1,0 +1,1 @@
+package com.misit.abpenergy.HazardReport.SQLite.Modelimport com.google.gson.annotations.SerializedName

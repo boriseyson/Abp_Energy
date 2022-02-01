@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Main.Modelimport java.io.Serializableclass PerusahaanModel: Serializable {    var flag:Int?=null    var idPerusahaan:Int?=null    var timeIn:String?=null    var namaPerusahaan:String?=null}

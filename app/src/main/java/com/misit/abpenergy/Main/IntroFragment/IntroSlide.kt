@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Main.IntroFragmentclass IntroSlide (    val textTitle:String,    val textContent:String,    val textAsk:String    )

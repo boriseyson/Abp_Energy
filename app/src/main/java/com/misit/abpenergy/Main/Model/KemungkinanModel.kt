@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Main.Modelimport java.io.Serializableclass KemungkinanModel: Serializable {    var idKemungkinan:Int?=null    var kemungkinan:String?=null    var flag:Int?=null    var nilai:Int?=null    var kemungkinan_update:String?=null    var keterangan:String?=null}

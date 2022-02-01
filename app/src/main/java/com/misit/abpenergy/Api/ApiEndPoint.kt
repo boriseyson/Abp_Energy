@@ -7,8 +7,8 @@ import com.misit.abpenergy.Login.Response.DataUserResponse
 import com.misit.abpenergy.Login.Response.SectionResponse
 import com.misit.abpenergy.Monitoring_Produksi.Response.ProduksiResponse
 import com.misit.abpenergy.Monitoring_Produksi.Response.StockResponse
-import com.misit.abpenergy.Response.AbpResponse
-import com.misit.abpenergy.Response.GetUserResponse
+import com.misit.abpenergy.Main.Response.AbpResponse
+import com.misit.abpenergy.Main.Response.GetUserResponse
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
 import com.misit.abpenergy.Rkb.Response.*
 import com.misit.abpenergy.Sarpras.SaranaResponse.IzinKeluarSaranaResponse
@@ -175,6 +175,9 @@ interface ApiEndPoint{
     @GET("/hse/admin/hiraiki/pengendalian/detail")
     suspend fun detHirarkiCorutine()
             : Response<DetailHirarkiResponse>?
+    @GET("/hse/admin/resiko/keparahan/detail")
+    suspend fun detKeparahanCorutine()
+            : Response<DetKeparahanResponse>?
     @GET("/hse/admin/resiko/kemungkinan")
     fun resikoKemungkinan()
             : Call<KemungkinanResponse>?

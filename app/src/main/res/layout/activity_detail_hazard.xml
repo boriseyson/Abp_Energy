@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/crlDetail"
     android:visibility="gone"
-    tools:context=".HazardReport.DetailHazardActivity">
+    tools:context=".HazardReport.Activity.DetailHazardActivity">
     <ScrollView
         android:id="@+id/hazardScrl"
         android:layout_width="0dp"

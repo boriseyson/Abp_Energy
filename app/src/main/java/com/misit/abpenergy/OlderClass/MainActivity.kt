@@ -26,7 +26,7 @@ import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSource
 import com.misit.abpenergy.IntroActivity
 import com.misit.abpenergy.Login.LoginActivity
-import com.misit.abpenergy.Model.KaryawanModel
+import com.misit.abpenergy.Main.Model.KaryawanModel
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
 import com.misit.abpenergy.Sarpras.Service.SaranaService
