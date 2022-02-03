@@ -7,6 +7,7 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -27,9 +28,11 @@ import com.misit.abpenergy.Main.DataSource.SchedulerDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardDetailDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
 import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardValidationDataSource
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.MetrikDataSource
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardDetailModel
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardHeaderModel
 import com.misit.abpenergy.HazardReport.SQLite.Model.HazardValidationModel
+import com.misit.abpenergy.HazardReport.SQLite.Model.MetrikModel
 import com.misit.abpenergy.HazardReport.Service.BgHazardService
 import com.misit.abpenergy.HazardReport.Service.HazardService
 import com.misit.abpenergy.Login.CompanyActivity
@@ -41,10 +44,16 @@ import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.*
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_new_hazard.*
+import kotlinx.android.synthetic.main.activity_new_hazard.btnFLMenu
+import kotlinx.android.synthetic.main.activity_new_hazard.imgView
+import kotlinx.android.synthetic.main.activity_new_hazard.matrikResiko
+import kotlinx.android.synthetic.main.activity_new_hazard.matrikResikoSesudah
+import kotlinx.android.synthetic.main.activity_new_hazard.pjFOTO
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
 import java.net.URL
+import java.text.SimpleDateFormat
 import java.util.*
 
 class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
@@ -84,6 +93,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     var builder : AlertDialog.Builder?=null
     var scrView : ScrollView?=null
     var dialog : AlertDialog?=null
+    private var nilaiKemungkinanSebelum:String?=null
+    private var nilaiKeparahanSebelum:String?=null
+    private var totalResiko:Int?=null
+    private var metrikData :MetrikModel?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_hazard)
@@ -157,7 +170,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         pjFOTO.setOnClickListener(this@NewHazardActivity)
         matrikResikoSesudah.setOnClickListener(this@NewHazardActivity)
         inPerusaan.setOnClickListener(this@NewHazardActivity)
-        inTGLTenggat.setOnClickListener(this@NewHazardActivity)
+//        inTGLTenggat.setOnClickListener(this@NewHazardActivity)
         cvPilihPJ.setOnClickListener(this@NewHazardActivity)
         tilBahaya.setOnClickListener(this@NewHazardActivity)
         inLokasiDet.setOnClickListener(this@NewHazardActivity)
@@ -166,6 +179,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onResume() {
+        cvResiko.visibility = View.GONE
         Locale.setDefault(Locale.US)
         LocalBroadcastManager.getInstance(this@NewHazardActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
         storageDir = getExternalFilesDir("ABP_IMAGES")
@@ -204,10 +218,10 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 
             ConfigUtil.showDialogTgl(inTGLSelesai, c)
         }
-        if(v!!.id==R.id.inTGLTenggat){
+//        if(v!!.id==R.id.inTGLTenggat){
 
-            ConfigUtil.showDialogTgl(inTGLTenggat, c)
-        }
+//            ConfigUtil.showDialogTgl(inTGLTenggat, c)
+//        }
         if(v!!.id==R.id.inJamSelesai){
 
             ConfigUtil.showDialogTime(inJamSelesai, c)
@@ -266,7 +280,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             startActivityForResult(intent, Constants.HIRARKI_CODE)
         }
         if(v?.id==R.id.inKemungkinan){
-
             var intent = Intent(this@NewHazardActivity, KemungkinanActivity::class.java)
             intent.putExtra("kemungkinanDipilih", kemungkinanDipilih)
             startActivityForResult(intent, Constants.KEMUNGKINAN_SEBELUM_CODE)
@@ -447,6 +460,27 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
     startActivityForResult(intent, codeRequest)
 }
     //OPEN GALERY
+    //Due Date
+    private suspend fun setDuedate(nlKemungkinan:String?,nlKeparahan:String?): Boolean {
+        if(nlKemungkinan==null){
+            inKemungkinan.requestFocus()
+            tilKemungkinan.error="Please Input Someting"
+            return false
+        }
+        if(nlKemungkinan!=null && nlKeparahan!=null){
+            totalResiko = nlKemungkinan.toInt()*nlKeparahan.toInt()
+            var resiko = MetrikDataSource(this@NewHazardActivity)
+            var getResiko = resiko.getMetrik(totalResiko!!)
+            metrikData = getResiko
+            return true
+        }else{
+            tilKemungkinan.error="Please Input Someting"
+            tilKeparahan.error="Please Input Someting"
+            return false
+        }
+        return true
+    }
+    //Due Date
 //    ATIVITY RESULT
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -456,6 +490,35 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMUNGKINAN_SEBELUM_CODE){
             kemungkinanDipilih = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanID = data.getStringExtra("kemungkinanID")
+            nilaiKemungkinanSebelum = data.getStringExtra("nilaiKemungkinanSebelum")
+            Log.d("TotalResiko","$nilaiKemungkinanSebelum")
+            if (nilaiKeparahanSebelum!=null){
+                GlobalScope.launch(Dispatchers.Main) {
+                    if(setDuedate(nilaiKemungkinanSebelum,nilaiKeparahanSebelum)){
+                        var dt = Date()
+                        var c = Calendar.getInstance()
+                        c.time = dt
+                        c.add(Calendar.DATE,1)
+                        dt = c.time
+                        var duedate = SimpleDateFormat("dd MMMM yyyy", Locale.US).format(dt)
+                        Log.d("Tanggal","${duedate}")
+
+                        cvResiko.visibility = View.VISIBLE
+                        tvNilaiResiko.text = "$nilaiKemungkinanSebelum x $nilaiKeparahanSebelum"
+                        tvTotalResiko.text = "${totalResiko}"
+                        tvKDresiko.text = "${metrikData?.kodeBahaya}"
+                        tvRisk.text = "${metrikData?.kategori}"
+                        cvResiko.setCardBackgroundColor(Color.parseColor(metrikData!!.bgColor))
+                        tvRisk.setBackgroundColor(Color.parseColor(metrikData!!.bgColor))
+                        tvRisk.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        tvTotalResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        tvNilaiResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        tvKDresiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                    }else{
+                        cvResiko.visibility = View.GONE
+                    }
+                }
+            }
             inKemungkinan.setText(kemungkinanDipilih)
         }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMUNGKINAN_SESUDAH_CODE){
             kemungkinanDipilihSesudah = data!!.getStringExtra("kemungkinanDipilih")
@@ -473,6 +536,36 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEPARAHAN_SEBELUM_CODE){
             keparahanDipilih = data!!.getStringExtra("keparahanDipilih")
             keparahanID = data.getStringExtra("keparahanID")
+            nilaiKeparahanSebelum = data.getStringExtra("nilaiKeparahanSebelum")
+            Log.d("TotalResiko","$nilaiKeparahanSebelum")
+
+            if (nilaiKemungkinanSebelum!=null){
+                GlobalScope.launch(Dispatchers.Main) {
+                    if(setDuedate(nilaiKemungkinanSebelum,nilaiKeparahanSebelum)){
+                        var dt = Date()
+                        var c = Calendar.getInstance()
+                        c.time = dt
+                        c.add(Calendar.DATE,1)
+                        dt = c.time
+                        var duedate = SimpleDateFormat("dd MMMM yyyy", Locale.US).format(dt)
+                        Log.d("Tanggal","${duedate}")
+
+                        cvResiko.visibility = View.VISIBLE
+                        tvNilaiResiko.text = "$nilaiKemungkinanSebelum x $nilaiKeparahanSebelum"
+                        tvTotalResiko.text = "${totalResiko}"
+                        tvKDresiko.text = "${metrikData?.kodeBahaya}"
+                        tvRisk.text = "${metrikData?.kategori}"
+                        cvResiko.setCardBackgroundColor(Color.parseColor(metrikData!!.bgColor))
+                        tvRisk.setBackgroundColor(Color.parseColor(metrikData!!.bgColor))
+                        tvRisk.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        tvTotalResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        tvNilaiResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        tvKDresiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                    }else{
+                        cvResiko.visibility = View.GONE
+                    }
+                }
+            }
             inKeparahan.setText(keparahanDipilih)
         }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMAPARAHAN_SESUDAH_CODE){
             keparahanDipilihSesudah = data!!.getStringExtra("keparahanDipilih")

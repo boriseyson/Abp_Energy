@@ -369,9 +369,46 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <!--        PILIHAN-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvResiko"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="50dp"
+                    app:cardCornerRadius="5dp"
+                    android:layout_margin="10dp">
+                    <LinearLayout
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tvKDresiko"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="S"/>
+                        <TextView
+                            android:id="@+id/tvRisk"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Risk"/>
+                        <TextView
+                            android:id="@+id/tvNilaiResiko"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="1 X 5"/>
+                        <TextView
+                            android:id="@+id/tvTotalResiko"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="1 X 5"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
                 <!--    SUMBER BAHAYA-->
-
             </LinearLayout>
             <!--Kategori Bahaya-->
             <TextView
@@ -581,7 +618,7 @@
                                 android:id="@+id/inTGLTenggat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:clickable="true"
+                                android:clickable="false"
                                 android:focusable="false"
                                 android:imeOptions="actionNext"
                                 android:inputType="none"
