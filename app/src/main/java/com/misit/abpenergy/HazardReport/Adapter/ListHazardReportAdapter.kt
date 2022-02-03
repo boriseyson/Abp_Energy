@@ -54,6 +54,13 @@ class ListHazardReportAdapter (private val context: Context,
         holder.tvStatus.text = hazardList.statusPerbaikan
         holder.tvUSER.text = hazardList.namaLengkap
         holder.tvPJ.text = hazardList.namaPJ
+        if(hazardList.tgl_tenggat!=null){
+            holder.tvDueDate.text =LocalDate.parse(hazardList.tgl_tenggat).toString(fmt)
+            holder.lnDueDate.visibility = View.VISIBLE
+        }else{
+            holder.tvDueDate.text = "-"
+            holder.lnDueDate.visibility = View.GONE
+        }
 Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
         if(hazardList.statusPerbaikan=="BELUM SELESAI"){
             holder.lnHeader.setBackgroundResource(R.color.bgCancel)
@@ -134,6 +141,8 @@ Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
         var lnHSEAdmin = itemView.findViewById<View>(R.id.lnHSEAdmin) as LinearLayout
         var bntHSEappr = itemView.findViewById<View>(R.id.bntHSEappr) as Button
         var btnHSEdeny = itemView.findViewById<View>(R.id.btnHSEdeny) as Button
+        var tvDueDate = itemView.findViewById<View>(R.id.tvDueDate) as TextView
+        var lnDueDate = itemView.findViewById<View>(R.id.lnDueDate) as LinearLayout
     }
     interface OnItemClickListener{
         fun onItemClick(uid:String?)

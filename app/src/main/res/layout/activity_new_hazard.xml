@@ -394,6 +394,12 @@
                             android:layout_height="wrap_content"
                             android:text="Risk"/>
                         <TextView
+                            android:id="@+id/tvTindakan"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="tindakan"/>
+                        <TextView
                             android:id="@+id/tvNilaiResiko"
                             android:gravity="center"
                             android:layout_width="match_parent"
@@ -620,8 +626,6 @@
                                 android:layout_height="match_parent"
                                 android:clickable="false"
                                 android:focusable="false"
-                                android:imeOptions="actionNext"
-                                android:inputType="none"
                                 android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>

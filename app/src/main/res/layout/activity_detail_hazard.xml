@@ -556,6 +556,29 @@
                     </LinearLayout>
                     <!--        Pilihan-->
                     <!--        STATUS PERBAIKAN-->
+
+                    <LinearLayout
+                        android:id="@+id/lnDueDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:text="Tanggal Tenggat / Due Date" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+                        <TextView
+                            android:id="@+id/tvDueDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.25" />
+                    </LinearLayout>
                     <!--Tanggal Selesai-->
                     <LinearLayout
                         android:layout_width="match_parent"

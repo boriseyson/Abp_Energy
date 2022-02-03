@@ -185,7 +185,13 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
             tvDibuat.text = itemHazard.namaLengkap
             tvNilaiKeparahan.text = itemHazard.nilaiKeparahan.toString()
             tvNilaiKemungkinan.text = itemHazard.nilaiKemungkinan.toString()
-
+            if(itemHazard.tgl_tenggat!=null){
+                lnDueDate.visibility = View.VISIBLE
+                tvDueDate.text = LocalDate.parse(itemHazard.tgl_tenggat).toString(fmt)
+            }else{
+                lnDueDate.visibility=View.GONE
+                tvDueDate.text = "-"
+            }
             if(itemHazard.tglSelesai!=null){
                 btnFLMenu.visibility=View.GONE
                 tvTGLSelesaiD.text = LocalDate.parse(itemHazard.tglSelesai).toString(fmt)

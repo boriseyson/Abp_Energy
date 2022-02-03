@@ -35,5 +35,8 @@ data class MetrikResikoItem(
 	var txtColor: String? = null,
 
 	@field:SerializedName("kategori")
-	var kategori: String? = null
+	var kategori: String? = null,
+
+	@field:SerializedName("batas")
+	var batas: Int? = null
 )

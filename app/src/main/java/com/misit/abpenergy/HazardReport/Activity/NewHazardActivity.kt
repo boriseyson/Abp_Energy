@@ -495,25 +495,28 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             if (nilaiKeparahanSebelum!=null){
                 GlobalScope.launch(Dispatchers.Main) {
                     if(setDuedate(nilaiKemungkinanSebelum,nilaiKeparahanSebelum)){
+                        var batas = metrikData?.batas?.div(24)
                         var dt = Date()
                         var c = Calendar.getInstance()
                         c.time = dt
-                        c.add(Calendar.DATE,1)
+                        c.add(Calendar.DATE,batas!!)
                         dt = c.time
                         var duedate = SimpleDateFormat("dd MMMM yyyy", Locale.US).format(dt)
                         Log.d("Tanggal","${duedate}")
-
+                        inTGLTenggat.setText("${duedate}")
                         cvResiko.visibility = View.VISIBLE
                         tvNilaiResiko.text = "$nilaiKemungkinanSebelum x $nilaiKeparahanSebelum"
                         tvTotalResiko.text = "${totalResiko}"
                         tvKDresiko.text = "${metrikData?.kodeBahaya}"
                         tvRisk.text = "${metrikData?.kategori}"
+                        tvTindakan.text = "${metrikData?.tindakan}"
                         cvResiko.setCardBackgroundColor(Color.parseColor(metrikData!!.bgColor))
                         tvRisk.setBackgroundColor(Color.parseColor(metrikData!!.bgColor))
                         tvRisk.setTextColor(Color.parseColor(metrikData!!.txtColor))
                         tvTotalResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
                         tvNilaiResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
                         tvKDresiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        tvTindakan.setTextColor(Color.parseColor(metrikData!!.txtColor))
                     }else{
                         cvResiko.visibility = View.GONE
                     }
@@ -542,25 +545,28 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             if (nilaiKemungkinanSebelum!=null){
                 GlobalScope.launch(Dispatchers.Main) {
                     if(setDuedate(nilaiKemungkinanSebelum,nilaiKeparahanSebelum)){
+                        var batas = metrikData?.batas?.div(24)
                         var dt = Date()
                         var c = Calendar.getInstance()
                         c.time = dt
-                        c.add(Calendar.DATE,1)
+                        c.add(Calendar.DATE,batas!!)
                         dt = c.time
                         var duedate = SimpleDateFormat("dd MMMM yyyy", Locale.US).format(dt)
                         Log.d("Tanggal","${duedate}")
-
+                        inTGLTenggat.setText("${duedate}")
                         cvResiko.visibility = View.VISIBLE
                         tvNilaiResiko.text = "$nilaiKemungkinanSebelum x $nilaiKeparahanSebelum"
                         tvTotalResiko.text = "${totalResiko}"
                         tvKDresiko.text = "${metrikData?.kodeBahaya}"
                         tvRisk.text = "${metrikData?.kategori}"
+                        tvTindakan.text = "${metrikData?.tindakan}"
                         cvResiko.setCardBackgroundColor(Color.parseColor(metrikData!!.bgColor))
                         tvRisk.setBackgroundColor(Color.parseColor(metrikData!!.bgColor))
                         tvRisk.setTextColor(Color.parseColor(metrikData!!.txtColor))
                         tvTotalResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
                         tvNilaiResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
                         tvKDresiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        tvTindakan.setTextColor(Color.parseColor(metrikData!!.txtColor))
                     }else{
                         cvResiko.visibility = View.GONE
                     }
@@ -1271,11 +1277,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             inPerusaan.requestFocus()
             return false
         }
-        if(inTGLTenggat.text!!.isEmpty()){
-            tilTGLTenggat.error="Please Input Someting"
-            inTGLTenggat.requestFocus()
-            return false
-        }
         if(inTanggal.text!!.isEmpty()){
             tilTanggal.error="Please Input Someting"
             inTanggal.requestFocus()
@@ -1320,6 +1321,11 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(inPerbaikan.text!!.isEmpty()){
             tilPerbaikan.error="Please Input Someting"
             inPerbaikan.requestFocus()
+            return false
+        }
+        if(inTGLTenggat.text!!.isEmpty()){
+            tilTGLTenggat.error="Please Input Someting"
+            inTGLTenggat.requestFocus()
             return false
         }
         if(inPenanggungJawabPilih.text!!.isEmpty()){

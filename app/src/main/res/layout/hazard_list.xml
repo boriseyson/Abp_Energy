@@ -145,16 +145,39 @@
         android:background="@color/bgCancel"
         android:textStyle="bold"
         android:padding="10dp"
-        android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Status : Open"
         />
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/lnDueDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:padding="5dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Batas Perbaikan / Due Date"
+            />
+        <TextView
+            android:id="@+id/tvDueDate"
+            android:padding="5dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
     <!--    OPEN-->
     <!--    USER-->
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"

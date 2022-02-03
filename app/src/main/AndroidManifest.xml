@@ -29,8 +29,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5972533139163141~5085280537"/>
 
-        <activity android:name=".Inspeksi.Form.InspeksiActivity"></activity>
-        <activity android:name=".TestActivity" />
+        <activity android:name=".Inspeksi.Form.InspeksiActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -46,7 +45,8 @@
             android:name=".MainPageActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/noActionBar">
+            android:theme="@style/noActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
