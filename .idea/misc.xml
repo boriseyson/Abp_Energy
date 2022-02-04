@@ -4,11 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_detail_hazard.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_forgot_password.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_hazard_h_s_e.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_kabag_appr_sarpras.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_keparahan.xml" value="0.14993169398907105" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_login.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_new_hazard.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/activity_sumber_bahaya.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/bahaya.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/cancel_hazard.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/cek_akun.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/custom_karyawan_list.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/detail_pengendalian.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/hazard_list.xml" value="0.17702702702702702" />
@@ -16,6 +21,8 @@
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/kemungkinan.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/keparahan.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/list_sarpras.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/menu_option.xml" value="0.17702702702702702" />
+        <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/nav_header.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/sumber_bahaya_list.xml" value="0.17702702702702702" />
       </map>
     </option>

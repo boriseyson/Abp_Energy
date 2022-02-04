@@ -164,6 +164,12 @@ data class HazardItem(
 	var namaPJ: String? = null,
 
 	@field:SerializedName("tgl_tenggat")
-	var tgl_tenggat: String? = null
+	var tgl_tenggat: String? = null,
+
+	@field:SerializedName("keterangan_admin")
+	var keterangan_admin: String? = null,
+
+	@field:SerializedName("option_flag")
+	var option_flag: Int? = null
 
 )

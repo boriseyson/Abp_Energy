@@ -1,0 +1,1 @@
+package com.misit.abpenergy.Main.Responseimport com.google.gson.annotations.SerializedNameclass SuccessResponse {    @field:SerializedName("success")    var success: Boolean? = null}

@@ -490,6 +490,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMUNGKINAN_SEBELUM_CODE){
             kemungkinanDipilih = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanID = data.getStringExtra("kemungkinanID")
+            Log.d("kemungkinanID","$kemungkinanID")
             nilaiKemungkinanSebelum = data.getStringExtra("nilaiKemungkinanSebelum")
             Log.d("TotalResiko","$nilaiKemungkinanSebelum")
             if (nilaiKeparahanSebelum!=null){
@@ -526,6 +527,8 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMUNGKINAN_SESUDAH_CODE){
             kemungkinanDipilihSesudah = data!!.getStringExtra("kemungkinanDipilih")
             kemungkinanIDSesudah = data.getStringExtra("kemungkinanID")
+            Log.d("kemungkinanIDSesudah","$kemungkinanIDSesudah")
+
 //            Toasty.info(this@NewHazardActivity,"${kemungkinanIDSesudah}").show()
             inKemungkinanSesudah.setText(kemungkinanDipilihSesudah)
         }else if(resultCode== Activity.RESULT_OK && requestCode==Constants.LOKASI_CODE){

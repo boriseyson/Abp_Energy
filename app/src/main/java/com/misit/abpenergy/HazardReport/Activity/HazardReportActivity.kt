@@ -267,6 +267,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 
     }
 
+    override fun deleteItem(uid: String?) {
+
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode==Activity.RESULT_OK && requestCode==101){
             Log.d("connectionService","Start")

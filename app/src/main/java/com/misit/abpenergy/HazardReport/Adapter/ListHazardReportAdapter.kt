@@ -39,7 +39,6 @@ class ListHazardReportAdapter (private val context: Context,
     }
 
     override fun getItemCount(): Int {
-        Log.d("HazarList",hazardList.size.toString())
         return hazardList.size
     }
 
@@ -61,7 +60,6 @@ class ListHazardReportAdapter (private val context: Context,
             holder.tvDueDate.text = "-"
             holder.lnDueDate.visibility = View.GONE
         }
-Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
         if(hazardList.statusPerbaikan=="BELUM SELESAI"){
             holder.lnHeader.setBackgroundResource(R.color.bgCancel)
             holder.tvDeskripsiBahaya.setBackgroundResource(R.color.bgCancel)
@@ -80,11 +78,24 @@ Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
             holder.tvStatus.setBackgroundResource(R.color.bgTotal)
         }
         if(hazardList.uservalid!=null){
-            holder.tvVerfikasi.text = "Di Setujui Oleh Safety"
-            holder.tvVerfikasi.setBackgroundResource(R.color.bgApprove)
+            if(hazardList.option_flag==1){
+                holder.tvVerfikasi.text = "Di Setujui Oleh Safety"
+                holder.tvVerfikasi.setBackgroundResource(R.color.bgApprove)
+                holder.lnBatal.visibility=View.GONE
+            }else if(hazardList.option_flag==0){
+                holder.tvVerfikasi.text = "Di Batalkan Oleh Safety"
+                holder.tvVerfikasi.setBackgroundResource(R.color.bgCancel)
+                holder.lnBatal.visibility=View.VISIBLE
+                holder.tvKetCancel.text=hazardList.keterangan_admin
+            }else{
+                holder.tvVerfikasi.text = "Di Setujui Oleh Safety"
+                holder.tvVerfikasi.setBackgroundResource(R.color.bgApprove)
+                holder.lnBatal.visibility=View.GONE
+            }
         }else{
-            holder.tvVerfikasi.setBackgroundResource(R.color.bgCancel)
+            holder.tvVerfikasi.setBackgroundResource(R.color.bgWaiting)
             holder.tvVerfikasi.text = "Belum Disetujui Oleh Safety"
+            holder.lnBatal.visibility=View.GONE
         }
         holder.cvHazard.setOnClickListener{
             onItemClickListener?.onItemClick(hazardList.uid.toString())
@@ -98,7 +109,6 @@ Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
         holder.btnHSEdeny.setOnClickListener {
             onItemClickListener?.onVerify(hazardList.uid.toString(),0)
         }
-
         if(activityName=="ALL") {
             if (rule != null) {
                 userRule = rule.split(",").toTypedArray()
@@ -107,8 +117,17 @@ Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
                 } else {
                     userRule?.contains("admin_hse")
                 }
+                var admin = if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+                    Arrays.stream(userRule).anyMatch { t->t=="administrator" }
+                }else{
+                    userRule?.contains("administratpr")
+                }
+                if(admin!!){
+                    holder.btnDel.visibility=View.VISIBLE
+                }else{
+                    holder.btnDel.visibility=View.GONE
+                }
                 if (hseAdmin!!) {
-//                    Log.d("UserValid",hazardList!!.uservalid)
                     if(hazardList?.uservalid==null || hazardList?.uservalid==""){
                         holder.lnHSEAdmin.visibility = View.VISIBLE
                     }else{
@@ -122,6 +141,9 @@ Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
             }
         }else{
             holder.lnHSEAdmin.visibility = View.GONE
+        }
+        holder.btnDel.setOnClickListener{
+            onItemClickListener?.deleteItem(hazardList.uid)
         }
     }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -142,19 +164,23 @@ Log.d("NAMAPERUSAHAAN","${hazardList.perusahaan}")
         var bntHSEappr = itemView.findViewById<View>(R.id.bntHSEappr) as Button
         var btnHSEdeny = itemView.findViewById<View>(R.id.btnHSEdeny) as Button
         var tvDueDate = itemView.findViewById<View>(R.id.tvDueDate) as TextView
+        var tvKetCancel = itemView.findViewById<View>(R.id.tvKetCancel) as TextView
         var lnDueDate = itemView.findViewById<View>(R.id.lnDueDate) as LinearLayout
+        var lnBatal = itemView.findViewById<View>(R.id.lnBatal) as LinearLayout
+        var btnDel= itemView.findViewById<View>(R.id.btnDel) as Button
+
     }
     interface OnItemClickListener{
         fun onItemClick(uid:String?)
         fun onUpdateClick(uid:String?)
         fun onVerify(uid: String?,option:Int?)
+        fun deleteItem(uid: String?)
     }
     fun setListener (listener: OnItemClickListener){
         onItemClickListener = listener
     }
     init {
         PrefsUtil.initInstance(context)
-
         layoutInflater = LayoutInflater.from(context)
         simpleDateFormat= SimpleDateFormat("yyyy-MM-dd")
     }
