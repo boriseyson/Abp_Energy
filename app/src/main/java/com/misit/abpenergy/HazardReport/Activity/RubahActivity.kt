@@ -1,10 +1,9 @@
 package com.misit.abpenergy.HazardReport.Activity
 
 import android.app.Activity
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +16,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -25,7 +25,15 @@ import com.misit.abpenergy.HazardReport.ViewModel.HazardDetailViewModel
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.Constants
 import com.misit.abpenergy.Utils.PrefsUtil
+import kotlinx.android.synthetic.main.activity_new_hazard.*
 import kotlinx.android.synthetic.main.activity_rubah.*
+import kotlinx.android.synthetic.main.activity_rubah.cvResiko
+import kotlinx.android.synthetic.main.activity_rubah.imgView
+import kotlinx.android.synthetic.main.activity_rubah.pjFOTO
+import kotlinx.android.synthetic.main.activity_rubah.tvKDresiko
+import kotlinx.android.synthetic.main.activity_rubah.tvNilaiResiko
+import kotlinx.android.synthetic.main.activity_rubah.tvRisk
+import kotlinx.android.synthetic.main.activity_rubah.tvTotalResiko
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -89,14 +97,19 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
         initViewModel()
         btnClick(this@RubahActivity)
     }
+
+    override fun onResume() {
+        storageDir = getExternalFilesDir("ABP_IMAGES")
+        super.onResume()
+    }
     fun btnClick(c:View.OnClickListener){
         btnGantiTemuan.setOnClickListener(c)
     }
     override fun onClick(v: View?) {
         if(v?.id==R.id.btnGantiTemuan){
             showDialogOption(
-                Constants.SELESAI_CODE_CAMERA, Constants.SELESAI_CODE_GALERY,
-                NewHazardActivity.SELESAI
+                Constants.BUKTI_CODE_GALERY, Constants.BUKTI_CODE_GALERY,
+                SEBELUM
             )
         }
     }
@@ -105,11 +118,11 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
         val c = this@RubahActivity
         val alertDialog = AlertDialog.Builder(c)
         alertDialog.setTitle("Silahkan Pilih")
-        val animals = arrayOf<String>(
+        val animals = arrayOf(
             "Ambil Sebuah Gambar",
             "Pilih Gambar dari galery"
         )
-        alertDialog!!.setItems(animals, DialogInterface.OnClickListener { dialog, which ->
+        alertDialog!!.setItems(animals, { dialog, which ->
             when (which) {
                 0 -> cameraIntent(c, camera, fName)
                 1 -> openGalleryForImage(galery)
@@ -287,6 +300,28 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
             }
 
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode==Activity.RESULT_OK && requestCode==Constants.BUKTI_CODE_CAMERA){
+//            Camera Inten Sebelum
+            try {
+                fileUpload = "file:///${pathFileSebelum}".toUri()
+                try {
+                    bitmap = BitmapFactory.decodeStream(
+                        contentResolver.openInputStream(fileUpload!!)
+                    )
+                    Glide.with(this@RubahActivity).load(fileUpload).into(imgView)
+                } catch (e: IOException) {
+                    e.printStackTrace();
+                }
+                imgIn = 1
+            } catch (e: IOException) {
+                imgIn = 0
+                e.printStackTrace();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
     companion object{
         var UID = "UID"

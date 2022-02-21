@@ -398,7 +398,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                 }
             }
         }
-
     }
 //    verifyStoragePermissions
     private fun verifyStoragePermissions(context: Context, activity: Activity) {
