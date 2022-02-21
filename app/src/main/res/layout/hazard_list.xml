@@ -263,6 +263,16 @@
             android:layout_height="wrap_content"
             android:text="test"
             />
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rubah"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:visibility="gone"
+            android:backgroundTint="@color/warningColor"
+            android:id="@+id/btnRubah"
+            android:layout_gravity="center"
+            />
     </LinearLayout>
     <!--    OPEN-->
     <LinearLayout
@@ -308,7 +318,7 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:gravity="center_horizontal|center_vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:text="Hapus"

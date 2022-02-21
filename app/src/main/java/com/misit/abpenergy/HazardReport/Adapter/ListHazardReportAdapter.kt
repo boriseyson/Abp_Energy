@@ -82,20 +82,24 @@ class ListHazardReportAdapter (private val context: Context,
                 holder.tvVerfikasi.text = "Di Setujui Oleh Safety"
                 holder.tvVerfikasi.setBackgroundResource(R.color.bgApprove)
                 holder.lnBatal.visibility=View.GONE
+                holder.btnRubah.visibility=View.GONE
             }else if(hazardList.option_flag==0){
                 holder.tvVerfikasi.text = "Di Batalkan Oleh Safety"
                 holder.tvVerfikasi.setBackgroundResource(R.color.bgCancel)
                 holder.lnBatal.visibility=View.VISIBLE
                 holder.tvKetCancel.text=hazardList.keterangan_admin
+                holder.btnRubah.visibility=View.VISIBLE
             }else{
                 holder.tvVerfikasi.text = "Di Setujui Oleh Safety"
                 holder.tvVerfikasi.setBackgroundResource(R.color.bgApprove)
                 holder.lnBatal.visibility=View.GONE
+                holder.btnRubah.visibility=View.GONE
             }
         }else{
             holder.tvVerfikasi.setBackgroundResource(R.color.bgWaiting)
             holder.tvVerfikasi.text = "Belum Disetujui Oleh Safety"
             holder.lnBatal.visibility=View.GONE
+            holder.btnRubah.visibility=View.GONE
         }
         holder.cvHazard.setOnClickListener{
             onItemClickListener?.onItemClick(hazardList.uid.toString())
@@ -109,6 +113,9 @@ class ListHazardReportAdapter (private val context: Context,
         holder.btnHSEdeny.setOnClickListener {
             onItemClickListener?.onVerify(hazardList.uid.toString(),0)
         }
+        holder.btnRubah.setOnClickListener {
+            onItemClickListener?.rubahHazard(hazardList.uid)
+        }
         if(activityName=="ALL") {
             if (rule != null) {
                 userRule = rule.split(",").toTypedArray()
@@ -120,21 +127,25 @@ class ListHazardReportAdapter (private val context: Context,
                 var admin = if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
                     Arrays.stream(userRule).anyMatch { t->t=="administrator" }
                 }else{
-                    userRule?.contains("administratpr")
-                }
-                if(admin!!){
-                    holder.btnDel.visibility=View.VISIBLE
-                }else{
-                    holder.btnDel.visibility=View.GONE
+                    userRule?.contains("administrator")
                 }
                 if (hseAdmin!!) {
+                    holder.btnRubah.visibility=View.GONE
+                    holder.btnDel.visibility=View.GONE
                     if(hazardList?.uservalid==null || hazardList?.uservalid==""){
                         holder.lnHSEAdmin.visibility = View.VISIBLE
                     }else{
                         holder.lnHSEAdmin.visibility = View.GONE
                     }
                 } else {
+                    holder.btnRubah.visibility=View.GONE
                     holder.lnHSEAdmin.visibility = View.GONE
+                }
+
+                if(admin!!){
+                    holder.btnDel.visibility=View.VISIBLE
+                }else{
+                    holder.btnDel.visibility=View.GONE
                 }
             }else{
                 holder.lnHSEAdmin.visibility = View.GONE
@@ -168,13 +179,14 @@ class ListHazardReportAdapter (private val context: Context,
         var lnDueDate = itemView.findViewById<View>(R.id.lnDueDate) as LinearLayout
         var lnBatal = itemView.findViewById<View>(R.id.lnBatal) as LinearLayout
         var btnDel= itemView.findViewById<View>(R.id.btnDel) as Button
-
+        var btnRubah= itemView.findViewById<View>(R.id.btnRubah) as Button
     }
     interface OnItemClickListener{
         fun onItemClick(uid:String?)
         fun onUpdateClick(uid:String?)
         fun onVerify(uid: String?,option:Int?)
         fun deleteItem(uid: String?)
+        fun rubahHazard(uid: String?)
     }
     fun setListener (listener: OnItemClickListener){
         onItemClickListener = listener

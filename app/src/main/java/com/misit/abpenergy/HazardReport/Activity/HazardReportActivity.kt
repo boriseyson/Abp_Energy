@@ -271,6 +271,13 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 
     }
 
+    override fun rubahHazard(uid: String?) {
+        var intent = Intent(this@HazardReportActivity, RubahActivity::class.java)
+        intent.putExtra(DetailHazardActivity.UID,uid.toString())
+        intent.putExtra("Method","Offline")
+        startActivity(intent)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode==Activity.RESULT_OK && requestCode==101){
             Log.d("connectionService","Start")

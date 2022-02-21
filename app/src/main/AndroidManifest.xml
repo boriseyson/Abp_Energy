@@ -25,9 +25,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".HazardReport.Activity.RubahActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OlderClass.AbActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5972533139163141~5085280537"/>
+            android:value="ca-app-pub-5972533139163141~5085280537" />
 
         <activity android:name=".Inspeksi.Form.InspeksiActivity" />
 
@@ -43,17 +50,18 @@
 
         <activity
             android:name=".MainPageActivity"
+            android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/noActionBar"
-            android:exported="true">
+            android:theme="@style/noActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.misit.abpenergy.Main.HomePage.IndexActivity"
+            android:name=".Main.HomePage.IndexActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
@@ -77,7 +85,7 @@
             android:name=".OlderClass.HomeActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".OlderClass.IndexNewActivity" />
-        <activity android:name="com.misit.abpenergy.Main.Master.ListUserActivity" />
+        <activity android:name=".Main.Master.ListUserActivity" />
         <activity
             android:name=".IntroActivity"
             android:launchMode="singleTask"
@@ -86,8 +94,8 @@
         <activity android:name=".HazardReport.Activity.HazardVerifyActivity" />
         <activity android:name=".HazardReport.Activity.HazardHSEActivity" />
         <activity android:name=".HazardReport.Activity.HazardSayaActivity" />
-        <activity android:name="com.misit.abpenergy.Main.Master.NewPerusahaanActivity" />
-        <activity android:name="com.misit.abpenergy.Main.Master.PerusahaanActivity" />
+        <activity android:name=".Main.Master.NewPerusahaanActivity" />
+        <activity android:name=".Main.Master.PerusahaanActivity" />
         <activity android:name=".Login.UbahDataActivity" />
         <activity
             android:name=".Login.FotoProfileActivity"
@@ -153,7 +161,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.misit.abpenergy.Sarpras.Activity.AllSarprasActivity"
+            android:name=".Sarpras.Activity.AllSarprasActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".HazardReport.Activity.ALLHazardReportActivity"
@@ -221,19 +229,19 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.misit.abpenergy.Sarpras.Activity.DetailSarprasActivity"
+            android:name=".Sarpras.Activity.DetailSarprasActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.misit.abpenergy.Sarpras.Activity.KabagApprSarprasActivity"
+            android:name=".Sarpras.Activity.KabagApprSarprasActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.misit.abpenergy.Sarpras.Activity.PenumpangActivity"
+            android:name=".Sarpras.Activity.PenumpangActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.misit.abpenergy.Sarpras.Activity.NewSarprasActivity"
+            android:name=".Sarpras.Activity.NewSarprasActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -244,7 +252,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.misit.abpenergy.Sarpras.Activity.SarprasActivity"
+            android:name=".Sarpras.Activity.SarprasActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
