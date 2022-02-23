@@ -443,4 +443,9 @@ interface ApiEndPoint{
     fun listInspeksiPica(@Query("idTemp") idTemp:String?)
             : Call<ListInspeksiPicaResponse>?
 
+    @GET("/android/api/async/all/hazard")
+    suspend fun asyncHazard()
+            : Response<AsyncHazardResponse>?
+
+
 }

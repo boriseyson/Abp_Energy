@@ -110,6 +110,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         txtTglDari.setOnClickListener(this)
         txtTglSampai.setOnClickListener(this)
         btnLoad.setOnClickListener(this)
+        btnNewPost.setOnClickListener(this@HazardReportActivity)
         rvHazardList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
@@ -123,6 +124,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
 //                                shimmerHazard.visibility = View.VISIBLE
                                 loading = false
                                 page =  page + 1
+
                                     viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                             }
                             Log.d("TotalHalaman","visible : $visibleItem | Total : $total | Past : $pastVisibleItem | total halaman : $halamanTotal | page : $page")
@@ -132,7 +134,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 }
             }
         })
-        hazardViewModel(disetujui!!)
+        hazardViewModel()
         checkNetworkConnection()
         val tabLayout =  findViewById<View>(R.id.tabsUser) as TabLayout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
@@ -146,16 +148,20 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 if(p0!!.position==1){
                     disetujui =1
                     startService(connectionService)
+//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                 }else if(p0!!.position==0){
                     disetujui=0
                     startService(connectionService)
+//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                 }else if(p0!!.position==2){
                     disetujui=2
                     btnLoad.isEnabled = false
                     startService(connectionService)
+//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                 }else{
                     disetujui=0
                     startService(connectionService)
+//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                 }
                 Log.d("TabPosition","${p0.position}")
             }
@@ -170,6 +176,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 startService(connectionService)
                 shimmerHazard.visibility = View.GONE
                 internetConnection.visibility = View.GONE
+//                viewModel.asyncHazard(this@HazardReportActivity)
+
             }else{
                 startService(connectionService)
                 shimmerHazard.visibility = View.GONE
@@ -177,7 +185,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             }
         })
     }
-        private fun hazardViewModel(disetujui:Int) {
+        private fun hazardViewModel() {
             viewModel.hazardsObserver().observe(this@HazardReportActivity,Observer{
                 Log.d("listHazardItem","$it")
                 if(it.size>0){
@@ -207,7 +215,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                     }
                     Log.d("SetStatus","hazardList $it")
                 }else{
-
+                    adapter?.notifyDataSetChanged()
                     pullRefreshHazard.visibility = View.VISIBLE
                     shimmerHazard.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing=false
@@ -226,7 +234,9 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             viewModel.setStatus().observe(this@HazardReportActivity, Observer{
                 swipeRefreshLayout.isRefreshing=true
                 if(it){
-                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
+                    startService(connectionService)
+
+//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                     btnLoad.isEnabled = true
                     swipeRefreshLayout.isRefreshing=false
 
@@ -253,6 +263,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                     hazardVerify.text = "0"
                 }
             })
+//            viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
+
         }
     override fun onResume() {
         Locale.setDefault(Locale.US)
@@ -354,6 +366,8 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         val tokenData = bundle.getString("bsConnection")
                         Log.d("ServiceName","${tokenData} Index")
                         if(tokenData=="Online"){
+                            hazardList?.clear()
+                            displayList?.clear()
                             page = 1
                             Log.d("disetujuiOnline","$disetujui")
                             GlobalScope.launch(Dispatchers.IO) {
