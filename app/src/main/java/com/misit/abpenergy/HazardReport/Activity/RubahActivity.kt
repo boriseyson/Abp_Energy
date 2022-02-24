@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -90,7 +91,7 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                 }
             }else if (method =="Offline"){
                 GlobalScope.launch(Dispatchers.IO) {
-                    viewModel?.loadDetailOffline("${uid}",this@RubahActivity)
+                    viewModel?.loadDetailOnline("${uid}",this@RubahActivity)
                 }
             }
         }
@@ -132,27 +133,38 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
         alertDialog.show()
     }
     private fun cameraIntent(c: Activity, requestCode: Int, fName: String){
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile(fName)
-                } catch (ex: IOException) {
-                    // Error occurred while creating the File
-                    Log.d("errorCreate", ex.toString())
-                    null
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R){
+            Log.d("CameraError","a")
+
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                takePictureIntent.resolveActivity(packageManager)?.also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile(fName)
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        Log.d("errorCreate", ex.toString())
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI = FileProvider.getUriForFile(
+                            this@RubahActivity,
+                            "com.misit.abpenergy.fileprovider",
+                            it
+                        )
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, requestCode)
+                    }
                 }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI = FileProvider.getUriForFile(
-                        c,
-                        "com.misit.abpenergy.fileprovider",
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, requestCode)
-                }
+            }
+        }else{
+            Log.d("CameraError","b")
+            val intent = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivityForResult(intent, requestCode)
             }
         }
 
@@ -311,6 +323,7 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                     bitmap = BitmapFactory.decodeStream(
                         contentResolver.openInputStream(fileUpload!!)
                     )
+                    Log.d("fileUpload","${fileUpload}")
                     Glide.with(this@RubahActivity).load(fileUpload).into(imgView)
                 } catch (e: IOException) {
                     e.printStackTrace();
@@ -319,6 +332,22 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
             } catch (e: IOException) {
                 imgIn = 0
                 e.printStackTrace();
+            }
+        }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.BUKTI_CODE_GALERY) {
+//            GALERY INTENT SEBELUM
+            try {
+                fileUpload = data!!.data
+                try {
+                    bitmap = BitmapFactory.decodeStream(
+                        contentResolver.openInputStream(fileUpload!!)
+                    )
+                    imgView.setImageBitmap(bitmap);
+                    imgIn = 1
+                } catch (e: IOException) {
+                    imgIn = 0
+                }
+            } catch (e: IOException) {
+                imgIn = 0
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

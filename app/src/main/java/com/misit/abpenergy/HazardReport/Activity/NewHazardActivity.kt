@@ -349,6 +349,9 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
 //                LocalBroadcastManager.getInstance(this@NewHazardActivity).unregisterReceiver(
 //                    tokenPassingReceiver!!
 //                )
+            var intent = Intent()
+            intent.putExtra("aksi","cancel_form")
+            setResult(Activity.RESULT_OK, intent)
                 finish()
         }
         builder.show()
@@ -493,7 +496,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             nilaiKemungkinanSebelum = data.getStringExtra("nilaiKemungkinanSebelum")
             Log.d("TotalResiko","$nilaiKemungkinanSebelum")
             if (nilaiKeparahanSebelum!=null){
-                GlobalScope.launch(Dispatchers.Main) {
+                GlobalScope.launch(Dispatchers.IO) {
                     if(setDuedate(nilaiKemungkinanSebelum,nilaiKeparahanSebelum)){
                         var batas = metrikData?.batas?.div(24)
                         var dt = Date()
@@ -1417,6 +1420,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             override fun onReceive(context: Context, intent: Intent) {
                 val bundle = intent.extras
                 if (bundle != null) {
+
                 }
 
             }

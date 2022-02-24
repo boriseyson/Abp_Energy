@@ -73,7 +73,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                 }
             }else if (method =="Offline"){
                 GlobalScope.launch(Dispatchers.IO) {
-                    viewModel?.loadDetailOffline("${uid}",this@DetailHazardActivity)
+                    viewModel?.loadDetailOnline("${uid}",this@DetailHazardActivity)
                 }
             }
         }

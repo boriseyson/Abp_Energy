@@ -26,6 +26,8 @@
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/nav_header.xml" value="0.17702702702702702" />
         <entry key="..\:/AndroidStudioProjects/AbpEnergy2/app/src/main/res/layout/sumber_bahaya_list.xml" value="0.17702702702702702" />
         <entry key="app/src/main/res/layout/activity_hazard_report.xml" value="0.1546875" />
+        <entry key="app/src/main/res/layout/activity_new_hazard.xml" value="0.18425925925925926" />
+        <entry key="app/src/main/res/layout/activity_rubah.xml" value="0.1" />
         <entry key="app/src/main/res/layout/hazard_list.xml" value="0.2942708333333333" />
       </map>
     </option>

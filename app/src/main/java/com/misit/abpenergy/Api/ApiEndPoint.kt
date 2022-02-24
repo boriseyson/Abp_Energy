@@ -302,11 +302,21 @@ interface ApiEndPoint{
                       @Query("sampai") sampai:String,
                       @Query("page") page:String)
             : Call<ListHazard>?
+
+    @GET("/android/api/hse/list/hazard/report/online")
+    suspend fun getListHazardOnline(@Query("username") username:String,
+                            @Query("dari") dari:String,
+                            @Query("sampai") sampai:String,
+                            @Query("user_valid") user_valid:Int?,
+                            @Query("page") hal:Int
+    ): Response<ListHazard>?
+
     @GET("/android/api/hse/list/hazard/report/sync/new")
     suspend fun getHazardOffline(@Query("username") username:String,
                          @Query("dari") dari:String,
                          @Query("sampai") sampai:String,
-                         @Query("user_valid") user_valid:Int?
+                         @Query("user_valid") user_valid:Int?,
+                         @Query("page") hal:Int?
     )
             : Response<HazardList>?
     @GET("/android/api/hse/list/hazard/report/all")
