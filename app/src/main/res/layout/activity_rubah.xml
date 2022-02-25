@@ -235,6 +235,7 @@
                             android:layout_height="wrap_content"
                             android:padding="10dp" />
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRubahBahaya"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -313,6 +314,7 @@
                         </LinearLayout>
                     </LinearLayout>
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/rbKemungkinanSebelum"
                             android:layout_width="wrap_content"
                             android:layout_gravity="center"
                             android:layout_height="wrap_content"
@@ -375,6 +377,7 @@
                     </LinearLayout>
                         <com.google.android.material.button.MaterialButton
                             android:layout_width="wrap_content"
+                            android:id="@+id/rbKeparahanSebelum"
                             android:layout_gravity="center"
                             android:layout_height="wrap_content"
                             android:text="Rubah Resiko Keparahan"
@@ -490,6 +493,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
+                        android:visibility="gone"
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"
                         android:text="Rubah Kategori Bahaya"
@@ -530,6 +534,7 @@
                         android:paddingBottom="10dp"/>
 
                     <com.google.android.material.button.MaterialButton
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"
@@ -570,6 +575,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
+                        android:id="@+id/btnRubahTindakan"
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"
                         android:text="Rubah Tindakan Perbaikan"
@@ -762,6 +768,7 @@
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"
                         android:text="Rubah Gambar Perbaikan"
+                        android:id="@+id/btnPerbaikanRB"
                         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                         android:textSize="8dp"
                         />
@@ -799,8 +806,9 @@
                         <com.google.android.material.button.MaterialButton
                             android:layout_width="wrap_content"
                             android:layout_gravity="center"
+                            android:id="@+id/btnRubahPerbaikan"
                             android:layout_height="wrap_content"
-                            android:text="Rubah Resiko Keparahan"
+                            android:text="Rubah Keterangan Perbaikan"
                             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                             android:textSize="8dp"
                             />
@@ -887,6 +895,7 @@
                         <com.google.android.material.button.MaterialButton
                             android:layout_width="wrap_content"
                             android:layout_gravity="center"
+                            android:id="@+id/rbKmSesudah"
                             android:layout_height="wrap_content"
                             android:text="Rubah Resiko Kemungkinan Sesudah"
                             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
@@ -947,6 +956,7 @@
                     </LinearLayout>
                         <com.google.android.material.button.MaterialButton
                             android:layout_width="wrap_content"
+                            android:id="@+id/rbKprSesudah"
                             android:layout_gravity="center"
                             android:layout_height="wrap_content"
                             android:text="Rubah Resiko Keparahan Sesudah"

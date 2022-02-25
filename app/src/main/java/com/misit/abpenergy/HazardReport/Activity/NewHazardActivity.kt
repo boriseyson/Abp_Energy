@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -227,8 +228,6 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             ConfigUtil.showDialogTime(inJamSelesai, c)
         }
         if(v!!.id==R.id.imagePicker){
-
-
             showDialogOption(Constants.BUKTI_CODE_CAMERA, Constants.BUKTI_CODE_GALERY, SEBELUM)
         }
         if(v!!.id==R.id.btnSimpan){
@@ -378,26 +377,54 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
     private fun cameraIntent(c: Activity, requestCode: Int, fName: String){
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile(fName)
-                } catch (ex: IOException) {
-                    // Error occurred while creating the File
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R){
+            Log.d("CameraError","a")
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                takePictureIntent.resolveActivity(packageManager)?.also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile(fName)
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
                         Log.d("errorCreate", ex.toString())
-                    null
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI = FileProvider.getUriForFile(
+                            this@NewHazardActivity,
+                            "com.misit.abpenergy.fileprovider",
+                            it
+                        )
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, requestCode)
+                    }
                 }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI = FileProvider.getUriForFile(
-                        c,
-                        "com.misit.abpenergy.fileprovider",
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, requestCode)
+            }
+        }else {
+            Log.d("CameraError", "b")
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val photoFile: File? = try {
+                createImageFile(fName)
+            } catch (ex: IOException) {
+                // Error occurred while creating the File
+                Log.d("errorCreate", ex.toString())
+                null
+            }
+            // Continue only if the File was successfully created
+            photoFile?.also {
+                val photoURI =  FileProvider.getUriForFile(
+                    this@NewHazardActivity,
+                    "com.misit.abpenergy.fileprovider",
+                    it
+                )
+                try {
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(intent, requestCode)
+                }catch (e:Exception){
+                    Log.d("errorCreate", e.message.toString())
+
                 }
             }
         }
