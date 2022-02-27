@@ -7,33 +7,31 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.misit.abpenergy.Api.ApiClient
+import com.misit.abpenergy.Api.ApiClientTwo
 import com.misit.abpenergy.Api.ApiEndPoint
+import com.misit.abpenergy.Login.Response.UserLogin
 import com.misit.abpenergy.MainPageActivity
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Rkb.Response.CsrfTokenResponse
-import com.misit.abpenergy.Rkb.Response.UserResponse
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PopupUtil
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.register_layout.view.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
+import kotlinx.coroutines.*
 
 
 class LoginActivity : AppCompatActivity(),View.OnClickListener
@@ -43,12 +41,15 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
      private var app_version : String?=""
      private var companyDipilih:String?=null
      private var idCompany:String?=null
+     private var dialog:AlertDialog?=null
+     private var u: UserLogin?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         companyDipilih=""
         idCompany=""
+        u = UserLogin()
         PrefsUtil.initInstance(this)
         ConfigUtil.changeColor(this)
 
@@ -57,10 +58,13 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 //Perform Code
                 if(isValidatedAll()) {
-                    loginSubmit(
-                        InUsername.text.toString().trim(),
-                        InPassword.text.toString().trim()
-                    )
+//                    loginNew(
+//                        InUsername.text.toString(),
+//                        InPassword.text.toString()
+//                    )
+                    GlobalScope.launch(Dispatchers.Main) {
+                        userLogin(InUsername.text.toString(),InPassword.text.toString(),csrf_token!!,android_token!!,app_version!!,"abpSystem")
+                    }
                 }
                 return@OnKeyListener true
             }
@@ -104,7 +108,10 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
     override fun onClick(v: View?) {
         if(v?.id== R.id.loginBtn){
             if(isValidatedAll()){
-                loginSubmit(InUsername.text.toString().trim(),InPassword.text.toString().trim())
+//                loginNew(InUsername.text.toString(),InPassword.text.toString())
+                GlobalScope.launch(Dispatchers.Main) {
+                    userLogin(InUsername.text.toString(),InPassword.text.toString(),csrf_token!!,android_token!!,app_version!!,"abpSystem")
+                }
             }
         }
         if(v?.id==R.id.tvLpSandi){
@@ -124,16 +131,20 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
          val mDialogView = LayoutInflater.from(c).inflate(R.layout.register_layout,null)
          val mBuilder = AlertDialog.Builder(c)
          mBuilder.setView(mDialogView)
-         val dialog =mBuilder.show()
-         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+         val dialog1 =mBuilder.show()
+         dialog1?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
          mDialogView.btnAbp?.setOnClickListener { registerUser() }
          mDialogView.btnMitra?.setOnClickListener { registerUserMitra() }
-         mDialogView.btnDismis?.setOnClickListener { dialog.dismiss() }
+         mDialogView.btnDismis?.setOnClickListener { dialog1.dismiss() }
 
      }
     override fun onResume() {
         if(ConfigUtil.cekKoneksi(this)){
-            getToken()
+            GlobalScope.launch(Dispatchers.Main) {
+                loadingDialog(this@LoginActivity)
+                async{ corotineToken(this@LoginActivity) }.await()
+            }
+//            getToken()
             androidToken()
             versionApp()
 //            tvVersionCode.text="V$app_version"
@@ -154,28 +165,32 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         }
     }
 
-    fun cekKoneksi(context: Context):Boolean{
-        val connectivityManager= context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
+     suspend fun corotineToken(c: Context){
+         try {
+             val apiEndPoint = ApiClient.getClient(c)!!.create(ApiEndPoint::class.java)
+             CoroutineScope(Dispatchers.Main).launch {
+                 val call = async { apiEndPoint.getTokenCorutine("csrf_token") }
+                 val result = call.await()
 
-        return networkInfo != null && networkInfo.isConnected
-    }
-
-    private fun getToken() {
-        val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
-        val call = apiEndPoint.getToken("csrf_token")
-        call?.enqueue(object : Callback<CsrfTokenResponse> {
-            override fun onFailure(call: Call<CsrfTokenResponse>, t: Throwable) {
-                Toast.makeText(this@LoginActivity,"Error : $t", Toast.LENGTH_SHORT).show()
-            }
-            override fun onResponse(
-                call: Call<CsrfTokenResponse>,
-                response: Response<CsrfTokenResponse>
-            ) {
-                csrf_token = response.body()?.csrfToken
-            }
-        })
-    }
+                 if (result != null) {
+                     if (result.isSuccessful) {
+                         val tokenRes = async { result.body() }.await()
+                         if (tokenRes != null) {
+                             csrf_token = tokenRes.csrfToken
+                             dialog?.dismiss()
+                         } else {
+                             corotineToken(c)
+                         }
+                     } else {
+                         corotineToken(c)
+                     }
+                 }
+             }
+         }catch (e:Exception){
+             Log.d("Error","${e.message}")
+             corotineToken(c)
+         }
+     }
      fun androidToken(){
          FirebaseMessaging.getInstance().isAutoInitEnabled = true
          FirebaseMessaging.getInstance().token
@@ -189,90 +204,157 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                  android_token = task.result
              })
      }
-    fun loginSubmit(userIn:String,passIn:String){
-        PopupUtil.showLoading(this@LoginActivity,"Logging In","Please Wait")
-        var intent = Intent(this, MainPageActivity::class.java)
-        val apiEndPoint = ApiClient.getClient(this)!!.create(ApiEndPoint::class.java)
-        val call = apiEndPoint.loginChecklogin(
-                userIn,
-                passIn,
-                csrf_token,
-            android_token,
-            app_version,
-            "abpSystem")
-        call?.enqueue(object : Callback<UserResponse>{
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                PopupUtil.dismissDialog()
-                Toasty.error(this@LoginActivity,"Login Error ",Toasty.LENGTH_SHORT).show()
-            }
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                var userResponse = response.body()
-                if(userResponse!=null){
-                    PopupUtil.dismissDialog()
-                    if(userResponse.success!!){
-                        if(userResponse.user!=null){
-                            PrefsUtil.getInstance()
-                                .setBooleanState("IS_LOGGED_IN",
-                                    true)
-                            PrefsUtil.getInstance()
-                                .setStringState(PrefsUtil.USER_NAME,
-                                    userResponse.user?.username)
-                            PrefsUtil.getInstance()
-                                .setStringState(PrefsUtil.NAMA_LENGKAP,
-                                    userResponse.user?.namaLengkap)
-                            PrefsUtil.getInstance()
-                                .setStringState(PrefsUtil.DEPT,
-                                    userResponse.user?.department)
-                            PrefsUtil.getInstance()
-                                .setStringState(PrefsUtil.SECTION,
-                                    userResponse.user?.section)
-                            PrefsUtil.getInstance()
-                                .setStringState(PrefsUtil.RULE,
-                                    userResponse.user?.rule)
-                            PrefsUtil.getInstance()
-                                .setStringState(PrefsUtil.LEVEL,
-                                    userResponse.user?.level)
-                            PrefsUtil.getInstance()
-                                .setStringState(PrefsUtil.NIK,
-                                    userResponse.user?.nik)
-                            if(userResponse.user?.photoProfile!=null){
-                                PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, true)
-                            }else{
-                                PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, false)
-                            }
-                            PrefsUtil.getInstance()
-                                .setStringState(PrefsUtil.PHOTO_URL, userResponse.user?.photoProfile)
-                            Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
-                            PopupUtil.dismissDialog()
-                            startActivity(intent)
-                            finish()
-                        }else{
-                            Toasty.error(this@LoginActivity,"Username Or Password Wrong!",Toasty.LENGTH_SHORT).show()
-                            clearForm()
-                            InUsername.requestFocus()
-                            PopupUtil.dismissDialog()
+     fun loginSubmitCorotine(userIn:String,passIn:String){
+         dialog=null
+         GlobalScope.launch(Dispatchers.Main) {
+             loadingDialog(this@LoginActivity)
+             var def = async {
+         try {
+                 Log.d("Tokens", "$csrf_token")
+                 var intent = Intent(this@LoginActivity, MainPageActivity::class.java)
+                 var apiEndPoint =
+                     ApiClientTwo.getClient(this@LoginActivity)?.create(ApiEndPoint::class.java)
+                  apiEndPoint?.lpLogin(
+                         userIn,
+                         passIn,
+                         csrf_token,
+                         android_token,
+                         app_version,
+                         "abpSystem"
+                     ).runCatching {
+                      this.let {
+                          withContext(Dispatchers.Main){
+                              dialog!!.dismiss()
+                              if (it != null) {
+                                  if(it.isSuccessful){
+//                                      userLogin(userIn)
+//                                      if(it.body()!=null){
+//                                          var userResponse :List<String>?=null
+//                                          if (it.body()!!.success!!){
+//                                              userResponse = arrayListOf("$userIn | $passIn | $csrf_token | $app_version | abpSystem | ${it.body()} ")
+//                                          }else{
+//                                              userResponse = arrayListOf("Error $userIn | $passIn | $csrf_token | $app_version | abpSystem | ${it.body()} ")
+//                                          }
+//
+//                                          tvErrorLog.text = "$userResponse"
+//
+//                                      }
+                                  }
+                              }
+                          }
+//                          if (it!!.isSuccessful) {
+
+//                              it.body().let { r->
+//
+//                                  r!!.login!!.let { l->
+//
+//                                      u = l.userLogin
+//                                      var success = l.success
+//                                      if(success!!){
+//                                              PrefsUtil.getInstance()
+//                                                  .setBooleanState("IS_LOGGED_IN",
+//                                                      true)
+//                                              PrefsUtil.getInstance()
+//                                                  .setStringState(PrefsUtil.USER_NAME,
+//                                                      u?.username)
+//                                              PrefsUtil.getInstance()
+//                                                  .setStringState(PrefsUtil.NAMA_LENGKAP,
+//                                                      u?.namaLengkap)
+//                                              PrefsUtil.getInstance()
+//                                                  .setStringState(PrefsUtil.DEPT,
+//                                                      u?.department)
+//                                              PrefsUtil.getInstance()
+//                                                  .setStringState(PrefsUtil.SECTION,
+//                                                      u?.section)
+//                                              PrefsUtil.getInstance()
+//                                                  .setStringState(PrefsUtil.RULE,
+//                                                      u?.rule)
+//                                              PrefsUtil.getInstance()
+//                                                  .setStringState(PrefsUtil.LEVEL,
+//                                                      u?.level)
+//                                              PrefsUtil.getInstance()
+//                                                  .setStringState(PrefsUtil.NIK,
+//                                                      u?.nik)
+//                                              if(u?.photoProfile!=null){
+//                                                  PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, true)
+//                                              }else{
+//                                                  PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, false)
+//                                              }
+//                                              PrefsUtil.getInstance()
+//                                                  .setStringState(PrefsUtil.PHOTO_URL, u?.photoProfile)
+//                                              Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
+//                                              PopupUtil.dismissDialog()
+//                                              dialog?.dismiss()
+////                                         startActivity(intent)
+////                                         finish()
+//                                      }else{
+//                                          dialog!!.dismiss()
+//                                          Toasty.error(this@LoginActivity,"Username Or Password Wrong7!",Toasty.LENGTH_SHORT).show()
+//                                          clearForm()
+//                                          InUsername.requestFocus()
+//                                      }
+//                                  }
+//
+//                              }
+//                          }
+                              }
+
+//
+                     }
+//                      .onFailure {
+//                      tvErrorLog.text = "$userIn | $passIn | $csrf_token | $app_version | abpSystem | ${it.message} | error ${it}"
+
+//                  }
+
+             }catch (e:Exception){
+                 Log.d("ERRORLOGIN","${e.message}")
+                 dialog!!.dismiss()
+                 Toasty.error(this@LoginActivity,"Username Or Password Wrong5!",Toasty.LENGTH_SHORT).show()
+                 clearForm()
+                 InUsername.requestFocus()
+             }
+             }
+             def.await()
+         }
+
+     }
+    private suspend fun userLogin(username:String,password:String,token:String,phToken:String,appVersion:String,appName:String){
+        GlobalScope.launch(Dispatchers.Main) {
+            var apiEndPoint = ApiClientTwo.getClient(this@LoginActivity)!!.create(ApiEndPoint::class.java)
+                var def = async { apiEndPoint.lpLogin(username,password,token,phToken,app_version,appName)}
+
+                    try {
+                        def.await().let {
+                             launch(Dispatchers.Main) {
+                            var userGet=    async { getUserLogin(username) }
+                                 userGet.await()
+                             }
+                            tvErrorLog.text = "$username | $csrf_token | $app_version | abpSystem | ${it.body()} | ${this} "
                         }
-                    }else{
-                        Toasty.error(this@LoginActivity,"Username Or Password Wrong!",Toasty.LENGTH_SHORT).show()
-                        clearForm()
-                        InUsername.requestFocus()
-                        PopupUtil.dismissDialog()
+                    }catch (e:Exception){
+                        Toasty.error(this@LoginActivity,"${e.message}",1000).show()
                     }
-                }else{
-                    Toasty.error(this@LoginActivity,"Username Or Password Wrong!",Toasty.LENGTH_SHORT).show()
-                    clearForm()
-                    InUsername.requestFocus()
-                    PopupUtil.dismissDialog()
                 }
+    }
+    private suspend fun getUserLogin(username: String){
+        GlobalScope.launch(Dispatchers.Main) {
+            var api = ApiClientTwo.getClient(this@LoginActivity)!!.create(ApiEndPoint::class.java)
+            try {
+                var def = async { api.lpUserLogin(username) }
+                def.await().let {
+                    Toasty.info(this@LoginActivity,"$username | $csrf_token | $app_version | abpSystem | ${it.body()} | ${this} ",1000).show()
+                }
+            }catch (e:Exception){
+                Toasty.error(this@LoginActivity,"${e.message}",1000).show()
+
             }
-        })
+        }
     }
     private fun clearForm(){
         InUsername.text=null;
         InPassword.text=null;
     }
     private fun isValidatedAll()  :Boolean{
-
         clearError()
         if(InUsername.text!!.isEmpty()){
             tilUsername.error="Please Input Someting"
@@ -292,4 +374,15 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         tilUsername.error=null
         tilPassword.error=null
     }
+     private fun loadingDialog(c:Context){
+         var  mDialogView = LayoutInflater.from(c).inflate(R.layout.loading_abp,null)
+         val mBuilder = AlertDialog.Builder(c)
+         var loadingAbp = mDialogView?.findViewById<View>(R.id.loadingAbp) as ImageView
+         Glide.with(c).load(R.drawable.abp).into(loadingAbp)
+         mBuilder.setView(mDialogView)
+         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+         dialog?.setCanceledOnTouchOutside(false)
+         dialog?.setCancelable(false)
+         dialog = mBuilder.show()
+     }
 }

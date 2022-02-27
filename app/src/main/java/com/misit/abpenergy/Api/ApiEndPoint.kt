@@ -4,11 +4,13 @@ import com.misit.abpenergy.HazardReport.Response.*
 import com.misit.abpenergy.Inspeksi.Response.*
 import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
+import com.misit.abpenergy.Login.Response.NewLoginResponse
 import com.misit.abpenergy.Login.Response.SectionResponse
 import com.misit.abpenergy.Monitoring_Produksi.Response.ProduksiResponse
 import com.misit.abpenergy.Monitoring_Produksi.Response.StockResponse
 import com.misit.abpenergy.Main.Response.AbpResponse
 import com.misit.abpenergy.Main.Response.GetUserResponse
+import com.misit.abpenergy.Main.Response.SuccessResponse
 import com.misit.abpenergy.Sarpras.SaranaResponse.ListSaranaResponse
 import com.misit.abpenergy.Rkb.Response.*
 import com.misit.abpenergy.Sarpras.SaranaResponse.IzinKeluarSaranaResponse
@@ -36,6 +38,36 @@ interface ApiEndPoint{
                         @Field("android_token") android_token:String?,
                         @Field("app_version") app_version:String?,
                         @Field("app_name") app_name:String?): Call<UserResponse>
+
+    @FormUrlEncoded
+    @POST("/android/api/login/validate/new")
+    suspend fun loginCorotine(
+        @Field("username") username:String?,
+        @Field("password") password:String?,
+        @Field("_token") csrf_token:String?,
+        @Field("android_token") android_token:String?,
+        @Field("app_version") app_version:String?,
+        @Field("app_name") app_name:String?
+    ): Response<SuccessResponse>?
+
+    @FormUrlEncoded
+    @POST("/api/login/abpenergy")
+    suspend fun lpLogin(
+        @Field("username") username:String?,
+        @Field("password") password:String?,
+        @Field("_token") csrf_token:String?,
+        @Field("android_token") android_token:String?,
+        @Field("app_version") app_version:String?,
+        @Field("app_name") app_name:String?
+    ): Response<SuccessResponse>
+
+    @GET("/api/login/abpenergy")
+    suspend fun lpUserLogin(@Query("username") username:String)
+            : Response<NewLoginResponse>
+
+    @GET("/android/api/login/validate/new")
+    suspend fun getUserLogin(@Query("username") username:String)
+            : Response<NewLoginResponse>
 
     @GET("api/android/get/rkb/user")
     fun getRkbUser(@Query("username") username:String ,
@@ -216,6 +248,7 @@ interface ApiEndPoint{
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
+
     @Multipart
     @POST("/android/api/hse/hazard/reportPost")
     suspend fun postHazardCorutine(
@@ -239,6 +272,7 @@ interface ApiEndPoint{
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Response<HazardReportResponse>?
+
     @Multipart
     @POST("/android/api/hse/hazard/reportPost/selesai")
     fun postHazardReportSelesai(
@@ -267,6 +301,7 @@ interface ApiEndPoint{
         @Part("user_input") user_input:RequestBody?,
         @Part("_token") _token:RequestBody?
     ) : Call<HazardReportResponse>?
+
     @Multipart
     @POST("/android/api/hse/hazard/reportPost/selesai")
     suspend fun postHazardSelesaiCorutine(

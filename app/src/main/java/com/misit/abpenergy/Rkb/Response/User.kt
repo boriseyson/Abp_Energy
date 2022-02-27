@@ -5,46 +5,55 @@ import com.google.gson.annotations.SerializedName
 data class User(
 
 	@field:SerializedName("tglentry")
-	val tglentry: String? = null,
+	var tglentry: String? = null,
 
 	@field:SerializedName("level")
-	val level: String? = null,
+	var level: String? = null,
 
 	@field:SerializedName("ttd")
-	val ttd: Any? = null,
+	var ttd: String? = null,
 
 	@field:SerializedName("nama_lengkap")
-	val namaLengkap: String? = null,
+	var namaLengkap: String? = null,
 
 	@field:SerializedName("id_session")
-	val idSession: String? = null,
+	var idSession: String? = null,
 
 	@field:SerializedName("rule")
-	val rule: String? = null,
+	var rule: String? = null,
 
 	@field:SerializedName("section")
-	val section: String? = null,
+	var section: String? = null,
 
 	@field:SerializedName("id_user")
-	val idUser: Int? = null,
+	var idUser: Int? = null,
 
 	@field:SerializedName("nik")
-	val nik: String? = null,
+	var nik: String? = null,
 
 	@field:SerializedName("password")
-	val password: String? = null,
+	var password: String? = null,
 
 	@field:SerializedName("department")
-	val department: String? = null,
+	var department: String? = null,
 
 	@field:SerializedName("email")
-	val email: String? = null,
+	var email: String? = null,
 
 	@field:SerializedName("username")
-	val username: String? = null,
+	var username: String? = null,
 
 	@field:SerializedName("status")
-	val status: Int? = null,
+	var status: Int? = null,
+
+	@field:SerializedName("perusahaan")
+	var perusahaan: String? = null,
+
+	@field:SerializedName("user_update")
+	var user_update: String? = null,
+
+	@field:SerializedName("token_password")
+	var token_password: String? = null,
 
 	@field:SerializedName("photo_profile")
 	var photoProfile: String? = null

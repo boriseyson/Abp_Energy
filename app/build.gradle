@@ -9,14 +9,21 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/borisreyson/Downloads/abpenergy.jks')
+            storePassword 'abpenergy'
+            keyAlias 'key0'
+            keyPassword 'abpenergy'
+        }
+    }
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
     defaultConfig {
         applicationId "com.misit.abpenergy"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 57
-        versionName "57"
+        versionCode 59
+        versionName "59"
         multiDexEnabled true
 
     }
@@ -43,12 +50,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    lintOptions {
-
-        checkReleaseBuilds false
-
-    }
     ndkVersion '23.0.7599858'
+    lint {
+        checkReleaseBuilds false
+    }
 
 }
 
