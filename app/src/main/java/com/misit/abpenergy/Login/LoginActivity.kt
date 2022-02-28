@@ -22,8 +22,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiClientTwo
 import com.misit.abpenergy.Api.ApiEndPoint
-import com.misit.abpenergy.Login.Response.UserLogin
-import com.misit.abpenergy.MainPageActivity
+import com.misit.abpenergy.Login.Response.Auth.AuthAppResponse
+import com.misit.abpenergy.Login.Response.Auth.UserLogin
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PopupUtil
@@ -32,6 +32,11 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.register_layout.view.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class LoginActivity : AppCompatActivity(),View.OnClickListener
@@ -57,6 +62,8 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         InPassword.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 //Perform Code
+                        loadingDialog(this@LoginActivity)
+
                 if(isValidatedAll()) {
 //                    loginNew(
 //                        InUsername.text.toString(),
@@ -108,6 +115,8 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
     override fun onClick(v: View?) {
         if(v?.id== R.id.loginBtn){
             if(isValidatedAll()){
+                loadingDialog(this@LoginActivity)
+
 //                loginNew(InUsername.text.toString(),InPassword.text.toString())
                 GlobalScope.launch(Dispatchers.Main) {
                     userLogin(InUsername.text.toString(),InPassword.text.toString(),csrf_token!!,android_token!!,app_version!!,"abpSystem")
@@ -204,138 +213,85 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                  android_token = task.result
              })
      }
-     fun loginSubmitCorotine(userIn:String,passIn:String){
-         dialog=null
-         GlobalScope.launch(Dispatchers.Main) {
-             loadingDialog(this@LoginActivity)
-             var def = async {
-         try {
-                 Log.d("Tokens", "$csrf_token")
-                 var intent = Intent(this@LoginActivity, MainPageActivity::class.java)
-                 var apiEndPoint =
-                     ApiClientTwo.getClient(this@LoginActivity)?.create(ApiEndPoint::class.java)
-                  apiEndPoint?.lpLogin(
-                         userIn,
-                         passIn,
-                         csrf_token,
-                         android_token,
-                         app_version,
-                         "abpSystem"
-                     ).runCatching {
-                      this.let {
-                          withContext(Dispatchers.Main){
-                              dialog!!.dismiss()
-                              if (it != null) {
-                                  if(it.isSuccessful){
-//                                      userLogin(userIn)
-//                                      if(it.body()!=null){
-//                                          var userResponse :List<String>?=null
-//                                          if (it.body()!!.success!!){
-//                                              userResponse = arrayListOf("$userIn | $passIn | $csrf_token | $app_version | abpSystem | ${it.body()} ")
-//                                          }else{
-//                                              userResponse = arrayListOf("Error $userIn | $passIn | $csrf_token | $app_version | abpSystem | ${it.body()} ")
-//                                          }
-//
-//                                          tvErrorLog.text = "$userResponse"
-//
-//                                      }
-                                  }
-                              }
-                          }
-//                          if (it!!.isSuccessful) {
-
-//                              it.body().let { r->
-//
-//                                  r!!.login!!.let { l->
-//
-//                                      u = l.userLogin
-//                                      var success = l.success
-//                                      if(success!!){
-//                                              PrefsUtil.getInstance()
-//                                                  .setBooleanState("IS_LOGGED_IN",
-//                                                      true)
-//                                              PrefsUtil.getInstance()
-//                                                  .setStringState(PrefsUtil.USER_NAME,
-//                                                      u?.username)
-//                                              PrefsUtil.getInstance()
-//                                                  .setStringState(PrefsUtil.NAMA_LENGKAP,
-//                                                      u?.namaLengkap)
-//                                              PrefsUtil.getInstance()
-//                                                  .setStringState(PrefsUtil.DEPT,
-//                                                      u?.department)
-//                                              PrefsUtil.getInstance()
-//                                                  .setStringState(PrefsUtil.SECTION,
-//                                                      u?.section)
-//                                              PrefsUtil.getInstance()
-//                                                  .setStringState(PrefsUtil.RULE,
-//                                                      u?.rule)
-//                                              PrefsUtil.getInstance()
-//                                                  .setStringState(PrefsUtil.LEVEL,
-//                                                      u?.level)
-//                                              PrefsUtil.getInstance()
-//                                                  .setStringState(PrefsUtil.NIK,
-//                                                      u?.nik)
-//                                              if(u?.photoProfile!=null){
-//                                                  PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, true)
-//                                              }else{
-//                                                  PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, false)
-//                                              }
-//                                              PrefsUtil.getInstance()
-//                                                  .setStringState(PrefsUtil.PHOTO_URL, u?.photoProfile)
-//                                              Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
-//                                              PopupUtil.dismissDialog()
-//                                              dialog?.dismiss()
-////                                         startActivity(intent)
-////                                         finish()
-//                                      }else{
-//                                          dialog!!.dismiss()
-//                                          Toasty.error(this@LoginActivity,"Username Or Password Wrong7!",Toasty.LENGTH_SHORT).show()
-//                                          clearForm()
-//                                          InUsername.requestFocus()
-//                                      }
-//                                  }
-//
-//                              }
-//                          }
-                              }
-
-//
-                     }
-//                      .onFailure {
-//                      tvErrorLog.text = "$userIn | $passIn | $csrf_token | $app_version | abpSystem | ${it.message} | error ${it}"
-
-//                  }
-
-             }catch (e:Exception){
-                 Log.d("ERRORLOGIN","${e.message}")
-                 dialog!!.dismiss()
-                 Toasty.error(this@LoginActivity,"Username Or Password Wrong5!",Toasty.LENGTH_SHORT).show()
-                 clearForm()
-                 InUsername.requestFocus()
-             }
-             }
-             def.await()
-         }
-
-     }
     private suspend fun userLogin(username:String,password:String,token:String,phToken:String,appVersion:String,appName:String){
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(IO) {
             var apiEndPoint = ApiClientTwo.getClient(this@LoginActivity)!!.create(ApiEndPoint::class.java)
-                var def = async { apiEndPoint.lpLogin(username,password,token,phToken,app_version,appName)}
-
-                    try {
-                        def.await().let {
-                             launch(Dispatchers.Main) {
-                            var userGet=    async { getUserLogin(username) }
-                                 userGet.await()
-                             }
-                            tvErrorLog.text = "$username | $csrf_token | $app_version | abpSystem | ${it.body()} | ${this} "
+                var def = async { apiEndPoint.lpLogin(username,password,token,phToken,appVersion,appName)}
+            withContext(Main){
+                var res =def.await().body()
+                if(res!=null){
+                    var l= res.login
+                    if(l!=null){
+                        u = l.userLogin
+                        if(l.success!!){
+                            PrefsUtil.getInstance()
+                                .setBooleanState("IS_LOGGED_IN",true)
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.USER_NAME,
+                                    u?.username)
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.NAMA_LENGKAP,
+                                    u?.namaLengkap)
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.DEPT,
+                                    u?.department)
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.SECTION,
+                                    u?.section)
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.RULE,
+                                    u?.rule)
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.LEVEL,
+                                    u?.level)
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.NIK,
+                                    u?.nik)
+                            if(u?.photoProfile!=null){
+                                PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, true)
+                            }else{
+                                PrefsUtil.getInstance().setBooleanState(PrefsUtil.PHOTO_PROFILE, false)
+                            }
+                            PrefsUtil.getInstance()
+                                .setStringState(PrefsUtil.PHOTO_URL, u?.photoProfile)
+                            Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
+                            PopupUtil.dismissDialog()
+                            dialog?.dismiss()
+                            startActivity(intent)
+                            finish()
+//                            tvErrorLog.text = "$username | $password | $csrf_token | $app_version | abpSystem | ${u} | ${this} "
+                            dialog!!.dismiss()
+                        }else{
+                            Toasty.error(this@LoginActivity,"Username atau Password Salah ",Toasty.LENGTH_LONG).show()
                         }
-                    }catch (e:Exception){
-                        Toasty.error(this@LoginActivity,"${e.message}",1000).show()
+                    }else{
+                        Toasty.error(this@LoginActivity,"Username atau Password Salah ",Toasty.LENGTH_LONG).show()
                     }
+                }else{
+                    Toasty.error(this@LoginActivity,"Username atau Password Salah ",Toasty.LENGTH_LONG).show()
+                }
+            }
+
                 }
     }
+     private fun loginNew(username:String,password:String,token:String,phToken:String,appVersion:String,appName:String){
+             var apiEndPoint = ApiClientTwo.getClient(this@LoginActivity)!!.create(ApiEndPoint::class.java)
+             var def = apiEndPoint.loginNew(username,password,token,phToken,appVersion,appName)
+            def.enqueue(object:Callback<AuthAppResponse>{
+                override fun onResponse(
+                    call: Call<AuthAppResponse>,
+                    response: Response<AuthAppResponse>
+                ) {
+                    tvErrorLog.text = "$username | $password | $csrf_token | $app_version | abpSystem | ${response.body()} | ${this} "
+                }
+
+                override fun onFailure(call: Call<AuthAppResponse>, t: Throwable) {
+                    Toasty.error(this@LoginActivity,"${t.message}",1000).show()
+
+                }
+
+            })
+     }
     private suspend fun getUserLogin(username: String){
         GlobalScope.launch(Dispatchers.Main) {
             var api = ApiClientTwo.getClient(this@LoginActivity)!!.create(ApiEndPoint::class.java)

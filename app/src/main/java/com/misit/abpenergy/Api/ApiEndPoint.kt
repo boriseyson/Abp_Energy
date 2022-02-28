@@ -2,6 +2,7 @@ package com.misit.abpenergy.Api
 
 import com.misit.abpenergy.HazardReport.Response.*
 import com.misit.abpenergy.Inspeksi.Response.*
+import com.misit.abpenergy.Login.Response.Auth.AuthAppResponse
 import com.misit.abpenergy.Login.Response.DaftarAkunResponse
 import com.misit.abpenergy.Login.Response.DataUserResponse
 import com.misit.abpenergy.Login.Response.NewLoginResponse
@@ -59,7 +60,18 @@ interface ApiEndPoint{
         @Field("android_token") android_token:String?,
         @Field("app_version") app_version:String?,
         @Field("app_name") app_name:String?
-    ): Response<SuccessResponse>
+    ): Response<AuthAppResponse>
+
+    @FormUrlEncoded
+    @POST("/api/login/abpenergy")
+    fun loginNew(
+        @Field("username") username:String?,
+        @Field("password") password:String?,
+        @Field("_token") csrf_token:String?,
+        @Field("android_token") android_token:String?,
+        @Field("app_version") app_version:String?,
+        @Field("app_name") app_name:String?
+    ): Call<AuthAppResponse>
 
     @GET("/api/login/abpenergy")
     suspend fun lpUserLogin(@Query("username") username:String)

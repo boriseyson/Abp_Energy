@@ -10,12 +10,12 @@ apply plugin: 'kotlin-kapt'
 
 android {
     signingConfigs {
-        debug {
-            storeFile file('/Users/borisreyson/Downloads/abpenergy.jks')
-            storePassword 'abpenergy'
-            keyAlias 'key0'
-            keyPassword 'abpenergy'
-        }
+//        debug {
+//            storeFile file('/Users/borisreyson/Downloads/abpenergy.jks')
+//            storePassword 'abpenergy'
+//            keyAlias 'key0'
+//            keyPassword 'abpenergy'
+//        }
     }
     compileSdkVersion 30
     defaultConfig {
@@ -33,6 +33,14 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
+        }
+        debug {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
