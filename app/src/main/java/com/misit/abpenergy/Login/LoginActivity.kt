@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         InPassword.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 //Perform Code
-                        loadingDialog(this@LoginActivity)
+
 
                 if(isValidatedAll()) {
 //                    loginNew(
@@ -71,6 +71,8 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
 //                        InPassword.text.toString()
 //                    )
                     GlobalScope.launch(Dispatchers.Main) {
+                        async { loadingDialog(this@LoginActivity) }.await()
+
                         userLogin(InUsername.text.toString(),InPassword.text.toString(),csrf_token!!,android_token!!,app_version!!,"abpSystem")
                     }
                 }
@@ -116,10 +118,11 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
     override fun onClick(v: View?) {
         if(v?.id== R.id.loginBtn){
             if(isValidatedAll()){
-                loadingDialog(this@LoginActivity)
+
 
 //                loginNew(InUsername.text.toString(),InPassword.text.toString())
                 GlobalScope.launch(Dispatchers.Main) {
+                    async { loadingDialog(this@LoginActivity) }.await()
                     userLogin(InUsername.text.toString(),InPassword.text.toString(),csrf_token!!,android_token!!,app_version!!,"abpSystem")
                 }
             }
@@ -151,7 +154,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
     override fun onResume() {
         if(ConfigUtil.cekKoneksi(this)){
             GlobalScope.launch(Dispatchers.Main) {
-                loadingDialog(this@LoginActivity)
+                async { loadingDialog(this@LoginActivity) }.await()
                 async{ corotineToken(this@LoginActivity) }.await()
             }
 //            getToken()
@@ -338,7 +341,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         tilUsername.error=null
         tilPassword.error=null
     }
-     private fun loadingDialog(c:Context){
+     private suspend fun loadingDialog(c:Context){
          var  mDialogView = LayoutInflater.from(c).inflate(R.layout.loading_abp,null)
          val mBuilder = AlertDialog.Builder(c)
          var loadingAbp = mDialogView?.findViewById<View>(R.id.loadingAbp) as ImageView

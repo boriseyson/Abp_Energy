@@ -499,9 +499,14 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
         if(nlKemungkinan!=null && nlKeparahan!=null){
             totalResiko = nlKemungkinan.toInt()*nlKeparahan.toInt()
             var resiko = MetrikDataSource(this@NewHazardActivity)
-            var getResiko = resiko.getMetrik(totalResiko!!)
-            metrikData = getResiko
-            return true
+            withContext(Dispatchers.IO){
+                var getResiko = async { resiko.getMetrik(totalResiko!!) }
+                metrikData = getResiko.await()
+            }
+            if(metrikData != null){
+                return true
+            }
+            return false
         }else{
             tilKemungkinan.error="Please Input Someting"
             tilKeparahan.error="Please Input Someting"
@@ -531,22 +536,25 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                         c.time = dt
                         c.add(Calendar.DATE,batas!!)
                         dt = c.time
-                        var duedate = SimpleDateFormat("dd MMMM yyyy", Locale.US).format(dt)
-                        Log.d("Tanggal","${duedate}")
-                        inTGLTenggat.setText("${duedate}")
-                        cvResiko.visibility = View.VISIBLE
-                        tvNilaiResiko.text = "$nilaiKemungkinanSebelum x $nilaiKeparahanSebelum"
-                        tvTotalResiko.text = "${totalResiko}"
-                        tvKDresiko.text = "${metrikData?.kodeBahaya}"
-                        tvRisk.text = "${metrikData?.kategori}"
-                        tvTindakan.text = "${metrikData?.tindakan}"
-                        cvResiko.setCardBackgroundColor(Color.parseColor(metrikData!!.bgColor))
-                        tvRisk.setBackgroundColor(Color.parseColor(metrikData!!.bgColor))
-                        tvRisk.setTextColor(Color.parseColor(metrikData!!.txtColor))
-                        tvTotalResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
-                        tvNilaiResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
-                        tvKDresiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
-                        tvTindakan.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        var duedate = async { SimpleDateFormat("dd MMMM yyyy", Locale.US).format(dt) }.await()
+                        withContext(Dispatchers.Main){
+                            Log.d("Tanggal","${duedate}")
+                            inTGLTenggat.setText("${duedate}")
+                            cvResiko.visibility = View.VISIBLE
+                            tvNilaiResiko.text = "$nilaiKemungkinanSebelum x $nilaiKeparahanSebelum"
+                            tvTotalResiko.text = "${totalResiko}"
+                            tvKDresiko.text = "${metrikData?.kodeBahaya}"
+                            tvRisk.text = "${metrikData?.kategori}"
+                            tvTindakan.text = "${metrikData?.tindakan}"
+                            cvResiko.setCardBackgroundColor(Color.parseColor(metrikData!!.bgColor))
+                            tvRisk.setBackgroundColor(Color.parseColor(metrikData!!.bgColor))
+                            tvRisk.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                            tvTotalResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                            tvNilaiResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                            tvKDresiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                            tvTindakan.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        }
+
                     }else{
                         cvResiko.visibility = View.GONE
                     }
@@ -575,7 +583,7 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             Log.d("TotalResiko","$nilaiKeparahanSebelum")
 
             if (nilaiKemungkinanSebelum!=null){
-                GlobalScope.launch(Dispatchers.Main) {
+                GlobalScope.launch(Dispatchers.IO) {
                     if(setDuedate(nilaiKemungkinanSebelum,nilaiKeparahanSebelum)){
                         var batas = metrikData?.batas?.div(24)
                         var dt = Date()
@@ -583,22 +591,24 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
                         c.time = dt
                         c.add(Calendar.DATE,batas!!)
                         dt = c.time
-                        var duedate = SimpleDateFormat("dd MMMM yyyy", Locale.US).format(dt)
+                        var duedate = async { SimpleDateFormat("dd MMMM yyyy", Locale.US).format(dt) }.await()
                         Log.d("Tanggal","${duedate}")
-                        inTGLTenggat.setText("${duedate}")
-                        cvResiko.visibility = View.VISIBLE
-                        tvNilaiResiko.text = "$nilaiKemungkinanSebelum x $nilaiKeparahanSebelum"
-                        tvTotalResiko.text = "${totalResiko}"
-                        tvKDresiko.text = "${metrikData?.kodeBahaya}"
-                        tvRisk.text = "${metrikData?.kategori}"
-                        tvTindakan.text = "${metrikData?.tindakan}"
-                        cvResiko.setCardBackgroundColor(Color.parseColor(metrikData!!.bgColor))
-                        tvRisk.setBackgroundColor(Color.parseColor(metrikData!!.bgColor))
-                        tvRisk.setTextColor(Color.parseColor(metrikData!!.txtColor))
-                        tvTotalResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
-                        tvNilaiResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
-                        tvKDresiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
-                        tvTindakan.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        withContext(Dispatchers.Main){
+                            inTGLTenggat.setText("${duedate}")
+                            cvResiko.visibility = View.VISIBLE
+                            tvNilaiResiko.text = "$nilaiKemungkinanSebelum x $nilaiKeparahanSebelum"
+                            tvTotalResiko.text = "${totalResiko}"
+                            tvKDresiko.text = "${metrikData?.kodeBahaya}"
+                            tvRisk.text = "${metrikData?.kategori}"
+                            tvTindakan.text = "${metrikData?.tindakan}"
+                            cvResiko.setCardBackgroundColor(Color.parseColor(metrikData!!.bgColor))
+                            tvRisk.setBackgroundColor(Color.parseColor(metrikData!!.bgColor))
+                            tvRisk.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                            tvTotalResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                            tvNilaiResiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                            tvKDresiko.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                            tvTindakan.setTextColor(Color.parseColor(metrikData!!.txtColor))
+                        }
                     }else{
                         cvResiko.visibility = View.GONE
                     }

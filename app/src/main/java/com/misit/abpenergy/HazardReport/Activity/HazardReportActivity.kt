@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.misit.abpenergy.HazardReport.Adapter.ListHazardReportAdapter
 import com.misit.abpenergy.HazardReport.Response.HazardItem
+import com.misit.abpenergy.HazardReport.SQLite.DataSource.HazardHeaderDataSource
 import com.misit.abpenergy.HazardReport.Service.HazardService
 import com.misit.abpenergy.HazardReport.ViewModel.HeaderViewModel
 import com.misit.abpenergy.Login.LoginActivity
@@ -26,9 +27,7 @@ import com.misit.abpenergy.Utils.*
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_hazard_report.*
 import kotlinx.android.synthetic.main.activity_new_hazard.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.joda.time.format.DateTimeFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -96,13 +95,14 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 hazardList?.clear()
                 displayList?.clear()
                 pullRefreshHazard.isRefreshing =true
-//                startService(connectionService)
-                GlobalScope.launch(Dispatchers.Main) {
-                    viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page)
+                GlobalScope.launch(Dispatchers.IO) {
+                    async { viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page) }.await()
+                    async { viewModel.offlineHazard(this@HazardReportActivity) }.await()
+                    withContext(Dispatchers.Main){
+                        pullRefreshHazard.visibility=View.VISIBLE
+                        shimmerHazard.visibility = View.GONE
+                    }
                 }
-//                load(page.toString(), DARI, SAMPAI)
-                pullRefreshHazard.visibility=View.VISIBLE
-                shimmerHazard.visibility = View.GONE
             }
         })
         floatingNewHazard.setOnClickListener {
@@ -125,13 +125,13 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                     if(loading){
                         if ((visibleItem + pastVisibleItem) >= total) {
                             pullRefreshHazard.isRefreshing =true
-
 //                                pullRefreshHazard.visibility=View.GONE
 //                                shimmerHazard.visibility = View.VISIBLE
                                 loading = false
                                 page++
-                                GlobalScope.launch(Dispatchers.Main) {
-                                    viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page)
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    async { viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page) }.await()
+                                    async { viewModel.offlineHazard(this@HazardReportActivity) }.await()
                                 }
 //                                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                             Log.d("TotalHalaman","visible : $visibleItem | Total : $total | Past : $pastVisibleItem | total halaman : $halamanTotal | page : $page")
@@ -141,66 +141,53 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                 }
             }
         })
-
         checkNetworkConnection()
         val tabLayout =  findViewById<View>(R.id.tabsUser) as TabLayout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) {
             }
-
             override fun onTabUnselected(p0: TabLayout.Tab?) {
             }
-
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 displayList?.clear()
                 if(p0!!.position==1){
                     pullRefreshHazard.isRefreshing =true
-
                     disetujui =1
                     page=1
-//                    startService(connectionService)
-                    GlobalScope.launch(Dispatchers.Main) {
-                        viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page)
+                    GlobalScope.launch(Dispatchers.IO) {
+                        async { viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page) }.await()
+                        async { viewModel.offlineHazard(this@HazardReportActivity) }.await()
                     }
-//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                 }else if(p0!!.position==0){
                     pullRefreshHazard.isRefreshing =true
-
                     page=1
                     disetujui=0
-//                    startService(connectionService)
-                    GlobalScope.launch(Dispatchers.Main) {
-                        viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page)
+                    GlobalScope.launch(Dispatchers.IO) {
+                        async { viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page) }.await()
+                        async { viewModel.offlineHazard(this@HazardReportActivity) }.await()
                     }
-//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                 }else if(p0!!.position==2){
                     pullRefreshHazard.isRefreshing =true
 
                     page=1
                     disetujui=2
                     btnLoad.isEnabled = false
-//                    startService(connectionService)
-                    GlobalScope.launch(Dispatchers.Main) {
-                        viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page)
+                    GlobalScope.launch(Dispatchers.IO) {
+                        async { viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page) }.await()
+                        async { viewModel.offlineHazard(this@HazardReportActivity) }.await()
                     }
-//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                 }
             }
 
         })
     }
     private fun checkNetworkConnection() {
-//        startService(connectionService)
         cld = ConnectionLiveData(application)
         cld.observe(this@HazardReportActivity,Observer{ isConnected->
             if (isConnected){
-//                startService(connectionService)
                 shimmerHazard.visibility = View.GONE
                 internetConnection.visibility = View.GONE
-//                viewModel.asyncHazard(this@HazardReportActivity)
-
             }else{
-//                startService(connectionService)
                 shimmerHazard.visibility = View.GONE
                 internetConnection.visibility= View.VISIBLE
             }
@@ -209,7 +196,6 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         private fun hazardViewModel() {
             pullRefreshHazard.isRefreshing =true
             viewModel.hazardsObserver().observe(this@HazardReportActivity,Observer{
-                Log.d("listHazardItem","$it")
                 if(it.size>0){
                     hazardList?.clear()
                     if(displayList!!.size==0){
@@ -230,13 +216,10 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                         loading=true
                         btnLoad.isEnabled = true
                         swipeRefreshLayout.isRefreshing=false
-
                         pullRefreshHazard.visibility = View.VISIBLE
                         shimmerHazard.visibility = View.GONE
                     }
-                    Log.d("SetStatus","hazardList $it")
                 }else{
-//                    displayList?.clear()
                     adapter?.notifyDataSetChanged()
                     pullRefreshHazard.visibility = View.VISIBLE
                     shimmerHazard.visibility = View.GONE
@@ -245,47 +228,46 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                     btnLoad.isEnabled = true
                 }
             })
-            viewModel.hazardPaginate().observe(this@HazardReportActivity,Observer{
+            viewModel.hazardPaginate().observe(this@HazardReportActivity,{
                 halamanTotal = it
-                Log.d("SetStatus","$halamanTotal")
-
             })
-            viewModel.setStatus().observe(this@HazardReportActivity, Observer{
+            viewModel.setStatus().observe(this@HazardReportActivity, {
                 swipeRefreshLayout.isRefreshing=true
                 if(it){
-//                    startService(connectionService)
-//                    viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                     btnLoad.isEnabled = true
                     swipeRefreshLayout.isRefreshing=false
-
                 }else{
                     pullRefreshHazard.visibility = View.VISIBLE
                     shimmerHazard.visibility = View.GONE
                     btnLoad.isEnabled = true
                     swipeRefreshLayout.isRefreshing=false
-
                 }
             })
-            viewModel.totalHazardUsers.observe(this@HazardReportActivity,Observer{
+            viewModel.hazardUser().observe(this@HazardReportActivity,{
                 if(it!=null){
                     totalHazard.text=it
                 }else{
                     totalHazard.text="0"
                 }
             })
-            viewModel.hazardUserVerify.observe(this@HazardReportActivity, Observer{
+            viewModel.hazardVerify().observe(this@HazardReportActivity, {
                 if(it!=null){
                     hazardVerify.text = it
                 }else{
                     hazardVerify.text = "0"
                 }
             })
-            GlobalScope.launch(Dispatchers.Main) {
-
-                viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page)
+            viewModel.hazardOffline().observe(this@HazardReportActivity,{
+                if(it){
+                    btnOfflineHazard.visibility = View.VISIBLE
+                }else{
+                    btnOfflineHazard.visibility = View.GONE
+                }
+            })
+            GlobalScope.launch(Dispatchers.IO) {
+                async { viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page) }.await()
+                async { viewModel.offlineHazard(this@HazardReportActivity) }.await()
             }
-//            viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
-
         }
     override fun onResume() {
         hazardViewModel()
@@ -293,6 +275,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
         LocalBroadcastManager.getInstance(this@HazardReportActivity).registerReceiver(tokenPassingReceiver!!, IntentFilter("com.misit.abpenergy"))
         pullRefreshHazard.visibility=View.GONE
         shimmerHazard.visibility = View.VISIBLE
+//        offlineHazard()
         super.onResume()
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -382,8 +365,9 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
             var sampai = txtTglSampai.text.toString()
             DARI = dari
             SAMPAI = sampai
-            GlobalScope.launch(Dispatchers.Main) {
-                viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page)
+            GlobalScope.launch(Dispatchers.IO) {
+                async { viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page) }.await()
+                async { viewModel.offlineHazard(this@HazardReportActivity) }.await()
             }
 //            startService(connectionService)
         }
@@ -410,6 +394,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             internetConnection.visibility= View.GONE
                             Log.d("ConnectionCheck",tokenData)
                         }else if(tokenData=="Offline"){
+                            floatingNewHazard.isEnabled=true
                             Log.d("disetujuiOffline","$disetujui")
                             hazardList?.clear()
                             displayList?.clear()
@@ -419,6 +404,7 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             Toasty.error(this@HazardReportActivity,"No Internet Connection").show()
                             internetConnection.visibility= View.VISIBLE
                         }else if(tokenData=="Disabled"){
+                            floatingNewHazard.isEnabled=true
                             Log.d("disetujuiDisabled","$disetujui")
 //                            viewModel.offlineHazard(this@HazardReportActivity,page, DARI, SAMPAI,disetujui!!)
                             btnLoad.isEnabled = true
@@ -443,13 +429,16 @@ class HazardReportActivity : AppCompatActivity(), ListHazardReportAdapter.OnItem
                             })
                             hazardList?.clear()
                             displayList?.clear()
-                            GlobalScope.launch(Dispatchers.Main) {
-                                pullRefreshHazard.isRefreshing =true
-
+                            pullRefreshHazard.isRefreshing =true
+                            GlobalScope.launch(Dispatchers.IO) {
                                 page=1
-                                viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page)
-                                cvLoadingSaving.visibility = View.GONE
-                                floatingNewHazard.isEnabled=true
+                                async { viewModel.onlineHazard(this@HazardReportActivity, DARI, SAMPAI,disetujui!!,page) }.await()
+                                async { viewModel.offlineHazard(this@HazardReportActivity) }.await()
+                                withContext(Dispatchers.Main){
+                                    cvLoadingSaving.visibility = View.GONE
+                                    floatingNewHazard.isEnabled=true
+                                }
+
                             }
 //                            startService(connectionService)
                             Log.d("FgHazard","${tokenData}")
