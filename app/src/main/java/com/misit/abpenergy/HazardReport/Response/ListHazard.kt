@@ -1,7 +1,9 @@
 package com.misit.abpenergy.HazardReport.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class ListHazard(
 
 	@field:SerializedName("path")
@@ -34,10 +36,12 @@ data class ListHazard(
 	@field:SerializedName("current_page")
 	var currentPage: Int? = null
 )
+@Keep
 data class HazardList (
 	@field:SerializedName("data")
 	var data: MutableList<HazardItem>? = null
 )
+@Keep
 data class HazardItem(
 
 	@field:SerializedName("kemungkinan")

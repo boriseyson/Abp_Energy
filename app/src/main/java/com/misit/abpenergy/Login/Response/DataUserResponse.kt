@@ -1,13 +1,16 @@
 package com.misit.abpenergy.Login.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class DataUserResponse(
 
 	@field:SerializedName("dataUser")
 	var dataUser: DataUser? = null
 )
 
+@Keep
 data class DataUser(
 
 	@field:SerializedName("no")

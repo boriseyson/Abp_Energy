@@ -1,13 +1,16 @@
 package com.misit.abpenergy.HazardReport.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class RiskResponse(
 
 	@field:SerializedName("risk")
 	var risk: List<RiskItem>? = null
 )
 
+@Keep
 data class RiskItem(
 
 	@field:SerializedName("tgl_input")

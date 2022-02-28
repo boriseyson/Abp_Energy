@@ -1,13 +1,16 @@
 package com.misit.abpenergy.Inspeksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class InspeksiPicaDetailResponse(
 
 	@field:SerializedName("inspeksiPicaDetail")
 	var inspeksiPicaDetail: List<InspeksiPicaDetailItem>? = null
 )
 
+@Keep
 data class InspeksiPicaDetailItem(
 
 	@field:SerializedName("picaTemuan")

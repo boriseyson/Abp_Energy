@@ -1,13 +1,16 @@
 package com.misit.abpenergy.Inspeksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class ListInspeksiPicaResponse(
 
 	@field:SerializedName("inspeksiPica")
 	val inspeksiPica: List<InspeksiPicaItem>? = null
 )
 
+@Keep
 data class InspeksiPicaItem(
 
 	@field:SerializedName("idForm")

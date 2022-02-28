@@ -1,8 +1,10 @@
 package com.misit.abpenergy.Sarpras.SaranaResponse
 
 import android.util.Log
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class PenumpangListModel(
     @field:SerializedName("id")
     var id: Long? = null,

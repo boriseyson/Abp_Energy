@@ -1,13 +1,16 @@
 package com.misit.abpenergy.Login.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class DataProfileResponse(
 
 	@field:SerializedName("Profile")
 	val profile: Profile? = null
 )
 
+@Keep
 data class Profile(
 
 	@field:SerializedName("tglentry")

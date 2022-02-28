@@ -1,7 +1,9 @@
 package com.misit.abpenergy.Sarpras.SarprasResponse
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class DataItem(
 
 	@field:SerializedName("jam_out")

@@ -1,7 +1,9 @@
 package com.misit.abpenergy.Sarpras.SarprasResponse
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class DataPenumpang(
     @field:SerializedName("nik")
     var nik: String? = null,

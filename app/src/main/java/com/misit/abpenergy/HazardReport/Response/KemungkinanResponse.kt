@@ -1,13 +1,16 @@
 package com.misit.abpenergy.HazardReport.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class KemungkinanResponse(
 
 	@field:SerializedName("kemungkinan")
 	var kemungkinan: List<KemungkinanItem>? = null
 )
 
+@Keep
 data class KemungkinanItem(
 
 	@field:SerializedName("kemungkinan")

@@ -1,13 +1,16 @@
 package com.misit.abpenergy.Inspeksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class DataInspeksiResponse(
 
 	@field:SerializedName("inspeksi")
 	var inspeksi: Inspeksi? = null
 )
 
+@Keep
 data class Inspeksi(
 
 	@field:SerializedName("path")
@@ -41,6 +44,7 @@ data class Inspeksi(
 	var currentPage: Int? = null
 )
 
+@Keep
 data class DataItemInspeksi(
 
 	@field:SerializedName("flag")

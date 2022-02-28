@@ -1,7 +1,9 @@
 package com.misit.abpenergy.Rkb.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class User(
 
 	@field:SerializedName("tglentry")

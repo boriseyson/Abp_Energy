@@ -1,13 +1,16 @@
 package com.misit.abpenergy.Inspeksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class TeamInspeksiTempResponse(
 
 	@field:SerializedName("teamInspeksiTemp")
 	val teamInspeksiTemp: List<TeamInspeksiTempItem>? = null
 )
 
+@Keep
 data class TeamInspeksiTempItem(
 
 	@field:SerializedName("tglentry")

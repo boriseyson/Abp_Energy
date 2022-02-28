@@ -1,13 +1,16 @@
 package com.misit.abpenergy.Login.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class DepartmentResponse(
 
 	@field:SerializedName("department")
 	var department: List<DepartmentItem>? = null
 )
 
+@Keep
 data class DepartmentItem(
 
 	@field:SerializedName("id_dept")

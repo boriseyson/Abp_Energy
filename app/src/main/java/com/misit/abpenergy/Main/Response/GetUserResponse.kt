@@ -1,7 +1,9 @@
 package com.misit.abpenergy.Main.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class GetUserResponse(
 
 	@field:SerializedName("dataHazard")
@@ -14,6 +16,7 @@ data class GetUserResponse(
 	var dataUser: DataUser? = null
 )
 
+@Keep
 data class DataUser(
 
 	@field:SerializedName("tglentry")

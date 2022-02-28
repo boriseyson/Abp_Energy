@@ -1,8 +1,10 @@
 package com.misit.abpenergy.Main.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import com.misit.abpenergy.Main.Master.Response.UsersListItem
 
+@Keep
 data class UserListResponse(
 
 	@field:SerializedName("path")

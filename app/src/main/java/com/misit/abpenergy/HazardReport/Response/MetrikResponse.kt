@@ -1,13 +1,16 @@
 package com.misit.abpenergy.HazardReport.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class MetrikResponse(
 
 	@field:SerializedName("metrikResiko")
 	var metrikResiko: List<MetrikResikoItem?>? = null
 )
 
+@Keep
 data class MetrikResikoItem(
 
 	@field:SerializedName("min")

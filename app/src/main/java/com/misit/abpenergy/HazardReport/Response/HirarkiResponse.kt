@@ -1,13 +1,16 @@
 package com.misit.abpenergy.HazardReport.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class HirarkiResponse(
 
 	@field:SerializedName("hirarki")
 	var hirarki: List<HirarkiItem>? = null
 )
 
+@Keep
 data class HirarkiItem(
 
 	@field:SerializedName("tgl_input")
@@ -25,6 +28,7 @@ data class HirarkiItem(
 	@field:SerializedName("idHirarki")
 	var idHirarki: Int? = null
 )
+@Keep
 data class HirarkiItemFull(
 
 	@field:SerializedName("tgl_input")

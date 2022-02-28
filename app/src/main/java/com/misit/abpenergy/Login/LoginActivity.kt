@@ -24,6 +24,7 @@ import com.misit.abpenergy.Api.ApiClientTwo
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.Login.Response.Auth.AuthAppResponse
 import com.misit.abpenergy.Login.Response.Auth.UserLogin
+import com.misit.abpenergy.MainPageActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.PopupUtil
@@ -214,6 +215,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
              })
      }
     private suspend fun userLogin(username:String,password:String,token:String,phToken:String,appVersion:String,appName:String){
+        var mainPage= Intent(this@LoginActivity,MainPageActivity::class.java)
         GlobalScope.launch(IO) {
             var apiEndPoint = ApiClientTwo.getClient(this@LoginActivity)!!.create(ApiEndPoint::class.java)
                 var def = async { apiEndPoint.lpLogin(username,password,token,phToken,appVersion,appName)}
@@ -257,17 +259,23 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                             Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
                             PopupUtil.dismissDialog()
                             dialog?.dismiss()
-                            startActivity(intent)
+                            startActivity(mainPage)
                             finish()
 //                            tvErrorLog.text = "$username | $password | $csrf_token | $app_version | abpSystem | ${u} | ${this} "
                             dialog!!.dismiss()
                         }else{
+                            dialog!!.dismiss()
+                            clearForm()
                             Toasty.error(this@LoginActivity,"Username atau Password Salah ",Toasty.LENGTH_LONG).show()
                         }
                     }else{
+                        dialog!!.dismiss()
+                        clearForm()
                         Toasty.error(this@LoginActivity,"Username atau Password Salah ",Toasty.LENGTH_LONG).show()
                     }
                 }else{
+                    dialog!!.dismiss()
+                    clearForm()
                     Toasty.error(this@LoginActivity,"Username atau Password Salah ",Toasty.LENGTH_LONG).show()
                 }
             }

@@ -1,7 +1,9 @@
 package com.misit.abpenergy.Inspeksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class FormInspeksiResponse(
 
 	@field:SerializedName("path")
@@ -35,6 +37,7 @@ data class FormInspeksiResponse(
 	var currentPage: Int? = null
 )
 
+@Keep
 data class FormItem(
 
 	@field:SerializedName("idForm")

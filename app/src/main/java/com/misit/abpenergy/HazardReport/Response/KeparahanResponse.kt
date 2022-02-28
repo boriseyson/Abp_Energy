@@ -1,13 +1,16 @@
 package com.misit.abpenergy.HazardReport.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class KeparahanResponse(
 
 	@field:SerializedName("keparahan")
 	var keparahan: List<KeparahanItem>? = null
 )
 
+@Keep
 data class KeparahanItem(
 
 	@field:SerializedName("flag")
@@ -22,6 +25,7 @@ data class KeparahanItem(
 	@field:SerializedName("keparahan")
 	var keparahan: String? = null
 )
+@Keep
 data class KeparahanItemFull(
 
 	@field:SerializedName("flag")

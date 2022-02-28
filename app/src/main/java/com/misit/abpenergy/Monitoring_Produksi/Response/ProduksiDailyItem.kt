@@ -1,7 +1,9 @@
 package com.misit.abpenergy.Monitoring_Produksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class ProduksiDailyItem(
 
 	@field:SerializedName("flag")

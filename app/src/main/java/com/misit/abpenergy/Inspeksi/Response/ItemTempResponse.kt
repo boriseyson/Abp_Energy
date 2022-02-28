@@ -1,1 +1,1 @@
-package com.misit.abpenergy.Inspeksi.Responseimport com.google.gson.annotations.SerializedNameclass ItemTempResponse(    @field:SerializedName("success")    var success: Boolean = false)
+package com.misit.abpenergy.Inspeksi.Responseimport androidx.annotation.Keepimport com.google.gson.annotations.SerializedName@Keepclass ItemTempResponse(    @field:SerializedName("success")    var success: Boolean = false)

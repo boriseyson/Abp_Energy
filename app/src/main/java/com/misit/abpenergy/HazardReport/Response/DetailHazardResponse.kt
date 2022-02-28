@@ -1,7 +1,9 @@
 package com.misit.abpenergy.HazardReport.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class DetailHazardResponse(
 
 	@field:SerializedName("ItemHazardList")
@@ -20,6 +22,7 @@ data class DetailHazardResponse(
 	var riskSebelum: RiskSebelum? = null
 )
 
+@Keep
 data class RiskSesudah(
 
 	@field:SerializedName("min")
@@ -50,6 +53,7 @@ data class RiskSesudah(
 	var kategori: String? = null
 )
 
+@Keep
 data class ItemHazardList(
 
 	@field:SerializedName("flag")
@@ -196,6 +200,7 @@ data class ItemHazardList(
 
 )
 
+@Keep
 data class RiskSebelum(
 
 	@field:SerializedName("min")

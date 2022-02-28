@@ -1,7 +1,9 @@
 package com.misit.abpenergy.Inspeksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class ItemsDetail(
 
 	@field:SerializedName("idForm")
@@ -38,6 +40,7 @@ data class ItemsDetail(
 	var idInspeksi: String? = null
 )
 
+@Keep
 data class ItemDetailInspeksi(
 
 	@field:SerializedName("numSub")
@@ -50,6 +53,7 @@ data class ItemDetailInspeksi(
 	var items: List<ItemsDetail>? = null
 )
 
+@Keep
 data class ItemDetailInspeksiResponse(
 
 	@field:SerializedName("itemDetailInspeksi")

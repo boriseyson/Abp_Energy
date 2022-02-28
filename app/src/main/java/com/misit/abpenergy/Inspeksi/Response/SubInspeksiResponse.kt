@@ -1,13 +1,16 @@
 package com.misit.abpenergy.Inspeksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class SubInspeksiResponse(
 
 	@field:SerializedName("dataSub")
 	var dataSub: List<DataSubItem>? = null
 )
 
+@Keep
 data class DataSubItem(
 
 	@field:SerializedName("idForm")

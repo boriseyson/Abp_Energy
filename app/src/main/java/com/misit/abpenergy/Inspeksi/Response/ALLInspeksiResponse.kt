@@ -1,13 +1,15 @@
 package com.misit.abpenergy.Inspeksi.Response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-
+@Keep
 data class ALLInspeksiResponse(
 
 	@field:SerializedName("allInspection")
 	var allInspection: AllInspection? = null
 )
 
+@Keep
 data class InpeksiItem(
 
 	@field:SerializedName("tglentry")
@@ -107,6 +109,7 @@ data class InpeksiItem(
 	var username: String? = null
 )
 
+@Keep
 data class AllInspection(
 
 	@field:SerializedName("path")
