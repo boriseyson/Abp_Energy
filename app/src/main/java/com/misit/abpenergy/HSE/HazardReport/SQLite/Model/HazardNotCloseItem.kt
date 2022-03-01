@@ -1,0 +1,1 @@
+package com.misit.abpenergy.HSE.HazardReport.SQLite.Model

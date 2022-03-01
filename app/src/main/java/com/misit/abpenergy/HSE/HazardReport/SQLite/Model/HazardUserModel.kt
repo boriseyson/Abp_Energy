@@ -1,0 +1,1 @@
+package com.misit.abpenergy.HSE.HazardReport.SQLite.Modelimport java.io.Serializableclass HazardUserModel:Serializable {    var total_hazard:String?=null    var verify_hazard:String?=null}

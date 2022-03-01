@@ -1,1 +1,0 @@
-package com.misit.abpenergy.HazardReport.SQLite.Modelclass DetHirarki {    var id_ket: Int? = null    var id_hirarki: String? = null    var keterangan: String? = null    var ket_input: String? = null    var time_input: String? = null}

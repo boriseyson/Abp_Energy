@@ -1,0 +1,1 @@
+package com.misit.abpenergy.HSE.HazardReport.Activityimport androidx.appcompat.app.AppCompatActivityimport android.os.Bundleimport com.misit.abpenergy.Rclass HazardVerifyActivity : AppCompatActivity() {    override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        setContentView(R.layout.activity_hazard_verify)    }}

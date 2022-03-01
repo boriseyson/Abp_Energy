@@ -40,7 +40,6 @@
                     />
                 <LinearLayout
                     android:paddingLeft="10dp"
-                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
@@ -81,7 +80,6 @@
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:textAllCaps="false"
-                    android:id="@+id/btnPassChange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
@@ -98,7 +96,6 @@
                     android:textAllCaps="false"
                     android:gravity="left|center_vertical"
                     app:iconPadding="30dp"
-                    android:id="@+id/btnUpdateProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_post_add_24"

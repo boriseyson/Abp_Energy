@@ -26,14 +26,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".HazardReport.Activity.RubahActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.UnsavedHazardActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.RubahActivity"
             android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5972533139163141~5085280537" />
 
-        <activity android:name=".Inspeksi.Form.InspeksiActivity" />
+        <activity android:name=".HSE.Inspeksi.Form.InspeksiActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -62,8 +65,8 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-        <activity android:name=".Inspeksi.InspeksiHSEActivity" />
-        <activity android:name=".Inspeksi.InspeksiUserActivity" />
+        <activity android:name=".HSE.Inspeksi.InspeksiHSEActivity" />
+        <activity android:name=".HSE.Inspeksi.InspeksiUserActivity" />
         <activity android:name=".CutiOnline.DetailCutiActivity" />
         <activity android:name=".CutiOnline.CutiOnlineAllActivity" />
         <activity android:name=".CutiOnline.RosterCutiActivity" />
@@ -72,7 +75,7 @@
             android:name=".CutiOnline.CutiOnlineActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".HazardReport.V_1.NewHazardActivity" />
+        <activity android:name="com.misit.abpenergy.HSE.HazardReport.V_1.NewHazardActivity" />
         <activity
             android:name=".OlderClass.MainActivity"
             android:launchMode="singleTask"
@@ -88,9 +91,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-        <activity android:name=".HazardReport.Activity.HazardVerifyActivity" />
-        <activity android:name=".HazardReport.Activity.HazardHSEActivity" />
-        <activity android:name=".HazardReport.Activity.HazardSayaActivity" />
+        <activity android:name="com.misit.abpenergy.HSE.HazardReport.Activity.HazardVerifyActivity" />
+        <activity android:name="com.misit.abpenergy.HSE.HazardReport.Activity.HazardHSEActivity" />
+        <activity android:name="com.misit.abpenergy.HSE.HazardReport.Activity.HazardSayaActivity" />
         <activity android:name=".Main.Master.NewPerusahaanActivity" />
         <activity android:name=".Main.Master.PerusahaanActivity" />
         <activity android:name=".Login.UbahDataActivity" />
@@ -109,7 +112,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-        <activity android:name=".Inspeksi.DetailInspeksiActivity" />
+        <activity android:name=".HSE.Inspeksi.DetailInspeksiActivity" />
         <activity
             android:name=".Login.DepartmentActivity"
             android:launchMode="singleTask"
@@ -124,15 +127,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
         <activity
-            android:name=".Inspeksi.PicaInspeksiActivity"
+            android:name=".HSE.Inspeksi.PicaInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Inspeksi.ListInspeksiActivity"
+            android:name=".HSE.Inspeksi.ListInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Inspeksi.NewInspeksiActivity"
+            android:name=".HSE.Inspeksi.NewInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -144,13 +147,13 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".HazardReport.Activity.KeparahanActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.KeparahanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HazardReport.Activity.KemungkinanActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.KemungkinanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Inspeksi.AllInspeksiActivity"
+            android:name=".HSE.Inspeksi.AllInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -158,22 +161,22 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Sarpras.Activity.AllSarprasActivity"
+            android:name="com.misit.abpenergy.HGE.Sarpras.Activity.AllSarprasActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HazardReport.Activity.ALLHazardReportActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.ALLHazardReportActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HazardReport.Activity.RiskActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.RiskActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HazardReport.Activity.ImageHazardActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.ImageHazardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-        <activity android:name=".HazardReport.Activity.LokasiActivity" />
+        <activity android:name="com.misit.abpenergy.HSE.HazardReport.Activity.LokasiActivity" />
         <activity
-            android:name=".HazardReport.Activity.UpdateHazardActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.UpdateHazardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
@@ -193,67 +196,67 @@
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
         <activity
-            android:name=".HazardReport.Activity.PhotoHazardActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.PhotoHazardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
         <activity
-            android:name=".Inspeksi.InspeksiActivity"
+            android:name=".HSE.Inspeksi.InspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HazardReport.Activity.DetailHazardActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.DetailHazardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HazardReport.Activity.SumberBahayaActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.SumberBahayaActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HazardReport.Activity.HazardReportActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.HazardReportActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HazardReport.Activity.NewHazardActivity"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Activity.NewHazardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Monitoring_Produksi.StockActivity"
+            android:name="com.misit.abpenergy.ENP.Monitoring_Produksi.StockActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Monitoring_Produksi.ProductionActivity"
+            android:name="com.misit.abpenergy.ENP.Monitoring_Produksi.ProductionActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Sarpras.Activity.DetailSarprasActivity"
+            android:name="com.misit.abpenergy.HGE.Sarpras.Activity.DetailSarprasActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Sarpras.Activity.KabagApprSarprasActivity"
+            android:name="com.misit.abpenergy.HGE.Sarpras.Activity.KabagApprSarprasActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Sarpras.Activity.PenumpangActivity"
+            android:name="com.misit.abpenergy.HGE.Sarpras.Activity.PenumpangActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Sarpras.Activity.NewSarprasActivity"
+            android:name="com.misit.abpenergy.HGE.Sarpras.Activity.NewSarprasActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Rkb.NewRkbActivity"
+            android:name=".HGE.Rkb.NewRkbActivity"
             android:theme="@style/noActionBar" />
         <activity
-            android:name=".Rkb.DetailRkbActivity"
+            android:name=".HGE.Rkb.DetailRkbActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Sarpras.Activity.SarprasActivity"
+            android:name="com.misit.abpenergy.HGE.Sarpras.Activity.SarprasActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Rkb.RkbActivity"
+            android:name=".HGE.Rkb.RkbActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -301,15 +304,15 @@
             </intent-filter>
         </service>
         <service
-            android:name=".HazardReport.Service.HazardService"
+            android:name="com.misit.abpenergy.HSE.HazardReport.Service.HazardService"
             android:stopWithTask="false" />
         <service android:name=".Service.LoadingServices" />
         <service android:name=".Service.BgTokenService" />
         <service android:name=".Service.FgTokenService" /> <!-- <service android:name=".HazardReport.Service.FgHazardService" /> -->
-        <service android:name=".HazardReport.Service.BgHazardService" />
+        <service android:name="com.misit.abpenergy.HSE.HazardReport.Service.BgHazardService" />
         <service android:name=".Service.InitService" />
         <service
-            android:name=".Sarpras.Service.SaranaService"
+            android:name="com.misit.abpenergy.HGE.Sarpras.Service.SaranaService"
             android:enabled="true"
             android:exported="true" />
         <service

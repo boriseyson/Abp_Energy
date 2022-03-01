@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Rkb.RkbActivity">
+    tools:context=".HGE.Rkb.RkbActivity">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/container"
@@ -38,7 +38,6 @@
             app:tabTextColor="@color/successColor">
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/total_ic"
@@ -47,28 +46,24 @@
                 />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabApprove"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/appr_ic"
                 android:text="Approve" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabWaiting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/wait_ic"
                 android:text="Waiting" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/cancel_ic"
                 android:text="Cancel" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/close_ic"

@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C1C3C9"
-    tools:context=".HazardReport.Activity.HazardReportActivity"
+    tools:context=".HSE.HazardReport.Activity.HazardReportActivity"
     >
 
 
 
     <LinearLayout
-        android:id="@+id/linearLayout8"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -95,7 +94,6 @@
             android:weightSum="2">
             <!--Dari-->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilTglDari"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -133,7 +131,6 @@
                 android:textSize="40dp" />
             <!--Sampai-->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilTglSampai"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -178,7 +175,6 @@
         </LinearLayout>
         <!--Picker Dialog-->
         <LinearLayout
-            android:id="@+id/lnTabButtonUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -195,19 +191,16 @@
                 app:tabTextColor="@color/colorPrimaryDark">
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/btnBlmSetujuUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Belum Disetujui" />
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/btnSetujuHazardUser"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Disetujui" />
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/btnDibatalkanUser"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Dibatalkan" />

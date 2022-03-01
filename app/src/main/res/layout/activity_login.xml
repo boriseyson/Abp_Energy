@@ -13,7 +13,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/ic_wave"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:scaleType="fitXY"
@@ -35,7 +34,6 @@
         android:contentDescription="@string/icwave" />
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -155,7 +153,6 @@
             android:id="@+id/tvErrorLog"/>
     <TextView
         android:visibility="gone"
-        android:id="@+id/tvOR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

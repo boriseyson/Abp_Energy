@@ -33,7 +33,6 @@
                 app:cardElevation="10dp">
 
                 <LinearLayout
-                    android:id="@+id/ln00"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -70,7 +69,6 @@
                 android:layout_height="5dp"
                 android:background="@color/colorPrimaryDark" />
             <androidx.cardview.widget.CardView
-                android:id="@+id/ln01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -231,7 +229,6 @@
 
                 <!--    Bahaya-->
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cv00"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -240,7 +237,6 @@
                     app:cardElevation="10dp">
 
                     <LinearLayout
-                        android:id="@+id/ln02"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -294,7 +290,6 @@
                     android:textStyle="bold" />
                 <!--        PILIHAN-->
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cv01"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -337,7 +332,6 @@
                     android:textStyle="bold" />
                 <!--        PILIHAN-->
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cv02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -427,7 +421,6 @@
                 android:textStyle="bold" />
             <!--        Kategori Bahaya-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cv04"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -505,7 +498,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
             <androidx.cardview.widget.CardView
-                android:id="@+id/cv05"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -548,7 +540,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
             <androidx.cardview.widget.CardView
-                android:id="@+id/cv06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -729,7 +720,6 @@
                         android:background="@color/successColor"
                         android:layout_marginTop="10dp"/>
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilKeteranganPJ"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
@@ -878,7 +868,6 @@
                             android:layout_weight="1"
                             android:text="Pilih Penanggung Jawab" />
                         <RadioButton
-                            android:id="@+id/rbManual"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"

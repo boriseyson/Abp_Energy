@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Rkb.Response.DetailRkbItem
+import com.misit.abpenergy.HGE.Rkb.Response.DetailRkbItem
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter

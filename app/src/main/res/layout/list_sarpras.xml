@@ -1,8 +1,7 @@
 <androidx.cardview.widget.CardView
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-android:id="@+id/cvSarpras"
-app:cardElevation="50dp"
+    app:cardElevation="50dp"
 app:cardCornerRadius="4dp"
 android:layout_margin="10dp"
 android:layout_width="match_parent"

@@ -2,20 +2,10 @@
 <resources>
     <color name="colorPrimary">#355B8C</color>
     <color name="colorPrimaryDark">#294A75</color>
-    <color name="colorPrimaryDeep">#E6E9E7</color>
-    <color name="colorPrimaryDeepIn">#E6D8D8</color>
     <color name="colorAccent">#00897B</color>
-    <color name="bg_color">#355B8C</color>
     <color name="red_smooth">#A62D2D</color>
-    <color name="loginText">#f1af33</color>
-    <color name="loginTextHover">#F3EFE7</color>
-    <color name="colorHR">#f1f1f1</color>
-    <color name="formColor">#009688</color>
-    <color name="formColorTop">#007e73</color>
-    <color name="formColorMiddle">#009688</color>
     <color name="formColorWhite">#fafafa</color>
     <color name="strokeSmoke">#919191</color>
-    <color name="formColorLogin">#7FCCB6</color>
     <color name="bgTotal">#3F51B5</color>
     <color name="bgApprove">#4CAF50</color>
     <color name="bgWaiting">#FF9800</color>
@@ -23,8 +13,6 @@
     <color name="white">#ffffff</color>
     <color name="white_smoke">#D7D7D9</color>
     <color name="paper">#D9D9D9</color>
-    <color name="green">#4CAF50</color>
     <color name="greendark">#007e73</color>
     <color name="skyBlue">#0098DA</color>
-    <color name="qr_code_reader_square">#FFFFFFFF</color>
 </resources>

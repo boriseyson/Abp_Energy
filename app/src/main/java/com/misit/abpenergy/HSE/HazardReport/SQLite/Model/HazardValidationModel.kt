@@ -1,0 +1,1 @@
+package com.misit.abpenergy.HSE.HazardReport.SQLite.Modelimport java.io.Serializableclass HazardValidationModel: Serializable {    var idValidation: Int? = null    var uid: String? = null    var user_valid: String? = null    var tgl_valid: String? = null    var jam_valid: String? = null    var option_flag: Int? = null    var keterangan_admin: String? = null}

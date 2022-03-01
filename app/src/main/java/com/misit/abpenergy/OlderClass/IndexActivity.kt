@@ -23,23 +23,22 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.navigation.NavigationView
 import com.misit.abpenergy.Api.*
-import com.misit.abpenergy.HazardReport.*
-import com.misit.abpenergy.Inspeksi.*
 import com.misit.abpenergy.Login.*
-import com.misit.abpenergy.Monitoring_Produksi.*
+import com.misit.abpenergy.ENP.Monitoring_Produksi.*
 import com.misit.abpenergy.Main.Response.*
-import com.misit.abpenergy.Rkb.*
-import com.misit.abpenergy.Sarpras.*
 import com.misit.abpenergy.Barcode.BarcodeScannerActivity
 import com.misit.abpenergy.Barcode.QRCodeActivity
-import com.misit.abpenergy.HazardReport.Activity.ALLHazardReportActivity
-import com.misit.abpenergy.HazardReport.Activity.HazardReportActivity
-import com.misit.abpenergy.HazardReport.Activity.NewHazardActivity
+import com.misit.abpenergy.HGE.Rkb.RkbActivity
+import com.misit.abpenergy.HSE.Inspeksi.AllInspeksiActivity
+import com.misit.abpenergy.HSE.Inspeksi.InspeksiActivity
+import com.misit.abpenergy.HSE.HazardReport.Activity.ALLHazardReportActivity
+import com.misit.abpenergy.HSE.HazardReport.Activity.HazardReportActivity
+import com.misit.abpenergy.HSE.HazardReport.Activity.NewHazardActivity
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Sarpras.Activity.AllSarprasActivity
-import com.misit.abpenergy.Sarpras.Activity.KabagApprSarprasActivity
-import com.misit.abpenergy.Sarpras.Activity.NewSarprasActivity
-import com.misit.abpenergy.Sarpras.Activity.SarprasActivity
+import com.misit.abpenergy.HGE.Sarpras.Activity.AllSarprasActivity
+import com.misit.abpenergy.HGE.Sarpras.Activity.KabagApprSarprasActivity
+import com.misit.abpenergy.HGE.Sarpras.Activity.NewSarprasActivity
+import com.misit.abpenergy.HGE.Sarpras.Activity.SarprasActivity
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_index.*
@@ -332,7 +331,7 @@ private val requestCodeCameraPermission = 1999
 //    Sarpras Notif
 //    NotifRkb
     private fun rkbNotif(tabindex:String?){
-        var intent = Intent(this@IndexActivity,RkbActivity::class.java)
+        var intent = Intent(this@IndexActivity, RkbActivity::class.java)
         intent.putExtra(RkbActivity.USERNAME, USERNAME)
         intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
         intent.putExtra(RkbActivity.SECTON, SECTON)
@@ -387,7 +386,7 @@ private val requestCodeCameraPermission = 1999
     override fun onClick(v: View?) {
         btnFLMenuIndex.collapse()
         if(v?.id== R.id.btnTotal){
-                var intent = Intent(this@IndexActivity,RkbActivity::class.java)
+                var intent = Intent(this@IndexActivity, RkbActivity::class.java)
                 intent.putExtra(RkbActivity.USERNAME, USERNAME)
                 intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
                 intent.putExtra(RkbActivity.SECTON, SECTON)
@@ -397,7 +396,7 @@ private val requestCodeCameraPermission = 1999
                 startActivity(intent)
             }
         if(v?.id== R.id.btnApprove){
-            var intent = Intent(this@IndexActivity,RkbActivity::class.java)
+            var intent = Intent(this@IndexActivity, RkbActivity::class.java)
             intent.putExtra(RkbActivity.USERNAME, USERNAME)
             intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
             intent.putExtra(RkbActivity.SECTON, SECTON)
@@ -407,7 +406,7 @@ private val requestCodeCameraPermission = 1999
             startActivity(intent)
         }
         if(v?.id== R.id.btnWaiting){
-            var intent = Intent(this@IndexActivity,RkbActivity::class.java)
+            var intent = Intent(this@IndexActivity, RkbActivity::class.java)
             intent.putExtra(RkbActivity.USERNAME, USERNAME)
             intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
             intent.putExtra(RkbActivity.SECTON, SECTON)
@@ -417,7 +416,7 @@ private val requestCodeCameraPermission = 1999
             startActivity(intent)
         }
         if(v?.id== R.id.btnCancel){
-            var intent = Intent(this@IndexActivity,RkbActivity::class.java)
+            var intent = Intent(this@IndexActivity, RkbActivity::class.java)
             intent.putExtra(RkbActivity.USERNAME, USERNAME)
             intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
             intent.putExtra(RkbActivity.SECTON, SECTON)
@@ -427,7 +426,7 @@ private val requestCodeCameraPermission = 1999
             startActivity(intent)
         }
         if(v?.id== R.id.btnClose){
-            var intent = Intent(this@IndexActivity,RkbActivity::class.java)
+            var intent = Intent(this@IndexActivity, RkbActivity::class.java)
             intent.putExtra(RkbActivity.USERNAME, USERNAME)
             intent.putExtra(RkbActivity.DEPARTMENT, DEPARTMENT)
             intent.putExtra(RkbActivity.SECTON, SECTON)

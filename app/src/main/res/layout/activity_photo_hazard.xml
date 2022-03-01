@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".HazardReport.Activity.PhotoHazardActivity">
+    tools:context=".HSE.HazardReport.Activity.PhotoHazardActivity">
 <!--    <com.wonderkiln.camerakit.CameraView-->
 <!--        android:id="@+id/cameraKit"-->
 <!--        android:layout_width="0dp"-->

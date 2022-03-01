@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.misit.abpenergy.R
-import com.misit.abpenergy.Rkb.Response.DataItem
+import com.misit.abpenergy.HGE.Rkb.Response.DataItem
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -22,7 +22,7 @@ import java.util.*
 class UserRkbListAdapter(
     private val context: Context?,
     private val username: String?,
-    private val rkbList:MutableList<DataItem>,section:String):
+    private val rkbList:MutableList<DataItem>, section:String):
     RecyclerView.Adapter<UserRkbListAdapter.MyViewHolder>(){
 
 
