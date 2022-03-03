@@ -1,0 +1,1 @@
+package com.misit.abpenergy.HSE.Inspeksi.SQLite.Modelclass ListModel {    var idList  :Int? = null    var idForm:Int? = null    var idSub:Int? = null    var user_input :String? = null    var tgl_input :String? = null    var flag :Int? = null    var listInspeksi :Int? = null}

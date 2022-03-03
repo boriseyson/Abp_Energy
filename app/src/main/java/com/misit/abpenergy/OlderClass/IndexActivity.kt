@@ -29,8 +29,8 @@ import com.misit.abpenergy.Main.Response.*
 import com.misit.abpenergy.Barcode.BarcodeScannerActivity
 import com.misit.abpenergy.Barcode.QRCodeActivity
 import com.misit.abpenergy.HGE.Rkb.RkbActivity
-import com.misit.abpenergy.HSE.Inspeksi.AllInspeksiActivity
-import com.misit.abpenergy.HSE.Inspeksi.InspeksiActivity
+import com.misit.abpenergy.HSE.Inspeksi.SQLite.Activity.AllInspeksiActivity
+import com.misit.abpenergy.HSE.Inspeksi.SQLite.Activity.InspeksiActivity
 import com.misit.abpenergy.HSE.HazardReport.Activity.ALLHazardReportActivity
 import com.misit.abpenergy.HSE.HazardReport.Activity.HazardReportActivity
 import com.misit.abpenergy.HSE.HazardReport.Activity.NewHazardActivity

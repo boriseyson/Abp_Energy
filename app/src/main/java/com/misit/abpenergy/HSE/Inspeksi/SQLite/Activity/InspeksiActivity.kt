@@ -1,4 +1,4 @@
-package com.misit.abpenergy.HSE.Inspeksi
+package com.misit.abpenergy.HSE.Inspeksi.SQLite.Activity
 
 import android.content.Intent
 import android.os.Bundle

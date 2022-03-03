@@ -1,0 +1,1 @@
+package com.misit.abpenergy.HSE.Inspeksi.SQLite.Modelclass FormModel {    var idForm: Int? = null    var kodeForm: String? = null    var namaForm: String? = null    var userEntry: String? = null    var tglEntry: String? = null    var flag: Int? = null}

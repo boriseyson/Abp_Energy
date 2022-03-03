@@ -65,8 +65,8 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-        <activity android:name=".HSE.Inspeksi.InspeksiHSEActivity" />
-        <activity android:name=".HSE.Inspeksi.InspeksiUserActivity" />
+        <activity android:name=".HSE.Inspeksi.SQLite.Activity.InspeksiHSEActivity" />
+        <activity android:name=".HSE.Inspeksi.SQLite.Activity.InspeksiUserActivity" />
         <activity android:name=".CutiOnline.DetailCutiActivity" />
         <activity android:name=".CutiOnline.CutiOnlineAllActivity" />
         <activity android:name=".CutiOnline.RosterCutiActivity" />
@@ -112,7 +112,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-        <activity android:name=".HSE.Inspeksi.DetailInspeksiActivity" />
+        <activity android:name=".HSE.Inspeksi.SQLite.Activity.DetailInspeksiActivity" />
         <activity
             android:name=".Login.DepartmentActivity"
             android:launchMode="singleTask"
@@ -127,15 +127,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
         <activity
-            android:name=".HSE.Inspeksi.PicaInspeksiActivity"
+            android:name=".HSE.Inspeksi.SQLite.Activity.PicaInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HSE.Inspeksi.ListInspeksiActivity"
+            android:name=".HSE.Inspeksi.SQLite.Activity.ListInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HSE.Inspeksi.NewInspeksiActivity"
+            android:name=".HSE.Inspeksi.SQLite.Activity.NewInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -153,7 +153,7 @@
             android:name="com.misit.abpenergy.HSE.HazardReport.Activity.KemungkinanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HSE.Inspeksi.AllInspeksiActivity"
+            android:name=".HSE.Inspeksi.SQLite.Activity.AllInspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -201,7 +201,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
         <activity
-            android:name=".HSE.Inspeksi.InspeksiActivity"
+            android:name=".HSE.Inspeksi.SQLite.Activity.InspeksiActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

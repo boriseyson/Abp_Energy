@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
 //                        InPassword.text.toString()
 //                    )
                     GlobalScope.launch(Dispatchers.Main) {
-                        async { loadingDialog(this@LoginActivity) }.await()
+                         loadingDialog(this@LoginActivity)
 
                         userLogin(InUsername.text.toString(),InPassword.text.toString(),csrf_token!!,android_token!!,app_version!!,"abpSystem")
                     }
@@ -122,7 +122,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
 
 //                loginNew(InUsername.text.toString(),InPassword.text.toString())
                 GlobalScope.launch(Dispatchers.Main) {
-                    async { loadingDialog(this@LoginActivity) }.await()
+                    loadingDialog(this@LoginActivity)
                     userLogin(InUsername.text.toString(),InPassword.text.toString(),csrf_token!!,android_token!!,app_version!!,"abpSystem")
                 }
             }
@@ -145,16 +145,16 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
          val mBuilder = AlertDialog.Builder(c)
          mBuilder.setView(mDialogView)
          val dialog1 =mBuilder.show()
-         dialog1?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+         dialog1!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
          mDialogView.btnAbp?.setOnClickListener { registerUser() }
          mDialogView.btnMitra?.setOnClickListener { registerUserMitra() }
-         mDialogView.btnDismis?.setOnClickListener { dialog1.dismiss() }
+         mDialogView.btnDismis?.setOnClickListener { dialog1!!.dismiss() }
 
      }
     override fun onResume() {
         if(ConfigUtil.cekKoneksi(this)){
             GlobalScope.launch(Dispatchers.Main) {
-                async { loadingDialog(this@LoginActivity) }.await()
+//                loadingDialog(this@LoginActivity)
                 async{ corotineToken(this@LoginActivity) }.await()
             }
 //            getToken()
@@ -179,9 +179,10 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
     }
 
      suspend fun corotineToken(c: Context){
+
          try {
              val apiEndPoint = ApiClient.getClient(c)!!.create(ApiEndPoint::class.java)
-             CoroutineScope(Dispatchers.Main).launch {
+             CoroutineScope(Main).launch {
                  val call = async { apiEndPoint.getTokenCorutine("csrf_token") }
                  val result = call.await()
 
@@ -190,7 +191,6 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                          val tokenRes = async { result.body() }.await()
                          if (tokenRes != null) {
                              csrf_token = tokenRes.csrfToken
-                             dialog?.dismiss()
                          } else {
                              corotineToken(c)
                          }
@@ -261,7 +261,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                                 .setStringState(PrefsUtil.PHOTO_URL, u?.photoProfile)
                             Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
                             PopupUtil.dismissDialog()
-                            dialog?.dismiss()
+                            dialog!!.dismiss()
                             startActivity(mainPage)
                             finish()
 //                            tvErrorLog.text = "$username | $password | $csrf_token | $app_version | abpSystem | ${u} | ${this} "
@@ -341,7 +341,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
         tilUsername.error=null
         tilPassword.error=null
     }
-     private suspend fun loadingDialog(c:Context){
+     private fun loadingDialog(c:Context){
          var  mDialogView = LayoutInflater.from(c).inflate(R.layout.loading_abp,null)
          val mBuilder = AlertDialog.Builder(c)
          var loadingAbp = mDialogView?.findViewById<View>(R.id.loadingAbp) as ImageView
