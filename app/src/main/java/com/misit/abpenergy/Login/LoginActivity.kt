@@ -261,11 +261,10 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                                 .setStringState(PrefsUtil.PHOTO_URL, u?.photoProfile)
                             Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
                             PopupUtil.dismissDialog()
-                            dialog!!.dismiss()
+                            async { dialog!!.dismiss()}.await()
                             startActivity(mainPage)
                             finish()
 //                            tvErrorLog.text = "$username | $password | $csrf_token | $app_version | abpSystem | ${u} | ${this} "
-                            dialog!!.dismiss()
                         }else{
                             dialog!!.dismiss()
                             clearForm()
