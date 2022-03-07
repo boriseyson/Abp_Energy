@@ -1,0 +1,1 @@
+package com.misit.abpenergy.HSE.Buletin.Modelsclass BuletinModel {}

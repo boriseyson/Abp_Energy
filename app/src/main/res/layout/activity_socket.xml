@@ -34,12 +34,8 @@
         android:layout_height="5dp"
         android:background="@color/colorPrimary"/>
 
-    <TextView
-        android:layout_gravity="center"
-        android:layout_marginTop="10sp"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvChat"
-        android:text="asd"
-        />
+        android:id="@+id/rvChat"/>
 </LinearLayout>

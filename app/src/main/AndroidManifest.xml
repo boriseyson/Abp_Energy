@@ -26,6 +26,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".HSE.Buletin.Screen.CreateBuletinActivity"
+            android:exported="false" />
+        <activity
             android:name=".Socket.SocketActivity"
             android:exported="false" />
         <activity
