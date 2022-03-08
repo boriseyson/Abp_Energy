@@ -2,18 +2,15 @@ package com.misit.abpenergy.HSE.Buletin.Screen
 
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -26,7 +23,6 @@ import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.Constants
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_list_buletin.*
-import kotlinx.android.synthetic.main.index_new.*
 import kotlinx.coroutines.*
 
 class ListBuletinActivity : AppCompatActivity(),View.OnClickListener,BuletinAdapter.OnItemClickListener {
@@ -46,6 +42,7 @@ class ListBuletinActivity : AppCompatActivity(),View.OnClickListener,BuletinAdap
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         rvListInfo?.layoutManager = linearLayoutManager
         rvListInfo?.adapter=adapter
+        adapter?.setListener(this@ListBuletinActivity)
         viewmodel = ViewModelProvider(this@ListBuletinActivity).get(BuletinViewModel::class.java)
         loadViewModel()
         btnAddBuletin.setOnClickListener(this@ListBuletinActivity)
@@ -101,41 +98,62 @@ class ListBuletinActivity : AppCompatActivity(),View.OnClickListener,BuletinAdap
         dialog?.setCanceledOnTouchOutside(false)
         dialog?.setCancelable(false)
     }
-
-    override fun onItemClick(idInfo: String) {
-        Log.d("Diclick","$idInfo")
-        val list = arrayOf("Ubah","Hapus","Tampilkan / Sembunyikan")
-        showDialogOption(this@ListBuletinActivity,list,idInfo)
-    }
-    private fun showDialogOption(c:Context, title: Array<String>,idInfo: String){
-        val alertDialog = AlertDialog.Builder(c)
-        alertDialog.setTitle("Silahkan Pilih")
-        alertDialog!!.setItems(title, { dialog, which ->
-            when (which) {
-                0 ->ubahInfo(c,idInfo)
-                1 ->hapusInfo(c,idInfo)
-                2 ->showHideInfo(c,idInfo)
-            }
-        })
-        alertDialog.setOnDismissListener {
-            first_menu_item.setColorFilter(ContextCompat.getColor(c, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN)
-        }
-        alertDialog.create()
-        alertDialog.show()
-    }
-    private fun ubahInfo(c:Context,idInfo: String){
+    private fun ubahInfo(c:Context,buletin: MessageInfoItem){
+        var newBuletin = MessageInfoItem()
+        newBuletin= buletin
         var ubahInfo = Intent(c,CreateBuletinActivity::class.java)
-        ubahInfo.putExtra("formName","Ubah")
-        ubahInfo.putExtra("idInfo",idInfo)
+        ubahInfo.putExtra("formName","Ubah Buletin")
+        ubahInfo.putExtra("buletin",newBuletin)
         startActivityForResult(ubahInfo,Constants.INFOHARIAN)
     }
-    private fun hapusInfo(c:Context,idInfo: String){
-        areYouSure("Hapus","Apakah Anda Yakin Menghapus Ini?",idInfo,c)
+    private fun hapusInfo(c:Context,buletin: MessageInfoItem){
+        areYouSure("Hapus","Apakah Anda Yakin Menghapus Ini?",buletin,c)
     }
-    private fun showHideInfo(c:Context,idInfo: String){
+    private fun showHideInfo(c:Context,buletin: MessageInfoItem){
+        var newBuletin = MessageInfoItem()
+        newBuletin.idInfo = buletin.idInfo
+        if(buletin.status==0){
+            newBuletin.status = 1
+        }else if(buletin.status==1){
+            newBuletin.status=0
+        }
+        shBuletin(newBuletin)
 
     }
-    private fun areYouSure(titleDialog: String, msgDialog: String,idInfo: String,c: Context){
+    private fun shBuletin(data: MessageInfoItem) {
+        dialog=null
+        loadingDialog(this@ListBuletinActivity)
+            var api = ApiClientTwo.getClient(this@ListBuletinActivity)!!.create(ApiEndPointTwo::class.java)
+            GlobalScope.launch(Dispatchers.IO) {
+                var r = async { api.shBuletinApi(data) }
+                if(r.await()!=null){
+                    var re = r.await()
+                    if(re!!.isSuccessful){
+                        if (re!!.body()!!.success!!){
+                            withContext(Dispatchers.Main){
+                                dialog?.dismiss()
+                            }
+                        }else{
+                            withContext(Dispatchers.Main){
+                                dialog?.dismiss()
+                                Toasty.error(this@ListBuletinActivity,"Gagal Memperbaharui, Coba Lagi").show()
+                            }
+                        }
+                    }else{
+                        withContext(Dispatchers.Main){
+                            dialog?.dismiss()
+                            Toasty.error(this@ListBuletinActivity,"Gagal Memperbaharui, Coba Lagi").show()
+                        }
+                    }
+                }else{
+                    withContext(Dispatchers.Main){
+                        dialog?.dismiss()
+                        Toasty.error(this@ListBuletinActivity,"Gagal Memperbaharui, Coba Lagi").show()
+                    }
+                }
+            }
+    }
+    private fun areYouSure(titleDialog: String, msgDialog: String,buletin: MessageInfoItem,c: Context){
         val builder = AlertDialog.Builder(c)
         builder.setTitle(titleDialog)
         builder.setMessage(msgDialog)
@@ -146,7 +164,7 @@ class ListBuletinActivity : AppCompatActivity(),View.OnClickListener,BuletinAdap
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     var api = ApiClientTwo.getClient(c)!!.create(ApiEndPointTwo::class.java)
-                    var r = async { api.deleteBuletinApi(idInfo) }.await()
+                    var r = async { api.deleteBuletinApi("${buletin.idInfo}") }.await()
                     if(r!=null){
                         if(r.isSuccessful){
                             if(r.body()!!.success!!){
@@ -178,5 +196,17 @@ class ListBuletinActivity : AppCompatActivity(),View.OnClickListener,BuletinAdap
             }
         }
         builder.show()
+    }
+
+    override fun ubah(buletin: MessageInfoItem) {
+        ubahInfo(this@ListBuletinActivity,buletin)
+    }
+
+    override fun hapus(buletin: MessageInfoItem) {
+        hapusInfo(this@ListBuletinActivity,buletin)
+    }
+
+    override fun showHide(buletin: MessageInfoItem) {
+        showHideInfo(this@ListBuletinActivity,buletin)
     }
 }

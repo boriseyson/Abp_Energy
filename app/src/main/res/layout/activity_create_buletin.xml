@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".HSE.Buletin.Screen.CreateBuletinActivity"
-    android:orientation="vertical"
-    android:padding="10dp"
     >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Id Form"
+        android:id="@+id/tilIdInfoForm"
+        android:layout_marginBottom="10dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inIdInfoForm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:minLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,6 +57,7 @@
         >
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
+            android:gravity="start"
             android:layout_height="match_parent"
             android:id="@+id/inContentForm"
             android:minLines="10"
@@ -43,10 +66,11 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAllCaps="false"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_marginTop="10dp"
         app:backgroundTint="@color/colorPrimary"
         android:text="Simpan"
         android:id="@+id/btnBuletinForm"/>
-
-</LinearLayout>
+        </LinearLayout>
+    </ScrollView>

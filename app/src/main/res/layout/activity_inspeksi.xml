@@ -5,7 +5,7 @@
     android:background="@color/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HSE.Inspeksi.SQLite.Activity.InspeksiActivity">
+    tools:context=".HSE.Inspeksi.Activity.InspeksiActivity">
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullRefreshInspeksi"
         android:layout_width="0dp"
