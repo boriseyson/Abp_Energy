@@ -303,7 +303,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
             })
      }
     private suspend fun getUserLogin(username: String){
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Main) {
             var api = ApiClientTwo.getClient(this@LoginActivity)!!.create(ApiEndPoint::class.java)
             try {
                 var def = async { api.lpUserLogin(username) }
