@@ -17,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPointTwo
+import com.misit.abpenergy.HSE.HazardReport.Activity.DetailHazardActivity
 import com.misit.abpenergy.Main.HomePage.IndexActivity
 import com.misit.abpenergy.Main.Model.NotifGroupResponse
 import com.misit.abpenergy.R
@@ -71,9 +72,7 @@ class MyFirebaseId : FirebaseMessagingService() {
         }
     }
     private fun notifSender(title: String?, body: String?,tipe:String?,uid:String?,id_notif:Int?){
-        Log.d("UID", "${uid}")
-        notificationIntent?.putExtra(IndexActivity.TIPE,tipe)
-        notificationIntent?.putExtra("UID",uid)
+
 //        sendMessage(title,body,intent,tipe,id_notif)
     }
     private fun notif(title: String?, body: String?,tipe:String?,uid:String?){
@@ -108,9 +107,9 @@ class MyFirebaseId : FirebaseMessagingService() {
         nManager?.notify(id,nBuilder.build())
         playNotificationSound(this@MyFirebaseId)
     }
-    private fun sendMessage() {
+    private fun sendMessage(pIntent: Intent) {
         val GROUP_KEY_WORK_EMAIL = "com.misit.abpenergy.WORK_EMAIL"
-        var pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_ONE_SHOT)
+        var pendingIntent = PendingIntent.getActivity(this,0,pIntent,PendingIntent.FLAG_UPDATE_CURRENT)
         nBuilder = NotificationCompat
             .Builder(this,Constants.CHANNEL_ID)
             .setSmallIcon(R.drawable.abp_white)
@@ -122,8 +121,22 @@ class MyFirebaseId : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
     }
+    private fun inSendMessage(pIntent: Intent): NotificationCompat.Builder {
+        val GROUP_KEY_WORK_EMAIL = "com.misit.abpenergy.WORK_EMAIL"
+        var pendingIntent = PendingIntent.getActivity(this,0,pIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+        var nBuilder = NotificationCompat
+            .Builder(this,Constants.CHANNEL_ID)
+            .setSmallIcon(R.drawable.abp_white)
+            .setColor(R.drawable.abp_blue)
+            .setGroup(GROUP_KEY_WORK_EMAIL)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+            .setGroupSummary(true)
+            .setContentText(null)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+        return nBuilder
+    }
     private fun getMessage(){
-        sendMessage()
         GlobalScope.launch(Dispatchers.IO){
             val apiEndPoint =
                 ApiClient.getClient(this@MyFirebaseId)?.create(ApiEndPointTwo::class.java)
@@ -134,16 +147,24 @@ class MyFirebaseId : FirebaseMessagingService() {
                     if (pesan != null) {
                         if(pesan.hazardNotClose!=null){
                             pesan.hazardNotClose.forEach { itempesan->
+                                var nManager = notifChannel()
+                                var pIntent = Intent(this@MyFirebaseId, DetailHazardActivity::class.java)
+                                pIntent.putExtra("UID","${itempesan?.uid}")
+                                pIntent.putExtra("Method","Online")
+                                pIntent.putExtra("actionFrom","Notif")
+                                pIntent.setAction("${itempesan?.uid}")
+                                var nBuilder = inSendMessage(pIntent)
                                 var iStyle = NotificationCompat.InboxStyle()
                                 if(itempesan?.pesan!=null){
                                     itempesan.pesan?.forEach {
                                         iStyle.addLine(it)
                                     }
+                                    iStyle.addLine("UID1 ${itempesan!!.uid}")
                                     nBuilder.setStyle(iStyle)
-                                        .setContentTitle("${itempesan.judul}")
+                                        .setContentTitle("UID1 ${itempesan.judul}")
                                     var id = (1..9999).random()
                                     nManager?.notify(id,nBuilder.build())
-                                    Log.d("PesanMasuk","${iStyle}")
+                                    Log.d("PesanMasuk","${itempesan.uid}")
 
                                 }
                             }
@@ -156,7 +177,6 @@ class MyFirebaseId : FirebaseMessagingService() {
     }
     private fun userMessage(tipe: String?){
         var response: Response<NotifGroupResponse>? = null
-        sendMessage()
         GlobalScope.launch(Dispatchers.IO){
             val apiEndPoint =
                 ApiClient.getClient(this@MyFirebaseId)?.create(ApiEndPointTwo::class.java)
@@ -173,21 +193,29 @@ class MyFirebaseId : FirebaseMessagingService() {
                     if (pesan != null) {
                         if(pesan.hazardNotClose!=null){
                             pesan.hazardNotClose.forEach { itempesan->
+                                var nManager = notifChannel()
+                                var pIntent = Intent(this@MyFirebaseId, DetailHazardActivity::class.java)
+                                pIntent.putExtra("UID","${itempesan?.uid}")
+                                pIntent.putExtra("Method","Online")
+                                pIntent.putExtra("actionFrom","Notif")
+                                pIntent.setAction("${itempesan?.uid}")
+                                var nBuilder = inSendMessage(pIntent)
                                 var iStyle = NotificationCompat.InboxStyle()
                                 if(itempesan?.pesan!=null){
                                     itempesan.pesan?.forEach {
                                         iStyle.addLine(it)
                                     }
+                                    iStyle.addLine("UID ${itempesan!!.uid}")
                                     if(itempesan.phoneToken==android_token){
                                         nBuilder.setStyle(iStyle)
-                                            .setContentTitle("${itempesan.judul}")
+                                            .setContentTitle("UID ${itempesan.judul}")
                                         var id = (1..9999).random()
                                         nManager?.notify(id,nBuilder.build())
 
                                     }
                                     Log.d("android_token","${android_token} | ${itempesan.phoneToken}")
 
-                                    Log.d("PesanMasuk","${iStyle}")
+                                    Log.d("PesanMasuk","${itempesan.uid}")
                                 }
                             }
 
@@ -209,6 +237,28 @@ class MyFirebaseId : FirebaseMessagingService() {
                 NotificationManager::class.java
             )
             nManager?.createNotificationChannel(serviceChannel)
+        }
+    }
+    private fun notifChannel(): NotificationManager? {
+        Log.d("FirebaseService","CreateChannel")
+        var nManager:NotificationManager?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            nManager = getSystemService(
+                NotificationManager::class.java
+            )
+        }else{
+            nManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val serviceChannel = NotificationChannel(
+                Constants.CHANNEL_ID,
+                "com.misit.abpenergy",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            nManager?.createNotificationChannel(serviceChannel)
+            return nManager
+        }else{
+            return nManager
         }
     }
 

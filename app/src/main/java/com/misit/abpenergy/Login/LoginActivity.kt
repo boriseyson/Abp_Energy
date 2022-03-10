@@ -259,12 +259,13 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
                             }
                             PrefsUtil.getInstance()
                                 .setStringState(PrefsUtil.PHOTO_URL, u?.photoProfile)
-                            Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show()
-                            PopupUtil.dismissDialog()
-                            async { dialog!!.dismiss()}.await()
-                            startActivity(mainPage)
-                            finish()
-//                            tvErrorLog.text = "$username | $password | $csrf_token | $app_version | abpSystem | ${u} | ${this} "
+                            listOf(
+                                async { Toasty.success(this@LoginActivity,"Login Success ",Toasty.LENGTH_LONG).show() }
+                                ,async { PopupUtil.dismissDialog() }
+                                ,async { async { dialog!!.dismiss()}.await() }
+                                ,async { startActivity(mainPage) }
+                                ,async { finish() }
+                            ).awaitAll()
                         }else{
                             dialog!!.dismiss()
                             clearForm()
@@ -346,9 +347,9 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener
          var loadingAbp = mDialogView?.findViewById<View>(R.id.loadingAbp) as ImageView
          Glide.with(c).load(R.drawable.abp).into(loadingAbp)
          mBuilder.setView(mDialogView)
+         dialog = mBuilder.show()
          dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
          dialog?.setCanceledOnTouchOutside(false)
          dialog?.setCancelable(false)
-         dialog = mBuilder.show()
      }
 }

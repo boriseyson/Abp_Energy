@@ -17,6 +17,7 @@ import com.misit.abpenergy.Api.ApiClient
 import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.HSE.HazardReport.Response.DetailHazardResponse
 import com.misit.abpenergy.HSE.HazardReport.ViewModel.HazardDetailViewModel
+import com.misit.abpenergy.MainPageActivity
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Service.MatrikResikoWebViewActivity
 import com.misit.abpenergy.Utils.PopupUtil
@@ -42,6 +43,7 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
     private var fotoPJ:String?=null
     lateinit var viewModel: HazardDetailViewModel
     var method:String? = null
+    private var actionFrom:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_hazard)
@@ -53,9 +55,6 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        uid = intent.getStringExtra(UID)
-        adminHazard = intent.getStringExtra("ALLHazard")
-        method = intent.getStringExtra("Method")
 //        loadDetail(uid.toString())
         floatUpdateDenganGambar.setOnClickListener(this)
         floatUpdateStatus.setOnClickListener(this)
@@ -65,6 +64,22 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
         matrikResiko.setOnClickListener(this)
         matrikResikoSesudah.setOnClickListener(this)
         viewModel = ViewModelProvider(this@DetailHazardActivity).get(HazardDetailViewModel::class.java)
+        initViewModel()
+        onNewIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        uid=null
+        var extras = intent?.extras
+        adminHazard = intent?.getStringExtra("ALLHazard")
+        if(extras?.getString("UID")!=null){
+            uid = extras.getString("UID")
+            Log.d("DetailUID","$uid")
+        }else{
+            uid = extras?.getString(UID)
+            Log.d("DetailUID1","$uid")
+        }
+        method = intent?.getStringExtra("Method")
         if(method!=null){
             if(method=="Online"){
                 GlobalScope.launch(Dispatchers.IO) {
@@ -76,15 +91,13 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
                 }
             }
         }
-        initViewModel()
-    }
-    override fun onResume() {
         if(adminHazard!=null){
             btnFLMenu.visibility= View.GONE
         }else{
             btnFLMenu.visibility= View.VISIBLE
         }
-        super.onResume()
+        actionFrom = intent?.getStringExtra("actionFrom")
+        super.onNewIntent(intent)
     }
     override fun onClick(v: View?) {
         if(v?.id==R.id.floatUpdateDenganGambar){
@@ -279,6 +292,16 @@ class DetailHazardActivity : AppCompatActivity(),View.OnClickListener {
             }
 
         })
+    }
+
+    override fun onBackPressed() {
+        if(actionFrom!=null){
+            if(actionFrom=="Notif"){
+                startActivity(Intent(this@DetailHazardActivity,MainPageActivity::class.java))
+                finish()
+            }
+        }
+        super.onBackPressed()
     }
     companion object{
         var UID = "UID"

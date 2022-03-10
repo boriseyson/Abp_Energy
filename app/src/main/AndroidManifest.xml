@@ -216,6 +216,7 @@
         <activity
             android:name=".HSE.HazardReport.Activity.DetailHazardActivity"
             android:launchMode="singleTask"
+            android:taskAffinity=""
             android:screenOrientation="portrait" />
         <activity
             android:name=".HSE.HazardReport.Activity.SumberBahayaActivity"
