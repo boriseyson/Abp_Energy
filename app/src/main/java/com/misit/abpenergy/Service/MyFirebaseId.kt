@@ -159,9 +159,9 @@ class MyFirebaseId : FirebaseMessagingService() {
                                     itempesan.pesan?.forEach {
                                         iStyle.addLine(it)
                                     }
-                                    iStyle.addLine("UID1 ${itempesan!!.uid}")
+                                    iStyle.addLine("${itempesan!!.uid}")
                                     nBuilder.setStyle(iStyle)
-                                        .setContentTitle("UID1 ${itempesan.judul}")
+                                        .setContentTitle("${itempesan.judul}")
                                     var id = (1..9999).random()
                                     nManager?.notify(id,nBuilder.build())
                                     Log.d("PesanMasuk","${itempesan.uid}")
@@ -205,10 +205,10 @@ class MyFirebaseId : FirebaseMessagingService() {
                                     itempesan.pesan?.forEach {
                                         iStyle.addLine(it)
                                     }
-                                    iStyle.addLine("UID ${itempesan!!.uid}")
+                                    iStyle.addLine("${itempesan!!.uid}")
                                     if(itempesan.phoneToken==android_token){
                                         nBuilder.setStyle(iStyle)
-                                            .setContentTitle("UID ${itempesan.judul}")
+                                            .setContentTitle("${itempesan.judul}")
                                         var id = (1..9999).random()
                                         nManager?.notify(id,nBuilder.build())
 
