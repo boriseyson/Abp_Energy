@@ -532,13 +532,14 @@
                         android:paddingBottom="10dp"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"
                         android:text="Rubah Metode Pengendalian"
                         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                         android:textSize="8dp"
+                        android:id="@+id/btnUbahPengendalian"
                         />
                     <!--                    RISK-->
                 </LinearLayout>
@@ -1109,6 +1110,16 @@
                             android:gravity="center"
                             android:text="NIK / NRP" />
                     </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:id="@+id/btnUbahPJ"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"
+                        android:text="Rubah Penanggung Jawab"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:textSize="8dp"
+                        />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

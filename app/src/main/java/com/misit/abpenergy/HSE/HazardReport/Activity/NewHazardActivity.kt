@@ -688,39 +688,39 @@ class NewHazardActivity : AppCompatActivity(),View.OnClickListener {
             }
         }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.PJ_CODE_GALERY) {
 //            Galery Intent
-            try {
-//                data.clipData
-                fileUploadPJ = data!!.data
                 try {
-                    bitmapPJ = BitmapFactory.decodeStream(
-                        contentResolver.openInputStream(fileUploadPJ!!)
-                    )
-                    pjFOTO.setImageBitmap(bitmapPJ);
-                    imgPJ = 1
+//                data.clipData
+                    fileUploadPJ = data!!.data
+                    try {
+                        bitmapPJ = BitmapFactory.decodeStream(
+                            contentResolver.openInputStream(fileUploadPJ!!)
+                        )
+                        pjFOTO.setImageBitmap(bitmapPJ);
+                        imgPJ = 1
+                    } catch (e: IOException) {
+                        imgPJ = 0
+                    }
                 } catch (e: IOException) {
                     imgPJ = 0
                 }
-            } catch (e: IOException) {
-                imgPJ = 0
-            }
-        }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.PJ_CODE_CAMERA){
+            }else if(resultCode==Activity.RESULT_OK && requestCode==Constants.PJ_CODE_CAMERA){
 //            camera intent
-            try {
-                fileUploadPJ = "file:///${pathFilePJ}".toUri()
                 try {
-                    bitmapPJ = BitmapFactory.decodeStream(
-                        contentResolver.openInputStream(fileUploadPJ!!)
-                    )
-                    Glide.with(this@NewHazardActivity).load(fileUploadPJ).into(pjFOTO)
+                    fileUploadPJ = "file:///${pathFilePJ}".toUri()
+                    try {
+                        bitmapPJ = BitmapFactory.decodeStream(
+                            contentResolver.openInputStream(fileUploadPJ!!)
+                        )
+                        Glide.with(this@NewHazardActivity).load(fileUploadPJ).into(pjFOTO)
+                    } catch (e: IOException) {
+                        e.printStackTrace();
+                    }
+                    imgPJ = 1
                 } catch (e: IOException) {
+                    imgPJ = 0
                     e.printStackTrace();
                 }
-                imgPJ = 1
-            } catch (e: IOException) {
-                imgPJ = 0
-                e.printStackTrace();
-            }
-        }else if(resultCode==Activity.RESULT_CANCELED){
+            }else if(resultCode==Activity.RESULT_CANCELED){
         }else if (requestCode == 999 && resultCode == RESULT_OK) {
             try {
                 fileUploadPJ = "file:///${pathFilePJ}".toUri()

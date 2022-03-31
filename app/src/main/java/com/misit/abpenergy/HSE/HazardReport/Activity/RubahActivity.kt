@@ -3,6 +3,7 @@ package com.misit.abpenergy.HSE.HazardReport.Activity
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -35,12 +36,15 @@ import com.misit.abpenergy.Api.ApiEndPoint
 import com.misit.abpenergy.Api.ApiEndPointTwo
 import com.misit.abpenergy.HSE.HazardReport.Response.DetailHazardResponse
 import com.misit.abpenergy.HSE.HazardReport.ViewModel.HazardDetailViewModel
+import com.misit.abpenergy.Main.Master.ListUserActivity
 import com.misit.abpenergy.Main.Model.SuccessResponse
 import com.misit.abpenergy.R
 import com.misit.abpenergy.Utils.ConfigUtil
 import com.misit.abpenergy.Utils.Constants
 import com.misit.abpenergy.Utils.PrefsUtil
 import es.dmoral.toasty.Toasty
+import kotlinx.android.synthetic.main.activity_index.*
+import kotlinx.android.synthetic.main.activity_new_hazard.*
 import kotlinx.android.synthetic.main.activity_rubah.*
 import kotlinx.android.synthetic.main.activity_rubah.cvResiko
 import kotlinx.android.synthetic.main.activity_rubah.imgView
@@ -49,6 +53,7 @@ import kotlinx.android.synthetic.main.activity_rubah.tvKDresiko
 import kotlinx.android.synthetic.main.activity_rubah.tvNilaiResiko
 import kotlinx.android.synthetic.main.activity_rubah.tvRisk
 import kotlinx.android.synthetic.main.activity_rubah.tvTotalResiko
+import kotlinx.android.synthetic.main.index_new.*
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -78,6 +83,7 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
     private var kemungkinanIDSesudah:String?=null
     private var keparahanID:String?=null
     private var keparahanIDSesudah:String?=null
+    private var hirarkiID:String?=null
     private var bitmap: Bitmap?=null
     private var bitmapBuktiSelesai: Bitmap?=null
     private var bitmapPJ: Bitmap?=null
@@ -93,6 +99,9 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
     private var pathFilePJ:String?=null
     private var keparahanDipilih:String?=null
     private var keparahanDipilihSesudah:String?=null
+    private var hirarkiDipilih:String?=null
+    private var userPick:String?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rubah)
@@ -139,6 +148,8 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
         rbKmSesudah.setOnClickListener(c)
         rbKprSesudah.setOnClickListener(c)
         btnPerbaikanRB.setOnClickListener(c)
+        btnUbahPengendalian.setOnClickListener(c)
+        btnUbahPJ.setOnClickListener(c)
     }
     override fun onClick(v: View?) {
         if(v?.id==R.id.btnPerbaikanRB){
@@ -203,6 +214,20 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                 var intent = Intent(this@RubahActivity, KeparahanActivity::class.java)
                 intent.putExtra("keparahanDipilih", keparahanDipilihSesudah)
                 startActivityForResult(intent, Constants.KEMAPARAHAN_SESUDAH_CODE)
+            }
+        }
+        if(v?.id==R.id.btnUbahPengendalian){
+            GlobalScope.launch(Dispatchers.Main) {
+                async { corotineToken(this@RubahActivity) }.await()
+                var intent = Intent(this@RubahActivity, SumberBahayaActivity::class.java)
+                intent.putExtra("hirarkiDipilh", hirarkiDipilih)
+                startActivityForResult(intent, Constants.HIRARKI_CODE)
+            }
+        }
+        if(v?.id==R.id.btnUbahPJ){
+            GlobalScope.launch(Dispatchers.Main) {
+                var intent = Intent(this@RubahActivity, UpdatePJActivity::class.java)
+                startActivityForResult(intent, Constants.PJ_CODE_OPTION)
             }
         }
 
@@ -443,7 +468,6 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                         contentResolver.openInputStream(fileUpload!!)
                     )
                     Log.d("fileUpload","${fileUpload}")
-//                    Glide.with(this@RubahActivity).load(fileUpload).into(imgView)
                     GlobalScope.launch(Dispatchers.Main) {
                         updateBukti(c,uid!!,bitmap!!,"bukti_sebelum")
                     }
@@ -469,7 +493,6 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                     GlobalScope.launch(Dispatchers.Main) {
                         updateBukti(this@RubahActivity,uid!!,bitmap!!,"bukti_sebelum")
                     }
-//                    imgView.setImageBitmap(bitmap);
                     imgIn = 1
                 } catch (e: IOException) {
                     imgIn = 0
@@ -507,7 +530,8 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                     mrResiko(this@RubahActivity,uid!!,"keparahan_sebelum", keparahanID!!)
                 }
             }
-        }else
+        }
+        else
         if(resultCode== Activity.RESULT_OK && requestCode==Constants.KEMAPARAHAN_SESUDAH_CODE){
             keparahanDipilihSesudah = data!!.getStringExtra("keparahanDipilih")
             keparahanIDSesudah = data.getStringExtra("keparahanID")
@@ -517,7 +541,8 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                     mrResiko(this@RubahActivity,uid!!,"keparahan_sesudah", keparahanIDSesudah!!)
                 }
             }
-        }else
+        }
+        else
         if(resultCode==Activity.RESULT_OK && requestCode==Constants.SELESAI_CODE_CAMERA){
 //            Camera Intent Selesai
             try {
@@ -538,7 +563,8 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                 imgSelesai = 0
                 e.printStackTrace();
             }
-        }else
+        }
+        else
         if(resultCode==Activity.RESULT_OK && requestCode==Constants.SELESAI_CODE_GALERY) {
 //            Galery Inten Selesai
             try {
@@ -559,7 +585,22 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
                 imgSelesai = 0
             }
         }
+        else if(resultCode== Activity.RESULT_OK && requestCode==Constants.HIRARKI_CODE){
+            hirarkiDipilih = data!!.getStringExtra("hirarkiDipilih")
+            hirarkiID = data.getStringExtra("hirarkiID")
+            Log.d("hirarkiID","$hirarkiID")
+            if (hirarkiID!=null){
+                loadingDialog(this@RubahActivity)
+                GlobalScope.launch(Dispatchers.IO) {
+                    mtdPengendalian(this@RubahActivity,uid!!,hirarkiID!!)
+                }
+            }
+        }else if(requestCode==Constants.PJ_CODE_OPTION && resultCode== RESULT_OK){
+
+        }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+    private fun updatePJ(c: Context, uid: String, bitmap: Bitmap, s: String) {
     }
     suspend fun corotineToken(c: Context){
         try {
@@ -759,6 +800,65 @@ class RubahActivity : AppCompatActivity() , View.OnClickListener{
             Toasty.error(c,"Error Update Resiko , Coba Lagi").show()
             Log.d("erroDeskripsi","${e.message}")
             dialog?.dismiss()
+        }
+    }
+    suspend private fun mtdPengendalian(c:Context,uid:String,idPengendalian: String){
+        try {
+            Log.d("idPengendalian","$idPengendalian")
+            Log.d("uid?","$uid")
+            Log.d("csrf_token","$csrf_token")
+            val apiEndPoint = ApiClient.getClient(c)!!.create(ApiEndPointTwo::class.java)
+            CoroutineScope(Dispatchers.Main).launch {
+                val call =  async { apiEndPoint.updatePengendalian(uid,idPengendalian,csrf_token) }
+                Log.d("Response","$call")
+                var result = call.await()
+                if (result != null) {
+                    if(result.isSuccessful){
+                        var success = result.body()?.success
+                        if (success!!){
+                            viewModel?.loadDetailOnline(uid,c)
+                        }else{
+                            Toasty.error(c,"Error Update Resiko , Coba Lagi").show()
+                            dialog?.dismiss()
+                        }
+                    }else{
+                        Toasty.error(c,"Error Update Resiko , Coba Lagi").show()
+                        dialog?.dismiss()
+                    }
+                }else{
+                    Toasty.error(c,"Error Update Resiko , Coba Lagi").show()
+                    dialog?.dismiss()
+                }
+            }
+        }catch (e:Exception){
+            Toasty.error(c,"Error Update Resiko , Coba Lagi").show()
+            Log.d("erroDeskripsi","${e.message}")
+            dialog?.dismiss()
+        }
+    }
+    fun dialogPJ(c:Context, title: Array<String>){
+        val alertDialog = AlertDialog.Builder(c)
+        alertDialog.setTitle("Silahkan Pilih")
+        alertDialog!!.setItems(title, { dialog, which ->
+            when (which) {
+                0 ->hazardPJ(c,"pj_manual")
+                1 ->hazardPJ(c,"pj_auto")
+            }
+        })
+        alertDialog.create()
+        alertDialog.show()
+    }
+
+    private fun hazardPJ(c: Context, s: String) {
+        if(s=="pj_manual"){
+            showDialogOption(Constants.PJ_CODE_CAMERA, Constants.PJ_CODE_GALERY,
+                PENANGGUNG_JAWAB
+            )
+        }else if(s=="pj_auto"){
+            val intent = Intent(c, ListUserActivity::class.java)
+            intent.putExtra(ListUserActivity.DataExtra, "Hazard")
+            intent.putExtra(USEPICK, userPick)
+            startActivityForResult(intent, Constants.PJ_CODE_OPTION)
         }
     }
 }
